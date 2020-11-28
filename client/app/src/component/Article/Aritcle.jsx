@@ -13,13 +13,11 @@ export default function Article() {
   let params = new URLSearchParams(search);
   let id = params.get("id");
 
-  CheckFirebaseUserStatus("/signup");
   useEffect(() => {
     function getArticles() {
       db.collection("Articles")
         .doc(id)
-        .get()
-        .then(function (doc) {
+        .onSnapshot(function (doc) {
           setArticle({
             title: doc.data().title,
             markDown: doc.data().markDown,

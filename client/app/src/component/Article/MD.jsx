@@ -10,10 +10,13 @@ const converter = new Showdown.Converter({
   strikethrough: true,
   tasklists: true,
 });
-function updateArticles(id, content) {
-  db.collection("Articles").doc(id).update({
-    content: content,
-  });
+function updateArticles(id, markDown) {
+  db.collection("Articles")
+    .doc(id)
+    .update({
+      markDown: markDown,
+    })
+    .then(console.log("change article"));
 }
 export default function MD(props) {
   const [value, setValue] = useState(props.content);
