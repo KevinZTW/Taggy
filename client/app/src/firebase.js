@@ -39,12 +39,19 @@ export const uiConfig = {
   // We will display Google and Facebook as auth providers.
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
 };
-export function CheckFirebaseUserStatus(direct) {
+export function CheckFirebaseUserStatus(direct, getUserData) {
   let history = useHistory();
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(user.email);
-      console.log(user.uid);
+      console.log(user);
+      if (getUserData) {
+        getUserData({
+          uid: user.uid,
+          email: user.email,
+          displayname: user.displayname,
+          providerData: user.providerData,
+        });
+      }
     } else {
       console.log("no user, redirect to sign up");
       history.push(direct);

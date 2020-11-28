@@ -6,7 +6,7 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 export default function Card(props) {
   return (
     <header className="App-header">
-      <AddArticle className="headMemberIcon" />{" "}
+      <AddArticle className="headMemberIcon" user={props.user} />
       <Link to={"/signup"}>
         <AccountBoxIcon fontSize="large" style={{ color: "#FFFCEC" }} />
       </Link>

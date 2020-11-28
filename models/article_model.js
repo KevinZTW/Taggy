@@ -1,11 +1,17 @@
 import { db } from "../firebase.js";
 
-const addArticle = function (title = "More Article", content = "No Content") {
-  console.log("title is :", title, "content is ", content);
+const addArticle = function (
+  uid = "not login",
+  title = "More Article",
+  readerHtml = "reader html",
+  markDown = "Mardown"
+) {
   db.collection("Articles")
     .add({
+      uid: uid,
       title: title,
-      content: content,
+      readerHtml: readerHtml,
+      markDown: markDown,
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);

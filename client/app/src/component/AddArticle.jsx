@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { localUrl, ec2Url } from "../config.js";
 import "../css/AddArticle.css";
-
-const { addtofirestore } = require("../firebase.js");
-export default function AddArticle() {
+import { auth } from "../firebase.js";
+import { useHistory } from "react-router-dom";
+export default function AddArticle(props) {
+  let history = useHistory();
   const [reqUrl, setReqUrl] = useState("");
-
-  function postData(url, data) {
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
+  function postDataToServer(
+    url,
+    data = {
+      url: "www.sylish.com",
+      uid: "12344",
+    }
+  ) {
     fetch(url, {
       method: "post",
       headers: {
@@ -43,8 +53,9 @@ export default function AddArticle() {
         type="submit"
         className="add"
         onClick={(e) => {
-          postData(localUrl, {
+          postDataToServer(localUrl, {
             url: reqUrl,
+            uid: user.uid,
           });
         }}
       >

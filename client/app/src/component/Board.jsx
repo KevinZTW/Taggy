@@ -2,33 +2,61 @@ import React, { useEffect, useState } from "react";
 
 import { db } from "../firebase.js";
 import CardWrapper from "./CardWrapper.jsx";
-import { CheckFirebaseUserStatus } from "../firebase.js";
-// import { useHistory } from "react-router-dom";
-export default function Board() {
+
+import { useHistory } from "react-router-dom";
+export default function Board(props) {
   let [cardlist, setCardList] = useState([]);
-  let list = [];
-  // let history = useHistory();
-  console.log("board render");
-  CheckFirebaseUserStatus("/signup");
+  let [user, setUser] = useState("");
+
+  let history = useHistory();
+  //===================deal with login flow============
+  // const getUserData = function (userInfo) {
+  //   console.log("userinfois", userInfo);
+  //   setUser(userInfo.uid);
+  //   console.log("might reset the user");
+  // };
+  // CheckFirebaseUserStatus("/signUp", getUserData);
+  // console.log(user);
+  //====================================================
+
   useEffect(() => {
-    function getArticles() {
+    console.log("user in board in use effect is ", props.user);
+    function getArticles(uid) {
+      console.log("on get article");
       db.collection("Articles")
+        .where("uid", "==", uid)
         .get()
         .then(function (querySnapshot) {
+          let list = [];
           querySnapshot.forEach(function (doc) {
-            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.data());
             list.push({
               title: doc.data().title,
-              content: doc.data().content.slice(0, 100),
+              content: doc.data().markDown.slice(0, 100),
               id: doc.data().id,
             });
           });
           setCardList(list);
         });
     }
-    getArticles();
-  }, []);
-
+    function checkArticleUpdate(uid) {
+      console.log("on snap shot");
+      db.collection("Articles").onSnapshot(function (querySnapshot) {
+        let list = [];
+        querySnapshot.forEach(function (doc) {
+          list.push({
+            title: doc.data().title,
+            content: doc.data().markDown.slice(0, 100),
+            id: doc.data().id,
+          });
+        });
+        setCardList(list);
+      });
+    }
+    if (props.user.uid) {
+      checkArticleUpdate(props.user.uid);
+    }
+  }, [props.user]);
   return (
     <div>
       <CardWrapper list={cardlist} />

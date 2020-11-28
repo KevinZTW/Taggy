@@ -4,8 +4,9 @@ import styles from "../../css/SignUp.module.css";
 import { Link } from "react-router-dom";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { uiConfig, auth } from "../../firebase.js";
-
+import { useHistory } from "react-router-dom";
 export default function Signup() {
+  const history = useHistory();
   let [email, setEmail] = useState("");
   let [password, setPassword] = useState("");
   function firebaseSignUp(email, password) {
@@ -23,7 +24,7 @@ export default function Signup() {
   }
   return (
     <div className={styles.wrapper}>
-      <div className="block" className={styles.block}>
+      <div className={styles.block}>
         <h2 className={styles.title}>Sign Up</h2>
         <form
           className={styles.form}

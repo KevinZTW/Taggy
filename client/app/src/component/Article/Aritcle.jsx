@@ -22,7 +22,7 @@ export default function Article() {
         .then(function (doc) {
           setArticle({
             title: doc.data().title,
-            content: doc.data().content,
+            markDown: doc.data().markDown,
           });
         });
     }
@@ -37,7 +37,7 @@ export default function Article() {
         </Link>
       </div>
       <div className={styles.title}>{article.title}</div>
-      <MD content={article.content} id={id} />
+      <MD content={article.markDown} id={id} />
     </div>
   );
 }
