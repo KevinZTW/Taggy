@@ -5,7 +5,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 import bodyParser from "body-parser";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
