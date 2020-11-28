@@ -12,7 +12,6 @@ greenlock
     agreeTos: true, // You must accept the ToS as the host which handles the certs
     // Using your express app:
     // simply export it as-is, then include it here
-    store: store,
     //, debug: true
   })
   .serve(app);
