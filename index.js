@@ -1,6 +1,4 @@
 import greenlock from "greenlock-express";
-
-import * as store from "greenlock-store-fs";
 import { app } from "./app.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
