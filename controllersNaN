@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="//cdn.thisiswaldo.com" rel="dns-prefetch">
+    <link href="//fonts.googleapis.com" rel="dns-prefetch">
+
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Get HTTP POST Body in Express.js</title>
+    <meta name="HandheldFriendly" content="True" />
+	<meta name="keywords" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- fav icons -->
+	<link rel="shortcut icon" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png?v=de59faf4d4">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png?v=de59faf4d4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png?v=de59faf4d4">
+    <!-- header scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                var e = document.createElement("script");
+                e.type="text/javascript",
+                e.src="//cdn.thisiswaldo.com/static/js/3873.js",
+                document.getElementsByTagName("head")[0].appendChild(e);
+            }, 1000);
+        }, false);
+    </script>
+	<!-- stylesheets -->
+    <link href="//fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css?v=de59faf4d4">
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css?v=de59faf4d4">
+	<link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=de59faf4d4">
+	<link rel="stylesheet" type="text/css" href="/assets/css/hl-styles/atom_one_dark.css?v=de59faf4d4">
+	<script>
+/*====================================================
+  THEME SETTINGS & GLOBAL VARIABLES
+====================================================*/
+//  1. Disqus comment settings
+var disqus_shortname = 'stackabuse'; // required: replace example with your forum shortname
+
+//	2. Sidebar Position
+var sidebar_left = false; // Set true or flase for positioning sidebar on left
+
+//  3. Recent Post count
+var recent_post_count = 3;
+
+//	4. Google+ badge settings
+var badge_type = 'page'; // person / page / community ----- three type of google badge
+var google_plus_url = 'https://plus.google.com/111813546240107028721';
+
+//	5. Facebook Page Setting
+var facebook_page_url = 'https://www.facebook.com/stackabuse';
+
+//	6. Twitter Setting
+var twitter_url = 'https://twitter.com/ScottWRobinson';
+var twitter_widget_id = '722928793669607425';
+var number_of_tweet = 3;
+
+//	7. Mailchimp signup form Setting
+var mailchimp_form_url = '//stackabuse.us10.list-manage.com/subscribe/post?u=90b216fdbe02b25619ec94fc3&amp;id=bc2bb312cd';
+var success_message = "Please check your inbox and confirm your email address. Thank you!";
+
+//	8. Flickr Setting
+//var flickr_id = '52617155@N08';
+var flickr_id = '';
+</script>
+    <meta name="description" content="In this brief article, we&#x27;ll explore how to extract information from a POST request body in Express.js and Node.js" />
+    <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+    <link rel="canonical" href="https://stackabuse.com/get-http-post-body-in-express-js/" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    
+    <meta property="og:site_name" content="Stack Abuse" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Get HTTP POST Body in Express.js" />
+    <meta property="og:description" content="Introduction
+In this brief article we&#x27;ll be going over how to extract information from a POST
+body in Express.js. The HTTP protocol provides a number of ways to pass
+information from a client to a server, with POST bodies being the most flexible
+and most commonly used method to send data via HTTP.
+
+Another way, which is typically used for different use-cases, is to convey
+information using query strings or URL parameters. For more info, check out how
+to get query strings and parameters in Expres" />
+    <meta property="og:url" content="https://stackabuse.com/get-http-post-body-in-express-js/" />
+    <meta property="article:tag" content="node" />
+    <meta property="article:tag" content="javascript" />
+    <meta property="article:tag" content="express" />
+    <meta property="article:tag" content="web framework" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Get HTTP POST Body in Express.js" />
+    <meta name="twitter:description" content="Introduction
+In this brief article we&#x27;ll be going over how to extract information from a POST
+body in Express.js. The HTTP protocol provides a number of ways to pass
+information from a client to a server, with POST bodies being the most flexible
+and most commonly used method to send data via HTTP.
+
+Another way, which is typically used for different use-cases, is to convey
+information using query strings or URL parameters. For more info, check out how
+to get query strings and parameters in Expres" />
+    <meta name="twitter:url" content="https://stackabuse.com/get-http-post-body-in-express-js/" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Scott Robinson" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="node, javascript, express, web framework" />
+    <meta name="twitter:site" content="@ScottWRobinson" />
+    <meta name="twitter:creator" content="@ScottWRobinson" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Stack Abuse",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://stackabuse.com/favicon.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Scott Robinson",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://stackabuse.com/content/images/2016/09/new-profile.jpg",
+            "width": 331,
+            "height": 363
+        },
+        "url": "https://stackabuse.com/author/scott/",
+        "sameAs": [
+            "https://twitter.com/ScottWRobinson"
+        ]
+    },
+    "headline": "Get HTTP POST Body in Express.js",
+    "url": "https://stackabuse.com/get-http-post-body-in-express-js/",
+    "keywords": "node, javascript, express, web framework",
+    "description": "Introduction\nIn this brief article we&#x27;ll be going over how to extract information from a POST\nbody in Express.js. The HTTP protocol provides a number of ways to pass\ninformation from a client to a server, with POST bodies being the most flexible\nand most commonly used method to send data via HTTP.\n\nAnother way, which is typically used for different use-cases, is to convey\ninformation using query strings or URL parameters. For more info, check out how\nto get query strings and parameters in Expres",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://stackabuse.com/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 2.23" />
+    <link rel="alternate" type="application/rss+xml" title="Stack Abuse" href="https://stackabuse.com/rss/" />
+    <!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '525232124909042');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=525232124909042&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+<!-- Repixel Code -->
+<script>
+  (function(w, d, s, id, src){
+  w.Repixel = r = {
+    init: function(id) {
+      w.repixelId = id;
+    }
+  };
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)){ return; }
+  js = d.createElement(s); 
+  js.id = id;
+  js.async = true;
+  js.onload = function(){
+      Repixel.init(w.repixelId);
+  };
+  js.src = src;
+  fjs.parentNode.insertBefore(js, fjs);
+  }(window, document, 'script', 'repixel', 
+  'https://sdk.repixel.co/r.js'));
+  Repixel.init('5cefff7fce3aad00089e44e5');
+</script>
+<!-- Repixel Code -->
+</head>
+<body class="post-template tag-node tag-javascript tag-express tag-web-framework">
+    <nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <i class="fa fa-bars"></i>
+      </button>
+      <a class="navbar-brand" href="/">Stack <span style="color:#f16334;">Abuse</span></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav" role="navigation" aria-label="Site navigation">
+	<li class="nav-javascript"><a href="https://stackabuse.com/tag/javascript/">JavaScript</a></li>
+	<li class="nav-python"><a href="https://stackabuse.com/tag/python">Python</a></li>
+	<li class="nav-java"><a href="https://stackabuse.com/tag/java/">Java</a></li>
+    <li class="nav-hireremote">
+        <a rel="noopener nofollow" target="_blank" href="https://hireremote.io/"
+           ga-on="click"
+           ga-event-category="Jobs"
+           ga-event-action="Click"
+           ga-event-label="HR-Nav-Link"
+        >
+            Jobs
+        </a>
+    </li>
+</ul>
+
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+    <!-- start site's main content area -->
+<section class="content-wrap">
+	<div class="container">
+		<div class="row">
+			<!-- start main post area -->
+			<div class="col-md-8 main-content">
+				<!-- start post -->
+				<article id="5dc5a9ead2e0df6b526dd0f2" class="post tag-node tag-javascript tag-express tag-web-framework">
+					<div class="post-head">
+						<h2 class="post-title">Get HTTP POST Body in Express.js</h2>
+						<div class="post-meta">
+							<span class="author">
+                                By
+                                <a rel="noopener nofollow" target="_blank" href="https://twitter.com/ScottWRobinson">
+                                    <i class="fa fa-twitter" style="color:#55acee;"></i>
+                                    Scott Robinson
+                                </a>
+                            </span> &bull;
+							<span class="comment-count"><a href="/get-http-post-body-in-express-js/#disqus_thread">0 Comments</a></span>
+						</div>
+					</div>
+                    <div class="post-ad">
+                        <!-- 728x90/320x50 -->
+<div id="waldo-tag-3878"></div>                    </div>
+					<div class="post-content">
+						<!--kg-card-begin: markdown--><h3 id="introduction">Introduction</h3>
+<p>In this brief article we'll be going over how to extract information from a POST body in Express.js. The HTTP protocol provides a number of ways to pass information from a client to a server, with POST bodies being the most flexible and most commonly used method to send data via HTTP.</p>
+<p>Another way, which is typically used for different use-cases, is to convey information using query strings or URL parameters. For more info, check out how to <a target="_blank" href="/get-query-strings-and-parameters-in-express-js/">get query strings and parameters in Express.js</a>.</p>
+<p>For this article I assume you have some experience with Node.js and creating simple <a rel="nofollow noopener" target="_blank" href="https://expressjs.com/">Express.js</a> servers.</p>
+<h3 id="sendingpostdatainhttp">Sending POST Data in HTTP</h3>
+<p>Data can be sent via an HTTP POST call for many reasons, with some of the most common being via an HTML <code>&lt;form&gt;</code> or an API request. The data can take on a few different forms, with the most common being:</p>
+<ul>
+<li><code>application/x-www-form-urlencoded</code>: Data in this encoding is formatted like a query string you'd see in a URL, with key-value paris being separated by <code>&amp;</code> characters. For example: <code>foo=bar&amp;abc=123&amp;stack=abuse</code>. This is the default encoding.</li>
+<li><code>multipart/form-data</code>: This encoding is typically used for sending files. In short, each key-value is sent in the same request, but different &quot;parts&quot;, which are separated by &quot;boundaries&quot; and include more meta-data.</li>
+<li><code>text/plain</code>: This data is just sent as unstructured plain text, and typically is not used.</li>
+</ul>
+<p>A raw HTTP POST request with the <code>application/x-www-form-urlencoded</code> encoding might look something like this:</p>
+<pre><code class="language-http">POST /signup HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+
+username=scott&amp;password=secret&amp;website=stackabuse.com
+</code></pre>
+<h3 id="extractingpostdata">Extracting POST Data</h3>
+<p>Before we can get started accessing POST data right away, we need to properly configure our Express app. This configuration needs to be done since not all web app servers need body parsing, and what body parsing is enabled depends on your application.</p>
+<p>To set this up, we'll be using the <a rel="nofollow noopener" target="_blank" href="https://www.npmjs.com/package/body-parser">body-parser</a> package, which can handle many forms of data. This package is a <a rel="nofollow noopener" target="_blank" href="https://expressjs.com/en/guide/writing-middleware.html">middleware</a> that intercepts the raw body and parses it in to a form that your application code can easily use.</p>
+<pre><code class="language-javascript">// index.js
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/post-test', (req, res) =&gt; {
+    console.log('Got body:', req.body);
+    res.sendStatus(200);
+});
+
+app.listen(8080, () =&gt; console.log(`Started server at http://localhost:8080!`));
+</code></pre>
+<p>Notice how we call <code>app.use(...)</code> <em>before</em> defining our route. The order here matters. This will ensure that the <code>body-parser</code> will run before our route, which ensures that our route can then access the parsed HTTP POST body.</p>
+<p>To test this, we'll first start the Express app and then use the <code>curl</code> utility in a different console window:</p>
+<pre><code class="language-console">$ curl -d &quot;username=scott&amp;password=secret&amp;website=stackabuse.com&quot; -X POST http://localhost:8080/post-test
+OK
+</code></pre>
+<pre><code class="language-console">$ node index.js
+Started server at http://localhost:8080!
+Got body: { username: 'scott',
+  password: 'secret',
+  website: 'stackabuse.com' }
+</code></pre>
+<p>Here you can see that the query string data was parsed in to a JavaScript object that we can easily access.</p>
+<p>Another important thing to note is our use of the <code>extended</code> option when calling <code>bodyParser.urlencoded</code>. Using the <code>extended</code> option tells <code>body-parser</code> to use the <code>qs</code> library to parse the URL-encoded data. This allows for things like objects and arrays to be encoded into the URL-encoded format.</p>
+<p>And while <code>urlencoded</code> is one of the most commonly used parsers that <code>body-parser</code> provides, you can also use the following:</p>
+<ul>
+<li><code>.json()</code>: Parses JSON-formatted text for bodies with a <code>Content-Type</code> of <code>application/json</code>.</li>
+<li><code>.raw()</code>: Parses HTTP body in to a <code>Buffer</code> for specified custom <code>Content-Type</code>s, although the default accepted <code>Content-Type</code> is <code>application/octet-stream</code>.</li>
+<li><code>.text()</code>: Parses HTTP bodies with a <code>Content-Type</code> of <code>text/plain</code>, which returns it as a plain string.</li>
+</ul>
+<p>Each of these parsers also supports automatic inflation of data encoded with <a rel="nofollow noopener" target="_blank" href="https://en.wikipedia.org/wiki/Gzip">gzip</a> or <a rel="nofollow noopener" target="_blank" href="https://en.wikipedia.org/wiki/DEFLATE">deflate</a>, so compression can still be transparently used without any extra work by your application code.</p>
+<p>The great thing about the middleware model and how this package parses data is that you're not stuck to using just one parser. You can enable one <em>or more</em> parsers for your app to ensure that all data types are processed properly:</p>
+<pre><code class="language-javascript">// index.js
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+
+// ...
+</code></pre>
+<p>So now if we were to send an HTTP POST request with JSON as the body, it will be parsed in to a regular JSON object in the <code>req.body</code> property:</p>
+<pre><code class="language-http">POST /post-test HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Content-Length: 69
+
+'{&quot;username&quot;:&quot;scott&quot;,&quot;password&quot;:&quot;secret&quot;,&quot;website&quot;:&quot;stackabuse.com&quot;}'
+</code></pre>
+<pre><code class="language-console">$ node index.js
+Started server at http://localhost:8080!
+Got body: { username: 'scott',
+  password: 'secret',
+  website: 'stackabuse.com' }
+</code></pre>
+<h3 id="conclusion">Conclusion</h3>
+<p>The most common way to send diverse and large amounts of data via HTTP is to use the POST method. Before we can easily access this data on the server side in Express, we need to use some middleware, like the <code>body-parser</code> package, to parse the data in to a format that we can easily access. Once the data from the raw HTTP request is parsed, it can then be accessed via the <code>body</code> property of the <code>req</code> object.</p>
+<p>In this article we explained a bit about the various content types/encodings, how to use the <code>body-parser</code> package and its various options, and how to access the parsed data. If you see any issues or have suggestions, feel free to leave a comment below.</p>
+<!--kg-card-end: markdown-->
+					</div>
+					<footer class="post-footer clearfix">
+						<div class="pull-left tag-list">
+							<i class="fa fa-folder-open-o"></i>
+							<a href="/tag/node/">node</a>,<a href="/tag/javascript/">javascript</a>,<a href="/tag/express/">express</a>,<a href="/tag/web-framework/">web framework</a>
+						</div>
+						<div class="pull-right share">
+							<div>
+	<ul class="share-icons">
+		<!-- twitter -->
+		<li>
+			<a aria-label="Share on Twitter" href="https://twitter.com/share?text=Get%20HTTP%20POST%20Body%20in%20Express.js&amp;url=https://stackabuse.com/get-http-post-body-in-express-js/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"><i class="fa fa-twitter" style="color:#55acee;"></i></a>
+		</li>
+		<!-- facebook -->
+		<li>
+			<a aria-label="Share on Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://stackabuse.com/get-http-post-body-in-express-js/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"><i class="fa fa-facebook" style="color:#3b5998;"></i></a>
+		</li>
+		<!-- linkedin -->
+		<li>
+			<a aria-label="Share on Linkedin" href="https://www.linkedin.com/shareArticle?mini=true%26url=https://stackabuse.com/get-http-post-body-in-express-js/%26source=https://stackabuse.com" onclick="window.open(this.href, 'linkedin-share', 'width=490,height=530');return false;"><i class="fa fa-linkedin" style="color:#0077b5;"></i></a>
+		</li>
+	</ul>
+</div>
+						</div>
+					</footer>
+                    <!-- start about the author -->
+<div class="about-author clearfix">
+		<a href="/author/scott/"><img src="https://stackabuse.com/content/images/2016/09/new-profile.jpg" alt="Author image" class="avatar pull-left"></a>
+	<div class="details">
+		<div class="author">
+			About <a href="/author/scott/">Scott Robinson</a>
+		</div>
+		<div class="meta-info" style="font-style: normal;">
+			<span>
+                <i class="fa fa-twitter" style="color:#55acee;"></i>
+                <a rel="noopener nofollow" href="https://twitter.com/ScottWRobinson" target="_BLANK">Twitter</a>
+            </span>
+		</div>
+	</div>
+</div>
+<!-- end about the author -->
+				</article>
+                <!-- start newsletter section -->
+<div class="section">
+    <div class="newsletter text-center">
+        <h4 class="title">Subscribe to our Newsletter</h4>
+        <div class="content">
+            <form action="#" method="post" class="form-inline validate" novalidate>
+                <div class="row">
+                    <div class="col-md-9 col-md-offset-1 col-xs-12">
+                        <p>Get occassional tutorials, guides, and jobs in your inbox. No spam ever. Unsubscribe at any time.</p>
+                    </div>
+                    <div class="col-md-2 col-xs-12"></div>
+                </div>
+                <div class="row" style="margin-left: 10px;margin-right: 10px;">
+                    <div class="col-md-7 col-md-offset-1 col-xs-12" style="margin-bottom: 5px;">
+                        <label class="control-label sr-only" for="section-newsletter">Newsletter Signup</label>
+                        <input id="section-newsletter" type="email" value="" name="email" class="form-control input-lg required email" placeholder="Enter your email..." style="width:100%;">
+                    </div>
+                    <div class="col-md-3 col-xs-12" style="margin-top: 5px;">
+                        <button type="submit" name="subscribe" class="btn btn-default btn-lg btn-block btn-subscribe"
+                            ga-on="click"
+                            ga-event-category="Newsletter"
+                            ga-event-action="Signup"
+                            ga-event-label="General-Newsletter-Signup"
+                        >
+                            <i class="fa fa-spinner fa-pulse fa-fw" style="display:none;"></i>
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="message"></div>
+        </div>
+    </div>
+</div>
+<!-- end newsletter section -->
+				<div class="comment-wrap">
+					<!-- start disqus comment -->
+<div class="disqus-container">
+	<div id="disqus_thread"></div>
+	    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<!-- end disqus comment -->
+				</div>
+				<!-- start prev next wrap -->
+<div class="prev-next-wrap clearfix">
+		<a class="btn btn-default pull-left" href="/monitoring-with-spring-boot-actuator/" title="Monitoring with Spring Boot Actuator"><i class="fa fa-angle-left fa-fw"></i> Previous Post</a>
+		&nbsp;
+        <a class="btn btn-default pull-right" href="/scheduling-spring-boot-tasks/" title="Scheduling Spring Boot Tasks">Next Post <i class="fa fa-angle-right fa-fw"></i></a>
+</div>				<!-- end post -->
+			</div>
+			<!-- end main post area -->
+			<!-- start sidebar -->
+<div class="col-md-4 sidebar">
+    <!-- start widget -->
+<div class="widget">
+	<h4 class="title">
+        Ad
+    </h4>
+    <div class="content ad" style="min-height: 250px;">
+        <!-- 300x250/300x600 -->
+<div id="waldo-tag-3874"></div>    </div>
+</div>
+<!-- end widget -->
+    <!-- start widget -->
+<div class="widget">
+    <h4 class="title">Follow Us</h4>
+    <div class="content social">
+        <div class="row">
+            <div class="col-xs-4">
+                <a rel="noopener nofollow" target="_blank" href="https://twitter.com/StackAbuse" style="color: #38A1F3;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-twitter fa-2x"></i>
+                    <i class="hidden-xs fa fa-twitter fa-lg"></i>
+                    <span class="hidden-xs">Twitter</span>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a rel="noopener nofollow" target="_blank" href="https://www.facebook.com/stackabuse" style="color: #3b5998;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-facebook fa-2x"></i>
+                    <i class="hidden-xs fa fa-facebook fa-lg"></i>
+                    <span class="hidden-xs">Facebook</span>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a target="_blank" href="https://stackabuse.com/rss/" style="color: #f7a000;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-rss fa-2x"></i>
+                    <i class="hidden-xs fa fa-rss fa-lg"></i>
+                    <span class="hidden-xs">RSS</span>
+                </a>
+            </div>
+        </div>
+        <!-- <ul class="social">
+            <li><a href="https://twitter.com/StackAbuse"><i class="fa fa-twitter fa-lg"></i></a></li>
+            <li><a href="https://www.facebook.com/stackabuse"><i class="fa fa-facebook fa-lg"></i></a></li>
+            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="#"><i class="fa fa-skype"></i></a></li>
+            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+            <li><a href="#"><i class="fa fa-vimeo-square"></i></a></li>
+            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a href="#"><i class="fa fa-flickr"></i></a></li>
+            <li><a href="#"><i class="fa fa-tumblr"></i></a></li>
+            <li><a href="https://github.com/scottwrobinson"><i class="fa fa-github"></i></a></li>
+            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fa fa-stack-overflow"></i></a></li>
+            <li><a href="#"><i class="fa fa-stack-exchange"></i></a></li>
+            <li><a href="#"><i class="fa fa-xing"></i></a></li>
+            <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+            <li><a href="https://stackabuse.com/rss/"><i class="fa fa-rss fa-lg"></i></a></li>
+        </ul> -->
+    </div>
+</div>
+<!-- end widget -->
+    <!-- start widget -->
+<div class="widget">
+    <div id="dvp-book">
+        <a rel="noopener nofollow" target="_blank"
+           class="ebook-link"
+           href="https://gum.co/data-visualization-in-python"
+           style="text-decoration: none;"
+        >
+            <h4 class="title">Data Visualization in Python</h4>
+        </a>
+        <div class="content product">
+            <a class="ebook-link" href="https://gum.co/data-visualization-in-python">
+                <img class="img-responsive"
+                    src="https://stackabuse.s3.amazonaws.com/media/ebooks/data-visualization-in-python/data-viz-python-book-transparent.png"
+                />
+            </a>
+            <p>
+                <strong>Understand your data better with visualizations!</strong>
+                With over 275+ pages, you'll learn the ins and outs of visualizing data in Python with popular libraries like Matplotlib, Seaborn, Bokeh, and more.
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- <a rel="noopener nofollow" target="_blank"
+                       class="btn btn-default dcp-link"
+                       href="https://stackabu.se/daily-coding-problem"
+                    >
+                        <i class="fa fa-code"></i>
+                        &nbsp;
+                        Pre-order
+                    </a> -->
+                    <script src="https://gumroad.com/js/gumroad.js"></script>
+                    <span style="display:inline;">
+                        <a class="gumroad-button ebook-link" href="https://gum.co/data-visualization-in-python">Learn more</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="awsn-book" style="display: none;">
+        <a rel="noopener nofollow" target="_blank"
+           class="ebook-link"
+           href="https://gum.co/getting-started-with-aws-in-node-js"
+           style="text-decoration: none;"
+        >
+            <h4 class="title">Getting Started with AWS in Node</h4>
+        </a>
+        <div class="content product">
+            <a class="ebook-link" href="https://gum.co/getting-started-with-aws-in-node-js">
+                <img class="img-responsive"
+                    src="https://stackabuse.s3.amazonaws.com/media/ebooks/aws-in-node/aws-in-node-book-transparent.png"
+                />
+            </a>
+            <p>
+                <strong>Just released!</strong>
+                Build the foundation you'll need to provision, deploy, and run Node.js applications in the AWS cloud. Learn Lambda, EC2, S3, SQS, and more!
+            </p>
+            <div class="row">
+                <div class="col-md-8">
+                    <script src="https://gumroad.com/js/gumroad.js"></script>
+                    <a class="gumroad-button ebook-link" href="https://gum.co/getting-started-with-aws-in-node-js">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- NOTE: JS to handle switching of these divs is now in main.js -->
+</div>
+<!-- end widget -->
+    <!-- start newsletter widget -->
+<div class="widget">
+    <h4 class="title">Newsletter</h4>
+    <div class="content newsletter">
+        <p style="font-size: 16px;">Subscribe to our newsletter! Get occassional tutorials, guides, and reviews in your inbox.</p>
+        <form action="#" method="post" class="validate" novalidate>
+            <div class="input-group">
+                <label class="control-label sr-only" for="widget-newsletter">Newsletter Signup</label>
+                <input id="widget-newsletter" type="email" value="" name="email" class="required email input-lg" placeholder="Enter your email...">
+            </div>
+            <div class="input-group">
+                <button type="submit" name="subscribe" class="btn btn-lg btn-default"
+                    ga-on="click"
+                    ga-event-category="Newsletter"
+                    ga-event-action="Signup"
+                    ga-event-label="General-Newsletter-Signup"
+                >
+                    <i class="fa fa-spinner fa-pulse fa-fw" style="display:none;"></i>
+                    Subscribe
+                </button>
+            </div>
+            <span style="color: #7f7f7f;">No spam ever. Unsubscribe at any time.</span>
+        </form>
+        <div class="message"></div>
+    </div>
+</div>
+<!-- end tag cloud widget -->
+    <!-- start widget -->
+<div class="widget">
+    <h4 class="title">
+        Ad
+    </h4>
+    <div class="content ad" style="min-height: 250px;">
+        <!-- 300x250/300x600 -->
+<div id="waldo-tag-7184"></div>
+    </div>
+</div>
+<!-- end widget -->
+    <!-- start widget -->
+<div class="widget">
+    <h4 class="title">Want a remote job?</h4>
+    <div class="content jobs hr">
+        <ul style="margin-bottom: 0px;">
+        </ul>
+        <div class="row">
+            <div class="col-md-4">
+                <strong>
+                    <a rel="noopener nofollow" target="_blank"
+                       class="btn btn-default"
+                       href="https://hireremote.io"
+                       style="margin-top: 10px;"
+                       ga-on="click"
+                       ga-event-category="Jobs"
+                       ga-event-action="Click"
+                       ga-event-label="HR-More-Link"
+                    >
+                        <i class="fa fa-arrow-circle-right"></i>&nbsp; More jobs
+                    </a>
+                </strong>
+            </div>
+            <div class="col-md-8 text-right" style="margin-top: 18px;">
+                Jobs via
+                <a rel="noopener nofollow" target="_blank" href="https://hireremote.io"
+                   class="hr-link"
+                   style="color: #f16334;"
+                >
+                    HireRemote.io
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end widget -->
+    <!-- start widget -->
+<div class="widget">
+    <a rel="noopener nofollow" target="_blank"
+       class="dcp-link"
+       href="https://stackabu.se/daily-coding-problem"
+       style="text-decoration: none;"
+    >
+        <h4 class="title">Prepping for an interview?</h4>
+    </a>
+    <div class="content product">
+        <style type="text/css">
+            #product-features li {
+                margin: 5px 0;
+            }
+        </style>
+        <div id="product-features" style="font-size: 16px;line-height: 1.7em;">
+            <ul style="list-style: initial;">
+                <li>
+                    Improve your skills by solving one coding problem every day
+                </li>
+                <li>
+                    Get the solutions the next morning via email
+                </li>
+                <li>
+                    Practice on <strong>actual problems</strong> asked by top companies, like:
+                    <div style="margin: 15px 0px;">
+                        <img src="/assets/images/logo-google.svg?v=de59faf4d4" style="height: 16px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-facebook.svg?v=de59faf4d4" style="height: 13px;margin-bottom: 3px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-amazon.svg?v=de59faf4d4" style="height: 19px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-microsoft.svg?v=de59faf4d4" style="height: 18px;">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <a rel="noopener nofollow" target="_blank"
+                   class="btn btn-default dcp-link"
+                   href="https://stackabu.se/daily-coding-problem"
+                >
+                    <i class="fa fa-code"></i>
+                    &nbsp;
+                    Daily Coding Problem
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end widget -->
+    <div class="widget-sticky">
+        <!-- start widget -->
+<div class="widget">
+    <h4 class="title">
+        Ad
+    </h4>
+    <div class="content ad" style="min-height: 250px;">
+        <!-- 300x250/300x600 -->
+<div id="waldo-tag-7611"></div>
+    </div>
+</div>
+<!-- end widget -->
+    </div>
+</div>
+<!-- end sidebar -->
+		</div>
+	</div>
+</section>
+<!-- end site's main content area -->
+
+
+    <!-- start main-footer -->
+	<footer class="main-footer">
+		<div class="container">
+			<div class="row">
+				<!-- start first footer widget area -->
+				<div class="col-sm-4">
+					<!-- start widget -->
+<div class="widget">
+    <h4 class="title">Recent Posts</h4>
+    <div class="content recent-post">
+        <div class="recent-single-post">
+            <a href="/rotate-axis-labels-in-matplotlib/" class="post-title">Rotate Axis Labels in Matplotlib</a>
+            <!--<div class="date">November 24, 2020</div>-->
+        </div>
+        <div class="recent-single-post">
+            <a href="/java-how-to-get-keys-and-values-from-a-map/" class="post-title">Java: How to Get Keys and Values from a Map</a>
+            <!--<div class="date">November 24, 2020</div>-->
+        </div>
+        <div class="recent-single-post">
+            <a href="/how-to-change-plot-background-in-matplotlib/" class="post-title">How to Change Plot Background in Matplotlib</a>
+            <!--<div class="date">November 23, 2020</div>-->
+        </div>
+    </div>
+</div>
+<!-- end widget -->				</div>
+				<!-- end first footer widget area -->
+				<!-- start second footer widget area -->
+				<div class="col-sm-4">
+					<!-- start tag cloud widget -->
+<div class="widget">
+    <h4 class="title">Tags</h4>
+    <div class="content tag-cloud">
+        <a href="/tag/ai/">ai</a><a href="/tag/algorithms/">algorithms</a><a href="/tag/amqp/">amqp</a><a href="/tag/angular/">angular</a><a href="/tag/announcements/">announcements</a><a href="/tag/apache/">apache</a><a href="/tag/apache-commons/">apache commons</a><a href="/tag/api/">api</a><a href="/tag/arduino/">arduino</a><a href="/tag/artificial-intelligence/">artificial intelligence</a>
+    </div>
+</div>
+<!-- end tag cloud widget -->
+				</div>
+				<!-- end second footer widget area -->
+				<!-- start third footer widget area -->
+				<div class="col-sm-4">
+					<!-- start widget -->
+<div class="widget">
+    <h4 class="title">Follow Us</h4>
+    <div class="content social">
+        <div class="row">
+            <div class="col-xs-4">
+                <a rel="noopener nofollow" target="_blank" href="https://twitter.com/StackAbuse" style="color: #38A1F3;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-twitter fa-2x"></i>
+                    <i class="hidden-xs fa fa-twitter fa-lg"></i>
+                    <span class="hidden-xs">Twitter</span>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a rel="noopener nofollow" target="_blank" href="https://www.facebook.com/stackabuse" style="color: #3b5998;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-facebook fa-2x"></i>
+                    <i class="hidden-xs fa fa-facebook fa-lg"></i>
+                    <span class="hidden-xs">Facebook</span>
+                </a>
+            </div>
+            <div class="col-xs-4">
+                <a target="_blank" href="https://stackabuse.com/rss/" style="color: #f7a000;">
+                    <i class="hidden-lg hidden-md hidden-sm fa fa-rss fa-2x"></i>
+                    <i class="hidden-xs fa fa-rss fa-lg"></i>
+                    <span class="hidden-xs">RSS</span>
+                </a>
+            </div>
+        </div>
+        <!-- <ul class="social">
+            <li><a href="https://twitter.com/StackAbuse"><i class="fa fa-twitter fa-lg"></i></a></li>
+            <li><a href="https://www.facebook.com/stackabuse"><i class="fa fa-facebook fa-lg"></i></a></li>
+            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="#"><i class="fa fa-skype"></i></a></li>
+            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+            <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+            <li><a href="#"><i class="fa fa-vimeo-square"></i></a></li>
+            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+            <li><a href="#"><i class="fa fa-flickr"></i></a></li>
+            <li><a href="#"><i class="fa fa-tumblr"></i></a></li>
+            <li><a href="https://github.com/scottwrobinson"><i class="fa fa-github"></i></a></li>
+            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fa fa-stack-overflow"></i></a></li>
+            <li><a href="#"><i class="fa fa-stack-exchange"></i></a></li>
+            <li><a href="#"><i class="fa fa-xing"></i></a></li>
+            <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+            <li><a href="https://stackabuse.com/rss/"><i class="fa fa-rss fa-lg"></i></a></li>
+        </ul> -->
+    </div>
+</div>
+<!-- end widget -->
+				</div>
+				<!-- end third footer widget area -->
+			</div>
+		</div>
+	</footer>
+	<!-- end main-footer -->
+	<!-- start copyright section -->
+<div class="copyright">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				Copyright &copy; 2020, <a href="https://stackabuse.com">Stack Abuse</a>.  All Rights Reserved.
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end copyright section -->	<div class="footer-links">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a href="/disclosure">Disclosure</a>
+					•
+					<a href="/privacy-policy">Privacy Policy</a>
+					•
+					<a href="/terms-of-service">Terms of Service</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a aria-label="Back to Top" href="#" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+	<!--
+<script src="//my.hellobar.com/4dd9990be00532b0fc7961824b7d7a0930e9e2b7.js" type="text/javascript" charset="utf-8" async="async"></script>
+-->
+	<!-- scripts -->
+    <script id="dsq-count-scr" src="//stackabuse.disqus.com/count.js" async></script>
+    <script>
+      var disqus_config = function() {
+        this.page.url = window.location.href;
+        this.page.identifier = window.location.href;
+        this.callbacks.onReady = [function() {
+          if (window.onDisqusReady) {
+            window.onDisqusReady();
+          }
+        }];
+      };
+      var disqus_script_url = 'https://stackabuse.disqus.com/embed.js';
+    </script>
+
+    <!-- HTML templates for use in JS code -->
+    <script id="newsletter-template" type="text/x-custom-template">
+        <!-- start newsletter section -->
+<div class="section">
+    <div class="newsletter text-center">
+        <h4 class="title">Subscribe to our Newsletter</h4>
+        <div class="content">
+            <form action="#" method="post" class="form-inline validate" novalidate>
+                <div class="row">
+                    <div class="col-md-9 col-md-offset-1 col-xs-12">
+                        <p>Get occassional tutorials, guides, and jobs in your inbox. No spam ever. Unsubscribe at any time.</p>
+                    </div>
+                    <div class="col-md-2 col-xs-12"></div>
+                </div>
+                <div class="row" style="margin-left: 10px;margin-right: 10px;">
+                    <div class="col-md-7 col-md-offset-1 col-xs-12" style="margin-bottom: 5px;">
+                        <label class="control-label sr-only" for="section-newsletter">Newsletter Signup</label>
+                        <input id="section-newsletter" type="email" value="" name="email" class="form-control input-lg required email" placeholder="Enter your email..." style="width:100%;">
+                    </div>
+                    <div class="col-md-3 col-xs-12" style="margin-top: 5px;">
+                        <button type="submit" name="subscribe" class="btn btn-default btn-lg btn-block btn-subscribe"
+                            ga-on="click"
+                            ga-event-category="Newsletter"
+                            ga-event-action="Signup"
+                            ga-event-label="General-Newsletter-Signup"
+                        >
+                            <i class="fa fa-spinner fa-pulse fa-fw" style="display:none;"></i>
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="message"></div>
+        </div>
+    </div>
+</div>
+<!-- end newsletter section -->
+    </script>
+    <script id="email-capture-git-template" type="text/x-custom-template">
+        <!-- start newsletter section -->
+<div class="section">
+    <div class="newsletter text-center">
+        <div>
+            <img src="/assets/images/logo-git.png?v=de59faf4d4" style="height: 64px;">
+            <h4 class="title" style="color:#303030;display:inline;">Finally Learn Git</h4>
+        </div>
+        <div class="content">
+            <form action="#" method="post" class="form-inline validate" novalidate>
+                <div class="row">
+                    <div class="col-md-9 col-md-offset-1 col-xs-12">
+                        <p>We're writing a book about Git! Don't just copy-paste <code>git</code> commands - <em>actually understand</em> what you're doing. Sign up to get notified about the release and a <strong>30% discount</strong>!</p>
+                    </div>
+                    <div class="col-md-2 col-xs-12"></div>
+                </div>
+                <div class="row" style="margin-left: 10px;margin-right: 10px;">
+                    <div class="col-md-7 col-md-offset-1 col-xs-12" style="margin-bottom: 5px;">
+                        <label class="control-label sr-only" for="section-newsletter">Git Book Signup</label>
+                        <input id="section-newsletter" type="email" value="" name="email" class="form-control input-lg required email" placeholder="Enter your email..." style="width:100%;">
+                    </div>
+                    <div class="col-md-3 col-xs-12" style="margin-top: 5px;">
+                        <button type="submit" name="subscribe" class="btn btn-default btn-lg btn-block btn-subscribe"
+                            ga-on="click"
+                            ga-event-category="Email"
+                            ga-event-action="Signup"
+                            ga-event-label="Git-Book-Signup"
+                        >
+                            <i class="fa fa-spinner fa-pulse fa-fw" style="display:none;"></i>
+                            Get notified
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="message"></div>
+        </div>
+    </div>
+</div>
+<!-- end newsletter section -->
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/dockerfile.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/yaml.min.js"></script>
+    <script src="/assets/js/bootstrap-custom.min.js?v=de59faf4d4" async></script>
+	<script src="/assets/js/main.min.js?v=de59faf4d4" async></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript" async></script>
+	<!-- Add your analytic code below -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  if (window.location.hostname !== 'localhost') {
+    ga('create', 'UA-43140675-1', 'auto');
+    ga('require', 'eventTracker');
+
+    ga('set', 'dimension1', 'Scott Robinson');
+    
+    ga('send', 'pageview');
+  }
+
+</script>
+<script async=true src="//cdnjs.cloudflare.com/ajax/libs/autotrack/1.0.1/autotrack.js"></script>
+</body>
+</html>

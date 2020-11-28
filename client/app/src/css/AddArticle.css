@@ -1,0 +1,22 @@
+.addArticle {
+  margin-bottom: 10px;
+}
+.input {
+  width: 50%;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  background-color: black;
+  color: #6c6c6c;
+  padding-left: 20px;
+  font-size: 17px;
+}
+
+.add {
+  padding-left: 8px;
+  margin-left: 10px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(30, 171, 249);
+}

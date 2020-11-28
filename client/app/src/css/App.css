@@ -1,0 +1,10 @@
+body {
+  padding: 10px;
+  background-color: #272727;
+}
+
+.content {
+  display: flex;
+}
+.mde-header {
+}
