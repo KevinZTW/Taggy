@@ -4,7 +4,7 @@
   margin-top: 5px;
 }
 .input {
-  width: 80%;
+  width: 70%;
   border: none;
   border-radius: 5px;
   height: 30px;
@@ -22,4 +22,5 @@
   border-radius: 5px;
   border: none;
   background-color: rgb(30, 171, 249);
+  cursor: pointer;
 }

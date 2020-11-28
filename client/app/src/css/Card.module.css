@@ -1,5 +1,6 @@
 .container {
   position: relative;
+  max-width: 500px;
 }
 .card {
   margin-right: 15px;
@@ -9,6 +10,8 @@
   flex-direction: row;
   border-radius: 5px;
   align-items: flex-start;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 .color {
@@ -19,7 +22,6 @@
 .title {
   font-weight: bold;
   color: #e0e0e0;
-  word-wrap: break-word;
 }
 
 .content {
@@ -28,6 +30,7 @@
   padding-bottom: 10px;
   color: #bebebe;
   word-wrap: break-word;
+  overflow: hidden;
 }
 .wordWrapper {
   max-width: 500px;
@@ -40,7 +43,9 @@
 .delete {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -10px;
+  font-weight: bold;
+  font-size: 15px;
   color: #bebebe;
   background: none !important;
   width: 20px;

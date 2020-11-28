@@ -18,19 +18,13 @@ body {
   position: fixed;
   background: #272727;
   top: 0;
+  z-index: 3;
 }
 .addArticle {
   width: 70%;
   margin-right: auto;
 }
 
-.folderTab {
-  min-width: 170px;
-  background: #3c3c3c;
-  height: 1200px;
-  margin-right: 30px;
-  border-radius: 6px;
-}
 .cardWrapper {
   flex-wrap: wrap;
 }
@@ -38,4 +32,19 @@ body {
 a:link,
 a:visited {
   text-decoration: none;
+}
+
+/* for MDE  */
+.mde-preview {
+  color: white !important;
+  text-decoration: none;
+}
+.mde-preview code {
+  color: #ffd306;
+}
+.mde-preview {
+  background: #3c3c3c;
+}
+.mde-preview-content pre {
+  background: #003d79 !important;
 }

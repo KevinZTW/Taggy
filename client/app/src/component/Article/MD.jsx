@@ -3,7 +3,7 @@ import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { db } from "../../firebase";
-
+import "../../css/App.css";
 const converter = new Showdown.Converter({
   tables: true,
   simplifiedAutoLink: true,

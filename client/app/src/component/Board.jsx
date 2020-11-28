@@ -20,6 +20,7 @@ export default function Board(props) {
   //====================================================
 
   useEffect(() => {
+    let mounted = true;
     console.log("user in board in use effect is ", props.user);
     function getArticles(uid) {
       console.log("on get article");
@@ -36,26 +37,31 @@ export default function Board(props) {
               id: doc.data().id,
             });
           });
-          setCardList(list);
+          if (mounted === true) {
+            setCardList(list);
+          }
         });
     }
     function checkArticleUpdate(uid) {
       console.log("on snap shot");
-      db.collection("Articles").onSnapshot(function (querySnapshot) {
-        let list = [];
-        querySnapshot.forEach(function (doc) {
-          list.push({
-            title: doc.data().title,
-            content: doc.data().markDown.slice(0, 100),
-            id: doc.data().id,
+      db.collection("Articles")
+        .where("uid", "==", uid)
+        .onSnapshot(function (querySnapshot) {
+          let list = [];
+          querySnapshot.forEach(function (doc) {
+            list.push({
+              title: doc.data().title,
+              content: doc.data().markDown.slice(0, 100),
+              id: doc.data().id,
+            });
           });
+          setCardList(list);
         });
-        setCardList(list);
-      });
     }
     if (props.user.uid) {
       checkArticleUpdate(props.user.uid);
     }
+    return () => (mounted = false);
   }, [props.user]);
   return (
     <div>
