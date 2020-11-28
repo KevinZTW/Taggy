@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 
 import { db } from "../firebase.js";
 import CardWrapper from "./CardWrapper.jsx";
-export default function Main() {
+import { CheckFirebaseUserStatus } from "../firebase.js";
+// import { useHistory } from "react-router-dom";
+export default function Board() {
   let [cardlist, setCardList] = useState([]);
   let list = [];
-
+  // let history = useHistory();
+  console.log("board render");
+  CheckFirebaseUserStatus("/signup");
   useEffect(() => {
     function getArticles() {
       db.collection("Articles")
         .get()
         .then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            console.log(doc.data());
             // doc.data() is never undefined for query doc snapshots
             list.push({
               title: doc.data().title,

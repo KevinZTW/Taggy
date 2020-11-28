@@ -2,25 +2,28 @@ import "../css/App.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Article from "./Article/Aritcle";
-import AddArticle from "./AddArticle";
-
-import Main from "./Main";
+import Header from "./Header/Header";
+import Signup from "./Member/Signup";
+import Signin from "./Member/Signin";
+import Board from "./Board";
 import FolderTab from "./FolderTab";
+
 function App() {
   return (
     <Router>
       <div className="App">
         <Switch>
           <Route path="/board">
-            <header className="App-header">
-              <AddArticle />
-            </header>
+            {" "}
+            <Header />
             <div className="content">
               <FolderTab />
-              <Main />
+              <Board />
             </div>
           </Route>
           <Route path="/article" component={Article}></Route>
+          <Route path="/signup" component={Signup}></Route>
+          <Route path="/signin" component={Signin}></Route>
         </Switch>
       </div>
     </Router>

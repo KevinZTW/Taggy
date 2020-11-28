@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 import "firebase/analytics";
-
+import { useHistory } from "react-router-dom";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
@@ -16,22 +16,38 @@ var app = firebase.initializeApp({
   appId: "1:786102856750:web:6bf12efd1fefb24aca83bf",
   measurementId: "G-RBNFGWQ2WE",
 });
-
+export const auth = app.auth();
+export default app;
 export var db = firebase.firestore();
-export const addtofirestore = function () {
-  db.collection("city")
-    .add({
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815,
-    })
-    .then(function (docRef) {
-      console.log("Document written with ID: ", docRef.id);
-    })
+export const deleteArticle = function (id) {
+  console.log(id);
+  db.collection("Articles")
+    .doc(id)
+    .delete()
+    .then(console.log("Document successfully deleted!"))
     .catch(function (error) {
-      console.error("Error adding document: ", error);
+      console.error("Error delete document: ", error);
     });
 };
 
-export const auth = app.auth();
-export default app;
+//============================== Auth ============================================================
+export const uiConfig = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: "popup",
+  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+  signInSuccessUrl: "/board",
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+};
+export function CheckFirebaseUserStatus(direct) {
+  let history = useHistory();
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log(user.email);
+      console.log(user.uid);
+    } else {
+      console.log("no user, redirect to sign up");
+      history.push(direct);
+    }
+  });
+}

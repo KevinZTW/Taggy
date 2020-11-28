@@ -1,16 +1,27 @@
 import React from "react";
-import MarkdownView from "react-showdown";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "../css/Card.css";
-
+import { Link } from "react-router-dom";
+import styles from "../css/Card.module.css";
+import { deleteArticle } from "../firebase.js";
 export default function Card(props) {
-  console.log(props.id);
   return (
-    <div className="card">
+    <div className={styles.container}>
+      <button
+        className={styles.delete}
+        onClick={() => {
+          deleteArticle(props.id);
+        }}
+      >
+        x
+      </button>
       <Link to={`/article?id=${props.id}`}>
-        <div className="color"></div>
-        <div className="title">{props.title}</div>
-        <div className="content">{props.content}</div>
+        <div className={styles.card}>
+          <div className={styles.color}></div>
+          <div className={styles.wordWrapper}>
+            <div className={styles.title}>{props.title}</div>
+
+            <div className={styles.content}>{props.content}</div>
+          </div>
+        </div>
       </Link>
     </div>
   );

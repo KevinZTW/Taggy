@@ -16,14 +16,11 @@ function updateArticles(id, content) {
   });
 }
 export default function MD(props) {
-  console.log(props);
   const [value, setValue] = useState(props.content);
   useEffect(() => {
     setValue(props.content);
   }, [props.content]);
   const [selectedTab, setSelectedTab] = useState("preview");
-  console.log("MD is here");
-  console.log(value);
   return (
     <div className="container">
       <ReactMde

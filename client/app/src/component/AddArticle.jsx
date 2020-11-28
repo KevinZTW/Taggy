@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { localUrl, ec2Url } from "../config.js";
 import "../css/AddArticle.css";
 
 const { addtofirestore } = require("../firebase.js");
@@ -42,7 +43,7 @@ export default function AddArticle() {
         type="submit"
         className="add"
         onClick={(e) => {
-          postData("http://localhost:2000/route/article/import", {
+          postData(localUrl, {
             url: reqUrl,
           });
         }}

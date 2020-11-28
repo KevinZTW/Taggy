@@ -1,5 +1,11 @@
 import express from "express";
 var app = express();
+import * as path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const port = process.env.PORT || 5000;
 import bodyParser from "body-parser";
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -9,6 +15,12 @@ app.use(cors());
 
 app.use("/route", [article_router]);
 
-app.listen(2000, () => {
-  console.log("port run on 2000");
+// Serve static files
+app.use(express.static(path.join(__dirname, "client", "app", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/app/build", "index.html"));
+});
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
