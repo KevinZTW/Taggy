@@ -1,5 +1,5 @@
 import express from "express";
-var app = express();
+export const app = express();
 import * as path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";

@@ -13,6 +13,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase": "^8.1.1",
+    "greenlock-express": "^4.0.3",
     "jsdom": "^16.4.0",
     "node-readability": "^3.0.0",
     "nodemon": "^2.0.6",
