@@ -12,7 +12,7 @@
 .tagWrapper {
   display: flex;
   padding-bottom: 10px;
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .tag {
   background-color: #5b5b5b;

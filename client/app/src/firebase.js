@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import admin from "firebase-admin";
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 import "firebase/analytics";
 import { useHistory } from "react-router-dom";
@@ -19,6 +20,7 @@ var app = firebase.initializeApp({
 export const auth = app.auth();
 export default app;
 export var db = firebase.firestore();
+
 export const deleteArticle = function (id) {
   console.log(id);
   db.collection("Articles")

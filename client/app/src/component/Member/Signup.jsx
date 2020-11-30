@@ -13,8 +13,7 @@ export default function Signup() {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        // Signed in
-        // ...
+        history.push("/board");
       })
       .catch((error) => {
         var errorCode = error.code;

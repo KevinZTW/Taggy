@@ -6,14 +6,59 @@ import { db, CheckFirebaseUserStatus } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import styles from "../../css/Article.module.css";
 import { app } from "../../lib.js";
+import CreatableSelect from "react-select/creatable";
+import { useSelector } from "react-redux";
+
 export default function Article() {
+  let [tags, setTags] = useState({});
   let [article, setArticle] = useState({});
-  let [tagInput, setTagInput] = useState("");
+
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);
   let id = params.get("id");
+  let user = useSelector((state) => {
+    return state.memberReducer.user;
+  });
+  console.log(user);
+  useEffect(() => {
+    console.log("hihi");
+    if (user) {
+      app.initArticleTags(id, user.uid).then((articleTagSelection) => {
+        setTags(articleTagSelection);
+        console.log(tags);
+      });
+    }
+  }, [user]);
+  function handleChange(newValue, actionMeta) {
+    switch (actionMeta.action) {
+      case "select-option":
+        console.log("select option!");
+        app.inputTag(id, user.uid, actionMeta.option.label);
 
+      default:
+        console.group("Value Changed");
+        console.log("newvalueis ", newValue);
+        setTags({ ...tags, values: newValue });
+
+        console.dir(`action: ${actionMeta.action}`);
+        console.dir(actionMeta.removedValue);
+        console.groupEnd();
+    }
+  }
+
+  function handleCreate(inputValue) {
+    console.group("Option created");
+
+    console.log(tags);
+    app.inputTag(id, user.uid, inputValue);
+    setTags({
+      options: [...tags.options, { label: inputValue, value: inputValue }],
+      values: [...tags.values, { label: inputValue, value: inputValue }],
+    });
+    console.log(tags);
+    console.groupEnd();
+  }
   useEffect(() => {
     function getArticles() {
       db.collection("Articles")
@@ -27,11 +72,7 @@ export default function Article() {
     }
     getArticles();
   }, []);
-  console.log("hihi");
-  app.inputTag();
-  function findTag(name) {}
 
-  function addTag(tagName, articleId, uid) {}
   return (
     <div>
       <div className={styles.head}>
@@ -41,23 +82,14 @@ export default function Article() {
       </div>
       <div className={styles.title}>{article.title}</div>
       <div className={styles.tagWrapper}>
-        <div className={styles.tag}>important</div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log(tagInput);
-          }}
-        >
-          <input
-            type="text"
-            value={tagInput}
-            onChange={(e) => {
-              setTagInput(e.currentTarget.value);
-            }}
-            className={styles.addTag}
-            placeholder="Add Tag..."
-          />
-        </form>
+        <CreatableSelect
+          isMulti
+          onChange={handleChange}
+          onCreateOption={handleCreate}
+          options={tags.options}
+          defaultValue={tags.values}
+          value={tags.values}
+        />
       </div>
       <MD content={article.markDown} id={id} />
     </div>
