@@ -8,3 +8,29 @@
 .head {
   padding-top: 10px;
 }
+
+.tagWrapper {
+  display: flex;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+.tag {
+  background-color: #5b5b5b;
+  color: #eac100;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.addTag {
+  background-color: #5b5b5b;
+  color: #eac100;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-right: 10px;
+  border: none;
+}
+.addTag:focus {
+  display: flex;
+}
