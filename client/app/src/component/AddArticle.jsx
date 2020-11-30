@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { localUrl, ec2Url } from "../config.js";
 import "../css/AddArticle.css";
-import { auth } from "../firebase.js";
-import { useHistory } from "react-router-dom";
+
 export default function AddArticle(props) {
-  let history = useHistory();
   const [reqUrl, setReqUrl] = useState("");
-  const [user, setUser] = useState("");
-  useEffect(() => {
-    setUser(props.user);
-  }, [props.user]);
+  const user = useSelector((state) => {
+    return state.memberReducer.user;
+  });
   function postDataToServer(
     url,
     data = {
@@ -53,10 +51,13 @@ export default function AddArticle(props) {
         type="submit"
         className="add"
         onClick={(e) => {
-          postDataToServer(localUrl, {
-            url: reqUrl,
-            uid: user.uid,
-          });
+          if (user) {
+            e.preventDefault();
+            postDataToServer(localUrl, {
+              url: reqUrl,
+              uid: user.uid,
+            });
+          }
         }}
       >
         儲存文章

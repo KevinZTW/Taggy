@@ -1,11 +1,10 @@
-const SWITCHCARDINLIST = (listId, destination, source) => {
-  console.log(listId);
+const SETMEMBER = (uid, displayName, email) => {
   return {
-    type: "SWITCHCARDINLIST",
-    listId: listId,
-    destination: destination,
-    source: source,
+    type: "SETMEMBER",
+    uid: uid,
+    displayName: displayName,
+    email: email,
   };
 };
 
-export { SWITCHCARDINLIST };
+export { SETMEMBER };

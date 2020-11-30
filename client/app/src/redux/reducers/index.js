@@ -1,5 +1,5 @@
-import article_Reducer from "./article_Reducer";
-import member_Reducer from "./member_Reducer";
+import article_Reducer from "./article_Reducer.jsx";
+import member_Reducer from "./member_Reducer.jsx";
 
 import { combineReducers } from "redux";
 

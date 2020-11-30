@@ -1,17 +1,17 @@
 //reducer
 import { nanoid } from "nanoid";
-const List = [
+const Article = [
   { id: "list-0", title: "React", cardIds: ["card-0", "card-1", "card-2"] },
   { id: "list-1", title: "Redux", cardIds: ["card-3"] },
 ];
 
-const article_Reducer = (state = List, action) => {
+const article_Reducer = (state = [], action) => {
   switch (action.type) {
     // case "DeleteTask":
     //   let remaintasks = state.tasks.filter((task) => task.id != action.id);
 
     //   return { tasks: remaintasks };
-    case "ADDLIST":
+    case "AddArticle":
       console.log(state);
 
       return [
