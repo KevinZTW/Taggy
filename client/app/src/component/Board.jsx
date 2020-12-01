@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase.js";
 import CardWrapper from "./CardWrapper.jsx";
-
+import dispatch from "react-redux";
+import { INITARTICLE } from "../redux/actions";
 export default function Board(props) {
+  const dispatch = useDispatch();
   let [cardlist, setCardList] = useState([]);
 
   const user = useSelector((state) => {
@@ -21,9 +23,11 @@ export default function Board(props) {
               title: doc.data().title,
               content: doc.data().markDown.slice(0, 100),
               id: doc.data().id,
+              tags: doc.data().tags,
             });
           });
           setCardList(list);
+          dispatch(INITARTICLE(list));
         });
     }
     if (user) {

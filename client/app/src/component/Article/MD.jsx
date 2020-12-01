@@ -20,7 +20,6 @@ function updateArticles(id, markDown) {
 }
 
 export default function MD(props) {
-  console.log("hi MD");
   const [value, setValue] = useState(props.content);
   useEffect(() => {
     setValue(props.content);

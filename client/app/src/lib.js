@@ -19,8 +19,9 @@ app.getArticleTags = function (articleId) {
               .doc(tags[i])
               .get()
               .then((doc) => {
-                console.log("here 2");
+                console.log(doc.data());
                 articleTags.push({
+                  tagId: tags[i],
                   label: doc.data().name,
                   value: doc.data().name,
                 });
@@ -36,16 +37,16 @@ app.getArticleTags = function (articleId) {
 
 app.getMemberTags = function (uid) {
   return new Promise((resolve, reject) => {
-    console.log(uid);
     db.collection("Member")
       .doc(uid)
       .get()
-      .then((doc) => {
+      .then(async (doc) => {
         if (doc.data()) {
           let tagIds = doc.data().tags;
           let memberTags = [];
           for (let i in tagIds) {
-            db.collection("Tags")
+            await db
+              .collection("Tags")
               .doc(tagIds[i])
               .get()
               .then((doc) => {
@@ -54,9 +55,9 @@ app.getMemberTags = function (uid) {
                   value: doc.data().name,
                   label: doc.data().name,
                 });
-              })
-              .then(resolve(memberTags));
+              });
           }
+          resolve(memberTags);
         } else resolve("");
       });
   });
@@ -70,7 +71,7 @@ app.initArticleTags = async function (articleId, uid) {
   await app.getMemberTags(uid).then((memberTags) => {
     articleTagSelection.options = memberTags;
   });
-
+  console.log(articleTagSelection);
   return articleTagSelection;
 };
 
@@ -144,4 +145,9 @@ app.inputTag = function (articleId, uid, tagName) {
         });
     }
   });
+};
+app.deleteTagFromArticle = function (articleId, uid, tagId) {
+  db.collection("Articles")
+    .doc(articleId)
+    .update({ tags: firebase.firestore.FieldValue.arrayRemove(tagId) });
 };

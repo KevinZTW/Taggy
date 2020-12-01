@@ -20,9 +20,8 @@ export default function Article() {
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
-  console.log(user);
   useEffect(() => {
-    console.log("hihi");
+    console.log("useeffect run");
     if (user) {
       app.initArticleTags(id, user.uid).then((articleTagSelection) => {
         setTags(articleTagSelection);
@@ -35,11 +34,15 @@ export default function Article() {
       case "select-option":
         console.log("select option!");
         app.inputTag(id, user.uid, actionMeta.option.label);
-
+        setTags({ ...tags, values: newValue });
+        break;
+      case "remove-value":
+        app.deleteTagFromArticle(id, user.uid, actionMeta.removedValue.tagId);
+        setTags({ ...tags, values: newValue });
+        break;
       default:
         console.group("Value Changed");
         console.log("newvalueis ", newValue);
-        setTags({ ...tags, values: newValue });
 
         console.dir(`action: ${actionMeta.action}`);
         console.dir(actionMeta.removedValue);

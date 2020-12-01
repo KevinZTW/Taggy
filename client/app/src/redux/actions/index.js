@@ -7,4 +7,18 @@ const SETMEMBER = (uid, displayName, email) => {
   };
 };
 
-export { SETMEMBER };
+const INITARTICLE = (articleList) => {
+  return {
+    type: "INITARTICLE",
+    articleList: articleList,
+  };
+};
+
+const SWITCHARTICLE = (tag) => {
+  return {
+    type: "SWITCHARTICLE",
+    tagSelected: tag,
+  };
+};
+
+export { INITARTICLE, SWITCHARTICLE, SETMEMBER };

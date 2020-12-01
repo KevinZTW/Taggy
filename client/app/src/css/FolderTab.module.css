@@ -4,7 +4,19 @@
   height: 1200px;
   margin-right: 30px;
   border-radius: 6px;
+  padding: 20px 2px;
 }
+
+.labelWrapper {
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+}
+.labelTitle {
+  font-weight: bold;
+  padding-left: 5px;
+}
+
 @media (max-device-width: 640px) {
   .folderTab {
     display: none;
