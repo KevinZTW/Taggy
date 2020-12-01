@@ -6,12 +6,10 @@ import dispatch from "react-redux";
 import { INITARTICLE } from "../redux/actions";
 export default function Board(props) {
   const dispatch = useDispatch();
-  let [cardlist, setCardList] = useState([]);
 
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
-
   useEffect(() => {
     function checkArticleUpdate(uid) {
       db.collection("Articles")
@@ -26,7 +24,6 @@ export default function Board(props) {
               tags: doc.data().tags,
             });
           });
-          setCardList(list);
           dispatch(INITARTICLE(list));
         });
     }
@@ -36,7 +33,7 @@ export default function Board(props) {
   }, [user]);
   return (
     <div>
-      <CardWrapper list={cardlist} />
+      <CardWrapper />
     </div>
   );
 }

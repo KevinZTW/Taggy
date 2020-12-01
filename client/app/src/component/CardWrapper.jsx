@@ -1,16 +1,13 @@
 import Card from "./Card";
 import "../css/CardWrapper.css";
 import { useSelector } from "react-redux";
-export default function CardWrapper(props) {
-  const tagSelected = useSelector((state) => {
-    return state.articleReducer.tagSelected;
-  });
+export default function CardWrapper() {
+  console.log("render once");
   const list = useSelector((state) => {
     let list = [];
     let articleList = state.articleReducer.articleList;
     if (state.articleReducer.tagSelected === "all") {
       for (let i in articleList) {
-        console.log(articleList);
         list.push(
           <Card
             title={articleList[i].title}

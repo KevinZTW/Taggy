@@ -1,0 +1,14 @@
+.signOut {
+  height: 50%;
+  color: black;
+  cursor: pointer;
+}
+.header {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  background: #272727;
+  top: 0;
+  z-index: 3;
+  align-items: center;
+}

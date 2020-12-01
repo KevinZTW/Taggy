@@ -32,14 +32,7 @@ export const deleteArticle = function (id) {
 };
 
 //============================== Auth ============================================================
-export const uiConfig = {
-  // Popup signin flow rather than redirect flow.
-  signInFlow: "popup",
-  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: "/board",
-  // We will display Google and Facebook as auth providers.
-  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-};
+
 export function CheckFirebaseUserStatus(direct, getUserData) {
   let history = useHistory();
   firebase.auth().onAuthStateChanged((user) => {
