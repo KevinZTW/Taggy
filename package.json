@@ -18,6 +18,7 @@
     "node-readability": "^3.0.0",
     "nodemon": "^2.0.6",
     "request": "^2.88.2",
+    "rss-parser": "^3.9.0",
     "turndown": "^7.0.0"
   },
   "devDependencies": {},

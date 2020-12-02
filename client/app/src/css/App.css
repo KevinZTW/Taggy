@@ -13,11 +13,6 @@ body {
   padding-top: 37px;
 }
 
-.addArticle {
-  width: 70%;
-  margin-right: auto;
-}
-
 .cardWrapper {
   flex-wrap: wrap;
 }

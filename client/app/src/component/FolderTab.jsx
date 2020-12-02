@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
-import MailIcon from "@material-ui/icons/Mail";
+import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -68,6 +68,7 @@ export default function FolderTab() {
   const classes = useStyles();
   return (
     <div className={styles.folderTab}>
+      <div className={styles.sectionTitle}>Saved</div>
       <TreeView
         className={classes.root}
         defaultExpanded={["tagAll"]}
@@ -79,7 +80,7 @@ export default function FolderTab() {
           label={
             <div className={styles.labelWrapper}>
               <FolderOpenIcon style={{ fontSize: 20 }} />
-              <div className={styles.labelTitle}>Tags</div>
+              <div className={styles.labelTitle}>All</div>
             </div>
           }
           onClick={() => {
@@ -97,12 +98,13 @@ export default function FolderTab() {
             }
           />
           {tabList}
-          <TreeItem nodeId="4" label="Webstorm">
-            <TreeItem nodeId="10" label="OSS" />
-            <TreeItem nodeId="6" label="Material-UI" />
-          </TreeItem>
         </TreeItem>
       </TreeView>
+
+      <div className={styles.sectionTitle}>RSS</div>
+      <Link to={"/findrss"}>
+        <div>FindRSS</div>
+      </Link>
     </div>
   );
 }

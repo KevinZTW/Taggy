@@ -10,7 +10,8 @@ import Board from "./Board";
 import MyRouter from "./MyRouter";
 import FolderTab from "./FolderTab";
 import Graph from "./Graph1";
-
+import RSSHeader from "./RSS/RSSHeader";
+import findRSS from "./RSS/RSSHeader";
 //React.Memo
 //state prop dispatch history
 function App() {
@@ -34,6 +35,13 @@ function App() {
             <div className="content">
               <Board />
               <Graph />
+            </div>
+          </Route>
+          <Route path="/findrss">
+            <RSSHeader />
+            <div className="content">
+              <FolderTab />
+              <Board />
             </div>
           </Route>
           <h1 className="title">Welcome to Taggy</h1>
