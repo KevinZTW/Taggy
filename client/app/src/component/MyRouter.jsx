@@ -15,7 +15,6 @@ export default function MyRouter() {
         console.log(user);
         // setUser(user);
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
-        history.push("/board");
       } else {
         history.push("/signup");
       }

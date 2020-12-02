@@ -9,6 +9,8 @@ import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
 import FolderTab from "./FolderTab";
+import Graph from "./Graph1";
+
 //React.Memo
 //state prop dispatch history
 function App() {
@@ -27,6 +29,13 @@ function App() {
             </div>
           </Route>
           <Route path="/article" component={Article}></Route>
+          <Route path="/graph">
+            <Header />
+            <div className="content">
+              <Board />
+              <Graph />
+            </div>
+          </Route>
           <h1 className="title">Welcome to Taggy</h1>
         </Switch>
       </div>
