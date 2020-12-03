@@ -8,9 +8,10 @@ import Signup from "./Member/Signup";
 import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
-import FolderTab from "./FolderTab";
+import FolderTab from "./SideTab/FolderTab";
 import Graph from "./Graph1";
 import RSSHeader from "./RSS/RSSHeader";
+import RSSBoard from "./RSS/RSSBoard";
 //React.Memo
 //state prop dispatch history
 function App() {
@@ -40,7 +41,7 @@ function App() {
             <RSSHeader />
             <div className="content">
               <FolderTab />
-              <Board />
+              <RSSBoard />
             </div>
           </Route>
           <h1 className="title">Welcome to Taggy</h1>

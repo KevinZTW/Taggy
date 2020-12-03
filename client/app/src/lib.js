@@ -3,6 +3,68 @@ import firebase from "firebase/app";
 import { db, FieldValue } from "./firebase.js";
 
 export const app = {};
+app.getMemberArticleFolders = function (uid) {
+  return new Promise((resolve, reject) => {
+    db.collection("Member")
+      .doc(uid)
+      .get()
+      .then(async (doc) => {
+        if (doc.data()) {
+          let articleFolderIds = doc.data().articleFolders;
+          let articleFolders = [];
+          console.log(articleFolderIds);
+          if (articleFolderIds !== "" && articleFolderIds) {
+            for (let i in articleFolderIds) {
+              console.log(articleFolderIds[i]);
+              await db
+                .collection("articleFolders")
+                .doc(articleFolderIds[i])
+                .get()
+                .then((doc) => {
+                  articleFolders.push({
+                    id: doc.data().id,
+                    name: doc.data().name,
+                    tags: doc.data().tags,
+                  });
+                });
+            }
+          }
+          resolve(articleFolders);
+        } else resolve("dont have this user");
+      });
+  });
+};
+app.getMemberFolderTags = function (folderId) {
+  return new Promise((resolve, reject) => {
+    db.collection("articleFolders")
+      .doc(folderId)
+      .get()
+      .then(async (doc) => {
+        if (doc.data()) {
+          let tagIds = doc.data().tags;
+          let folderTags = [];
+          console.log(tagIds);
+          if (tagIds !== "" && tagIds) {
+            for (let i in tagIds) {
+              console.log(tagIds[i]);
+              await db
+                .collection("Tags")
+                .doc(tagIds[i])
+                .get()
+                .then((doc) => {
+                  folderTags.push({
+                    id: tagIds[i],
+                    value: doc.data().name,
+                    label: doc.data().name,
+                  });
+                });
+            }
+          }
+          resolve(folderTags);
+        } else resolve("");
+      });
+  });
+};
 
 app.getArticleTags = function (articleId) {
   return new Promise((resolve, reject) => {
@@ -61,6 +123,7 @@ app.getMemberTags = function (uid) {
                 });
             }
           }
+          console.log(memberTags);
           resolve(memberTags);
         } else resolve("");
       });
@@ -84,28 +147,31 @@ app.checkTagUnderUser = function (name, uid) {
     db.collection("Member")
       .doc(uid)
       .get()
-      .then((doc) => {
+      .then(async (doc) => {
         console.log(uid);
         if (doc.data()) {
           let tags = doc.data().tags;
           console.log(tags);
           if (tags) {
             for (let i in tags) {
-              db.collection("Tags")
+              await db
+                .collection("Tags")
                 .doc(tags[i])
                 .get()
                 .then((doc) => {
                   if (doc.data().name === name) {
                     console.log(doc.data().name);
+                    console.log("resolve the id");
                     resolve(doc.data().id);
-                  } else {
-                    resolve("notExist");
                   }
                 });
             }
-          } else resolve("notExist");
+            resolve("notExist");
+          } else {
+            resolve("noanytag");
+          }
         } else {
-          resolve("noanytag");
+          resolve("nothisuser");
         }
       });
   });
@@ -163,7 +229,15 @@ app.inputTag = function (articleId, uid, tagName) {
           db.collection("Member")
             .doc(uid)
             .update({ tags: firebase.firestore.FieldValue.arrayUnion(tagId) });
+          return tagId;
         })
+        .then((tagId) => {
+          console.log("tag add to :", "un" + uid, "value is", tagId);
+          db.collection("articleFolders")
+            .doc("un" + uid)
+            .update({ tags: firebase.firestore.FieldValue.arrayUnion(tagId) });
+        })
+
         .catch(function (error) {
           console.error("Error adding document: ", error);
         });

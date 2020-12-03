@@ -21,4 +21,11 @@ const SWITCHARTICLE = (tag) => {
   };
 };
 
-export { INITARTICLE, SWITCHARTICLE, SETMEMBER };
+const GETRSSRESPONSE = (feed) => {
+  return {
+    type: "GETRSSRESPONSE",
+    feed: feed,
+  };
+};
+
+export { INITARTICLE, SWITCHARTICLE, SETMEMBER, GETRSSRESPONSE };

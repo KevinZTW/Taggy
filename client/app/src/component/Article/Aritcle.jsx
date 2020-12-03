@@ -21,11 +21,12 @@ export default function Article() {
     return state.memberReducer.user;
   });
   useEffect(() => {
-    console.log("useeffect run");
     if (user) {
+      console.log("useeffect run");
+
       app.initArticleTags(id, user.uid).then((articleTagSelection) => {
+        console.log(articleTagSelection);
         setTags(articleTagSelection);
-        console.log(tags);
       });
     }
   }, [user]);

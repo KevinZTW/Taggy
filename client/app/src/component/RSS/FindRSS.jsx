@@ -1,43 +1,30 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { localUrl, ec2Url } from "../../config.js";
 import styles from "./FindRSS.module.css";
-
+import * as RSSParser from "rss-parser";
+import { GETRSSRESPONSE } from "../../redux/actions";
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("");
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
-  function postDataToServer(
-    url,
-    data = {
-      url: "www.sylish.com",
-      uid: "12344",
-    }
-  ) {
-    fetch(url, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(function (response) {
-        if (response.status !== 200) {
-          console.log(
-            "Looks like there was a problem. Status Code: " + response.status
-          );
-          return;
-        }
-        response.json().then(function (data) {
-          console.log(data);
-        });
-      })
-      .catch(function (err) {
-        console.log("Fetch Error :-S", err);
+  function requestRSS(url) {
+    const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
+    let parser = new RSSParser();
+    parser.parseURL(CORS_PROXY + url, function (err, feed) {
+      if (err) throw dispatch(GETRSSRESPONSE(err));
+      console.log(feed);
+      console.log(feed.title);
+      dispatch(GETRSSRESPONSE(feed));
+      feed.items.forEach(function (entry) {
+        console.log(entry.title + ":" + entry.link);
       });
+    });
   }
+
   return (
     <div className={styles.addArticle}>
       <input
@@ -53,10 +40,7 @@ export default function FindRSS(props) {
         onClick={(e) => {
           if (user) {
             e.preventDefault();
-            postDataToServer(localUrl, {
-              url: reqUrl,
-              uid: user.uid,
-            });
+            requestRSS(reqUrl);
           }
         }}
       >
@@ -64,11 +48,6 @@ export default function FindRSS(props) {
       </button>
 
       <br />
-      {/* <a href="http://localhost:2000/route/article/before">Before</a>
-      <br />
-      <a href="http://localhost:2000/route/article/after">after</a>
-      <br />
-      <a href="http://localhost:2000/route/article/MD">Mark Down</a> */}
     </div>
   );
 }

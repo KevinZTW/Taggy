@@ -3,6 +3,7 @@ import { app } from "./app.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
+import { fetchRSS } from "./service/fetchRSS.js";
 
 greenlock
   .init({
@@ -15,3 +16,5 @@ greenlock
     //, debug: true
   })
   .serve(app);
+
+setInterval(fetchRSS, 15000);

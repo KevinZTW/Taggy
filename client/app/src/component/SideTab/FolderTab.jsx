@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "../css/FolderTab.module.css";
+import styles from "./FolderTab.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { TreeView } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -10,9 +10,10 @@ import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
-import { app } from "../lib.js";
+import { app } from "../../lib.js";
 import { useDispatch } from "react-redux";
-import { SWITCHARTICLE } from "../redux/actions";
+import { SWITCHARTICLE } from "../../redux/actions";
+import Folder from "./Folder";
 const useStyles = makeStyles({
   root: {
     color: "white",
@@ -22,30 +23,53 @@ const useStyles = makeStyles({
     marginBottom: "10px",
   },
 });
+
 export default function FolderTab() {
-  const fakeTagsSelection = {
-    JIWD: {
-      name: "前端",
-      tags: ["HTML", "CSS", "JS"],
-    },
-  };
+  const classes = useStyles();
   const dispatch = useDispatch();
   const [tabs, setTabs] = useState([]);
+  const [articleFolders, setArticleFolders] = useState([]);
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
-
   useEffect(() => {
-    function getMemberTags() {
+    function getArticleFolders() {
       if (user) {
-        app.getMemberTags(user.uid).then((tabsSelection) => {
-          setTabs(tabsSelection);
+        app.getMemberArticleFolders(user.uid).then((articleFolders) => {
+          setArticleFolders(articleFolders);
         });
       }
     }
-    getMemberTags();
+    getArticleFolders();
   }, [user]);
 
+  function showArticleFolders(folders) {
+    console.log(folders);
+    let articleFolderList = [];
+    if (folders.length > 0) {
+      for (let i in folders) {
+        articleFolderList.push(
+          <TreeItem
+            key={folders[i].id}
+            nodeId={folders[i].id}
+            label={
+              <div className={styles.labelWrapper}>
+                <FolderOpenIcon style={{ fontSize: 20 }} />
+                <div className={styles.labelTitle}>{folders[i].name}</div>
+              </div>
+            }
+            onClick={() => {
+              console.log(folders[i].id);
+              // dispatch(SWITCHARTICLE(folders[i].id));
+            }}
+          >
+            <Folder user={user} folderId={folders[i].id} />
+          </TreeItem>
+        );
+      }
+    }
+    return articleFolderList;
+  }
   function showTabTreeList(tabs) {
     let tabList = [];
     if (tabs.length > 0) {
@@ -56,7 +80,7 @@ export default function FolderTab() {
             nodeId={tabs[i].id}
             label={
               <div className={styles.labelWrapper}>
-                <BookmarkIcon style={{ fontSize: 20 }} />
+                <FolderOpenIcon style={{ fontSize: 20 }} />
                 <div className={styles.labelTitle}>{tabs[i].label}</div>
               </div>
             }
@@ -70,15 +94,15 @@ export default function FolderTab() {
     }
     return tabList;
   }
+  const articleFolderList = showArticleFolders(articleFolders);
+  // const allTabList = showTabTreeList(tabs);
 
-  const tabList = showTabTreeList(tabs);
-  const classes = useStyles();
   return (
     <div className={styles.folderTab}>
       <div className={styles.sectionTitle}>Saved</div>
       <TreeView
         className={classes.root}
-        defaultExpanded={["tagAll"]}
+        defaultExpanded={[""]}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
       >
@@ -86,7 +110,6 @@ export default function FolderTab() {
           nodeId="tagAll"
           label={
             <div className={styles.labelWrapper}>
-              <FolderOpenIcon style={{ fontSize: 20 }} />
               <div className={styles.labelTitle}>All</div>
             </div>
           }
@@ -94,18 +117,17 @@ export default function FolderTab() {
             console.log("all");
             dispatch(SWITCHARTICLE("all"));
           }}
-        >
-          <TreeItem
-            nodeId="unSorted"
-            label={
-              <div className={styles.labelWrapper}>
-                <MarkunreadIcon style={{ fontSize: 20 }} />
-                <div className={styles.labelTitle}>Unsorted</div>
-              </div>
-            }
-          />
-          {tabList}
-        </TreeItem>
+        ></TreeItem>
+        <TreeItem
+          nodeId="unTag"
+          label={
+            <div className={styles.labelWrapper}>
+              <MarkunreadIcon style={{ fontSize: 20 }} />
+              <div className={styles.labelTitle}>UnTag</div>
+            </div>
+          }
+        />
+        {articleFolderList}
       </TreeView>
 
       <div className={styles.sectionTitle}>RSS</div>

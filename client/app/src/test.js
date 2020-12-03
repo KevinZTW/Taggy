@@ -8,7 +8,6 @@ for (let i in pets) {
   for (let j = i + 1; j < pets.length; j++) {
     console.log(i, j);
   }
-
   i++;
 }
 
