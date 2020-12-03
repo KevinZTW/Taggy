@@ -11,7 +11,6 @@ import MyRouter from "./MyRouter";
 import FolderTab from "./FolderTab";
 import Graph from "./Graph1";
 import RSSHeader from "./RSS/RSSHeader";
-import findRSS from "./RSS/RSSHeader";
 //React.Memo
 //state prop dispatch history
 function App() {

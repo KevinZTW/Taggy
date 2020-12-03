@@ -16,12 +16,19 @@ import { SWITCHARTICLE } from "../redux/actions";
 const useStyles = makeStyles({
   root: {
     color: "white",
-    height: 240,
+
     flexGrow: 1,
     maxWidth: 400,
+    marginBottom: "10px",
   },
 });
 export default function FolderTab() {
+  const fakeTagsSelection = {
+    JIWD: {
+      name: "前端",
+      tags: ["HTML", "CSS", "JS"],
+    },
+  };
   const dispatch = useDispatch();
   const [tabs, setTabs] = useState([]);
   const user = useSelector((state) => {
