@@ -4,6 +4,8 @@ import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
 import dispatch from "react-redux";
 import { INITARTICLE } from "../../redux/actions";
+import styles from "./RSSBoard.module.css";
+import { app } from "../../lib.js";
 export default function Board(props) {
   const dispatch = useDispatch();
 
@@ -13,16 +15,34 @@ export default function Board(props) {
   const searchFeed = useSelector((state) => {
     return state.RSSReducer.feed;
   });
+  const searchFeedUrl = useSelector((state) => {
+    return state.RSSReducer.url;
+  });
   function renderSearchFeed(feed) {
     let feedList = [];
     for (let i in feed.items) {
       feedList.push(<RSSCard item={feed.items[i]} />);
     }
+
     return (
-      <div>
-        <h1>{feed.title}</h1>
-        <div>{feed.description}</div>
-        <button>Subscribe</button>
+      <div className={styles.board}>
+        <h1 className={styles.title}>{feed.title}</h1>
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={{ __html: feed.description }}
+        ></div>
+        {feed.title ? (
+          <button
+            className={styles.subscribe_btn}
+            onClick={() => {
+              app.subscribeRSS(user.uid, feed.title, searchFeedUrl);
+            }}
+          >
+            Follow
+          </button>
+        ) : (
+          ""
+        )}
         {feedList}
       </div>
     );

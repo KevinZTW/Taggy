@@ -1,0 +1,23 @@
+.board {
+  background-color: #3c3c3c;
+  padding: 7px;
+  border-radius: 10px;
+}
+.title {
+  color: white;
+}
+.content {
+  font-size: 15px;
+  color: gray;
+  margin: 2px 0;
+  color: white;
+}
+.subscribe_btn {
+  padding: 0px 8px;
+  margin: 5px 0;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #01b468;
+  cursor: pointer;
+}

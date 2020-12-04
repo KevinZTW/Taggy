@@ -21,9 +21,10 @@ const SWITCHARTICLE = (tag) => {
   };
 };
 
-const GETRSSRESPONSE = (feed) => {
+const GETRSSRESPONSE = (feed, url) => {
   return {
     type: "GETRSSRESPONSE",
+    url: url,
     feed: feed,
   };
 };

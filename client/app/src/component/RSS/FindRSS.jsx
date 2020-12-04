@@ -18,7 +18,7 @@ export default function FindRSS(props) {
       if (err) throw dispatch(GETRSSRESPONSE(err));
       console.log(feed);
       console.log(feed.title);
-      dispatch(GETRSSRESPONSE(feed));
+      dispatch(GETRSSRESPONSE(feed, url));
       feed.items.forEach(function (entry) {
         console.log(entry.title + ":" + entry.link);
       });

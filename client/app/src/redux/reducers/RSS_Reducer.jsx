@@ -7,6 +7,7 @@ const RSS_Reducer = (state = { feed: {} }, action) => {
       return {
         ...state,
         feed: action.feed,
+        url: action.url,
       };
     default:
       return state;

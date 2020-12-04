@@ -259,3 +259,69 @@ app.deleteTagFromArticle = function (articleId, uid, tagId) {
     .doc(articleId)
     .update({ tags: firebase.firestore.FieldValue.arrayRemove(tagId) });
 };
+
+app.checkRSSInFetchList = function (url) {
+  return new Promise((resolve, reject) => {
+    console.log(url);
+    db.collection("RSSFetchList")
+      .where("url", "==", url)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          console.log("not in fetch list");
+          resolve(false);
+        } else {
+          snapshot.forEach((doc) => {
+            if (doc.data()) {
+              console.log("already id fetch list, the id is:");
+              resolve(doc.data().id);
+            } else {
+              console.log("sth pretty weird happened");
+            }
+          });
+        }
+      });
+  });
+};
+app.addRSSToFetchList = function (title, url) {
+  return new Promise((resolve, reject) => {
+    db.collection("RSSFetchList")
+      .add({
+        title: title,
+        url: url,
+      })
+      .then((docRef) => {
+        docRef.update({ id: docRef.id });
+        console.log("1");
+        return docRef.id;
+      })
+      .then((id) => resolve(id));
+  });
+};
+
+app.addRSSToMember = function (uid, feedId) {
+  return new Promise((resolve, reject) => {
+    db.collection("Member")
+      .doc(uid)
+      .update({
+        subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
+      })
+      .then(console.log("successfully add to user"));
+  });
+};
+
+app.subscribeRSS = async function (uid, title, url) {
+  console.log("add to ", uid, title, url);
+  app.checkRSSInFetchList(url).then((feedId) => {
+    if (feedId) {
+      console.log("RSS already in Fetch List");
+      app.addRSSToMember(uid, feedId);
+    } else {
+      console.log("Add RSS to fetch List");
+      app.addRSSToFetchList(title, url).then((feedId) => {
+        console.log("add RSS to member");
+        app.addRSSToMember(uid, feedId);
+      });
+    }
+  });
+};
