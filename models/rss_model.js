@@ -1,4 +1,18 @@
 import { db } from "../firebase.js";
+const getRSSFetchList = function () {
+  db.collection("RSSFetchList")
+    .get()
+    .then(async (querySnap) => {
+      let fetchList = [];
+      await querySnap.forEach((doc) => {
+        fetchList.push({
+          title: doc.data().title,
+          url: doc.data().url,
+        });
+      });
+      return fetchList;
+    });
+};
 
 const checkRSSItem = function (title, item) {
   return db

@@ -22,3 +22,20 @@ for (let i = 0; i < pets.length - 1; i++) {
   }
 }
 console.log(bundle);
+
+let obj1 = [
+  { id: "2rewfrwe", memberid: "werwe" },
+  { id: "2r32", memberid: "werwe" },
+];
+let obj2 = [
+  { id: "2r32", memberid: "werwe" },
+  { id: "2r32", memberid: "werwe" },
+];
+
+obj1.forEach((item) => {
+  for (let i in obj2) {
+    if (obj2[i].id === item.id) {
+      console.log("same");
+    } else console.log("nono");
+  }
+});

@@ -5,7 +5,10 @@ import styles from "./RSSCard.module.css";
 export default function RSSCard(props) {
   var elem = document.createElement("div");
   elem.innerHTML = props.item.content;
-  let src = elem.querySelector("img").src;
+  let src;
+  if (elem.querySelector("img")) {
+    src = elem.querySelector("img").src;
+  }
 
   return (
     <div className={styles.container}>

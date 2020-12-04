@@ -3,7 +3,8 @@ import { db } from "../firebase.js";
 import Parser from "rss-parser";
 
 let getRSSList = function () {
-  db.collection("RSSFetchList")
+  return db
+    .collection("RSSFetchList")
     .get()
     .then((querySnap) => {
       let RSSList = [];
@@ -28,6 +29,10 @@ let fetchRSS = function (url) {
   })();
 };
 
-let url = "https://rsshub.app/hackernews/best/comments";
-// fetchRSS(url);
-saveRSSToDB();
+export const loopAndFetchRSS = function () {
+  getRSSList().then((list) => {
+    list.forEach((item) => {
+      fetchRSS(item.url);
+    });
+  });
+};
