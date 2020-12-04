@@ -35,4 +35,3 @@ export const loopAndFetchRSS = async function () {
     });
   });
 };
-loopAndFetchRSS();
