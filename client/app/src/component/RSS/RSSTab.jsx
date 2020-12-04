@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./FolderTab.module.css";
+import styles from "../SideTab/FolderTab.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { TreeView } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -13,8 +13,7 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib.js";
 import { useDispatch } from "react-redux";
 import { SWITCHARTICLE } from "../../redux/actions";
-import RSSTab from "../RSS/RSSTab";
-import Folder from "./Folder";
+import RSSFolder from "./RSSFolder";
 const useStyles = makeStyles({
   root: {
     color: "white",
@@ -25,31 +24,58 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FolderTab() {
+export default function RSSTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tabs, setTabs] = useState([]);
-  const [articleFolders, setArticleFolders] = useState([]);
+
+  const [RSSFolders, setRSSFolders] = useState([]);
+  const RSSfoldersfake = [
+    {
+      id: "folderid",
+      name: "foldername",
+      RSSId: ["werwe", "rwfs33d"],
+      RSSName: ["前端", "c.4"],
+    },
+  ];
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
   useEffect(() => {
-    function getArticleFolders() {
+    function getRSSFolders() {
       if (user) {
-        app.getMemberArticleFolders(user.uid).then((articleFolders) => {
-          setArticleFolders(articleFolders);
-        });
+        app
+          .getMemberRSSFolders(user.uid)
+          .then((RSSFolders) => {
+            setRSSFolders(RSSFolders);
+            return RSSFolders;
+          })
+          .then((RSSFolders) => {
+            RSSFolders.forEach(async (folder) => {
+              await folder.RSSIds.forEach(async (RSSId) => {
+                console.log(folder);
+                console.log(RSSId);
+                let RSS = await app.getRSSInfo(RSSId);
+                console.log("whataht");
+                console.log(RSS);
+                folder.RSS.push(RSS);
+              });
+              console.log(folder);
+              return folder;
+            });
+
+            setRSSFolders(RSSFolders);
+          });
       }
     }
-    getArticleFolders();
+    getRSSFolders();
   }, [user]);
 
-  function showArticleFolders(folders) {
+  function showRSSFolders(folders) {
     console.log(folders);
-    let articleFolderList = [];
+    let RSSFolderList = [];
     if (folders.length > 0) {
       for (let i in folders) {
-        articleFolderList.push(
+        RSSFolderList.push(
           <TreeItem
             key={folders[i].id}
             nodeId={folders[i].id}
@@ -64,43 +90,23 @@ export default function FolderTab() {
               // dispatch(SWITCHARTICLE(folders[i].id));
             }}
           >
-            <Folder user={user} folderId={folders[i].id} />
+            <RSSFolder
+              user={user}
+              folderId={folders[i].id}
+              folderRSS={folders[i].RSS}
+            />
           </TreeItem>
         );
       }
     }
-    return articleFolderList;
+    return RSSFolderList;
   }
-  function showTabTreeList(tabs) {
-    let tabList = [];
-    if (tabs.length > 0) {
-      for (let i in tabs) {
-        tabList.push(
-          <TreeItem
-            key={tabs[i].id}
-            nodeId={tabs[i].id}
-            label={
-              <div className={styles.labelWrapper}>
-                <FolderOpenIcon style={{ fontSize: 20 }} />
-                <div className={styles.labelTitle}>{tabs[i].label}</div>
-              </div>
-            }
-            onClick={() => {
-              console.log(tabs[i].id);
-              dispatch(SWITCHARTICLE(tabs[i].id));
-            }}
-          />
-        );
-      }
-    }
-    return tabList;
-  }
-  const articleFolderList = showArticleFolders(articleFolders);
-  // const allTabList = showTabTreeList(tabs);
+  console.log(RSSFolders);
+  const articleFolderList = showRSSFolders(RSSFolders);
 
   return (
     <div className={styles.folderTab}>
-      <div className={styles.sectionTitle}>Saved</div>
+      <div className={styles.sectionTitle}>RSS</div>
       <TreeView
         className={classes.root}
         defaultExpanded={[""]}
@@ -116,26 +122,16 @@ export default function FolderTab() {
           }
           onClick={() => {
             console.log("all");
-            dispatch(SWITCHARTICLE("all"));
+            // dispatch(SWITCHARTICLE("all"));
           }}
         ></TreeItem>
-        <TreeItem
-          nodeId="unTag"
-          label={
-            <div className={styles.labelWrapper}>
-              <MarkunreadIcon style={{ fontSize: 20 }} />
-              <div className={styles.labelTitle}>UnTag</div>
-            </div>
-          }
-        />
+
         {articleFolderList}
       </TreeView>
-      <RSSTab />
 
-      {/* <div className={styles.sectionTitle}>RSS</div>
       <Link to={"/findrss"}>
         <div>FindRSS</div>
-      </Link> */}
+      </Link>
     </div>
   );
 }

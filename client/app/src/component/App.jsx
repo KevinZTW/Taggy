@@ -1,4 +1,3 @@
-import "../css/App.css";
 import { useEffect } from "react";
 import { auth } from "./../firebase.js";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -12,6 +11,7 @@ import FolderTab from "./SideTab/FolderTab";
 import Graph from "./Graph1";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSBoard from "./RSS/RSSBoard";
+
 //React.Memo
 //state prop dispatch history
 function App() {

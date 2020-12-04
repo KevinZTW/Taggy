@@ -4,11 +4,11 @@ import styles from "../css/Card.module.css";
 import { deleteArticle } from "../firebase.js";
 export default function Card(props) {
   var elem = document.createElement("div");
-  console.log(props.htmlContent);
+
   elem.innerHTML = props.htmlContent;
-  console.log(elem.querySelector("img"));
+
   let src = elem.querySelector("img") ? elem.querySelector("img").src : null;
-  console.log(src);
+
   return (
     <div className={styles.container}>
       <button

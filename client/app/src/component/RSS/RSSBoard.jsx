@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
-import dispatch from "react-redux";
 import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib.js";
@@ -35,7 +34,7 @@ export default function Board(props) {
           <button
             className={styles.subscribe_btn}
             onClick={() => {
-              app.subscribeRSS(user.uid, feed.title, searchFeedUrl);
+              app.subscribeRSS(user.uid, feed.title, searchFeedUrl, feed);
             }}
           >
             Follow
