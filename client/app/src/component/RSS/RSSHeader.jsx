@@ -6,12 +6,10 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
 import styles from "./RSSHeader.module.css";
-import FindRSS from "./FindRSS";
+
 export default function RSSHeader(props) {
   return (
     <header className={styles.header}>
-      <FindRSS className="headMemberIcon" user={props.user} />
-
       <button
         class={styles.signOut}
         onClick={() => {

@@ -4,3 +4,7 @@
   flex-direction: column;
   width: 400px;
 }
+@media (min-device-width: 640px) {
+  .cardWrapper {
+  }
+}

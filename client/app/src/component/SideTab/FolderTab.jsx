@@ -17,7 +17,7 @@ import RSSTab from "../RSS/RSSTab";
 import Folder from "./Folder";
 const useStyles = makeStyles({
   root: {
-    color: "white",
+    color: "#B5B5B5",
 
     flexGrow: 1,
     maxWidth: 400,
@@ -55,7 +55,7 @@ export default function FolderTab() {
             nodeId={folders[i].id}
             label={
               <div className={styles.labelWrapper}>
-                <FolderOpenIcon style={{ fontSize: 20 }} />
+                <FolderOpenIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
                 <div className={styles.labelTitle}>{folders[i].name}</div>
               </div>
             }
@@ -81,7 +81,7 @@ export default function FolderTab() {
             nodeId={tabs[i].id}
             label={
               <div className={styles.labelWrapper}>
-                <FolderOpenIcon style={{ fontSize: 20 }} />
+                <FolderOpenIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
                 <div className={styles.labelTitle}>{tabs[i].label}</div>
               </div>
             }
@@ -99,43 +99,46 @@ export default function FolderTab() {
   // const allTabList = showTabTreeList(tabs);
 
   return (
-    <div className={styles.folderTab}>
-      <div className={styles.sectionTitle}>Saved</div>
-      <TreeView
-        className={classes.root}
-        defaultExpanded={[""]}
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <TreeItem
-          nodeId="tagAll"
-          label={
-            <div className={styles.labelWrapper}>
-              <div className={styles.labelTitle}>All</div>
-            </div>
-          }
-          onClick={() => {
-            console.log("all");
-            dispatch(SWITCHARTICLE("all"));
-          }}
-        ></TreeItem>
-        <TreeItem
-          nodeId="unTag"
-          label={
-            <div className={styles.labelWrapper}>
-              <MarkunreadIcon style={{ fontSize: 20 }} />
-              <div className={styles.labelTitle}>UnTag</div>
-            </div>
-          }
-        />
-        {articleFolderList}
-      </TreeView>
-      <RSSTab />
+    <Link to={"/board"}>
+      <div className={styles.folderTabWrapper}>
+        <div className={styles.folderTab}>
+          <div className={styles.sectionTitle}>Saved</div>
+          <TreeView
+            className={classes.root}
+            defaultExpanded={[""]}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+          >
+            <TreeItem
+              nodeId="tagAll"
+              label={
+                <div className={styles.labelWrapper}>
+                  <div className={styles.labelTitle}>All</div>
+                </div>
+              }
+              onClick={() => {
+                console.log("all");
+                dispatch(SWITCHARTICLE("all"));
+              }}
+            ></TreeItem>
+            <TreeItem
+              nodeId="unTag"
+              label={
+                <div className={styles.labelWrapper}>
+                  <MarkunreadIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+                  <div className={styles.labelTitle}>Untaged</div>
+                </div>
+              }
+            />
+            {articleFolderList}
+          </TreeView>
 
-      {/* <div className={styles.sectionTitle}>RSS</div>
+          {/* <div className={styles.sectionTitle}>RSS</div>
       <Link to={"/findrss"}>
         <div>FindRSS</div>
       </Link> */}
-    </div>
+        </div>
+      </div>
+    </Link>
   );
 }

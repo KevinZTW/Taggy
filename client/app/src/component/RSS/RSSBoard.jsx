@@ -74,44 +74,44 @@ export default function Board(props) {
     return state.RSSReducer.url;
   });
 
-  function renderSearchFeed(feed) {
-    let feedList = [];
-    for (let i in feed.items) {
-      feedList.push(
-        <RSSCard
-          item={feed.items[i]}
-          onClick={(e) => {
-            console.log("hihi");
-            setShowPage(true);
-            setFeedItem(feed.items[i]);
-          }}
-        />
-      );
-    }
+  // function renderSearchFeed(feed) {
+  //   let feedList = [];
+  //   for (let i in feed.items) {
+  //     feedList.push(
+  //       <RSSCard
+  //         item={feed.items[i]}
+  //         onClick={(e) => {
+  //           console.log("hihi");
+  //           setShowPage(true);
+  //           setFeedItem(feed.items[i]);
+  //         }}
+  //       />
+  //     );
+  //   }
 
-    return (
-      <div className={styles.board}>
-        <h1 className={styles.title}>{feed.title}</h1>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: feed.description }}
-        ></div>
-        {feed.title ? (
-          <button
-            className={styles.subscribe_btn}
-            onClick={() => {
-              app.subscribeRSS(user.uid, feed.title, searchFeedUrl, feed);
-            }}
-          >
-            Follow
-          </button>
-        ) : (
-          ""
-        )}
-        {feedList}
-      </div>
-    );
-  }
+  //   return (
+  //     <div className={styles.board}>
+  //       <h1 className={styles.title}>{feed.title}</h1>
+  //       <div
+  //         className={styles.content}
+  //         dangerouslySetInnerHTML={{ __html: feed.description }}
+  //       ></div>
+  //       {feed.title ? (
+  //         <button
+  //           className={styles.subscribe_btn}
+  //           onClick={() => {
+  //             app.subscribeRSS(user.uid, feed.title, searchFeedUrl, feed);
+  //           }}
+  //         >
+  //           Follow
+  //         </button>
+  //       ) : (
+  //         ""
+  //       )}
+  //       {feedList}
+  //     </div>
+  //   );
+  // }
   //   useEffect(() => {
 
   //     if (searchFeed) {
@@ -119,7 +119,7 @@ export default function Board(props) {
   //     }
   //   }, [user]);
   const feedPage = renderFeedPage(feedItem);
-  const searchOutcome = renderSearchFeed(searchFeed);
+  // const searchOutcome = renderSearchFeed(searchFeed);
   useEffect(() => {
     renderChannelFeed().then((ChannelFeedOutcome) => {
       setChannelFeed(ChannelFeedOutcome);
@@ -150,7 +150,6 @@ export default function Board(props) {
   return (
     <div>
       {channelFeed}
-      {searchOutcome}
       {showPage ? (
         <div className={styles.popup}>
           <button

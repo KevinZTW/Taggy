@@ -133,8 +133,8 @@ export default function RSSTab() {
           {articleFolderList}
         </TreeView>
       </Link>
-      <Link to={"/findrss"}>
-        <div>FindRSS</div>
+      <Link to={"/rssexplore"}>
+        <div>AddRSS</div>
       </Link>
     </div>
   );

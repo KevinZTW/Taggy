@@ -10,8 +10,10 @@ import MyRouter from "./MyRouter";
 import FolderTab from "./SideTab/FolderTab";
 import Graph from "./Graph1";
 import RSSHeader from "./RSS/RSSHeader";
+import RSSTab from "./RSS/RSSTab";
 import RSSBoard from "./RSS/RSSBoard";
-
+import RSSExplore from "./RSS/RSSExplore";
+import FunctionTab from "./SideTab/FunctionTab";
 //React.Memo
 //state prop dispatch history
 function App() {
@@ -23,25 +25,32 @@ function App() {
           <Route path="/signup" component={Signup}></Route>
           <Route path="/signin" component={Signin}></Route>
           <Route path="/board">
-            <Header />
             <div className="content">
+              <FunctionTab />
               <FolderTab />
               <Board />
             </div>
           </Route>
           <Route path="/article" component={Article}></Route>
           <Route path="/graph">
-            <Header />
             <div className="content">
+              <FunctionTab />
               <Board />
               <Graph />
             </div>
           </Route>
           <Route path="/rss">
-            <RSSHeader />
             <div className="content">
-              <FolderTab />
+              <FunctionTab />
+              <RSSTab />
               <RSSBoard />
+            </div>
+          </Route>
+          <Route path="/rssexplore">
+            <div className="content">
+              <FunctionTab />
+              <FolderTab />
+              <RSSExplore />
             </div>
           </Route>
           <h1 className="title">Welcome to Taggy</h1>

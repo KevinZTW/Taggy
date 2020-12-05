@@ -4,6 +4,7 @@ import { db } from "../firebase.js";
 import CardWrapper from "./CardWrapper.jsx";
 import dispatch from "react-redux";
 import { INITARTICLE } from "../redux/actions";
+import AddArticle from "./AddArticle";
 export default function Board(props) {
   const dispatch = useDispatch();
 
@@ -34,6 +35,7 @@ export default function Board(props) {
   }, [user]);
   return (
     <div>
+      <AddArticle className="headMemberIcon" user={user} />
       <CardWrapper />
     </div>
   );

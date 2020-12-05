@@ -31,7 +31,7 @@ export default function Folder(props) {
             nodeId={tabs[i].id}
             label={
               <div className={styles.labelWrapper}>
-                <BookmarkIcon style={{ fontSize: 20 }} />
+                <BookmarkIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
                 <div className={styles.labelTitle}>{tabs[i].label}</div>
               </div>
             }

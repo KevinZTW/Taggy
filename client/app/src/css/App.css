@@ -4,13 +4,11 @@
 }
 
 body {
-  padding: 10px;
-  background-color: #272727;
+  background-color: #131313;
 }
 
 .content {
   display: flex;
-  padding-top: 37px;
 }
 
 .cardWrapper {
