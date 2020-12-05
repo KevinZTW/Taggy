@@ -6,6 +6,7 @@ import { app } from "../../lib.js";
 import { useDispatch } from "react-redux";
 import styles from "../SideTab/FolderTab.module.css";
 import { SWITCHARTICLE } from "../../redux/actions";
+import { SWITCHRSS } from "../../redux/actions";
 export default function RSSFolder(props) {
   const [RSS, setRSS] = useState([]);
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function RSSFolder(props) {
             }
             onClick={() => {
               console.log(RSS[i].id);
+              dispatch(SWITCHRSS(RSS[i].id));
               //   dispatch(SWITCHARTICLE(tabs[i].id));
             }}
           />

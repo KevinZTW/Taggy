@@ -29,4 +29,17 @@ const GETRSSRESPONSE = (feed, url) => {
   };
 };
 
-export { INITARTICLE, SWITCHARTICLE, SETMEMBER, GETRSSRESPONSE };
+// const INITRSS = (articleList) => {
+//   return {
+//     type: "INITRSS",
+//     articleList: articleList,
+//   };
+// };
+const SWITCHRSS = (ChannelRSSId) => {
+  console.log("hihi");
+  return {
+    type: "SWITCHRSS",
+    ChannelRSSId: ChannelRSSId,
+  };
+};
+export { INITARTICLE, SWITCHRSS, SWITCHARTICLE, SETMEMBER, GETRSSRESPONSE };

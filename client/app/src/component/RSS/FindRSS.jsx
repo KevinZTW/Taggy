@@ -15,7 +15,16 @@ export default function FindRSS(props) {
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
     let parser = new RSSParser();
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
-      if (err) throw dispatch(GETRSSRESPONSE(err));
+      if (err) {
+        let parser = new RSSParser();
+        parser.parseURL(url, function (err, feed) {
+          if (err) {
+            throw dispatch(GETRSSRESPONSE(err));
+          }
+          dispatch(GETRSSRESPONSE(feed, url));
+        });
+        throw dispatch(GETRSSRESPONSE(err));
+      }
       console.log(feed);
       console.log(feed.title);
       dispatch(GETRSSRESPONSE(feed, url));
@@ -27,27 +36,26 @@ export default function FindRSS(props) {
 
   return (
     <div className={styles.addArticle}>
-      <input
-        type="text"
-        name="input"
-        className={styles.input}
-        value={reqUrl}
-        onChange={(e) => setReqUrl(e.currentTarget.value)}
-      />
-      <button
-        type="submit"
-        className={styles.add}
-        onClick={(e) => {
+      <form
+        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
           if (user) {
-            e.preventDefault();
             requestRSS(reqUrl);
           }
         }}
       >
-        搜尋RSS
-      </button>
-
-      <br />
+        <input
+          type="text"
+          name="input"
+          className={styles.input}
+          value={reqUrl}
+          onChange={(e) => setReqUrl(e.currentTarget.value)}
+        />
+        <button type="submit" className={styles.add}>
+          搜尋RSS
+        </button>
+      </form>
     </div>
   );
 }

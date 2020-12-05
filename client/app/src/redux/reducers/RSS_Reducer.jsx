@@ -9,6 +9,12 @@ const RSS_Reducer = (state = { feed: {} }, action) => {
         feed: action.feed,
         url: action.url,
       };
+
+    case "SWITCHRSS":
+      return {
+        ...state,
+        ChannelRSSId: action.ChannelRSSId,
+      };
     default:
       return state;
   }

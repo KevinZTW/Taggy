@@ -17,13 +17,13 @@ let getRSSList = function () {
     });
 };
 
-let fetchRSS = function (url) {
+let fetchRSS = function (url, RSSId) {
   console.log("get url", url);
   let parser = new Parser();
 
   (async () => {
     let feed = await parser.parseURL(url).catch((err) => console.log(err));
-    addRSS(feed);
+    addRSS(feed, RSSId);
   })();
 };
 
@@ -31,7 +31,7 @@ export const loopAndFetchRSS = async function () {
   getRSSList().then((list) => {
     list.forEach((item) => {
       console.log("stat to get ", item.title);
-      fetchRSS(item.url);
+      fetchRSS(item.url, item.id);
     });
   });
 };

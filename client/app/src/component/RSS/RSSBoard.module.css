@@ -21,3 +21,13 @@
   background-color: #01b468;
   cursor: pointer;
 }
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: calc(100% - 50px);
+  overflow-y: auto;
+  background: red;
+  top: 50px;
+  left: 0;
+}

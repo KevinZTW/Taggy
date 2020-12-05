@@ -12,7 +12,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib.js";
 import { useDispatch } from "react-redux";
-import { SWITCHARTICLE } from "../../redux/actions";
+
 import RSSFolder from "./RSSFolder";
 const useStyles = makeStyles({
   root: {
@@ -51,15 +51,17 @@ export default function RSSTab() {
           })
           .then((RSSFolders) => {
             RSSFolders.forEach(async (folder) => {
-              await folder.RSSIds.forEach(async (RSSId) => {
+              if (folder.RSSIds) {
+                await folder.RSSIds.forEach(async (RSSId) => {
+                  console.log(folder);
+                  console.log(RSSId);
+                  let RSS = await app.getRSSInfo(RSSId);
+                  console.log(RSS);
+                  folder.RSS.push(RSS);
+                });
                 console.log(folder);
-                console.log(RSSId);
-                let RSS = await app.getRSSInfo(RSSId);
-                console.log("whataht");
-                console.log(RSS);
-                folder.RSS.push(RSS);
-              });
-              console.log(folder);
+              }
+
               return folder;
             });
 
@@ -87,7 +89,6 @@ export default function RSSTab() {
             }
             onClick={() => {
               console.log(folders[i].id);
-              // dispatch(SWITCHARTICLE(folders[i].id));
             }}
           >
             <RSSFolder
@@ -101,34 +102,37 @@ export default function RSSTab() {
     }
     return RSSFolderList;
   }
-  console.log(RSSFolders);
+
+  function getRSSFeeds() {}
+
   const articleFolderList = showRSSFolders(RSSFolders);
 
   return (
     <div className={styles.folderTab}>
-      <div className={styles.sectionTitle}>RSS</div>
-      <TreeView
-        className={classes.root}
-        defaultExpanded={[""]}
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <TreeItem
-          nodeId="tagAll"
-          label={
-            <div className={styles.labelWrapper}>
-              <div className={styles.labelTitle}>All</div>
-            </div>
-          }
-          onClick={() => {
-            console.log("all");
-            // dispatch(SWITCHARTICLE("all"));
-          }}
-        ></TreeItem>
+      <Link to={"/rss"}>
+        <div className={styles.sectionTitle}>RSS</div>
+        <TreeView
+          className={classes.root}
+          defaultExpanded={[""]}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          <TreeItem
+            nodeId="tagAll"
+            label={
+              <div className={styles.labelWrapper}>
+                <div className={styles.labelTitle}>All</div>
+              </div>
+            }
+            onClick={() => {
+              console.log("all");
+              // dispatch(SWITCHARTICLE("all"));
+            }}
+          ></TreeItem>
 
-        {articleFolderList}
-      </TreeView>
-
+          {articleFolderList}
+        </TreeView>
+      </Link>
       <Link to={"/findrss"}>
         <div>FindRSS</div>
       </Link>

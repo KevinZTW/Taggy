@@ -11,20 +11,18 @@ export default function RSSCard(props) {
   }
 
   return (
-    <div className={styles.container}>
-      <Link to={`/article?id=${props.id}`}>
-        <div className={styles.card}>
-          <div className={styles.color}>
-            <img src={src} alt="" className={styles.img} />
-          </div>
-
-          <div className={styles.wordWrapper}>
-            <div className={styles.title}>{props.item.title}</div>
-            <div>by{props.item.creator}</div>
-            <div className={styles.content}>{props.item.contentSnippet}</div>
-          </div>
+    <div className={styles.container} onClick={props.onClick}>
+      <div className={styles.card}>
+        <div className={styles.color}>
+          <img src={src} alt="" className={styles.img} />
         </div>
-      </Link>
+
+        <div className={styles.wordWrapper}>
+          <div className={styles.title}>{props.item.title}</div>
+          <div>by{props.item.creator}</div>
+          <div className={styles.content}>{props.item.contentSnippet}</div>
+        </div>
+      </div>
     </div>
   );
 }

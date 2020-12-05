@@ -37,7 +37,7 @@ function App() {
               <Graph />
             </div>
           </Route>
-          <Route path="/findrss">
+          <Route path="/rss">
             <RSSHeader />
             <div className="content">
               <FolderTab />

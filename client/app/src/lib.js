@@ -304,29 +304,32 @@ app.checkRSSInFetchList = function (url) {
       });
   });
 };
-app.addRSSToFetchList = function (title, url) {
+app.addRSSToFetchList = function (feed, url) {
   return new Promise((resolve, reject) => {
     db.collection("RSSFetchList")
       .add({
-        title: title,
-        url: url,
+        title: feed.title || "null",
+        url: url || "null",
+        link: feed.link || "null",
+        description: feed.description || "null",
+        img: (feed.image || {}).url || "null",
+        lastUpdate: feed.lastBuildDate || "null",
       })
       .then((docRef) => {
         docRef.update({ id: docRef.id });
-        console.log("1");
         return docRef.id;
       })
       .then((id) => resolve(id));
   });
 };
-app.checkUserHasFolder = function (uid) {
+app.checkUserHasUncaFolder = function (uid) {
   return new Promise((resolve, reject) => {
     console.log(uid);
     db.collection("Member")
       .doc(uid)
       .get()
       .then((doc) => {
-        if (doc.data().RSSFolders) {
+        if (doc.data().RSSFolders.includes("unCa_" + uid)) {
           resolve(true);
         } else resolve(false);
       });
@@ -335,43 +338,59 @@ app.checkUserHasFolder = function (uid) {
 
 app.addRSSToMember = function (uid, feedId) {
   return new Promise(async (resolve, reject) => {
-    if (!(await app.checkUserHasFolder(uid))) {
+    if (!(await app.checkUserHasUncaFolder(uid))) {
+      console.log("user dont have unCat folder, create and as RSS to it ");
       db.collection("RSSFolders")
-        .add({
+        .doc("unCa_" + uid)
+        .set({
+          uid: uid,
           name: "Uncategorized",
           RSS: firebase.firestore.FieldValue.arrayUnion(feedId),
-        })
-        .then((docRef) => {
-          docRef.update({ id: docRef.id });
-          return docRef.id;
+          id: "unCa_" + uid,
         })
         .then((folderId) => {
           db.collection("Member")
             .doc(uid)
             .update({
               subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
-              RSSFolders: firebase.firestore.FieldValue.arrayUnion(folderId),
+              RSSFolders: firebase.firestore.FieldValue.arrayUnion(
+                "unCa_" + uid
+              ),
             })
             .then(console.log("successfully add to user"));
         });
     } else {
+      console.log("user already has unCat folder, as RSS to it ");
+      db.collection("RSSFolders")
+        .doc("unCa_" + uid)
+        .update({
+          RSS: firebase.firestore.FieldValue.arrayUnion(feedId),
+        })
+        .then((folderId) => {
+          db.collection("Member")
+            .doc(uid)
+            .update({
+              subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
+            })
+            .then(console.log("successfully add to user"));
+        });
     }
   });
 };
 
 app.subscribeRSS = async function (uid, title, url, feed) {
   console.log("add to ", uid, title, url);
-  app.checkRSSInFetchList(url).then((feedId) => {
-    if (feedId) {
+  app.checkRSSInFetchList(url).then((RSSId) => {
+    if (RSSId) {
       console.log("RSS already in Fetch List");
-      app.addRSSToMember(uid, feedId);
+      app.addRSSToMember(uid, RSSId);
     } else {
-      console.log("Add feed to RSSItem");
-      app.addRSSItem(feed);
       console.log("Add RSS to fetch List");
-      app.addRSSToFetchList(title, url).then((feedId) => {
+      app.addRSSToFetchList(feed, url).then((RSSId) => {
         console.log("add RSS to member");
-        app.addRSSToMember(uid, feedId);
+        app.addRSSToMember(uid, RSSId);
+        console.log("Add feed to RSSItem");
+        app.addRSSItem(feed, RSSId);
       });
     }
   });
@@ -396,7 +415,7 @@ app.checkRSSItem = function (title, item) {
       return true;
     });
 };
-app.addRSSItem = function (feed) {
+app.addRSSItem = function (feed, RSSId) {
   for (let i in feed.items) {
     app.checkRSSItem(feed.title, feed.items[i]).then((evaluate) => {
       console.log(evaluate);
@@ -404,9 +423,17 @@ app.addRSSItem = function (feed) {
         console.log("this feed not in db, let's save it ");
         db.collection("RSSItem")
           .add({
-            item: feed.items[i],
-            title: feed.title,
-            itemTitle: feed.items[i].title,
+            RSSId: RSSId,
+            content: feed.items[i].content || "null",
+            contentSnippet: feed.items[i].contentSnippet || "null",
+            RSS: feed.title || "null",
+            title: feed.items[i].title || "null",
+            creator: feed.items[i].creator || "null",
+            guid: feed.items[i].guid || "null",
+            isoDate: feed.items[i].isoDate || "null",
+            link: feed.items[i].link || "null",
+            pubDate: feed.items[i].pubDate || "null",
+            author: feed.items[i].author || "null",
           })
           .then((docRef) => docRef.update({ id: docRef.id }))
           .then(console.log("store successfully!"));
@@ -463,6 +490,55 @@ app.getRSSInfo = function (RSSId) {
             url: doc.data().url,
           });
         }
+      });
+  });
+};
+app.getChannelFeeds = function (RSSId) {
+  return new Promise((resolve, reject) => {
+    let items = [];
+    db.collection("RSSItem")
+      .where("RSSId", "==", RSSId)
+      .orderBy("isoDate", "desc")
+      .get()
+      .then((snapShot) => {
+        snapShot.forEach((doc) => {
+          items.push({
+            RSSId: doc.data().RSSId,
+            content: doc.data().content,
+            contentSnippet: doc.data().contentSnippet,
+            RSS: doc.data().RSS,
+            title: doc.data().tilte,
+            creator: doc.data().creator,
+            guid: doc.data().guid,
+            isoDate: doc.data().isoDate,
+            link: doc.data().link,
+            pubDate: doc.data().pubDate,
+            author: doc.data().author,
+          });
+        });
+        resolve(items);
+      });
+  });
+};
+app.getFeedContent = function (feedId) {
+  return new Promise((resolve, reject) => {
+    db.collection("RSSItem")
+      .doc(feedId)
+      .get()
+      .then((doc) => {
+        resolve({
+          RSSId: doc.data().RSSId,
+          content: doc.data().content,
+          contentSnippet: doc.data().contentSnippet,
+          RSS: doc.data().RSS,
+          title: doc.data().tilte,
+          creator: doc.data().creator,
+          guid: doc.data().guid,
+          isoDate: doc.data().isoDate,
+          link: doc.data().link,
+          pubDate: doc.data().pubDate,
+          author: doc.data().author,
+        });
       });
   });
 };

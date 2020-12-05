@@ -12,7 +12,7 @@ const checkRSSItem = function (title, item) {
       });
       console.log(titleList);
       console.log(item.title);
-      console.log(titleList.includes(item.title));
+
       if (titleList.includes(item.title)) {
         console.log("already in db");
         return false;
@@ -20,7 +20,7 @@ const checkRSSItem = function (title, item) {
       return true;
     });
 };
-const addRSS = function (feed) {
+const addRSS = function (feed, RSSId) {
   for (let i in feed.items) {
     checkRSSItem(feed.title, feed.items[i]).then((evaluate) => {
       console.log(evaluate);
@@ -28,9 +28,17 @@ const addRSS = function (feed) {
         console.log("this feed not in db, let's save it ");
         db.collection("RSSItem")
           .add({
-            item: feed.items[i],
-            title: feed.title,
-            itemTitle: feed.items[i].title,
+            RSSId: RSSId,
+            content: feed.items[i].content || "null",
+            contentSnippet: feed.items[i].contentSnippet || "null",
+            RSS: feed.title || "null",
+            title: feed.items[i].title || "null",
+            creator: feed.items[i].creator || "null",
+            guid: feed.items[i].guid || "null",
+            isoDate: feed.items[i].isoDate || "null",
+            link: feed.items[i].link || "null",
+            pubDate: feed.items[i].pubDate || "null",
+            author: feed.items[i].author || "null",
           })
           .then((docRef) => docRef.update({ id: docRef.id }))
           .then(console.log("store successfully!"));
