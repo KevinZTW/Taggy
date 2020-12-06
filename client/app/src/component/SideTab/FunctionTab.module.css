@@ -1,3 +1,6 @@
+.functionTabWrapper {
+  min-width: 50px;
+}
 .functionTab {
   min-width: 50px;
   background: #131313;

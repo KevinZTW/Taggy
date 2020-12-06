@@ -108,34 +108,36 @@ export default function RSSTab() {
   const articleFolderList = showRSSFolders(RSSFolders);
 
   return (
-    <div className={styles.folderTab}>
-      <Link to={"/rss"}>
-        <div className={styles.sectionTitle}>RSS</div>
-        <TreeView
-          className={classes.root}
-          defaultExpanded={[""]}
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-        >
-          <TreeItem
-            nodeId="tagAll"
-            label={
-              <div className={styles.labelWrapper}>
-                <div className={styles.labelTitle}>All</div>
-              </div>
-            }
-            onClick={() => {
-              console.log("all");
-              // dispatch(SWITCHARTICLE("all"));
-            }}
-          ></TreeItem>
+    <div className={styles.folderTabWrapper}>
+      <div className={styles.folderTab}>
+        <Link to={"/rss"}>
+          <div className={styles.sectionTitle}>RSS</div>
+          <TreeView
+            className={classes.root}
+            defaultExpanded={[""]}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+          >
+            <TreeItem
+              nodeId="tagAll"
+              label={
+                <div className={styles.labelWrapper}>
+                  <div className={styles.labelTitle}>All</div>
+                </div>
+              }
+              onClick={() => {
+                console.log("all");
+                // dispatch(SWITCHARTICLE("all"));
+              }}
+            ></TreeItem>
 
-          {articleFolderList}
-        </TreeView>
-      </Link>
-      <Link to={"/rssexplore"}>
-        <div>AddRSS</div>
-      </Link>
+            {articleFolderList}
+          </TreeView>
+        </Link>
+        <Link to={"/rssexplore"}>
+          <div>AddRSS</div>
+        </Link>
+      </div>
     </div>
   );
 }

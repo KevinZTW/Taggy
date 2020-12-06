@@ -7,6 +7,7 @@ import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib.js";
 import RSSPage from "./RSSPage";
+import "./RSSPage.css";
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
@@ -20,7 +21,14 @@ export default function Board(props) {
   function renderFeedPage(feedItem) {
     console.log("redner run again");
     console.log(feedItem);
-    return <RSSPage item={feedItem} />;
+    return (
+      <RSSPage
+        item={feedItem}
+        onClick={() => {
+          setShowPage(false);
+        }}
+      />
+    );
   }
 
   const ChannelRSSId = useSelector((state) => {
@@ -39,7 +47,7 @@ export default function Board(props) {
       items = await app.getChannelFeeds(ChannelRSSId);
 
       console.log(RSS, items);
-      let feedList = [<div>nono</div>];
+      let feedList = [];
       for (let i in items) {
         console.log(items[i]);
         feedList.push(
@@ -148,17 +156,16 @@ export default function Board(props) {
     }
   }, [user]);
   return (
-    <div>
+    <div className={styles.boardWrapper}>
       {channelFeed}
       {showPage ? (
         <div className={styles.popup}>
-          <button
+          <div
+            className={styles.blur}
             onClick={() => {
               setShowPage(false);
             }}
-          >
-            Close Page
-          </button>
+          ></div>
           {feedPage}
         </div>
       ) : (

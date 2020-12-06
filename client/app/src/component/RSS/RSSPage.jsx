@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
-import styles from "../../css/Article.module.css";
+import styles from "./RSSPage.module.css";
 import { app } from "../../lib.js";
 
 import { useSelector } from "react-redux";
@@ -48,9 +48,12 @@ export default function RSSPage(props) {
   //   }, []);
 
   return (
-    <div>
+    <div className={styles.page}>
       <div className={styles.head}>
-        <ArrowBack style={{ color: "#FFFCEC" }} />
+        <ArrowBack
+          style={{ color: "#FFFCEC", cursor: "pointer" }}
+          onClick={props.onClick}
+        />
       </div>
       <div className={styles.title}>{feedItem.title}</div>
       <div dangerouslySetInnerHTML={{ __html: feedItem.content }}></div>

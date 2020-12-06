@@ -1,0 +1,16 @@
+.page {
+  background: #121212;
+  padding-left: 40px;
+  height: calc(100%);
+  overflow: auto;
+}
+.title {
+  font-size: 30px;
+  padding-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.head {
+  padding-top: 10px;
+}

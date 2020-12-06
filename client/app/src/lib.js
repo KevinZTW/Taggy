@@ -498,7 +498,7 @@ app.getChannelFeeds = function (RSSId) {
     let items = [];
     db.collection("RSSItem")
       .where("RSSId", "==", RSSId)
-      .orderBy("isoDate", "desc")
+      // .orderBy("isoDate", "desc")
       .get()
       .then((snapShot) => {
         snapShot.forEach((doc) => {

@@ -1,3 +1,5 @@
+.boardWrapper {
+}
 .board {
   background-color: #3c3c3c;
   padding: 7px;
@@ -21,13 +23,19 @@
   background-color: #01b468;
   cursor: pointer;
 }
+
 .popup {
+  display: flex;
   position: fixed;
   top: 0;
+  color: #e2e2e2e2;
   right: 0;
-  height: calc(100% - 50px);
-  overflow-y: auto;
-  background: red;
-  top: 50px;
   left: 0;
+  height: 100vh;
+  width: 100%;
+}
+.blur {
+  min-width: 30%;
+  background-color: #131313;
+  opacity: 90%;
 }
