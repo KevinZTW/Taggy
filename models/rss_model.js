@@ -1,28 +1,24 @@
 import { db } from "../firebase.js";
 
-const checkRSSItem = function (title, item) {
+const checkRSSItem = function (item) {
+  console.log("let check", item.guid);
   return db
     .collection("RSSItem")
-    .where("title", "==", title)
+    .where("guid", "==", item.guid)
     .get()
-    .then((snapShot) => {
-      let titleList = [];
-      snapShot.forEach((doc) => {
-        titleList.push(doc.data().itemTitle);
-      });
-      console.log(titleList);
-      console.log(item.title);
-
-      if (titleList.includes(item.title)) {
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        console.log("check and not in db ");
+        return true;
+      } else {
         console.log("already in db");
         return false;
-      } else console.log("check and not in db ");
-      return true;
+      }
     });
 };
 const addRSS = function (feed, RSSId) {
   for (let i in feed.items) {
-    checkRSSItem(feed.title, feed.items[i]).then((evaluate) => {
+    checkRSSItem(feed.items[i]).then((evaluate) => {
       console.log(evaluate);
       if (evaluate) {
         console.log("this feed not in db, let's save it ");

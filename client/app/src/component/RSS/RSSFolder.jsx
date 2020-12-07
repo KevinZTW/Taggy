@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import TreeItem from "@material-ui/lab/TreeItem";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
-import { app } from "../../lib.js";
+import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import styles from "../SideTab/FolderTab.module.css";
 import { SWITCHARTICLE } from "../../redux/actions";

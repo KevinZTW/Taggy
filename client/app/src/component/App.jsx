@@ -49,7 +49,7 @@ function App() {
           <Route path="/rssexplore">
             <div className="content">
               <FunctionTab />
-              <FolderTab />
+              <RSSTab />
               <RSSExplore />
             </div>
           </Route>

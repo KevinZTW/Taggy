@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { db, CheckFirebaseUserStatus } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import styles from "../../css/Article.module.css";
-import { app } from "../../lib.js";
+import { app } from "../../lib/lib.js";
+
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
 

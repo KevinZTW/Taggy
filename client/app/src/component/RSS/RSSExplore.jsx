@@ -5,7 +5,7 @@ import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
 import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
-import { app } from "../../lib.js";
+import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);

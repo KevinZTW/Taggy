@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { db } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import styles from "./RSSPage.module.css";
-import { app } from "../../lib.js";
+import { app } from "../../lib/lib.js";
 
 import { useSelector } from "react-redux";
 

@@ -1,0 +1,364 @@
+<div id="readability-page-1" class="page">
+  <div>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <p>
+                <a
+                  href="https://medium.com/@timruiterkamp?source=post_page-----d02a7919bdbe--------------------------------"
+                  rel="noopener"
+                  ><img
+                    alt="Tim Ruiterkamp"
+                    src="https://miro.medium.com/fit/c/96/96/2*wspqqIEljRUPGrgtWYYSsA.jpeg"
+                    width="48"
+                    height="48"
+                /></a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p id="f3fa">
+        In this project, I will show step by step how you can build your own
+        news crawler that visits multiple sites and gathers all the necessary
+        information you need.
+      </p>
+      <p id="a6f3">
+        In this project, we will be setting up a NodeJS server that runs a
+        scheduled Puppeteer crawler and gathers all the information from the
+        news sites. By scheduled I mean that you can set any time of
+        data/hours/minutes that the crawler will refresh its data by crawling
+        the news sites again.
+      </p>
+      <p id="e95e">The official documentation of Puppeteer states:</p>
+      <blockquote>
+        <p id="1ddb">
+          Puppeteer is a Node library which provides a high-level API to control
+          Chrome or Chromium over the
+          <a
+            href="https://chromedevtools.github.io/devtools-protocol/"
+            rel="noopener"
+            >DevTools Protocol</a
+          >. Puppeteer runs
+          <a
+            href="https://developers.google.com/web/updates/2017/04/headless-chrome"
+            rel="noopener"
+            >headless</a
+          >
+          by default but can be configured to run full (non-headless) Chrome or
+          Chromium.
+        </p>
+      </blockquote>
+      <p id="d45d">
+        This means that almost everything you can do on the web, Puppeteer can
+        do it for you. Some examples of this are:<br />- Generate screenshots
+        and pdf of pages<br />- Create testing environments<br />- Crawl any
+        page, it doesn’t matter if its a SPA or SSR page.
+      </p>
+      <p id="8bbb">
+        To get started we need to make sure you have node installed. This can be
+        checked by typing the following in your terminal.
+      </p>
+      <pre><span id="f650">node -v</span></pre>
+      <p id="35ed">
+        The result of this should be something like 10.16.0.<br />If this isn’t
+        the case, you can manually install it by visiting
+        <a href="https://nodejs.org/en/" rel="noopener"
+          >https://nodejs.org/en/</a
+        >
+        and follow the installation guide.
+      </p>
+      <p id="f39f">
+        Now that we are all set, we can start creating a folder with the
+        necessary files and start coding.
+      </p>
+      <p id="5602">
+        We are going to set up the project and install the dependencies in this
+        section. To get started, navigate in your terminal to the location you
+        want your project to be installed.
+      </p>
+      <p id="b6b7">
+        For example, I want my project to be inside my project folder which lays
+        inside my documents folder. I can reach this by running the following
+        code:
+      </p>
+      <pre><span id="bc0d">cd ~/Documents/projecten</span></pre>
+      <p id="65d8">
+        In this folder, you can run the following code to create a folder where
+        the project will be built in.
+      </p>
+      <pre><span id="ef9b">mkdir news-crawler</span><span id="865e">// To navigate inside this folder you can run:<br>cd news-crawler</span></pre>
+      <p id="29b7">
+        The next step is to set up the project files. The first thing we will
+        create is the package.json by running the following code in your
+        terminal (inside the project folder).
+      </p>
+      <pre><span id="f9d1">npm init --yes or yarn init --yes</span></pre>
+      <p id="f212">
+        The code above creates a package.json with some basic information about
+        you. You could run “npm init” and manually add all the information or
+        open the code editor and edit the created file.
+      </p>
+      <p id="d26b">
+        The next step is creating the file where our crawler will be created. In
+        my case, I called the file crawler.js but this can be any name you like.
+      </p>
+      <pre><span id="c4a1">touch crawler.js</span></pre>
+      <p id="5b90">
+        Well, that was it for the basis of our project. Let’s install some
+        packages and start coding.
+      </p>
+      <p id="9a41">
+        The first package we are going to install is Puppeteer itself and
+        nodemon.
+      </p>
+      <pre><span id="c387">npm install puppeteer nodemon --save or yarn add puppeteer nodemon</span></pre>
+      <p id="604b">
+        Since we will be getting results in our terminal we don’t need to add
+        any package like express yet. This will come up at the end of our
+        project.
+      </p>
+      <p id="b909">
+        Some background information about what we have just installed:
+      </p>
+      <p id="39fa">
+        Puppeteer is the crawler that we mentioned earlier in this article and
+        nodemon is a monitor for node.js files and watches for changes and
+        restarts itself at every change, so you don’t have to type node
+        crawler.js every time for when you save made a change.
+      </p>
+      <p id="8ae2">
+        The first thing we are going to write is an old school “hello world”
+        message and build a start command in our package.json.
+      </p>
+      <p id="53f6">
+        Open your favorite code editor and inside the crawler.js file we are
+        going to create a simple message saying:
+      </p>
+      <pre><span id="eb0f">console.log(‘hey globe’)</span></pre>
+      <p id="3bcd">
+        And we are going to access this by adding a script to our package.json
+        which we can run in our terminal.
+      </p>
+      <p id="aeb4">
+        Open package.json and below the dependencies, you can write the
+        following:
+      </p>
+      <pre><span id="9d6b">“scripts”: {“start”: “nodemon crawler.js”}</span></pre>
+      <p id="6ca8">
+        Inside your terminal you can now run “npm run start” or “yarn start” and
+        the console.log message we typed earlier will be displayed inside your
+        terminal.
+      </p>
+      <p id="ed08">
+        We will start by showcasing some magic that can be done with Puppeteer.
+        We will follow a quick example to show what you can expect.
+      </p>
+      <p id="91ab">
+        I have made a small setup with annotations about what every function
+        does. The best thing is to write it yourself, but copy if you like.
+      </p>
+      <pre><span id="d0e7">const puppeteer = require(“puppeteer”);</span><span id="f2b3"><em>// Puppeteer is in this case a IIFE to make sure it directly starts gathering the dimension of the page.</em></span><span id="eed3">(async () =&gt; {</span><span id="f793"><em>// Puppeteer.launch() is the default function to launch a browser, in this case added an option called headless: false. This shows what actions puppeteer is currently doing.</em></span><span id="5029">const browser = await puppeteer.launch({ headless: false });</span><span id="f608">// Make sure the browser opens a new page</span><span id="d8c6">const page = await browser.newPage();</span><span id="ba40"><em>// Navigate to the desired website. WaintUntil is used to make sure there is a internet connection.</em></span><span id="6f35">await page.goto(“https://news.ycombinator.com",{waitUntil:“networkidle2”});</span><span id="e090"><em>// page.evaluate is the function that can gather information from the page. In thise case the dimensions.</em></span><span id="be89">const dimensions = await page.evaluate(() =&gt; {<br>  return {<br>     width: document.documentElement.clientWidth<br>   };<br> });</span><span id="448f"> console.log(“Dimension:”, dimensions);</span><span id="a594">// The browser needs to be closed after the actions are completed.<br> await browser.close();<br>})();</span></pre>
+      <p id="81b5">
+        If you have ran this code, you have seen that the website ycombinator
+        has been opened and closed directly after because of the
+        browser.close(). This is the behaviour when the page.evaluate() function
+        has been completed. The result will be inside your terminal, as we
+        logged the outcome.
+      </p>
+      <p id="fab0">
+        That was good fun, but let’s start gathering some information from news
+        sites.
+      </p>
+      <p id="25e0">
+        The setup of the Puppeteer function will be looking like the following:
+      </p>
+      <pre><span id="6388">(async () =&gt; {</span><span id="9e35">const browser = await puppeteer.launch({ headless: false });</span><span id="9362">const page = await browser.newPage();</span><span id="7b8f">const newsTitles = await getNewsTitles(page);</span><span id="fff7">console.log(newsTitles);</span><span id="e43e">await browser.close();</span><span id="8649">})();</span></pre>
+      <p id="43a5">
+        ‘getNewsTitles(page)’ will be the function I will write my logic for
+        that page in. Notice how I passed ‘page’ as a parameter in my function.
+        This is necessary to make Puppeteer evaluate a page inside that
+        function.
+      </p>
+      <p id="13eb">
+        The website we are going to target is the Times in this case. The first
+        thing we need to do before we write any logic is manually evaluating the
+        page and looking for interesting titles or texts we want to target.
+      </p>
+      <p id="5e19">
+        I aimed for the headlines with the focus on the text that it displays
+        and the link where its leading to. While I inspected the website in my
+        terminal, I took a look at headline classes that were very common. In
+        this case, most classes were as easy as “.Item-headline”.
+      </p>
+    </div>
+  </div>
+  <div>
+    <div>
+      <p id="704b">
+        The trick now is to get the information of the link inside the heading.
+        For this, we need to evaluate the page with Puppeteer and try to get
+        access to the titles.
+      </p>
+      <pre><span id="ec0d">async function getNewsTitles(<em>page</em>) {</span><span id="92b0">  await page.goto("https://www.thetimes.co.uk/?region=global");</span><span id="3cf2">  return (results = await page.evaluate(() =&gt; {</span><span id="3f71">const allTitles = document.querySelectorAll(".Item-headline a", {waitUntil: 'networkidle2'});</span><span id="8720">    return Array.from(allTitles)<br>      .slice(0, 10)<br>      .map(<em>title</em> =&gt; {<br>        let res = {<br>          title: title.textContent,<br>          link: title["href"]<br>        };<p>        return res;</p><p>            });</p></span><span id="0c31">   }));<br>}</span></pre>
+      <p id="4e60">
+        What I did above is creating an async function, which is necessary to
+        make Puppeteer work properly. We await the loading of the website and
+        then start gathering all the early found classes with links.
+      </p>
+      <p id="edd8">
+        We create an array of all the links and for readability, we splice it at
+        10, this can, however, be any number you like and if you want all the
+        results, you can remove the splice functionality. We can now map over
+        all the items and return the information we want. In this case, I wanted
+        the title and link. To access content within a HTML item you can use
+        “.textContent”. And for the link, we can target “href” attribute.
+      </p>
+      <p id="21a6">
+        The result of the code above is an array of objects containing the
+        information we want.
+      </p>
+      <pre><span id="12e5">[<br>  { title:<br>     'Reality or fantasy? Claims of Tory leadership rivals put to the test',<br>    link:<br>     '<a href="https://www.thetimes.co.uk/edition/news/reality-or-fantasy-claims-of-tory-leadership-rivals-put-to-the-test-8gnb6x5vw'" rel="noopener">https://www.thetimes.co.uk/edition/news/reality-or-fantasy-claims-of-tory-leadership-rivals-put-to-the-test-8gnb6x5vw'</a> <br>  } <br>]</span></pre>
+      <p id="1120">
+        Well, we got our titles right now, this can be done with any element on
+        a website. You just need to know what elements you need to target.
+      </p>
+      <p id="c4e9">
+        Well, we got our data in our terminal, but it would be really nice if we
+        can export this to a JSON file and update it based on a timed schedule.
+        So that is what we are going to do next.
+      </p>
+      <p id="5c15">
+        The first thing we need to do is requiring “fs” at the top of our
+        program. Because we want to make us of the “fs.writeFile” functionality.
+        With this functionality, you can write your own type of files with
+        dynamic data. Perfect for projects like these.
+      </p>
+      <p id="aa7b">Our imports at the top now look like this:</p>
+      <pre><span id="31e1">const puppeteer = require("puppeteer");<br>const fs = require("fs");</span></pre>
+      <p id="d8e4">
+        In our code, we just logged the data that was being gathered, but this
+        constant could also be used to write a new file with the data.
+      </p>
+      <blockquote>
+        <p id="ad95">
+          <strong>Short warning<br /></strong>Before adding the code below,
+          close the“ npm start” proces, because everytime a file changes this
+          will reactivate the system.
+        </p>
+      </blockquote>
+      <pre><span id="d679">fs.writeFile("newsitems.json", JSON.stringify(newsTitles), "utf8", (<em>err</em>, <em>data</em>) =&gt; {<br>  if (err) {<br>  console.error(err);<br>} else {<br>  console.log("created!");<br>}});</span></pre>
+      <p id="215b">
+        Writing a file is as easy as this. The first parameter is the name you
+        want to give the file. The second parameter is the data if its an array
+        it must be stringified. The third pattern is a Unicode standard and the
+        function always expects a callback. In this case, it lets us know that
+        the file has been created.
+      </p>
+      <p id="e50e">We will now have a new file called newsitems.json.</p>
+      <p id="5b3a">
+        The next thing we want to do is creating a schedule that gathers the
+        news at a certain time. For this, we are going to use the “<a
+          href="https://www.npmjs.com/package/node-schedule"
+          rel="noopener"
+          >node-schedule</a
+        >” package.
+      </p>
+      <p id="9280">Run the install command below.</p>
+      <pre><span id="3cdb">npm install node-schedule --save or yarn add node-schedule</span></pre>
+      <p id="ff19">
+        Now that we have added the package to our project we can include it in
+        our file. Our imports now look like:
+      </p>
+      <pre><span id="81f7">const puppeteer = require("puppeteer");<br>const fs = require("fs");<br>const schedule = require('node-schedule');</span></pre>
+      <p id="a58d">A basic example of how this works:</p>
+      <pre><span id="da17">schedule.scheduleJob('42 * * * *', function(){<br>  console.log('The answer to life, the universe, and everything!');<br>});</span></pre>
+      <p id="1586">
+        The code above will fire the log every 42 minutes of the hour. In our
+        case, we will just set this to 30, so every half an hour the news will
+        be gathered.
+      </p>
+      <p id="5054">
+        If you want to adjust the time to being daily, here is a graphic about
+        all the parameters you can give the scheduleJob.
+      </p>
+      <figure>
+        <div role="button" tabindex="0">
+          <div>
+            <div>
+              <p>
+                <img
+                  alt="Image for post"
+                  src="https://miro.medium.com/max/2932/1*E5Oy_8fp-zFBhnn1LDrDAw.png"
+                  width="1466"
+                  height="504"
+                  srcset="
+                    https://miro.medium.com/max/552/1*E5Oy_8fp-zFBhnn1LDrDAw.png  276w,
+                    https://miro.medium.com/max/1104/1*E5Oy_8fp-zFBhnn1LDrDAw.png 552w,
+                    https://miro.medium.com/max/1280/1*E5Oy_8fp-zFBhnn1LDrDAw.png 640w,
+                    https://miro.medium.com/max/1400/1*E5Oy_8fp-zFBhnn1LDrDAw.png 700w
+                  "
+                  sizes="700px"
+                  data-old-src="https://miro.medium.com/max/60/1*E5Oy_8fp-zFBhnn1LDrDAw.png?q=20"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+        <figcaption>
+          All parameter options for the scheduleJob function.
+        </figcaption>
+      </figure>
+      <p id="2db4">
+        Let's start implementing the schedule inside our project. To do this we
+        need to remove the function from being an IIFE to a function we can call
+        at any time. In this case, we will bind the function to a constant. And
+        call that inside the schedule function.
+      </p>
+      <p id="7b22">So the function now looks like this:</p>
+      <figure>
+        <div role="button" tabindex="0">
+          <div>
+            <div>
+              <p>
+                <img
+                  alt="Image for post"
+                  src="https://miro.medium.com/max/2268/1*wR25HQPt5_xeUQA2ughCYQ.png"
+                  width="1134"
+                  height="1260"
+                  srcset="
+                    https://miro.medium.com/max/552/1*wR25HQPt5_xeUQA2ughCYQ.png  276w,
+                    https://miro.medium.com/max/1104/1*wR25HQPt5_xeUQA2ughCYQ.png 552w,
+                    https://miro.medium.com/max/1280/1*wR25HQPt5_xeUQA2ughCYQ.png 640w,
+                    https://miro.medium.com/max/1400/1*wR25HQPt5_xeUQA2ughCYQ.png 700w
+                  "
+                  sizes="700px"
+                  data-old-src="https://miro.medium.com/max/54/1*wR25HQPt5_xeUQA2ughCYQ.png?q=20"
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </figure>
+      <p id="d3e1">
+        We bound the function to gatherNewsItems and called it inside our
+        schedule function. We can start the “npm start” script again in the
+        terminal because it is not a IIFE function anymore and will only be
+        called every half an hour.
+      </p>
+      <pre><span id="b658">npm start or yarn start </span></pre>
+      <p id="2b4a">And there we have it, a scheduled crawler.</p>
+      <p id="94d2">
+        In the next article, we are creating an interface to display and refresh
+        our news item. Part 2 can be found at
+        <a
+          href="https://medium.com/@timruiterkamp/building-an-interface-for-our-scheduled-puppeteer-news-crawler-a93f9957f785"
+          rel="noopener"
+          >https://medium.com/@timruiterkamp/building-an-interface-for-our-scheduled-puppeteer-news-crawler-a93f9957f785</a
+        >
+      </p>
+    </div>
+  </div>
+</div>

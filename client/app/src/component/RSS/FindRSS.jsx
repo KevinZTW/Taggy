@@ -36,7 +36,9 @@ export default function FindRSS(props) {
 
   return (
     <div className={styles.addArticle}>
+      <div class={styles.addTitle}>Add new source to reach this world</div>
       <form
+        className={styles.addForm}
         action=""
         onSubmit={(e) => {
           e.preventDefault();
@@ -53,7 +55,7 @@ export default function FindRSS(props) {
           onChange={(e) => setReqUrl(e.currentTarget.value)}
         />
         <button type="submit" className={styles.add}>
-          搜尋RSS
+          搜尋
         </button>
       </form>
     </div>

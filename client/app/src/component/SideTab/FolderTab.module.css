@@ -30,7 +30,10 @@
   font-weight: bold;
   padding-left: 5px;
 }
-
+.subTitle {
+  padding-left: 30px;
+  font-weight: bold;
+}
 @media (max-device-width: 640px) {
   .folderTab {
     display: none;

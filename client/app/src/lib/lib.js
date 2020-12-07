@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import firebase from "firebase/app";
-import { db, FieldValue } from "./firebase.js";
+import { db, FieldValue } from "../firebase.js";
 
 export const app = {};
 app.getMemberArticleFolders = function (uid) {

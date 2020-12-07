@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
-import { app } from "../../lib.js";
+import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 
 import RSSFolder from "./RSSFolder";
@@ -135,7 +135,7 @@ export default function RSSTab() {
           </TreeView>
         </Link>
         <Link to={"/rssexplore"}>
-          <div>AddRSS</div>
+          <div className={styles.subTitle}>AddRSS</div>
         </Link>
       </div>
     </div>
