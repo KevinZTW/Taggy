@@ -508,7 +508,7 @@ app.getChannelFeeds = function (RSSId) {
             content: doc.data().content,
             contentSnippet: doc.data().contentSnippet,
             RSS: doc.data().RSS,
-            title: doc.data().tilte,
+            title: doc.data().title,
             creator: doc.data().creator,
             guid: doc.data().guid,
             isoDate: doc.data().isoDate,

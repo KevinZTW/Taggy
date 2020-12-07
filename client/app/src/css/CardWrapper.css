@@ -3,6 +3,7 @@
   justify-content: center;
   flex-direction: column;
   width: 400px;
+  z-index: 1;
 }
 @media (min-device-width: 640px) {
   .cardWrapper {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./FolderTab.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { TreeView } from "@material-ui/lab";
@@ -28,6 +29,7 @@ const useStyles = makeStyles({
 export default function FolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [editFolder, setEditFolder] = useState(false);
   const [tabs, setTabs] = useState([]);
   const [articleFolders, setArticleFolders] = useState([]);
   const user = useSelector((state) => {
@@ -99,9 +101,9 @@ export default function FolderTab() {
   // const allTabList = showTabTreeList(tabs);
 
   return (
-    <Link to={"/board"}>
-      <div className={styles.folderTabWrapper}>
-        <div className={styles.folderTab}>
+    <div className={styles.folderTabWrapper}>
+      <div className={styles.folderTab}>
+        <Link to={"/board"}>
           <div className={styles.sectionTitle}>Saved</div>
           <TreeView
             className={classes.root}
@@ -132,13 +134,43 @@ export default function FolderTab() {
             />
             {articleFolderList}
           </TreeView>
-
-          {/* <div className={styles.sectionTitle}>RSS</div>
-      <Link to={"/findrss"}>
-        <div>FindRSS</div>
-      </Link> */}
-        </div>
+          {editFolder
+            ? createPortal(
+                <div className={styles.popup}>
+                  <div
+                    className={styles.blur}
+                    onClick={() => {
+                      setEditFolder(false);
+                    }}
+                  ></div>
+                  <div className={styles.addFolder}>
+                    <div>Add New Tag Folder</div>
+                    <form action="">
+                      <input type="text" />
+                      <button>Confirm </button>
+                      <button
+                        onClick={() => {
+                          setEditFolder(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </form>
+                  </div>
+                </div>,
+                document.body
+              )
+            : ""}
+          <div
+            className={styles.subTitle}
+            onClick={() => {
+              setEditFolder(true);
+            }}
+          >
+            Add Folder
+          </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }

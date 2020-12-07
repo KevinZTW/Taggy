@@ -9,7 +9,7 @@ export default function RSSCard(props) {
   if (elem.querySelector("img")) {
     src = elem.querySelector("img").src;
   }
-
+  console.log(props.item);
   return (
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>
@@ -19,7 +19,7 @@ export default function RSSCard(props) {
 
         <div className={styles.wordWrapper}>
           <div className={styles.title}>{props.item.title}</div>
-          <div>by{props.item.creator}</div>
+          <div className={styles.creator}>{props.item.creator}</div>
           <div className={styles.content}>{props.item.contentSnippet}</div>
         </div>
       </div>

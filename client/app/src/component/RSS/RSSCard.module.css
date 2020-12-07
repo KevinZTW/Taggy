@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  max-width: 500px;
+  max-width: 70%;
 }
 .card {
   margin-right: 15px;
@@ -16,11 +16,11 @@
 
 .color {
   height: 100px;
-  min-width: 30%;
+  width: 20%;
   background: #4f4f4f;
 }
 .img {
-  max-width: 100%;
+  min-width: 100%;
 }
 .title {
   font-weight: bold;
@@ -28,21 +28,27 @@
 }
 
 .content {
-  font-size: 14px;
-  padding-top: 10px;
+  font-size: 0.9rem;
+  padding-top: 5px;
   padding-bottom: 10px;
-  color: #bebebe;
-  word-wrap: break-word;
-  overflow: hidden;
+  line-height: 19px;
+  color: #818181;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .wordWrapper {
-  max-width: 500px;
+  width: 80%;
   padding-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-
+.creator {
+  padding-top: 5px;
+  color: #818181;
+  font-size: 0.8rem;
+}
 .delete {
   position: absolute;
   top: 0;

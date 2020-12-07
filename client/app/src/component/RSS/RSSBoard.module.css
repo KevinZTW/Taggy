@@ -1,16 +1,20 @@
 .boardWrapper {
+  width: 100%;
+
+  padding-left: 30px;
 }
 .board {
-  background-color: #3c3c3c;
-
+  padding-left: 10px;
   border-radius: 10px;
 }
 .title {
   color: white;
+  padding-top: 50px;
+  padding-bottom: 30px;
 }
 .content {
   font-size: 15px;
-  color: gray;
+
   margin: 2px 0;
   color: white;
 }

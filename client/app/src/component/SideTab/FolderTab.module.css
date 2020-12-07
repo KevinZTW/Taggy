@@ -1,5 +1,5 @@
 .folderTabWrapper {
-  width: 250px;
+  width: 30%;
 }
 .folderTab {
   position: fixed;
@@ -9,8 +9,8 @@
   background: #191919;
   border: solid 1px #2a2a2a;
   height: 1200px;
-
-  padding: 20px 2px;
+  width: 250px;
+  padding: 20px 0px;
 }
 
 .sectionTitle {
@@ -22,11 +22,14 @@
   margin-bottom: 5px;
 }
 .labelWrapper {
-  padding-left: 5px;
+  padding-left: 2px;
   display: flex;
   align-items: center;
 }
 .labelTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   font-weight: bold;
   padding-left: 5px;
 }
@@ -38,4 +41,33 @@
   .folderTab {
     display: none;
   }
+}
+.popup {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  color: #e2e2e2e2;
+
+  animation: popUpSlide 0.4s;
+  height: 100vh;
+  width: 100%;
+}
+@keyframes popUpSlide {
+  0% {
+    left: 200px;
+  }
+  100% {
+    left: 0;
+  }
+}
+.blur {
+  min-width: 30%;
+  background-color: #131313;
+  opacity: 90%;
+}
+
+.addFolder {
+  background-color: #131313;
+  width: 70%;
 }

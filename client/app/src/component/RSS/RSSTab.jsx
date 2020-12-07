@@ -16,10 +16,9 @@ import { useDispatch } from "react-redux";
 import RSSFolder from "./RSSFolder";
 const useStyles = makeStyles({
   root: {
-    color: "white",
-
-    flexGrow: 1,
-    maxWidth: 400,
+    color: "#B5B5B5",
+    flexGrow: 10,
+    maxWidth: 220,
     marginBottom: "10px",
   },
 });
@@ -122,7 +121,7 @@ export default function RSSTab() {
               nodeId="tagAll"
               label={
                 <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>All</div>
+                  <div className={styles.labelTitle}>All Feeds</div>
                 </div>
               }
               onClick={() => {
