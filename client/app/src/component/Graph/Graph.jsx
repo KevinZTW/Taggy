@@ -1,9 +1,12 @@
 import * as d3 from "d3";
-import { data } from "../data.js";
-import { useD3 } from "../hooks/useD3.js";
+import { data } from "../../data.js";
+import { useD3 } from "../../hooks/useD3.js";
+import { useState } from "react";
 
-import styles from "../css/Graph.module.css";
+import styles from "./Graph.module.css";
+
 export default function Graph() {
+  const [data, setData] = useState(data);
   function color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return (d) => scale(d.group);
@@ -88,6 +91,7 @@ export default function Graph() {
 
   return (
     <div className={styles.graphWrapper}>
+      <button>change Data</button>
       <svg
         ref={ref}
         style={{

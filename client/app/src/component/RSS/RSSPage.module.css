@@ -1,9 +1,25 @@
 .page {
+  /* animation-name: RSSPageSlide; */
+
   background: #121212;
   padding-left: 40px;
   height: calc(100%);
   overflow: auto;
 }
+/* @keyframes RSSPageSlide {
+  0% {
+    background-color: red;
+  }
+  25% {
+    background-color: yellow;
+  }
+  50% {
+    background-color: blue;
+  }
+  100% {
+    background-color: green;
+  }
+} */
 .title {
   font-size: 30px;
   padding-bottom: 20px;

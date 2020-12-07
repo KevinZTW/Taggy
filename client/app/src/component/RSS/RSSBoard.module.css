@@ -27,12 +27,21 @@
 .popup {
   display: flex;
   position: fixed;
+  left: 0;
   top: 0;
   color: #e2e2e2e2;
-  right: 0;
-  left: 0;
+
+  animation: popUpSlide 0.4s;
   height: 100vh;
   width: 100%;
+}
+@keyframes popUpSlide {
+  0% {
+    left: 200px;
+  }
+  100% {
+    left: 0;
+  }
 }
 .blur {
   min-width: 30%;

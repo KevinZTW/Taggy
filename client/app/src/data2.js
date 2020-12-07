@@ -1,4 +1,4 @@
-export const dataSet = {
+export const dataSet2 = {
   nodes: [
     { id: "React", group: 1, tagId: 12312 },
     { id: "Redux", group: 1 },
@@ -9,6 +9,10 @@ export const dataSet = {
     { id: "coffee4", group: 2 },
     { id: "coffee5", group: 2 },
     { id: "coffee6", group: 2 },
+    { id: "coffee7", group: 2 },
+    { id: "coffee8", group: 2 },
+    { id: "coffee9", group: 2 },
+    { id: "coffee10", group: 2 },
   ],
   links: [
     {
@@ -51,6 +55,16 @@ export const dataSet = {
       target: "coffee5",
       value: "1",
       distance: 50,
+    },
+    {
+      source: "coffee",
+      target: "coffee9",
+      value: "100",
+    },
+    {
+      source: "coffee",
+      target: "coffee10",
+      value: "100",
     },
   ],
 };

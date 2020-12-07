@@ -8,7 +8,7 @@ import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
 import FolderTab from "./SideTab/FolderTab";
-import Graph from "./Graph1";
+import Graph from "./Graph/Graph1";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
 import RSSBoard from "./RSS/RSSBoard";

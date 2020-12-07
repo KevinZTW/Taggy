@@ -99,10 +99,12 @@ app.getArticleTags = function (articleId) {
 
 app.getMemberTags = function (uid) {
   return new Promise((resolve, reject) => {
+    console.log(uid);
     db.collection("Member")
       .doc(uid)
       .get()
       .then(async (doc) => {
+        console.log(doc.data());
         if (doc.data()) {
           let tagIds = doc.data().tags;
           let memberTags = [];
@@ -124,6 +126,7 @@ app.getMemberTags = function (uid) {
             }
           }
           console.log(memberTags);
+          console.log("1");
           resolve(memberTags);
         } else resolve("");
       });
@@ -206,20 +209,18 @@ app.inputTag = function (articleId, uid, tagName) {
         })
         .then((tagId) => {
           db.collection("articleFolders")
-            .add({
+            .doc("un" + uid)
+            .set({
+              id: "un" + uid,
               name: "Uncategorized",
               tags: firebase.firestore.FieldValue.arrayUnion(tagId),
             })
-            .then((docRef) => {
-              docRef.update({ id: docRef.id });
-              return docRef.id;
-            })
-            .then((folderId) => {
+            .then(() => {
               db.collection("Member")
                 .doc(uid)
                 .update({
                   articleFolders: firebase.firestore.FieldValue.arrayUnion(
-                    folderId
+                    "un" + uid
                   ),
                 });
             });
