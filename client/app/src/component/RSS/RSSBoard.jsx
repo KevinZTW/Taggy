@@ -28,7 +28,7 @@ export default function Board(props) {
       db.collection("RSSItem")
         .orderBy("pubDate")
         .where("RSSId", "in", userRSSList)
-        .limit(7)
+        .limit(15)
         .get()
         .then((snapshot) => {
           console.log("batchfetch start");
@@ -36,7 +36,7 @@ export default function Board(props) {
           snapshot.forEach((doc) => {
             items.push(doc.data());
           });
-          setLastQueryDoc(snapshot.docs[6]);
+          setLastQueryDoc(snapshot.docs[14]);
 
           console.log("finsih loop");
           setAllFeeds(items);

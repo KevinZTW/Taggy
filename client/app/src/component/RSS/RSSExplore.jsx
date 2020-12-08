@@ -104,7 +104,7 @@ export default function Board(props) {
     }
   }, [user]);
   return (
-    <div>
+    <div className={styles.boardWrapper}>
       <FindRSS className="headMemberIcon" user={props.user} />
       {searchOutcome}
       {showPage ? (
