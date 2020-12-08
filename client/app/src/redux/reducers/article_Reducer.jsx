@@ -25,16 +25,6 @@ const article_Reducer = (
 
         tagSelected: action.tagSelected,
       };
-    // case "CHANGETITLE ":
-    //   console.log("hihi");
-    //   let editedlist = state.map((list) => {
-    //     if (list.id === action.listId) {
-    //       return { ...list, title: action.newtitle };
-    //     }
-    //     return list;
-    //   });
-    //   console.log(editedlist);
-    //   return editedlist;
 
     default:
       return state;

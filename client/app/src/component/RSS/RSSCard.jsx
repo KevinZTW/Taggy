@@ -9,7 +9,7 @@ export default function RSSCard(props) {
   if (elem.querySelector("img")) {
     src = elem.querySelector("img").src;
   }
-  console.log(props.item);
+
   return (
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>

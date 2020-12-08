@@ -1,7 +1,7 @@
 //reducer
 import { nanoid } from "nanoid";
 
-const RSS_Reducer = (state = { feed: {} }, action) => {
+const RSS_Reducer = (state = { feed: {}, ChannelRSSId: "all" }, action) => {
   switch (action.type) {
     case "GETRSSRESPONSE":
       return {
@@ -14,6 +14,16 @@ const RSS_Reducer = (state = { feed: {} }, action) => {
       return {
         ...state,
         ChannelRSSId: action.ChannelRSSId,
+      };
+    case "INITUSERRSSLIST":
+      return {
+        ...state,
+        UserRSSList: action.RSSList,
+      };
+    case "SETUSERALLFEEDS":
+      return {
+        ...state,
+        userAllFeeds: [...state.userAllFeeds, action.userAllFeeds],
       };
     default:
       return state;

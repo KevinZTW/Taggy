@@ -42,4 +42,18 @@ const SWITCHRSS = (ChannelRSSId) => {
     ChannelRSSId: ChannelRSSId,
   };
 };
-export { INITARTICLE, SWITCHRSS, SWITCHARTICLE, SETMEMBER, GETRSSRESPONSE };
+
+const INITUSERRSSLIST = (RSSList) => {
+  return {
+    type: "INITUSERRSSLIST",
+    RSSList: RSSList,
+  };
+};
+export {
+  INITARTICLE,
+  SWITCHRSS,
+  SWITCHARTICLE,
+  SETMEMBER,
+  GETRSSRESPONSE,
+  INITUSERRSSLIST,
+};

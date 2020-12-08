@@ -478,12 +478,10 @@ app.getMemberRSSFolders = function (uid) {
 };
 app.getRSSInfo = function (RSSId) {
   return new Promise((resolve, reject) => {
-    console.log(RSSId);
     db.collection("RSSFetchList")
       .doc(RSSId)
       .get()
       .then(async (doc) => {
-        console.log("hey", doc.data());
         if (doc.data()) {
           resolve({
             id: doc.data().id,
@@ -543,3 +541,5 @@ app.getFeedContent = function (feedId) {
       });
   });
 };
+
+app.getAllUserFeeds = function (uid) {};

@@ -16,10 +16,16 @@ import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 //React.Memo
 //state prop dispatch history
+
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div
+        className="App"
+        onClick={() => {
+          console.log("you click");
+        }}
+      >
         <MyRouter />
         <Switch>
           <Route path="/signup" component={Signup}></Route>

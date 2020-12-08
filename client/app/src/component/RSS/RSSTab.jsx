@@ -10,9 +10,11 @@ import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
+import { SWITCHRSS } from "../../redux/actions";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
-
+import { db } from "../../firebase.js";
+import { INITUSERRSSLIST } from "../../redux/actions";
 import RSSFolder from "./RSSFolder";
 const useStyles = makeStyles({
   root: {
@@ -28,17 +30,23 @@ export default function RSSTab() {
   const dispatch = useDispatch();
 
   const [RSSFolders, setRSSFolders] = useState([]);
-  const RSSfoldersfake = [
-    {
-      id: "folderid",
-      name: "foldername",
-      RSSId: ["werwe", "rwfs33d"],
-      RSSName: ["前端", "c.4"],
-    },
-  ];
+
+  function getUserRSSList(uid) {
+    db.collection("Member")
+      .doc(uid)
+      .get()
+      .then((doc) => {
+        dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
+      });
+  }
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+  const userRSSList = useSelector((state) => {
+    return state.RSSReducer.UserRSSList;
+  });
+  useEffect(() => {}, [userRSSList]);
   useEffect(() => {
     function getRSSFolders() {
       if (user) {
@@ -52,13 +60,9 @@ export default function RSSTab() {
             RSSFolders.forEach(async (folder) => {
               if (folder.RSSIds) {
                 await folder.RSSIds.forEach(async (RSSId) => {
-                  console.log(folder);
-                  console.log(RSSId);
                   let RSS = await app.getRSSInfo(RSSId);
-                  console.log(RSS);
                   folder.RSS.push(RSS);
                 });
-                console.log(folder);
               }
 
               return folder;
@@ -68,11 +72,13 @@ export default function RSSTab() {
           });
       }
     }
+    if (user) {
+      getUserRSSList(user.uid);
+    }
     getRSSFolders();
   }, [user]);
 
   function showRSSFolders(folders) {
-    console.log(folders);
     let RSSFolderList = [];
     if (folders.length > 0) {
       for (let i in folders) {
@@ -86,9 +92,7 @@ export default function RSSTab() {
                 <div className={styles.labelTitle}>{folders[i].name}</div>
               </div>
             }
-            onClick={() => {
-              console.log(folders[i].id);
-            }}
+            onClick={() => {}}
           >
             <RSSFolder
               user={user}
@@ -101,8 +105,6 @@ export default function RSSTab() {
     }
     return RSSFolderList;
   }
-
-  function getRSSFeeds() {}
 
   const articleFolderList = showRSSFolders(RSSFolders);
 
@@ -125,8 +127,7 @@ export default function RSSTab() {
                 </div>
               }
               onClick={() => {
-                console.log("all");
-                // dispatch(SWITCHARTICLE("all"));
+                dispatch(SWITCHRSS("all"));
               }}
             ></TreeItem>
 
