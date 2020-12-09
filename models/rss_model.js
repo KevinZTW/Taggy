@@ -21,7 +21,7 @@ const addRSS = function (feed, RSSId) {
     checkRSSItem(feed.items[i]).then((evaluate) => {
       console.log(evaluate);
       if (evaluate) {
-        console.log("this feed not in db, let's save it ");
+        console.log("Saved RSSItem ", feed.items[i].title);
         db.collection("RSSItem")
           .add({
             RSSId: RSSId,

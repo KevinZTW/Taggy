@@ -4,14 +4,18 @@ const addArticle = function (
   uid = "not login",
   title = "More Article",
   readerHtml = "reader html",
-  markDown = "Mardown"
+  markdown,
+  link
 ) {
+  console.log("try to add", uid, title, readerHtml, markdown, link);
   db.collection("Articles")
     .add({
       uid: uid,
       title: title,
+      link: link,
       readerHtml: readerHtml,
-      markDown: markDown,
+      markDown: markdown,
+      date: Date.now(),
     })
     .then(function (docRef) {
       console.log("Document written with ID: ", docRef.id);

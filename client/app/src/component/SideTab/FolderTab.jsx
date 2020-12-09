@@ -14,8 +14,11 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import { SWITCHARTICLE } from "../../redux/actions";
-import RSSTab from "../RSS/RSSTab";
+import { db } from "../../firebase.js";
+import firebase from "firebase/app";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Folder from "./Folder";
+
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -30,17 +33,95 @@ export default function FolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [editFolder, setEditFolder] = useState(false);
-  const [tabs, setTabs] = useState([]);
+  const [addFolderInput, setAddFolderInput] = useState("");
   const [articleFolders, setArticleFolders] = useState([]);
+  console.log(articleFolders);
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+  function onDragEnd(result) {
+    const { destination, source, draggableId } = result;
+    console.log(result);
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      console.log("nothing should happended");
+      return;
+    }
+    if (destination.droppableId === source.droppableId) {
+      console.log("move inside same folder");
+      let newArticleFolders = [...articleFolders];
+      newArticleFolders.forEach((folder) => {
+        if (folder.id === destination.droppableId) {
+          console.log("hihi");
+          let newTags = [...folder.tags];
+          let moveItem = { ...newTags[source.index] };
+          console.log(moveItem);
+          newTags.splice(source.index, 1);
+          newTags.splice(destination.index, 0, moveItem);
+          folder.tags = newTags;
+        }
+      });
+      setArticleFolders(newArticleFolders);
+      console.log(destination.index, source.index);
+      console.log(source.droppableId);
+      console.log(destination.droppableId);
+    }
+    if (destination.droppableId !== source.droppableId) {
+      console.log("move to another folder");
+      let newArticleFolders = [...articleFolders];
+      let moveItem;
+      newArticleFolders.forEach((folder) => {
+        if (folder.id === source.droppableId) {
+          let newTags = [...folder.tags];
+          moveItem = { ...newTags[source.index] };
+          newTags.splice(source.index, 1);
+          folder.tags = newTags;
+        }
+      });
+      newArticleFolders.forEach((folder) => {
+        if (folder.id === destination.droppableId) {
+          let newTags = [...folder.tags];
+
+          newTags.splice(destination.index, 0, moveItem);
+          folder.tags = newTags;
+        }
+      });
+      setArticleFolders(newArticleFolders);
+    }
+  }
+
   useEffect(() => {
     function getArticleFolders() {
       if (user) {
-        app.getMemberArticleFolders(user.uid).then((articleFolders) => {
-          setArticleFolders(articleFolders);
-        });
+        app
+          .getMemberArticleFolders(user.uid)
+          .then((articleFolders) => {
+            console.log(articleFolders);
+            setArticleFolders(articleFolders);
+            return articleFolders;
+          })
+          .then(async (articleFolders) => {
+            let tempFolderList = [];
+            for (let i = 0; i < articleFolders.length; i++) {
+              let tags = await app.getMemberFolderTags(articleFolders[i].id);
+              console.log(tags);
+              tempFolderList.push({ ...articleFolders[i], tags: tags });
+            }
+            console.log(tempFolderList);
+            return tempFolderList;
+          })
+          .then((newFolder) => {
+            console.log(newFolder);
+            setArticleFolders(newFolder);
+          });
       }
     }
     getArticleFolders();
@@ -51,51 +132,59 @@ export default function FolderTab() {
     let articleFolderList = [];
     if (folders.length > 0) {
       for (let i in folders) {
+        console.log(folders[i].tags);
         articleFolderList.push(
-          <TreeItem
-            key={folders[i].id}
-            nodeId={folders[i].id}
-            label={
-              <div className={styles.labelWrapper}>
-                <FolderOpenIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
-                <div className={styles.labelTitle}>{folders[i].name}</div>
-              </div>
-            }
-            onClick={() => {
-              console.log(folders[i].id);
-              // dispatch(SWITCHARTICLE(folders[i].id));
-            }}
-          >
-            <Folder user={user} folderId={folders[i].id} />
-          </TreeItem>
+          <Droppable droppableId={folders[i].id}>
+            {(provided) => (
+              <TreeItem
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                key={folders[i].id}
+                nodeId={folders[i].id}
+                label={
+                  <div className={styles.labelWrapper}>
+                    <FolderOpenIcon
+                      style={{ fontSize: 20, color: "#5B5B5B" }}
+                    />
+                    <div className={styles.labelTitle}>{folders[i].name}</div>
+                  </div>
+                }
+                onClick={() => {
+                  console.log(folders[i].id);
+                  // dispatch(SWITCHARTICLE(folders[i].id));
+                }}
+              >
+                <Folder
+                  user={user}
+                  folderTags={folders[i].tags}
+                  key={folders[i].id}
+                />
+                {provided.placeholder}
+              </TreeItem>
+            )}
+          </Droppable>
         );
       }
     }
     return articleFolderList;
   }
-  function showTabTreeList(tabs) {
-    let tabList = [];
-    if (tabs.length > 0) {
-      for (let i in tabs) {
-        tabList.push(
-          <TreeItem
-            key={tabs[i].id}
-            nodeId={tabs[i].id}
-            label={
-              <div className={styles.labelWrapper}>
-                <FolderOpenIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
-                <div className={styles.labelTitle}>{tabs[i].label}</div>
-              </div>
-            }
-            onClick={() => {
-              console.log(tabs[i].id);
-              dispatch(SWITCHARTICLE(tabs[i].id));
-            }}
-          />
-        );
-      }
-    }
-    return tabList;
+  function addArticleFolder(name, uid) {
+    db.collection("articleFolders")
+      .add({
+        name: name,
+        uid: uid,
+      })
+      .then((docRef) => {
+        docRef.update({ id: docRef.id });
+        return docRef.id;
+      })
+      .then((id) => {
+        db.collection("Member")
+          .doc(uid)
+          .update({
+            articleFolders: firebase.firestore.FieldValue.arrayUnion(id),
+          });
+      });
   }
   const articleFolderList = showArticleFolders(articleFolders);
   // const allTabList = showTabTreeList(tabs);
@@ -132,7 +221,9 @@ export default function FolderTab() {
                 </div>
               }
             />
-            {articleFolderList}
+            <DragDropContext onDragEnd={onDragEnd}>
+              {articleFolderList}
+            </DragDropContext>
           </TreeView>
           {editFolder
             ? createPortal(
@@ -144,14 +235,36 @@ export default function FolderTab() {
                     }}
                   ></div>
                   <div className={styles.addFolder}>
-                    <div>Add New Tag Folder</div>
-                    <form action="">
-                      <input type="text" />
-                      <button>Confirm </button>
+                    <div className={styles.addTitle}>Add New Folder</div>
+                    <form id="addForm" action="">
+                      <input
+                        className={styles.input}
+                        type="text"
+                        placeholder="Folder Name"
+                        value={addFolderInput}
+                        onChange={(e) => {
+                          setAddFolderInput(e.target.value);
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        className={styles.saveBtn}
+                        form="addForm"
+                        onClick={() => {
+                          if (user) {
+                            addArticleFolder(addFolderInput, user.uid);
+                          } else {
+                            alert("Please login to add folder!");
+                          }
+                        }}
+                      >
+                        Save
+                      </button>
                       <button
                         onClick={() => {
                           setEditFolder(false);
                         }}
+                        className={styles.cancelBtn}
                       >
                         Cancel
                       </button>

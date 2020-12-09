@@ -14,7 +14,7 @@ export default function CardWrapper() {
             content={articleList[i].content}
             id={articleList[i].id}
             key={articleList[i].id}
-            htmlContent={articleList[i].htmlContent}
+            htmlContent={articleList[i].readerHtml}
           />
         );
       }
@@ -31,7 +31,7 @@ export default function CardWrapper() {
               content={articleList[i].content}
               id={articleList[i].id}
               key={articleList[i].id}
-              htmlContent={articleList[i].htmlContent}
+              htmlContent={articleList[i].readerHtml}
             />
           );
         }

@@ -20,12 +20,7 @@ import FunctionTab from "./SideTab/FunctionTab";
 function App() {
   return (
     <Router>
-      <div
-        className="App"
-        onClick={() => {
-          console.log("you click");
-        }}
-      >
+      <div className="App">
         <MyRouter />
         <Switch>
           <Route path="/signup" component={Signup}></Route>
