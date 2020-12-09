@@ -14,6 +14,7 @@ export default function Board(props) {
   useEffect(() => {
     function checkArticleUpdate(uid) {
       db.collection("Articles")
+        .orderBy("date")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
           let list = [];
@@ -23,7 +24,7 @@ export default function Board(props) {
               content: doc.data().markDown.slice(0, 100),
               id: doc.data().id,
               tags: doc.data().tags,
-              htmlContent: doc.data().readerHtml,
+              readerHtml: doc.data().readerHtml,
             });
           });
           dispatch(INITARTICLE(list));

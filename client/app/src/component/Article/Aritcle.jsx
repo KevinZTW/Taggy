@@ -1,19 +1,19 @@
 import { useLocation, useHistory } from "react-router-dom";
-import MD from "./MD";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db, CheckFirebaseUserStatus } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import styles from "../../css/Article.module.css";
 import { app } from "../../lib/lib.js";
-
+import ReactQuill from "react-quill";
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
-
+import "react-quill/dist/quill.snow.css";
 export default function Article() {
   let [tags, setTags] = useState({});
   let [article, setArticle] = useState({});
-
+  let [note, setNote] = useState("");
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);
@@ -69,17 +69,19 @@ export default function Article() {
       db.collection("Articles")
         .doc(id)
         .onSnapshot(function (doc) {
-          setArticle({
-            title: doc.data().title,
-            markDown: doc.data().markDown,
-          });
+          if (doc.data() !== undefined) {
+            setArticle({
+              title: doc.data().title,
+              readerHtml: doc.data().readerHtml,
+            });
+          }
         });
     }
     getArticles();
   }, []);
 
   return (
-    <div>
+    <div className={styles.articleWrapper}>
       <div className={styles.head}>
         <Link to={"/board"}>
           <ArrowBack style={{ color: "#FFFCEC" }} />
@@ -96,7 +98,22 @@ export default function Article() {
           value={tags.values}
         />
       </div>
-      <MD content={article.markDown} id={id} />
+      <div className={styles.articleMain}>
+        <div
+          className={styles.articleBody}
+          dangerouslySetInnerHTML={{ __html: article.readerHtml }}
+        ></div>
+        <div className={styles.note}>
+          <div>Your Summary</div>
+          <ReactQuill
+            theme="snow"
+            value={note}
+            onChange={(e) => {
+              setNote(e);
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

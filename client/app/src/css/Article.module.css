@@ -1,3 +1,6 @@
+.articleWrapper {
+  padding: 10px 20px;
+}
 .title {
   font-size: 30px;
   padding-bottom: 20px;
@@ -33,4 +36,86 @@
 }
 .addTag:focus {
   display: flex;
+}
+.articleMain {
+  display: flex;
+  flex-direction: row;
+}
+
+.note {
+  min-width: 40%;
+  color: #dcdcdc;
+  padding: 15px;
+}
+
+.articleBody {
+  padding: 20px;
+  border: solid 1px white;
+  max-width: 60%;
+  background: #121212;
+  line-height: 1.7;
+  color: #dcdcdc;
+}
+.articleBody p {
+  padding-bottom: 15px;
+}
+.articleBody pre {
+  background: #222222;
+
+  border-left: 20px solid #39382e;
+  color: #ffd306;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
+
+.articleBody h2 {
+  font-size: 1.6rem;
+  padding: 20px 0;
+}
+
+.articleBody h3 {
+  font-size: 1.3rem;
+  padding: 20px 0;
+}
+.articleBody img {
+  padding-bottom: 20px;
+  margin-left: 15%;
+  max-width: 70%;
+}
+.articleBody a:link,
+a:visited {
+  color: rgb(30, 171, 249);
+}
+
+.articleBody li {
+  padding-left: 10px;
+}
+.articleBody ol {
+  list-style: none;
+}
+
+.articleBody hr {
+  margin: 40px 0;
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+@media (max-width: 632px) {
+  .note {
+    display: none;
+  }
+
+  .articleBody {
+    max-width: 95%;
+  }
 }
