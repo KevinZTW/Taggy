@@ -26,7 +26,7 @@ export default function Board(props) {
     if (lastVisible === 0) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
-        .orderBy("pubDate")
+        .orderBy("pubDate", "desc")
         .where("RSSId", "in", userRSSList)
         .limit(15)
         .get()
@@ -202,16 +202,8 @@ export default function Board(props) {
     }
   }
   const feedPage = renderFeedPage(feedItem);
-  console.log(lastVisible);
-  console.log(allFeeds);
   return (
-    <div
-      className={styles.boardWrapper}
-      onScroll={() => {
-        alert("ewrwe");
-        console.log("you scroll");
-      }}
-    >
+    <div className={styles.boardWrapper}>
       {allFeedsOutome}
       {showPage ? (
         <div className={styles.popup}>

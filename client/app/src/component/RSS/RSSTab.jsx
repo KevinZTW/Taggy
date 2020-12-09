@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 export default function RSSTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const [showPage, setShowPage] = useState(false);
   const [RSSFolders, setRSSFolders] = useState([]);
 
   function getUserRSSList(uid) {
@@ -137,6 +137,26 @@ export default function RSSTab() {
         <Link to={"/rssexplore"}>
           <div className={styles.subTitle}>AddRSS</div>
         </Link>
+        <div
+          className={styles.subTitle}
+          onClick={() => {
+            setShowPage(true);
+          }}
+        >
+          Add New Folder
+        </div>
+        {showPage ? (
+          <div className={styles.popup}>
+            <div
+              className={styles.blur}
+              onClick={() => {
+                setShowPage(false);
+              }}
+            ></div>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

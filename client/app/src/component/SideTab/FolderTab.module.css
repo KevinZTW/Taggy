@@ -36,6 +36,8 @@
 .subTitle {
   padding-left: 30px;
   font-weight: bold;
+  padding-bottom: 5px;
+  color: #b2b2b2;
 }
 @media (max-device-width: 640px) {
   .folderTab {

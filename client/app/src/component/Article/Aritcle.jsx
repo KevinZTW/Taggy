@@ -21,6 +21,40 @@ export default function Article() {
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
+  const customStyles = {
+    menu: (provided, state) => ({
+      ...provided,
+      background: "black",
+      borderBottom: "1px solid gray",
+      color: "white",
+      padding: 10,
+    }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      return {
+        ...styles,
+        backgroundColor: isDisabled
+          ? null
+          : isSelected
+          ? data.color
+          : isFocused
+          ? "#dcdcdc"
+          : null,
+        color: isFocused ? "#39382e" : "#dcdcdc",
+
+        cursor: isDisabled ? "not-allowed" : "default",
+
+        ":active": {
+          ...styles[":active"],
+          backgroundColor: !isDisabled && (isSelected ? data.color : "green"),
+        },
+      };
+    },
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: "#121212",
+      minWidth: "300px",
+    }),
+  };
   useEffect(() => {
     if (user) {
       console.log("useeffect run");
@@ -91,6 +125,9 @@ export default function Article() {
       <div className={styles.tagWrapper}>
         <CreatableSelect
           isMulti
+          width="200px"
+          menuColor="red"
+          styles={customStyles}
           onChange={handleChange}
           onCreateOption={handleCreate}
           options={tags.options}

@@ -66,7 +66,16 @@ export default function FolderTab() {
           console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
+          console.log(newTags);
           folder.tags = newTags;
+          let firestoreTagArr = [];
+          newTags.forEach((tag) => {
+            firestoreTagArr.push(tag.id);
+          });
+          console.log(firestoreTagArr);
+          db.collection("articleFolders").doc(destination.droppableId).update({
+            tags: firestoreTagArr,
+          });
         }
       });
       setArticleFolders(newArticleFolders);
@@ -84,6 +93,14 @@ export default function FolderTab() {
           moveItem = { ...newTags[source.index] };
           newTags.splice(source.index, 1);
           folder.tags = newTags;
+          let firestoreTagArr = [];
+          newTags.forEach((tag) => {
+            firestoreTagArr.push(tag.id);
+          });
+          console.log(firestoreTagArr);
+          db.collection("articleFolders").doc(source.droppableId).update({
+            tags: firestoreTagArr,
+          });
         }
       });
       newArticleFolders.forEach((folder) => {
@@ -92,6 +109,14 @@ export default function FolderTab() {
 
           newTags.splice(destination.index, 0, moveItem);
           folder.tags = newTags;
+          let firestoreTagArr = [];
+          newTags.forEach((tag) => {
+            firestoreTagArr.push(tag.id);
+          });
+          console.log(firestoreTagArr);
+          db.collection("articleFolders").doc(destination.droppableId).update({
+            tags: firestoreTagArr,
+          });
         }
       });
       setArticleFolders(newArticleFolders);
@@ -253,6 +278,7 @@ export default function FolderTab() {
                         onClick={() => {
                           if (user) {
                             addArticleFolder(addFolderInput, user.uid);
+                            setEditFolder(false);
                           } else {
                             alert("Please login to add folder!");
                           }

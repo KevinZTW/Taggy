@@ -14,7 +14,7 @@ export default function Board(props) {
   useEffect(() => {
     function checkArticleUpdate(uid) {
       db.collection("Articles")
-        .orderBy("date")
+        .orderBy("date", "desc")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
           let list = [];
