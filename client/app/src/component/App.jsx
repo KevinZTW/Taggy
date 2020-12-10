@@ -43,14 +43,14 @@ function App() {
           <Route path="/rss">
             <div className="content">
               <FunctionTab />
-              <RSSTab />
+              <RSSTab key="123" />
               <RSSBoard />
             </div>
           </Route>
           <Route path="/rssexplore">
             <div className="content">
               <FunctionTab />
-              <RSSTab />
+              <RSSTab key="12223" />
               <RSSExplore />
             </div>
           </Route>

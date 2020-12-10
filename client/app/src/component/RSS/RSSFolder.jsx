@@ -5,7 +5,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import styles from "../SideTab/FolderTab.module.css";
-
+import { Draggable } from "react-beautiful-dnd";
 import { SWITCHRSS } from "../../redux/actions";
 export default function RSSFolder(props) {
   const [RSS, setRSS] = useState([]);
@@ -25,24 +25,37 @@ export default function RSSFolder(props) {
   function showRSSItem(RSS) {
     let RSSList = [];
     if (RSS.length > 0) {
+      let count = 0;
       for (let i in RSS) {
+        console.log(RSS[i]);
         RSSList.push(
-          <TreeItem
-            key={RSS[i].id}
-            nodeId={RSS[i].id}
-            label={
-              <div className={styles.labelWrapper}>
-                <BookmarkIcon style={{ fontSize: 20 }} />
-                <div className={styles.labelTitle}>{RSS[i].title}</div>
+          <Draggable draggableId={RSS[i].id} index={count} key={RSS[i].id}>
+            {(provided) => (
+              <div
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
+              >
+                <TreeItem
+                  key={RSS[i].id}
+                  nodeId={RSS[i].id}
+                  label={
+                    <div className={styles.labelWrapper}>
+                      <BookmarkIcon style={{ fontSize: 20 }} />
+                      <div className={styles.labelTitle}>{RSS[i].title}</div>
+                    </div>
+                  }
+                  onClick={() => {
+                    console.log(RSS[i].id);
+                    dispatch(SWITCHRSS(RSS[i].id));
+                    //   dispatch(SWITCHARTICLE(tabs[i].id));
+                  }}
+                />
               </div>
-            }
-            onClick={() => {
-              console.log(RSS[i].id);
-              dispatch(SWITCHRSS(RSS[i].id));
-              //   dispatch(SWITCHARTICLE(tabs[i].id));
-            }}
-          />
+            )}
+          </Draggable>
         );
+        count++;
       }
     }
     return RSSList;
