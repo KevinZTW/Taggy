@@ -11,9 +11,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 import cors from "cors";
 import { article_router } from "./routes/article_route.js";
+import { rss_router } from "./routes/rss_route.js";
 app.use(cors());
 
-app.use("/route", [article_router]);
+app.use("/route", [article_router, rss_router]);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "client", "app", "build")));

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { db } from "../firebase.js";
-import CardWrapper from "./CardWrapper.jsx";
+import { db } from "../../firebase.js";
+import CardWrapper from "../CardWrapper.jsx";
 import dispatch from "react-redux";
-import styles from "./Board.module.css";
-import { INITARTICLE } from "../redux/actions";
-import AddArticle from "./AddArticle";
+import styles from "../Board.module.css";
+import { INITARTICLE } from "../../redux/actions";
+import AddArticle from "../AddArticle";
 export default function Board(props) {
   const dispatch = useDispatch();
 

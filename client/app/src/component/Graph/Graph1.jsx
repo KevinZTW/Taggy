@@ -61,7 +61,7 @@ export default function Graph() {
             d3.forceLink(links).id((d) => d.id)
           )
           .force("charge", d3.forceManyBody().strength(-500).distanceMax([500]))
-          .force("center", d3.forceCenter(width / 2, height / 2));
+          .force("center", d3.forceCenter(width / 2 - 300, height / 2));
 
         const link = svg
           .append("g")
@@ -214,8 +214,8 @@ export default function Graph() {
         ref={ref}
         style={{
           height: 1000,
-          width: "70%",
-          marginRight: "0px",
+          width: "100%",
+          marginRight: "20px",
           marginLeft: "0px",
         }}
       >

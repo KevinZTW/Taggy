@@ -121,7 +121,55 @@ export default function Board(props) {
               <div className={styles.cardDescription}>前端新知</div>
             </div>
           </div>
-          <div className={styles.cardBtn}>Follow1</div>
+          <div className={styles.cardBtn}>Follow</div>
+        </div>
+        <div className={styles.categoryCard}>
+          <div className={styles.cardUpper}>
+            <div className={styles.cardImg}>
+              <img src={sfLogo} alt="" />
+            </div>
+            <div className={styles.cardWording}>
+              <div className={styles.cardTitle}>掘金前端</div>
+              <div className={styles.cardDescription}>前端新知</div>
+            </div>
+          </div>
+          <div className={styles.cardBtn}>Follow</div>
+        </div>
+        <div className={styles.categoryCard}>
+          <div className={styles.cardUpper}>
+            <div className={styles.cardImg}>
+              <img src={sfLogo} alt="" />
+            </div>
+            <div className={styles.cardWording}>
+              <div className={styles.cardTitle}>Segment Fault - 前端</div>
+              <div className={styles.cardDescription}>前端新知</div>
+            </div>
+          </div>
+          <div className={styles.cardBtn}>Follow</div>
+        </div>
+        <div className={styles.categoryCard}>
+          <div className={styles.cardUpper}>
+            <div className={styles.cardImg}>
+              <img src={sfLogo} alt="" />
+            </div>
+            <div className={styles.cardWording}>
+              <div className={styles.cardTitle}>Segment Fault - 前端</div>
+              <div className={styles.cardDescription}>前端新知</div>
+            </div>
+          </div>
+          <div className={styles.cardBtn}>Follow</div>
+        </div>
+        <div className={styles.categoryCard}>
+          <div className={styles.cardUpper}>
+            <div className={styles.cardImg}>
+              <img src={sfLogo} alt="" />
+            </div>
+            <div className={styles.cardWording}>
+              <div className={styles.cardTitle}>Segment Fault - 前端</div>
+              <div className={styles.cardDescription}>前端新知</div>
+            </div>
+          </div>
+          <div className={styles.cardBtn}>Follow</div>
         </div>
       </div>
 

@@ -8,6 +8,8 @@ import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
 import FolderTab from "./SideTab/FolderTab";
+import GroupFolderTab from "./SideTab/GroupFolderTab";
+import GroupBoard from "./Group/GroupBoard";
 import Graph from "./Graph/Graph1";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
@@ -33,6 +35,13 @@ function App() {
             </div>
           </Route>
           <Route path="/article" component={Article}></Route>
+          <Route path="/group">
+            <div className="content">
+              <FunctionTab />
+              <GroupFolderTab />
+              <GroupBoard />
+            </div>
+          </Route>
           <Route path="/graph">
             <div className="content">
               <FunctionTab />

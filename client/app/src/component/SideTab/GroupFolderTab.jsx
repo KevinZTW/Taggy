@@ -6,6 +6,7 @@ import { TreeView } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
@@ -29,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FolderTab() {
+export default function GroupFolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [editFolder, setEditFolder] = useState(false);
@@ -217,19 +218,33 @@ export default function FolderTab() {
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
-        <Link to={"/board"}>
-          <div className={styles.sectionTitle}>My Board</div>
-          <TreeView
-            className={classes.root}
-            defaultExpanded={[""]}
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
+        <div className={styles.sectionTitle}>Group Boards</div>
+        <div className={styles.subTitle}>Create New Group</div>
+        <TreeView
+          className={classes.root}
+          defaultExpanded={[""]}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          {" "}
+          <TreeItem
+            nodeId="Appworks"
+            label={
+              <div className={styles.labelWrapper}>
+                <PeopleAltIcon />
+                <div className={styles.labelTitle}>Appworks Front End</div>
+              </div>
+            }
+            onClick={() => {
+              console.log("all");
+              dispatch(SWITCHARTICLE("all"));
+            }}
           >
             <TreeItem
               nodeId="tagAll"
               label={
                 <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>All</div>
+                  <div className={styles.labelTitle}>Al1l</div>
                 </div>
               }
               onClick={() => {
@@ -246,69 +261,123 @@ export default function FolderTab() {
                 </div>
               }
             />
+            {/* <DragDropContext onDragEnd={onDragEnd}>
+              {articleFolderList}
+             </DragDropContext> */}
+            <div
+              className={styles.subTitle}
+              onClick={() => {
+                setEditFolder(true);
+              }}
+            >
+              Add Folder
+            </div>
+          </TreeItem>
+        </TreeView>
+        <TreeView
+          className={classes.root}
+          defaultExpanded={[""]}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          {" "}
+          <TreeItem
+            nodeId="Appworks2"
+            label={
+              <div className={styles.labelWrapper}>
+                <PeopleAltIcon />
+                <div className={styles.labelTitle}>上進群組666</div>
+              </div>
+            }
+            onClick={() => {
+              console.log("all");
+              dispatch(SWITCHARTICLE("all"));
+            }}
+          >
+            <TreeItem
+              nodeId="tagAll2"
+              label={
+                <div className={styles.labelWrapper}>
+                  <div className={styles.labelTitle}>Al1l</div>
+                </div>
+              }
+              onClick={() => {
+                console.log("all");
+                dispatch(SWITCHARTICLE("all"));
+              }}
+            ></TreeItem>
+            <TreeItem
+              nodeId="unTag2"
+              label={
+                <div className={styles.labelWrapper}>
+                  <MarkunreadIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+                  <div className={styles.labelTitle}>Untaged</div>
+                </div>
+              }
+            />
             <DragDropContext onDragEnd={onDragEnd}>
               {articleFolderList}
             </DragDropContext>
-          </TreeView>
-          {editFolder
-            ? createPortal(
-                <div className={styles.popup}>
-                  <div
-                    className={styles.blur}
-                    onClick={() => {
-                      setEditFolder(false);
-                    }}
-                  ></div>
-                  <div className={styles.addFolder}>
-                    <div className={styles.addTitle}>Add New Folder</div>
-                    <form id="addForm" action="">
-                      <input
-                        className={styles.input}
-                        type="text"
-                        placeholder="Folder Name"
-                        value={addFolderInput}
-                        onChange={(e) => {
-                          setAddFolderInput(e.target.value);
-                        }}
-                      />
-                      <button
-                        type="submit"
-                        className={styles.saveBtn}
-                        form="addForm"
-                        onClick={() => {
-                          if (user) {
-                            addArticleFolder(addFolderInput, user.uid);
-                            setEditFolder(false);
-                          } else {
-                            alert("Please login to add folder!");
-                          }
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {
+            <div
+              className={styles.subTitle}
+              onClick={() => {
+                setEditFolder(true);
+              }}
+            >
+              Add Folder
+            </div>
+          </TreeItem>
+        </TreeView>
+        {editFolder
+          ? createPortal(
+              <div className={styles.popup}>
+                <div
+                  className={styles.blur}
+                  onClick={() => {
+                    setEditFolder(false);
+                  }}
+                ></div>
+                <div className={styles.addFolder}>
+                  <div className={styles.addTitle}>Add New Folder</div>
+                  <form id="addForm" action="">
+                    <input
+                      className={styles.input}
+                      type="text"
+                      placeholder="Folder Name"
+                      value={addFolderInput}
+                      onChange={(e) => {
+                        setAddFolderInput(e.target.value);
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      className={styles.saveBtn}
+                      form="addForm"
+                      onClick={() => {
+                        if (user) {
+                          addArticleFolder(addFolderInput, user.uid);
                           setEditFolder(false);
-                        }}
-                        className={styles.cancelBtn}
-                      >
-                        Cancel
-                      </button>
-                    </form>
-                  </div>
-                </div>,
-                document.body
-              )
-            : ""}
-          <div
-            className={styles.subTitle}
-            onClick={() => {
-              setEditFolder(true);
-            }}
-          >
-            Add Folder
-          </div>
-        </Link>
+                        } else {
+                          alert("Please login to add folder!");
+                        }
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditFolder(false);
+                      }}
+                      className={styles.cancelBtn}
+                    >
+                      Cancel
+                    </button>
+                  </form>
+                </div>
+              </div>,
+              document.body
+            )
+          : ""}
       </div>
     </div>
   );

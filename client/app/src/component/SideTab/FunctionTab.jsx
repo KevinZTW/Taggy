@@ -7,6 +7,7 @@ import HomeWorkIcon from "@material-ui/icons/HomeWork";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
+import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 export default function FunctionTab() {
   return (
     <div className={styles.functionTabWrapper}>
@@ -23,6 +24,9 @@ export default function FunctionTab() {
           </Link>
           <Link to={"/graph"}>
             <InsertChartIcon fontSize="large" style={{ color: "#747474" }} />
+          </Link>
+          <Link to={"/group"}>
+            <PeopleAltIcon fontSize="large" style={{ color: "#747474" }} />
           </Link>
           <Link to={"/signup"}>
             <AccountBoxIcon fontSize="large" style={{ color: "#747474" }} />

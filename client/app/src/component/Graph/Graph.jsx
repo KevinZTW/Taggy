@@ -1,14 +1,21 @@
 import * as d3 from "d3";
-import { data } from "../../data.js";
+import { dataSet } from "../../data.js";
+import { dataSet2 } from "../../data2.js";
 import { useD3 } from "../../hooks/useD3.js";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { app } from "../../lib/gragh_lib.js";
+import { useDispatch } from "react-redux";
+import { SWITCHARTICLE } from "../../redux/actions";
 import styles from "./Graph.module.css";
-
 export default function Graph() {
-  const list = useSelector((state) => {
-    console.log(state);
-    let articleList = state.articleReducer.articleList;
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => {
+    return state.memberReducer.user;
   });
+
+  const [data, setData] = useState({});
   function color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return (d) => scale(d.group);
@@ -40,66 +47,174 @@ export default function Graph() {
 
   const ref = useD3(
     (svg) => {
+      let id;
       const height = 1000;
       const width = 1000;
-      const links = data.links.map((d) => Object.create(d));
-      const nodes = data.nodes.map((d) => Object.create(d));
+      if (data.nodes) {
+        const links = data.links.map((d) => Object.create(d));
+        const nodes = data.nodes.map((d) => Object.create(d));
 
-      const simulation = d3
-        .forceSimulation(nodes)
-        .force(
-          "link",
-          d3.forceLink(links).id((d) => d.id)
-        )
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        const simulation = d3
+          .forceSimulation(nodes)
+          .force(
+            "link",
+            d3.forceLink(links).id((d) => d.id)
+          )
+          .force("charge", d3.forceManyBody().strength(-500).distanceMax([500]))
+          .force("x", d3.forceX())
+          .force("y", d3.forceY());
 
-      const link = svg
-        .append("g")
-        .attr("stroke", "#999")
-        .attr("stroke-opacity", 0.6)
-        .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("stroke-width", (d) => Math.sqrt(d.value));
+        const link = svg
+          .append("g")
+          .attr("stroke", "#999")
+          .attr("stroke-opacity", 0.6)
+          .selectAll("line")
+          .data(links)
+          .join("line")
+          .attr("stroke-width", (d) => Math.sqrt(d.value));
 
-      const node = svg
-        .append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 1.5)
-        .selectAll("circle")
-        .data(nodes)
-        .join("circle")
-        .attr("r", 5)
-        .attr("fill", color)
-        .call(drag(simulation));
+        const node = svg
+          .append("g")
+          .attr("stroke-linecap", "round")
+          .attr("stroke-linejoin", "round")
+          .selectAll("circle")
+          .data(nodes)
+          .join("circle")
+          .attr("r", 5)
+          .attr("fill", "#4F4F4F")
+          .call(drag(simulation));
 
-      node.append("title").text((d) => d.id);
+        // const text = node
+        //   .append("text")
+        //   .text((d) => d.id)
+        //   .clone(true)
+        //   .lower()
+        //   .attr("stroke-width", 0.5)
+        //   .attr("stroke", "white")
+        //   .attr("fill", "white")
+        //   .attr("id", (d) => d.tagId)
+        //   .on("click", (a) => {
+        //     console.log(a);
+        //     console.log(a.target.id);
+        //     dispatch(SWITCHARTICLE(a.target.id));
+        //   });
 
-      simulation.on("tick", () => {
-        link
-          .attr("x1", (d) => d.source.x)
-          .attr("y1", (d) => d.source.y)
-          .attr("x2", (d) => d.target.x)
-          .attr("y2", (d) => d.target.y);
+        node.append("title").text((d) => d.id);
 
-        node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-      });
+        simulation.on("tick", () => {
+          link
+            .attr("x1", (d) => d.source.x)
+            .attr("y1", (d) => d.source.y)
+            .attr("x2", (d) => d.target.x)
+            .attr("y2", (d) => d.target.y);
+
+          node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+          // text.attr("x", (d) => d.x + 10).attr("y", (d) => d.y);
+        });
+      }
 
       return svg.node();
     },
-    [data.length]
+    [data]
   );
+  const articleList = useSelector((state) => {
+    console.log(state);
+    return state.articleReducer.articleList;
+  });
+  function getGraphData(uid) {
+    return new Promise(async (resolve) => {
+      let memberTags = await app.getMemberTags(uid);
 
+      resolve(memberTags);
+    });
+  }
+  // {
+  //   id: "1qeqw",
+  //   value: "ee"
+  //   label: "ee"
+  // }
+  function createCombinationList(tags) {
+    let combList = [];
+    for (let i = 0; i < tags.length - 1; i++) {
+      for (let j = i + 1; j < tags.length; j++) {
+        combList.push([tags[i], tags[j]]);
+      }
+    }
+    return combList;
+  }
+  function countCombinationNumber(articleList, combList) {
+    console.error(articleList);
+    let links = [];
+    console.log(combList);
+    for (let i = 0; i < combList.length; i++) {
+      let combNumber = 0;
+      articleList.forEach((article) => {
+        if (article.tags) {
+          if (
+            article.tags.includes(combList[i][0].id) &&
+            article.tags.includes(combList[i][1].id)
+          ) {
+            combNumber += 1;
+          }
+        }
+      });
+      links.push({
+        source: combList[i][0].label,
+        target: combList[i][1].label,
+        value: combNumber,
+      });
+    }
+    return links;
+  }
+  function combInit(tags) {
+    let combList = createCombinationList(tags);
+    console.warn(articleList);
+    return countCombinationNumber(articleList, combList);
+  }
+
+  function initGraphData(uid) {
+    return new Promise((resolve) => {
+      getGraphData(uid)
+        .then((memberTags) => {
+          let links = combInit(memberTags);
+          let nodes = [];
+          memberTags.forEach((tag) => {
+            nodes.push({
+              id: tag.value,
+              tagId: tag.id,
+            });
+          });
+          console.log(links);
+          return [nodes, links];
+        })
+        .then(([nodes, links]) => {
+          resolve({
+            nodes: nodes,
+            links: links,
+          });
+        });
+    });
+  }
+  useEffect(() => {
+    if (user && articleList[0]) {
+      console.log(articleList);
+      // setDataRun(true);
+      console.log(user);
+      initGraphData(user.uid).then((data) => {
+        console.log("lets set dat=============================a");
+        console.log(data);
+        setData(data);
+      });
+    }
+  }, [user, articleList]);
   return (
     <div className={styles.graphWrapper}>
-      <button>change Data</button>
       <svg
         ref={ref}
         style={{
           height: 1000,
-          width: "70%",
-          marginRight: "0px",
+          width: "100%",
+          marginRight: "20px",
           marginLeft: "0px",
         }}
       >

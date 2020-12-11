@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { localUrl, ec2Url } from "../../config.js";
+import { local, ec2Url } from "../../config.js";
 import styles from "./FindRSS.module.css";
 import * as RSSParser from "rss-parser";
 import { GETRSSRESPONSE } from "../../redux/actions";
+import Axios from "axios";
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("");
   const dispatch = useDispatch();
@@ -16,21 +17,30 @@ export default function FindRSS(props) {
     let parser = new RSSParser();
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
-        let parser = new RSSParser();
-        parser.parseURL(url, function (err, feed) {
-          if (err) {
-            throw dispatch(GETRSSRESPONSE(err));
+        fetch(local + "rss/fetch", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: JSON.stringify({ url: url }),
+        }).then(function (response) {
+          if (response.status !== 200) {
+            console.log("sth goes wrong in backend ");
+          } else {
+            response.json().then((data) => {
+              dispatch(GETRSSRESPONSE(data.rss, url));
+            });
           }
-          dispatch(GETRSSRESPONSE(feed, url));
         });
-        throw dispatch(GETRSSRESPONSE(err));
+      } else {
+        console.log(feed);
+        console.log(feed.title);
+        dispatch(GETRSSRESPONSE(feed, url));
+        feed.items.forEach(function (entry) {
+          console.log(entry.title + ":" + entry.link);
+        });
       }
-      console.log(feed);
-      console.log(feed.title);
-      dispatch(GETRSSRESPONSE(feed, url));
-      feed.items.forEach(function (entry) {
-        console.log(entry.title + ":" + entry.link);
-      });
     });
   }
 

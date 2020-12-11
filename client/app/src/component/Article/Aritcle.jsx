@@ -99,7 +99,7 @@ export default function Article() {
     console.groupEnd();
   }
   useEffect(() => {
-    function getArticles() {
+    let getArticles = function () {
       db.collection("Articles")
         .doc(id)
         .onSnapshot(function (doc) {
@@ -110,8 +110,11 @@ export default function Article() {
             });
           }
         });
-    }
+    };
     getArticles();
+    return () => {
+      getArticles();
+    };
   }, []);
 
   return (

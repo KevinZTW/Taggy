@@ -22,7 +22,7 @@ const getArticle = function (uid, url) {
 
       let title = article.title;
       let readerHtml = article.content;
-      var markdown = turndownService.turndown(readerHtml).slice(0, 100);
+      var markdown = turndownService.turndown(readerHtml).slice(0, 200);
       console.log("-------------------------------------");
       console.log("markdown is ", markdown);
       console.log("測試", title, markdown);
