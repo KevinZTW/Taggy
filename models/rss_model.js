@@ -1,5 +1,10 @@
 import { db } from "../firebase.js";
 import OpenCC from "opencc";
+import dayjs from "dayjs";
+
+let test = Date.now();
+let test2 = dayjs(test).valueOf();
+console.log(test2);
 const converter = new OpenCC("s2t.json");
 const checkRSSItem = function (item) {
   console.log("let check", item.guid);
@@ -31,6 +36,7 @@ const addRSS = function (feed, RSSId) {
     checkRSSItem(feed.items[i]).then((evaluate) => {
       if (evaluate && feed.items[i].content) {
         console.log("Saved RSSItem ", feed.items[i].title);
+        let pubDate = dayjs(feed.items[i].pubDate).valueOf();
         translation(
           feed.items[i].content || "",
           feed.items[i].contentSnippet || "",
@@ -50,7 +56,7 @@ const addRSS = function (feed, RSSId) {
               guid: feed.items[i].guid || "",
               isoDate: feed.items[i].isoDate || "",
               link: feed.items[i].link || "",
-              pubDate: feed.items[i].pubDate || "",
+              pubDate: pubDate || "",
               author: converted[5] || "",
             })
             .then((docRef) => docRef.update({ id: docRef.id }))
