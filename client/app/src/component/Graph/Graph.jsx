@@ -1,10 +1,14 @@
 import * as d3 from "d3";
 import { data } from "../../data.js";
 import { useD3 } from "../../hooks/useD3.js";
-
+import { useSelector } from "react-redux";
 import styles from "./Graph.module.css";
 
 export default function Graph() {
+  const list = useSelector((state) => {
+    console.log(state);
+    let articleList = state.articleReducer.articleList;
+  });
   function color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
     return (d) => scale(d.group);

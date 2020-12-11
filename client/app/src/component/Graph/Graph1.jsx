@@ -10,9 +10,11 @@ import { SWITCHARTICLE } from "../../redux/actions";
 import styles from "./Graph.module.css";
 export default function Graph() {
   const dispatch = useDispatch();
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+
   const [data, setData] = useState({});
   function color() {
     const scale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -58,7 +60,7 @@ export default function Graph() {
             "link",
             d3.forceLink(links).id((d) => d.id)
           )
-          .force("charge", d3.forceManyBody().strength(-80).distanceMax([500]))
+          .force("charge", d3.forceManyBody().strength(-500).distanceMax([500]))
           .force("center", d3.forceCenter(width / 2, height / 2));
 
         const link = svg
@@ -116,14 +118,96 @@ export default function Graph() {
     },
     [data]
   );
+  const articleList = useSelector((state) => {
+    console.log(state);
+    return state.articleReducer.articleList;
+  });
+  function getGraphData(uid) {
+    return new Promise(async (resolve) => {
+      let memberTags = await app.getMemberTags(uid);
+
+      resolve(memberTags);
+    });
+  }
+  // {
+  //   id: "1qeqw",
+  //   value: "ee"
+  //   label: "ee"
+  // }
+  function createCombinationList(tags) {
+    let combList = [];
+    for (let i = 0; i < tags.length - 1; i++) {
+      for (let j = i + 1; j < tags.length; j++) {
+        combList.push([tags[i], tags[j]]);
+      }
+    }
+    return combList;
+  }
+  function countCombinationNumber(articleList, combList) {
+    console.error(articleList);
+    let links = [];
+    console.log(combList);
+    for (let i = 0; i < combList.length; i++) {
+      let combNumber = 0;
+      articleList.forEach((article) => {
+        if (article.tags) {
+          if (
+            article.tags.includes(combList[i][0].id) &&
+            article.tags.includes(combList[i][1].id)
+          ) {
+            combNumber += 1;
+          }
+        }
+      });
+      links.push({
+        source: combList[i][0].label,
+        target: combList[i][1].label,
+        value: combNumber,
+      });
+    }
+    return links;
+  }
+  function combInit(tags) {
+    let combList = createCombinationList(tags);
+    console.warn(articleList);
+    return countCombinationNumber(articleList, combList);
+  }
+
+  function initGraphData(uid) {
+    return new Promise((resolve) => {
+      getGraphData(uid)
+        .then((memberTags) => {
+          let links = combInit(memberTags);
+          let nodes = [];
+          memberTags.forEach((tag) => {
+            nodes.push({
+              id: tag.value,
+              tagId: tag.id,
+            });
+          });
+          console.log(links);
+          return [nodes, links];
+        })
+        .then(([nodes, links]) => {
+          resolve({
+            nodes: nodes,
+            links: links,
+          });
+        });
+    });
+  }
   useEffect(() => {
-    if (user) {
+    if (user && articleList[0]) {
+      console.log(articleList);
+      // setDataRun(true);
       console.log(user);
-      app.initGraphData(user.uid).then((data) => {
+      initGraphData(user.uid).then((data) => {
+        console.log("lets set dat=============================a");
+        console.log(data);
         setData(data);
       });
     }
-  }, [user]);
+  }, [user, articleList]);
   return (
     <div className={styles.graphWrapper}>
       <svg

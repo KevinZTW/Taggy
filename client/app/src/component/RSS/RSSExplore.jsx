@@ -7,6 +7,8 @@ import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
+import sfLogo from "../../img/sf_logo.png";
+import { style } from "d3";
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
@@ -106,6 +108,23 @@ export default function Board(props) {
   return (
     <div className={styles.boardWrapper}>
       <FindRSS className="headMemberIcon" user={props.user} />
+      <div className={styles.title}># Explore</div>
+      <div className={styles.categoryTitle}>Tech</div>
+      <div className={styles.categoryWrapper}>
+        <div className={styles.categoryCard}>
+          <div className={styles.cardUpper}>
+            <div className={styles.cardImg}>
+              <img src={sfLogo} alt="" />
+            </div>
+            <div className={styles.cardWording}>
+              <div className={styles.cardTitle}>Segment Fault - 前端</div>
+              <div className={styles.cardDescription}>前端新知</div>
+            </div>
+          </div>
+          <div className={styles.cardBtn}>Follow1</div>
+        </div>
+      </div>
+
       {searchOutcome}
       {showPage ? (
         <div className={styles.popup}>

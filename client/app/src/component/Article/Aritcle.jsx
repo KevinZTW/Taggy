@@ -116,6 +116,10 @@ export default function Article() {
 
   return (
     <div className={styles.articleWrapper}>
+      <img
+        data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d072fabce4c74b95a416ced1d5743949~tplv-k3u1fbpfcp-zoom-1.image"
+        alt=""
+      />
       <div className={styles.head}>
         <Link to={"/board"}>
           <ArrowBack style={{ color: "#FFFCEC" }} />

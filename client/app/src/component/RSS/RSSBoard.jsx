@@ -27,14 +27,15 @@ export default function Board(props) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
         .orderBy("pubDate", "desc")
-        .where("RSSId", "in", userRSSList)
         .limit(15)
         .get()
         .then((snapshot) => {
           console.log("batchfetch start");
           let items = [...allFeeds];
           snapshot.forEach((doc) => {
-            items.push(doc.data());
+            if (userRSSList.includes(doc.data().RSSId)) {
+              items.push(doc.data());
+            }
           });
           setLastQueryDoc(snapshot.docs[14]);
 
@@ -45,20 +46,21 @@ export default function Board(props) {
     } else {
       if (lastQueryDoc) {
         console.log("else start, the last visible is", lastVisible);
-        console.log(lastQueryDoc);
+
         db.collection("RSSItem")
-          .orderBy("pubDate")
+          .orderBy("pubDate", "desc")
           .startAfter(lastQueryDoc)
-          .where("RSSId", "in", userRSSList)
           .limit(7)
           .get()
           .then((snapshot) => {
             let items = [...allFeeds];
             snapshot.forEach((doc) => {
-              console.log(doc.data());
-              items.push(doc.data());
+              if (userRSSList.includes(doc.data().RSSId)) {
+                items.push(doc.data());
+              }
             });
-            setLastQueryDoc(snapshot.docs[6]);
+
+            setLastQueryDoc(snapshot.docs[snapshot.docs.length - 1]);
             setAllFeeds(items);
           });
       }

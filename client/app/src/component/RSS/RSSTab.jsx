@@ -184,27 +184,29 @@ export default function RSSTab() {
       let newRSSFolders = [...RSSFolders];
       let moveId;
       let moveItem;
-      let newRSSIds;
+      let newSourceRSSIds;
+      let newDestinationRSSIds;
       newRSSFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
           moveId = folder.RSSIds[source.index];
           moveItem = folder.RSS[source.index];
-          newRSSIds = [...folder.RSSIds];
-          newRSSIds.splice(source.index, 1);
+          newSourceRSSIds = [...folder.RSSIds];
+          newSourceRSSIds.splice(source.index, 1);
           folder.RSS.splice(source.index, 1);
-          folder.RSSIds = newRSSIds;
+          folder.RSSIds = newSourceRSSIds;
           db.collection("RSSFolders").doc(source.droppableId).update({
-            RSS: newRSSIds,
+            RSS: newSourceRSSIds,
           });
         }
       });
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          newRSSIds.splice(destination.index, 0, moveId);
+          newDestinationRSSIds = [...folder.RSSIds];
+          newDestinationRSSIds.splice(destination.index, 0, moveId);
           folder.RSS.splice(destination.index, 0, moveItem);
-          folder.RSSIds = newRSSIds;
+          folder.RSSIds = newDestinationRSSIds;
           db.collection("RSSFolders").doc(destination.droppableId).update({
-            RSS: newRSSIds,
+            RSS: newDestinationRSSIds,
           });
         }
       });
@@ -239,7 +241,7 @@ export default function RSSTab() {
           </TreeView>
         </Link>
         <Link to={"/rssexplore"}>
-          <div className={styles.subTitle}>AddRSS</div>
+          <div className={styles.subTitle}>Follow New Source</div>
         </Link>
         <div
           className={styles.subTitle}

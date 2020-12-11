@@ -111,7 +111,6 @@ app.getMemberTags = function (uid) {
           console.log(tagIds);
           if (tagIds !== "" && tagIds) {
             for (let i in tagIds) {
-              console.log(tagIds[i]);
               await db
                 .collection("Tags")
                 .doc(tagIds[i])
@@ -126,7 +125,6 @@ app.getMemberTags = function (uid) {
             }
           }
           console.log(memberTags);
-          console.log("1");
           resolve(memberTags);
         } else resolve("");
       });
