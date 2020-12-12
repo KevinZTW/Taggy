@@ -3,6 +3,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+*::-webkit-scrollbar {
+  display: none;
+}
 
 body {
   background-color: #131313;
@@ -18,9 +21,13 @@ a {
   flex-wrap: wrap;
 }
 
-a:link,
+a:link {
+  text-decoration: none;
+  color: white;
+}
 a:visited {
   text-decoration: none;
+  color: #b2b2b2;
 }
 .title {
   color: white;

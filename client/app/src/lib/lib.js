@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import firebase from "firebase/app";
 import { db, FieldValue } from "../firebase.js";
+import dayjs from "dayjs";
 
 export const app = {};
 app.getMemberArticleFolders = function (uid) {
@@ -423,16 +424,16 @@ app.addRSSItem = function (feed, RSSId) {
         db.collection("RSSItem")
           .add({
             RSSId: RSSId,
-            content: feed.items[i].content || "null",
-            contentSnippet: feed.items[i].contentSnippet || "null",
-            RSS: feed.title || "null",
-            title: feed.items[i].title || "null",
-            creator: feed.items[i].creator || "null",
-            guid: feed.items[i].guid || "null",
-            isoDate: feed.items[i].isoDate || "null",
-            link: feed.items[i].link || "null",
-            pubDate: feed.items[i].pubDate || "null",
-            author: feed.items[i].author || "null",
+            content: feed.items[i].content || "",
+            contentSnippet: feed.items[i].contentSnippet || "",
+            RSS: feed.title || "",
+            title: feed.items[i].title || "",
+            creator: feed.items[i].creator || "",
+            guid: feed.items[i].guid || "",
+            isoDate: feed.items[i].isoDate || "",
+            link: feed.items[i].link || "",
+            pubDate: dayjs(feed.items[i].pubDate).valueOf() || "",
+            author: feed.items[i].author || "",
           })
           .then((docRef) => docRef.update({ id: docRef.id }))
           .then(console.log("store successfully!"));
@@ -540,4 +541,34 @@ app.getFeedContent = function (feedId) {
   });
 };
 
-app.getAllUserFeeds = function (uid) {};
+app.getGroupArticleFolders = function (uid) {
+  return new Promise((resolve, reject) => {
+    db.collection("GroupBoard")
+      .doc(uid)
+      .get()
+      .then(async (doc) => {
+        if (doc.data()) {
+          let articleFolderIds = doc.data().articleFolders;
+          let articleFolders = [];
+          console.log(articleFolderIds);
+          if (articleFolderIds !== "" && articleFolderIds) {
+            for (let i in articleFolderIds) {
+              console.log(articleFolderIds[i]);
+              await db
+                .collection("articleFolders")
+                .doc(articleFolderIds[i])
+                .get()
+                .then((doc) => {
+                  articleFolders.push({
+                    id: doc.data().id,
+                    name: doc.data().name,
+                    tags: doc.data().tags,
+                  });
+                });
+            }
+          }
+          resolve(articleFolders);
+        } else resolve("dont have this user");
+      });
+  });
+};

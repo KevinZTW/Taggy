@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 export default function RSSPage(props) {
   console.log("page rerender, props is ", props.item);
   const [feedItem, setFeedItem] = useState({});
+
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);

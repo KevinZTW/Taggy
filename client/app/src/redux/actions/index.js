@@ -49,6 +49,12 @@ const INITUSERRSSLIST = (RSSList) => {
     RSSList: RSSList,
   };
 };
+const GROUPINIT = (groups) => {
+  return {
+    type: "GROUPINIT",
+    groups: groups,
+  };
+};
 export {
   INITARTICLE,
   SWITCHRSS,
@@ -56,4 +62,5 @@ export {
   SETMEMBER,
   GETRSSRESPONSE,
   INITUSERRSSLIST,
+  GROUPINIT,
 };

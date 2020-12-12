@@ -43,7 +43,24 @@ export default function RSSTab() {
         dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
       });
   }
-
+  function addNewGroup(uid, name) {
+    db.collection("GroupBoard")
+      .add({
+        name: name,
+        member: [uid],
+      })
+      .then((docRef) => {
+        docRef.update({ id: docRef.id });
+        return docRef.id;
+      })
+      .then((id) => {
+        db.collection("Member")
+          .doc(uid)
+          .update({
+            board: firebase.firestore.FieldValue.arrayUnion(id),
+          });
+      });
+  }
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });

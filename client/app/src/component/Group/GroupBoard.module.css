@@ -1,0 +1,54 @@
+.boardWrapper {
+  width: 100%;
+  color: #b2b2b2;
+  padding-left: 30px;
+}
+
+.titleWrapper {
+  display: flex;
+  padding-bottom: 30px;
+  align-items: flex-end;
+  max-width: 70%;
+}
+
+.title {
+  color: white;
+  flex: auto;
+  font-size: 32px;
+}
+
+.actionList {
+  position: relative;
+  display: flex;
+}
+.addMemberWrapper {
+  z-index: 4;
+  width: 200px;
+  position: absolute;
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 6px;
+  top: 25px;
+  right: 0px;
+}
+.addMemberWrapper input {
+  margin-top: 5px;
+  border: none;
+  border-radius: 4px;
+  background: #191919;
+  padding: 3px;
+  color: #b2b2b2;
+}
+.memberWrapper {
+  padding-top: 5px;
+  display: flex;
+}
+.memberWrapper button {
+  padding: 0 8px;
+  margin-left: 10px;
+  height: 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(30, 171, 249);
+  cursor: pointer;
+}
