@@ -14,7 +14,12 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
-import { SWITCHARTICLE, GROUPINIT } from "../../redux/actions";
+import {
+  SWITCHARTICLE,
+  GROUPINIT,
+  INITGROUPSELECT,
+  SWITCHGROUPSELECT,
+} from "../../redux/actions";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -33,6 +38,7 @@ const useStyles = makeStyles({
 export default function GroupFolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [tabChange, setTabChange] = useState("");
   const [editFolder, setEditFolder] = useState(false);
   const [addGroup, setAddGroup] = useState(false);
   const [addGroupInput, setAddGroupInput] = useState("");
@@ -41,8 +47,7 @@ export default function GroupFolderTab() {
   console.log(articleFolders);
 
   const groups = useSelector((state) => {
-    console.log(state.memberReducer.groups);
-    return state.memberReducer.groups;
+    return state.groupReducer.groups;
   });
   const user = useSelector((state) => {
     return state.memberReducer.user;
@@ -164,6 +169,12 @@ export default function GroupFolderTab() {
         groups[groupIds[i]] = info;
       }
       console.log(groups);
+      dispatch(
+        INITGROUPSELECT(
+          groups[Object.keys(groups)[0]].id,
+          groups[Object.keys(groups)[0]].name
+        )
+      );
       //=========!!!!!!!!!!!!!!!!!!!===========
       // dispatch(GROUPINIT(groups));
 
@@ -191,37 +202,56 @@ export default function GroupFolderTab() {
         console.log(groups);
       }
       console.log(groups);
+
       dispatch(GROUPINIT(groups));
     }
-    // function getGroupFolders() {
-    //   if (user) {
-    //     app
-    //       .getMemberArticleFolders(user.uid)
-    //       .then((articleFolders) => {
-    //         console.log(articleFolders);
-    //         setArticleFolders(articleFolders);
-    //         return articleFolders;
-    //       })
-    //       .then(async (articleFolders) => {
-    //         let tempFolderList = [];
-    //         for (let i = 0; i < articleFolders.length; i++) {
-    //           let tags = await app.getMemberFolderTags(articleFolders[i].id);
-    //           console.log(tags);
-    //           tempFolderList.push({ ...articleFolders[i], tags: tags });
-    //         }
-    //         console.log(tempFolderList);
-    //         return tempFolderList;
-    //       })
-    //       .then((newFolder) => {
-    //         console.log(newFolder);
-    //         setArticleFolders(newFolder);
-    //       });
-    //   }
-    // }
-    if (user) {
+    async function updateMemberGroup(user, changeId) {
+      let groupIds = await getMemberGroups(user);
+      let groups = {};
+      console.log(groupIds);
+      for (let i in groupIds) {
+        let info = await getGroupDbInfo(groupIds[i]);
+        groups[groupIds[i]] = info;
+      }
+      console.log(groups);
+      console.log(changeId);
+      dispatch(SWITCHGROUPSELECT(groups[changeId].id, groups[changeId].name));
+      //=========!!!!!!!!!!!!!!!!!!!===========
+      // dispatch(GROUPINIT(groups));
+
+      for (let i in groupIds) {
+        let info = await getGroupDbInfo(groupIds[i]);
+        //info ={  id: "group1",
+        //name: front end,
+        //articleFolders: [id1, id2, id3],}
+        let folders = await app.getGroupArticleFolders(groupIds[i]);
+        //folders=[{id, name, tags}, {id, name, tags}]
+        console.log(folders);
+        let folderWithTagInfo = folders.map(async (folder) => {
+          let tags = await app.getMemberFolderTags(folder.id);
+          folder.tags = tags;
+          return folder;
+        });
+
+        let group = await Promise.all(folderWithTagInfo).then((folder) => {
+          info.articleFolders = folder;
+          return info;
+        });
+        console.log(group);
+        let groupId = groupIds[i];
+        groups[groupId] = group;
+        console.log(groups);
+      }
+      console.log(groups);
+
+      dispatch(GROUPINIT(groups));
+    }
+    if (tabChange) {
+      updateMemberGroup(user, tabChange).then(() => {});
+    } else if (user) {
       memberGroupInit(user).then((groups) => {});
     }
-  }, [user]);
+  }, [user, tabChange]);
 
   function addArticleFolder(name, uid) {
     db.collection("articleFolders")
@@ -266,6 +296,10 @@ export default function GroupFolderTab() {
             id: "un" + id,
             name: "Uncategorized",
           });
+        return id;
+      })
+      .then((id) => {
+        setTabChange(id);
       });
   }
   function renderGroupTabs(groups) {
@@ -279,6 +313,10 @@ export default function GroupFolderTab() {
           defaultExpanded={[""]}
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
+          onClick={() => {
+            console.log(groups[key].name);
+            dispatch(SWITCHGROUPSELECT(key, groups[key].name));
+          }}
         >
           <TreeItem
             nodeId={groups[key].name}
@@ -414,7 +452,7 @@ export default function GroupFolderTab() {
                     <input
                       className={styles.input}
                       type="text"
-                      placeholder="Folder Name"
+                      placeholder="Group Board Name"
                       value={addGroupInput}
                       onChange={(e) => {
                         setAddGroupInput(e.target.value);

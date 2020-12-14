@@ -1,11 +1,11 @@
 .folderTabWrapper {
-  width: 30%;
+  min-width: 250px;
 }
 .folderTab {
   position: fixed;
   top: 0px;
   left: 60px;
-  min-width: 170px;
+
   background: #191919;
   border: solid 1px #2a2a2a;
   height: 1200px;

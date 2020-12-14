@@ -13,8 +13,15 @@ import firebase from "firebase/app";
 export default function Board(props) {
   const dispatch = useDispatch();
   const [addMember, setAddMember] = useState(false);
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
+  });
+  const groupId = useSelector((state) => {
+    return state.groupReducer.groupId;
+  });
+  const groupName = useSelector((state) => {
+    return state.groupReducer.groupName;
   });
   useEffect(() => {
     function checkArticleUpdate(uid) {
@@ -32,13 +39,14 @@ export default function Board(props) {
               readerHtml: doc.data().readerHtml,
             });
           });
+          console.log(list);
           dispatch(INITARTICLE(list));
         });
     }
-    if (user) {
-      checkArticleUpdate(user.uid);
+    if (groupId) {
+      checkArticleUpdate(groupId);
     }
-  }, [user]);
+  }, [groupId]);
 
   return (
     <div
@@ -49,7 +57,7 @@ export default function Board(props) {
     >
       <AddArticle className="headMemberIcon" user={user} />
       <div className={styles.titleWrapper}>
-        <div className={styles.title}>前端群組</div>
+        <div className={styles.title}>{groupName}</div>
 
         <div className={styles.actionList}>
           <EditIcon />

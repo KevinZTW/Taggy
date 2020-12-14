@@ -49,13 +49,43 @@ const INITUSERRSSLIST = (RSSList) => {
     RSSList: RSSList,
   };
 };
+
 const GROUPINIT = (groups) => {
   return {
     type: "GROUPINIT",
     groups: groups,
   };
 };
+const INITGROUPSELECT = (groupId, groupName) => {
+  return {
+    type: "INITGROUPSELECT",
+    groupId: groupId,
+    groupName: groupName,
+  };
+};
+const SWITCHGROUPSELECT = (groupId, groupName) => {
+  return {
+    type: "SWITCHGROUPSELECT",
+    groupId: groupId,
+    groupName: groupName,
+  };
+};
+
+// const INITGROUPARTICLE = (articleList) => {
+//   return {
+//     type: "INITGROUPARTICLE",
+//     articleList: articleList,
+//   };
+// };
+// const SWITCHGROUPARTICLE = (tag) => {
+//   return {
+//     type: "SWITCHGROUPARTICLE",
+//     tagSelected: tag,
+//   };
+// };
+
 export {
+  // SWITCHGROUPARTICLE,
   INITARTICLE,
   SWITCHRSS,
   SWITCHARTICLE,
@@ -63,4 +93,7 @@ export {
   GETRSSRESPONSE,
   INITUSERRSSLIST,
   GROUPINIT,
+  // INITGROUPARTICLE,
+  SWITCHGROUPSELECT,
+  INITGROUPSELECT,
 };

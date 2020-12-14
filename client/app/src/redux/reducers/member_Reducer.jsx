@@ -13,8 +13,6 @@ const member_Reducer = (state = {}, action) => {
         },
       };
 
-    case "GROUPINIT":
-      return { ...state, groups: action.groups };
     default:
       return state;
   }

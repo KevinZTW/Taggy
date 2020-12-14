@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 export default function FolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [tabChange, setTabChange] = useState("");
   const [editFolder, setEditFolder] = useState(false);
   const [addFolderInput, setAddFolderInput] = useState("");
   const [articleFolders, setArticleFolders] = useState([]);
@@ -150,7 +151,7 @@ export default function FolderTab() {
       }
     }
     getArticleFolders();
-  }, [user]);
+  }, [user, tabChange]);
 
   function showArticleFolders(folders) {
     console.log(folders);
@@ -209,6 +210,9 @@ export default function FolderTab() {
           .update({
             articleFolders: firebase.firestore.FieldValue.arrayUnion(id),
           });
+      })
+      .then(() => {
+        setTabChange(tabChange + 1);
       });
   }
   const articleFolderList = showArticleFolders(articleFolders);
