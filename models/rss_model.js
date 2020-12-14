@@ -1,6 +1,7 @@
 import { db } from "../firebase.js";
 import OpenCC from "opencc";
 import dayjs from "dayjs";
+import { resolve } from "path";
 
 let test = Date.now();
 let test2 = dayjs(test).valueOf();
@@ -8,19 +9,26 @@ console.log(test2);
 const converter = new OpenCC("s2t.json");
 const checkRSSItem = function (item) {
   console.log("let check", item.guid);
-  return db
-    .collection("RSSItem")
-    .where("guid", "==", item.guid)
-    .get()
-    .then((snapshot) => {
-      if (snapshot.empty) {
-        console.log("check and not in db ");
-        return true;
-      } else {
-        console.log("already in db");
-        return false;
-      }
+  if (item.guid) {
+    return db
+      .collection("RSSItem")
+      .where("guid", "==", item.guid)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          console.log("check and not in db ");
+          return "save";
+        } else {
+          console.log("already in db");
+          return "skip";
+        }
+      });
+  } else {
+    console.log("Guid is not existed");
+    return new Promise((resovle, reject) => {
+      resolve("skip");
     });
+  }
 };
 async function translation(a, b, c, d, e) {
   let converteda = await converter.convertPromise(a);
@@ -34,7 +42,7 @@ async function translation(a, b, c, d, e) {
 const addRSS = function (feed, RSSId) {
   for (let i in feed.items) {
     checkRSSItem(feed.items[i]).then((evaluate) => {
-      if (evaluate && feed.items[i].content) {
+      if (evaluate === "save" && feed.items[i].content) {
         console.log("Saved RSSItem ", feed.items[i].title);
         let pubDate = dayjs(feed.items[i].pubDate).valueOf();
         translation(
