@@ -21,7 +21,14 @@ export default function Board(props) {
   function renderFeedPage(feedItem) {
     console.log("redner run again");
     console.log(feedItem);
-    return <RSSPage item={feedItem} />;
+    return (
+      <RSSPage
+        item={feedItem}
+        onClick={() => {
+          setShowPage(false);
+        }}
+      />
+    );
   }
 
   const ChannelRSSId = useSelector((state) => {
@@ -55,10 +62,7 @@ export default function Board(props) {
     return (
       <div className={styles.board}>
         <h1 className={styles.title}>{feed.title}</h1>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: feed.description }}
-        ></div>
+        <div dangerouslySetInnerHTML={{ __html: feed.description }}></div>
         {feed.title ? (
           <button
             className={styles.subscribe_btn}
@@ -176,13 +180,12 @@ export default function Board(props) {
       {searchOutcome}
       {showPage ? (
         <div className={styles.popup}>
-          <button
+          <div
+            className={styles.blur}
             onClick={() => {
               setShowPage(false);
             }}
-          >
-            Close Page
-          </button>
+          ></div>
           {feedPage}
         </div>
       ) : (
