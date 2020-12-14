@@ -97,7 +97,10 @@ export default function RSSPage(props) {
         />
       </div>
       <div className={styles.title}>{feedItem.title}</div>
-      <div dangerouslySetInnerHTML={{ __html: feedItem.content }}></div>
+      <div
+        dangerouslySetInnerHTML={{ __html: feedItem.content }}
+        className={styles.content}
+      ></div>
     </div>
   );
 }

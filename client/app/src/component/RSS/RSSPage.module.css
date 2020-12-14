@@ -30,3 +30,76 @@
 .head {
   padding-top: 10px;
 }
+
+.content {
+  padding: 20px;
+
+  max-width: 100%;
+  background: #121212;
+  line-height: 1.7;
+  color: #dcdcdc;
+}
+
+.content p {
+  padding-bottom: 15px;
+}
+.content pre {
+  background: #222222;
+
+  border-left: 20px solid #39382e;
+  color: #ffd306;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
+.content h2 {
+  font-size: 1.6rem;
+  padding: 20px 0;
+}
+.content h3 {
+  font-size: 1.3rem;
+  padding: 20px 0;
+}
+
+.content img {
+  padding-bottom: 20px;
+  margin-left: 15%;
+  max-width: 70%;
+}
+
+.content > a:link,
+.content > a:visited {
+  color: rgb(30, 171, 249);
+}
+
+.content li {
+  padding-left: 10px;
+}
+.content ol {
+  list-style: none;
+}
+
+.content hr {
+  margin: 40px 0;
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+@media (max-width: 632px) {
+  .note {
+    display: none;
+  }
+
+  .content {
+    max-width: 95%;
+  }
+}
