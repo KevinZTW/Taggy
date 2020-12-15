@@ -5,6 +5,8 @@ const article_Reducer = (
   state = {
     tagSelected: "all",
     articleList: [],
+    articleFolders: [],
+    // isLoaded: false
   },
   action
 ) => {
@@ -13,6 +15,12 @@ const article_Reducer = (
     //   let remaintasks = state.tasks.filter((task) => task.id != action.id);
 
     //   return { tasks: remaintasks };
+    case "INITARTICLEFOLDERS":
+      return {
+        ...state,
+        articleFolders: action.articleFolders,
+        // isLoaded: true
+      };
     case "INITARTICLE":
       return {
         ...state,

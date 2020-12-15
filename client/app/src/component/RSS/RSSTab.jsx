@@ -245,7 +245,7 @@ export default function RSSTab() {
               nodeId="tagAll"
               label={
                 <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>All Feeds</div>
+                  <div className={styles.labelTitle}>Your Feeds</div>
                 </div>
               }
               onClick={() => {

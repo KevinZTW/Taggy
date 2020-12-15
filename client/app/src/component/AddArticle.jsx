@@ -1,7 +1,8 @@
+import styles from "./AddArticle.module.css";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { localUrl, ec2Url } from "../config.js";
-import "../css/AddArticle.css";
+import { style } from "d3";
 
 export default function AddArticle(props) {
   const [reqUrl, setReqUrl] = useState("");
@@ -39,17 +40,19 @@ export default function AddArticle(props) {
       });
   }
   return (
-    <div className="addArticle">
+    <div className={styles.addArticle}>
+      <div className={styles.title}>Import Article</div>
+      <div className={styles.description}>Import the web content you love</div>
       <input
         type="text"
         name="input"
-        className="input"
+        className={styles.input}
         value={reqUrl}
         onChange={(e) => setReqUrl(e.currentTarget.value)}
       />
       <button
         type="submit"
-        className="add"
+        className={styles.add}
         onClick={(e) => {
           if (user) {
             e.preventDefault();
@@ -60,8 +63,9 @@ export default function AddArticle(props) {
           }
         }}
       >
-        儲存文章
+        Import Article
       </button>
+      <button>Cancel</button>
 
       <br />
       {/* <a href="http://localhost:2000/route/article/before">Before</a>

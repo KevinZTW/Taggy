@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { db } from "../firebase.js";
-import CardWrapper from "./CardWrapper.jsx";
+import { db } from "../../firebase.js";
+import CardWrapper from "../CardWrapper.jsx";
 import dispatch from "react-redux";
-import styles from "./Board.module.css";
-import { INITARTICLE } from "../redux/actions";
-
-export default function Board(props) {
+import styles from "../Board.module.css";
+import { INITARTICLE } from "../../redux/actions";
+import AddArticle from "../AddArticle";
+export default function GraphBoard() {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => {
@@ -36,9 +36,15 @@ export default function Board(props) {
     }
   }, [user]);
   return (
-    <div className={styles.boardWrapper}>
-      <div className={styles.title}>My Saved Article</div>
-      <CardWrapper />
+    <div className={styles.graphBoardWrapper}>
+      <div className={styles.boardWrapper}>
+        <div className={styles.title}>Graph View</div>
+        <div className={styles.description}>
+          Review your knowledge by clicking the tag dot!{" "}
+        </div>
+
+        <CardWrapper />
+      </div>
     </div>
   );
 }

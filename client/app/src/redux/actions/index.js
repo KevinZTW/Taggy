@@ -13,6 +13,12 @@ const INITARTICLE = (articleList) => {
     articleList: articleList,
   };
 };
+const INITARTICLEFOLDERS = (articleFolders) => {
+  return {
+    type: "INITARTICLEFOLDERS",
+    articleFolders: articleFolders,
+  };
+};
 
 const SWITCHARTICLE = (tag) => {
   return {
@@ -56,6 +62,7 @@ const GROUPINIT = (groups) => {
     groups: groups,
   };
 };
+
 const INITGROUPSELECT = (groupId, groupName) => {
   return {
     type: "INITGROUPSELECT",
@@ -96,4 +103,5 @@ export {
   // INITGROUPARTICLE,
   SWITCHGROUPSELECT,
   INITGROUPSELECT,
+  INITARTICLEFOLDERS,
 };

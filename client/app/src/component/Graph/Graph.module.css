@@ -1,4 +1,36 @@
 .graphWrapper {
   display: flex;
+  flex-direction: column;
+  min-width: 50%;
+  padding-top: 20px;
+  position: relative;
+}
+.graphContainer {
+  width: 50vw;
+  top: 100px;
+  right: 10px;
+  position: fixed;
+}
+.titleWrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-size: 30px;
+  padding-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+.description {
+  font-size: 15px;
+  padding-bottom: 20px;
+  color: #b2b2b2;
+  font-weight: bold;
+}
+
+.graph {
+  margin-right: 20px;
+  border: solid 2px #b2b2b2;
+  border-radius: 6px;
 }

@@ -3,3 +3,21 @@
   color: #b2b2b2;
   padding-left: 30px;
 }
+
+.graphBoardWrapper {
+  padding-top: 20px;
+}
+
+.title {
+  font-size: 30px;
+  padding-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.description {
+  font-size: 15px;
+  padding-bottom: 20px;
+  color: #b2b2b2;
+  font-weight: bold;
+}

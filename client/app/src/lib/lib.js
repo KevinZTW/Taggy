@@ -15,20 +15,37 @@ app.getMemberArticleFolders = function (uid) {
           let articleFolders = [];
           console.log(articleFolderIds);
           if (articleFolderIds !== "" && articleFolderIds) {
-            for (let i in articleFolderIds) {
-              console.log(articleFolderIds[i]);
-              await db
-                .collection("articleFolders")
-                .doc(articleFolderIds[i])
-                .get()
-                .then((doc) => {
-                  articleFolders.push({
-                    id: doc.data().id,
-                    name: doc.data().name,
-                    tags: doc.data().tags,
+            await db
+              .collection("articleFolders")
+              .where("id", "in", articleFolderIds)
+              .get()
+              .then((snapShot) => {
+                articleFolderIds.forEach((Id) => {
+                  snapShot.forEach((doc) => {
+                    if (doc.data().id === Id) {
+                      articleFolders.push({
+                        id: doc.data().id,
+                        name: doc.data().name,
+                        tags: doc.data().tags,
+                      });
+                    }
                   });
                 });
-            }
+              });
+            // for (let i in articleFolderIds) {
+            //   console.log(articleFolderIds[i]);
+            //   await db
+            //     .collection("articleFolders")
+            //     .doc(articleFolderIds[i])
+            //     .get()
+            //     .then((doc) => {
+            //       articleFolders.push({
+            //         id: doc.data().id,
+            //         name: doc.data().name,
+            //         tags: doc.data().tags,
+            //       });
+            //     });
+            // }
           }
           resolve(articleFolders);
         } else resolve("dont have this user");
@@ -37,6 +54,7 @@ app.getMemberArticleFolders = function (uid) {
 };
 app.getMemberFolderTags = function (folderId) {
   return new Promise((resolve, reject) => {
+    console.log("start to get ");
     db.collection("articleFolders")
       .doc(folderId)
       .get()
@@ -45,21 +63,39 @@ app.getMemberFolderTags = function (folderId) {
           let tagIds = doc.data().tags;
           let folderTags = [];
           console.log(tagIds);
-          if (tagIds !== "" && tagIds) {
-            for (let i in tagIds) {
-              console.log(tagIds[i]);
-              await db
-                .collection("Tags")
-                .doc(tagIds[i])
-                .get()
-                .then((doc) => {
-                  folderTags.push({
-                    id: tagIds[i],
-                    value: doc.data().name,
-                    label: doc.data().name,
+          if (tagIds && tagIds[0]) {
+            await db
+              .collection("Tags")
+              .where("id", "in", tagIds)
+              .get()
+              .then((snapshot) => {
+                tagIds.forEach((id) => {
+                  snapshot.forEach((doc) => {
+                    if (doc.data().id === id) {
+                      folderTags.push({
+                        id: doc.data().id,
+                        value: doc.data().name,
+                        label: doc.data().name,
+                      });
+                    }
                   });
                 });
-            }
+              });
+            // for (let i in tagIds) {
+            //   console.log(tagIds[i]);
+            // await db
+            //   .collection("Tags")
+            //   .doc(tagIds[i])
+            //   .get()
+            //   .then((doc) => {
+            //     folderTags.push({
+            //       id: tagIds[i],
+            //       value: doc.data().name,
+            //       label: doc.data().name,
+            //     });
+            //     console.log(folderTags);
+            //   });
+            // }
           }
           resolve(folderTags);
         } else resolve("");

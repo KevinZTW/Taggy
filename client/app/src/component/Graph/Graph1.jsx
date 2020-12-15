@@ -48,8 +48,9 @@ export default function Graph() {
   const ref = useD3(
     (svg) => {
       let id;
-      const height = 1000;
+      const height = 800;
       const width = 1000;
+      svg.selectAll("*").remove();
       if (data.nodes) {
         const links = data.links.map((d) => Object.create(d));
         const nodes = data.nodes.map((d) => Object.create(d));
@@ -90,7 +91,7 @@ export default function Graph() {
           .text((d) => d.id)
           .clone(true)
           .lower()
-          .attr("stroke-width", 0.5)
+          .attr("stroke-width", 0.2)
           .attr("stroke", "white")
           .attr("fill", "white")
           .attr("id", (d) => d.tagId)
@@ -210,19 +211,26 @@ export default function Graph() {
   }, [user, articleList]);
   return (
     <div className={styles.graphWrapper}>
-      <svg
-        ref={ref}
-        style={{
-          height: 1000,
-          width: "100%",
-          marginRight: "20px",
-          marginLeft: "0px",
-        }}
-      >
-        <g className="plot-area" />
-        <g className="x-axis" />
-        <g className="y-axis" />
-      </svg>
+      <div className={styles.graphContainer}>
+        <div className={styles.titleWrapper}>
+          {/* <div className={styles.title}>Tags Graph</div> */}
+        </div>
+        <div className={styles.graph}>
+          <svg
+            ref={ref}
+            style={{
+              height: 800,
+              width: "100%",
+              marginRight: "20px",
+              marginLeft: "0px",
+            }}
+          >
+            <g className="plot-area" />
+            <g className="x-axis" />
+            <g className="y-axis" />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }

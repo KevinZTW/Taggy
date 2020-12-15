@@ -9,14 +9,17 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
+import AddArticle from "../AddArticle";
 import { useDispatch } from "react-redux";
-import { SWITCHARTICLE } from "../../redux/actions";
+import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import DescriptionIcon from "@material-ui/icons/Description";
 import Folder from "./Folder";
 
 const useStyles = makeStyles({
@@ -32,11 +35,15 @@ const useStyles = makeStyles({
 export default function FolderTab() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [addArticle, setAddArticle] = useState(false);
   const [tabChange, setTabChange] = useState("");
   const [editFolder, setEditFolder] = useState(false);
   const [addFolderInput, setAddFolderInput] = useState("");
-  const [articleFolders, setArticleFolders] = useState([]);
-  console.log(articleFolders);
+
+  const articleFolders = useSelector((state) => {
+    console.log(state);
+    return state.articleReducer.articleFolders;
+  });
 
   const user = useSelector((state) => {
     return state.memberReducer.user;
@@ -79,7 +86,8 @@ export default function FolderTab() {
           });
         }
       });
-      setArticleFolders(newArticleFolders);
+      dispatch(INITARTICLEFOLDERS(newArticleFolders));
+
       console.log(destination.index, source.index);
       console.log(source.droppableId);
       console.log(destination.droppableId);
@@ -120,18 +128,20 @@ export default function FolderTab() {
           });
         }
       });
-      setArticleFolders(newArticleFolders);
+      dispatch(INITARTICLEFOLDERS(newArticleFolders));
     }
   }
 
   useEffect(() => {
+    console.log(tabChange);
     function getArticleFolders() {
       if (user) {
         app
           .getMemberArticleFolders(user.uid)
           .then((articleFolders) => {
             console.log(articleFolders);
-            setArticleFolders(articleFolders);
+            dispatch(INITARTICLEFOLDERS(articleFolders));
+
             return articleFolders;
           })
           .then(async (articleFolders) => {
@@ -146,7 +156,7 @@ export default function FolderTab() {
           })
           .then((newFolder) => {
             console.log(newFolder);
-            setArticleFolders(newFolder);
+            dispatch(INITARTICLEFOLDERS(newFolder));
           });
       }
     }
@@ -154,11 +164,9 @@ export default function FolderTab() {
   }, [user, tabChange]);
 
   function showArticleFolders(folders) {
-    console.log(folders);
     let articleFolderList = [];
     if (folders.length > 0) {
       for (let i in folders) {
-        console.log(folders[i].tags);
         articleFolderList.push(
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
@@ -229,11 +237,21 @@ export default function FolderTab() {
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
           >
+            <div
+              className={styles.importWrapper}
+              onClick={() => {
+                setAddArticle(true);
+              }}
+            >
+              <AddCircleIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+              <div className={styles.importTitle}>Import Article</div>
+            </div>
             <TreeItem
               nodeId="tagAll"
               label={
                 <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>All</div>
+                  <DescriptionIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+                  <div className={styles.labelTitle}>All Articles</div>
                 </div>
               }
               onClick={() => {
@@ -241,19 +259,25 @@ export default function FolderTab() {
                 dispatch(SWITCHARTICLE("all"));
               }}
             ></TreeItem>
-            <TreeItem
-              nodeId="unTag"
-              label={
-                <div className={styles.labelWrapper}>
-                  <MarkunreadIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
-                  <div className={styles.labelTitle}>Untaged</div>
-                </div>
-              }
-            />
+            <div>Tags</div>
             <DragDropContext onDragEnd={onDragEnd}>
               {articleFolderList}
             </DragDropContext>
           </TreeView>
+          {addArticle
+            ? createPortal(
+                <div className={styles.popup}>
+                  <div
+                    className={styles.blur}
+                    onClick={() => {
+                      setAddArticle(false);
+                    }}
+                  ></div>
+                  <AddArticle user={user} />
+                </div>,
+                document.body
+              )
+            : ""}
           {editFolder
             ? createPortal(
                 <div className={styles.popup}>

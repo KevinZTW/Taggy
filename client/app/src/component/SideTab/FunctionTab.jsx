@@ -33,7 +33,7 @@ export default function FunctionTab() {
           </Link>
         </div>
         <ExitToAppIcon
-          calssName={styles.exit}
+          calssname={styles.exit}
           style={{ color: "#747474" }}
           onClick={() => {
             auth

@@ -2,6 +2,7 @@
   width: 100%;
   color: #b2b2b2;
   padding-left: 30px;
+  padding-top: 50px;
 }
 
 .titleWrapper {
@@ -12,6 +13,7 @@
 }
 
 .title {
+  font-weight: bold;
   color: white;
   flex: auto;
   font-size: 32px;
@@ -51,4 +53,15 @@
   border: none;
   background-color: rgb(30, 171, 249);
   cursor: pointer;
+}
+
+.emptyWrapper {
+  padding-top: 100px;
+  padding-left: 10px;
+}
+.subtitle {
+  font-weight: bold;
+  color: #b2b2b2;
+  flex: auto;
+  font-size: 23px;
 }

@@ -335,7 +335,7 @@ export default function GroupFolderTab() {
               nodeId={"tagAll_" + groups[key].name}
               label={
                 <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>All</div>
+                  <div className={styles.labelTitle}>All Articles</div>
                 </div>
               }
               onClick={() => {
@@ -343,7 +343,7 @@ export default function GroupFolderTab() {
                 dispatch(SWITCHARTICLE("all"));
               }}
             ></TreeItem>
-            <TreeItem
+            {/* <TreeItem
               nodeId="unTag2"
               label={
                 <div className={styles.labelWrapper}>
@@ -351,18 +351,10 @@ export default function GroupFolderTab() {
                   <div className={styles.labelTitle}>Untaged</div>
                 </div>
               }
-            />
+            /> */}
             <DragDropContext onDragEnd={onDragEnd}>
               <GroupFolerSub folders={groups[key].articleFolders} />
             </DragDropContext>
-            <div
-              className={styles.subTitle}
-              onClick={() => {
-                setEditFolder(true);
-              }}
-            >
-              Add Folder
-            </div>
           </TreeItem>
         </TreeView>
       );
@@ -487,6 +479,14 @@ export default function GroupFolderTab() {
               document.body
             )
           : ""}
+        <div
+          className={styles.subTitle}
+          onClick={() => {
+            setEditFolder(true);
+          }}
+        >
+          Add Folder
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,22 @@
 .addArticle {
-  margin-bottom: 10px;
+  width: 100%;
 
-  margin-top: 5px;
+  background-color: #121212;
+
+  top: 0px;
+  right: 0px;
+}
+.title {
+  font-size: 30px;
+  padding-bottom: 20px;
+  color: white;
+  font-weight: bold;
+}
+.description {
+  font-size: 15px;
+  padding-bottom: 20px;
+  color: #b2b2b2;
+  font-weight: bold;
 }
 .input {
   width: 75%;

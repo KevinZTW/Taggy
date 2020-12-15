@@ -11,6 +11,7 @@ import FolderTab from "./SideTab/FolderTab";
 import GroupFolderTab from "./Group/GroupFolderTab";
 import GroupBoard from "./Group/GroupBoard";
 import Graph from "./Graph/Graph1";
+import GraphBoard from "./Graph/GraphBoard";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
 import RSSBoard from "./RSS/RSSBoard";
@@ -45,7 +46,7 @@ function App() {
           <Route path="/graph">
             <div className="content">
               <FunctionTab />
-              <Board />
+              <GraphBoard />
               <Graph />
             </div>
           </Route>

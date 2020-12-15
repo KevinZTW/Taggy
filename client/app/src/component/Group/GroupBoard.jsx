@@ -9,6 +9,8 @@ import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EditIcon from "@material-ui/icons/Edit";
 import AddArticle from "../AddArticle";
 import firebase from "firebase/app";
+import teamImg from "../../img/undraw_team.svg";
+import team_img from "../../img/undraw_team.svg";
 
 export default function Board(props) {
   const dispatch = useDispatch();
@@ -47,7 +49,10 @@ export default function Board(props) {
       checkArticleUpdate(groupId);
     }
   }, [groupId]);
-
+  const articleList = useSelector((state) => {
+    return state.articleReducer.articleList;
+  });
+  console.log(articleList);
   return (
     <div
       className={styles.boardWrapper}
@@ -55,7 +60,6 @@ export default function Board(props) {
         setAddMember(false);
       }}
     >
-      <AddArticle className="headMemberIcon" user={user} />
       <div className={styles.titleWrapper}>
         <div className={styles.title}>{groupName}</div>
 
@@ -90,7 +94,17 @@ export default function Board(props) {
           )}
         </div>
       </div>
-      <CardWrapper />
+
+      {articleList[0] ? (
+        <CardWrapper />
+      ) : (
+        <div class={styles.emptyWrapper}>
+          <img src={team_img} alt="" />
+          <div class={styles.subtitle}>
+            Share the content by using our extension
+          </div>
+        </div>
+      )}
     </div>
   );
 }
