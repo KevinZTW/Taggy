@@ -29,9 +29,17 @@ let fetchRSS = function (url, RSSId) {
 
 export const loopAndFetchRSS = async function () {
   getRSSList().then((list) => {
+    let timer = 1000;
     list.forEach((item) => {
-      console.log("stat to get ", item.title);
-      fetchRSS(item.url, item.id);
+      console.log(
+        "stat to get ",
+        item.title,
+        "================================="
+      );
+      setTimeout(() => {
+        fetchRSS(item.url, item.id);
+      }, timer);
+      timer += 10000;
     });
   });
 };

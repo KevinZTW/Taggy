@@ -31,7 +31,7 @@
   padding-bottom: 20px;
 }
 @media (max-device-width: 640px) {
-  .functionTab {
+  .functionTabWrapper {
     display: none;
   }
 }

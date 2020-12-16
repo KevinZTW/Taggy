@@ -16,6 +16,7 @@ import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
 import RSSBoard from "./RSS/RSSBoard";
 import RSSBoardToday from "./RSS/RSSBoard_Today";
+import RSSBoardExplore from "./RSS/RSSBoard_Explore";
 import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 //React.Memo
@@ -38,7 +39,7 @@ function App() {
             <div className="content">
               <FunctionTab focus="home" />
               <RSSTab focus="explore" />
-              <RSSBoard />
+              <RSSBoardExplore />
             </div>
           </Route>
           <Route path="/home/myfeeds">

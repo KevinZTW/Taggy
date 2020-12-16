@@ -8,19 +8,24 @@
   display: flex;
   height: 100px;
   flex-direction: row;
-  border-radius: 5px;
+
   align-items: flex-start;
   overflow: hidden;
   word-break: break-all;
 }
 
-.color {
+.imgWrapper {
+  border-radius: 5px;
   height: 100px;
   width: 20%;
-  background: #4f4f4f;
 }
+.color {
+  background: #302f2f;
+}
+
 .img {
-  min-width: 100%;
+  border-radius: 5px;
+  width: 100%;
 }
 .title {
   font-weight: bold;

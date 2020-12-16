@@ -92,11 +92,7 @@
   padding-bottom: 5px;
   color: #b2b2b2;
 }
-@media (max-device-width: 640px) {
-  .folderTab {
-    display: none;
-  }
-}
+
 .popup {
   display: flex;
   position: fixed;
@@ -171,4 +167,10 @@
   color: #e0e0e0;
   background-color: #6c6c6c;
   cursor: pointer;
+}
+
+@media (max-device-width: 640px) {
+  .folderTabWrapper {
+    display: none;
+  }
 }

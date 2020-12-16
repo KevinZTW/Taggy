@@ -11,7 +11,7 @@ const addArticle = function (
     "===========================================^^^^^^^^^^^========="
   );
   console.log(uid);
-  if (uid[0]) {
+  if (typeof uid !== "string") {
     uid.forEach((i) => {
       console.log("try to add", i, title, readerHtml, markdown, link);
       db.collection("Articles")

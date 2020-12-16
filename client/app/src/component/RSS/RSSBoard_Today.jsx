@@ -89,78 +89,7 @@ export default function Board(props) {
           />
         );
       }
-      return (
-        <div className={styles.board}>
-          <h1 className={styles.title}>Today News</h1>
-          <div className={styles.description}>
-            The insights you need to keep ahead
-          </div>
-          <div className={styles.switchWrapper}>
-            <div
-              className={
-                selectCategory === "Front End"
-                  ? styles.switchTitleFocus
-                  : styles.switchTitle
-              }
-              onClick={() => {
-                setSelectCategory("Front End");
-              }}
-            >
-              <span>Front End</span>
-            </div>
-            <div
-              className={
-                selectCategory === "Back End"
-                  ? styles.switchTitleFocus
-                  : styles.switchTitle
-              }
-              onClick={() => {
-                setSelectCategory("Back End");
-              }}
-            >
-              <span>Back End</span>
-            </div>
-            <div
-              className={
-                selectCategory === "Product Managment"
-                  ? styles.switchTitleFocus
-                  : styles.switchTitle
-              }
-              onClick={() => {
-                setSelectCategory("Product Managment");
-              }}
-            >
-              <span>Product Managment</span>
-            </div>
-            <div
-              className={
-                selectCategory === "UI/UX"
-                  ? styles.switchTitleFocus
-                  : styles.switchTitle
-              }
-              onClick={() => {
-                setSelectCategory("UI/UX");
-              }}
-            >
-              <span>UI/UX</span>
-            </div>
-            <div
-              className={
-                selectCategory === "Tech News"
-                  ? styles.switchTitleFocus
-                  : styles.switchTitle
-              }
-              onClick={() => {
-                setSelectCategory("Tech News");
-              }}
-            >
-              <span>Tech News</span>
-            </div>
-          </div>
-
-          {feedList}
-        </div>
-      );
+      return feedList;
     } else {
     }
   }
@@ -239,7 +168,76 @@ export default function Board(props) {
   const feedPage = renderFeedPage(feedItem);
   return (
     <div className={styles.boardWrapper}>
-      {allFeedsOutome}
+      <div className={styles.board}>
+        <h1 className={styles.title}>Today News</h1>
+        <div className={styles.description}>
+          The insights you need to keep ahead
+        </div>
+        <div className={styles.switchWrapper}>
+          <div
+            className={
+              selectCategory === "Front End"
+                ? styles.switchTitleFocus
+                : styles.switchTitle
+            }
+            onClick={() => {
+              setSelectCategory("Front End");
+            }}
+          >
+            <span>Front End</span>
+          </div>
+          <div
+            className={
+              selectCategory === "Back End"
+                ? styles.switchTitleFocus
+                : styles.switchTitle
+            }
+            onClick={() => {
+              setSelectCategory("Back End");
+            }}
+          >
+            <span>Back End</span>
+          </div>
+          <div
+            className={
+              selectCategory === "Product Managment"
+                ? styles.switchTitleFocus
+                : styles.switchTitle
+            }
+            onClick={() => {
+              setSelectCategory("Product Managment");
+            }}
+          >
+            <span>Product Managment</span>
+          </div>
+          <div
+            className={
+              selectCategory === "UI/UX"
+                ? styles.switchTitleFocus
+                : styles.switchTitle
+            }
+            onClick={() => {
+              setSelectCategory("UI/UX");
+            }}
+          >
+            <span>UI/UX</span>
+          </div>
+          <div
+            className={
+              selectCategory === "Tech News"
+                ? styles.switchTitleFocus
+                : styles.switchTitle
+            }
+            onClick={() => {
+              setSelectCategory("Tech News");
+            }}
+          >
+            <span>Tech News</span>
+          </div>
+        </div>
+
+        {allFeedsOutome}
+      </div>
       {showPage ? (
         <div className={styles.popup}>
           <div

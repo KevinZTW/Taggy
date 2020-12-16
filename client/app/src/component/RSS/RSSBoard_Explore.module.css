@@ -1,0 +1,160 @@
+.boardWrapper {
+  width: 100%;
+  color: #b2b2b2;
+  padding-left: 30px;
+}
+.board {
+  padding-left: 10px;
+  border-radius: 10px;
+}
+.title {
+  color: white;
+  padding-top: 40px;
+  padding-bottom: 16px;
+}
+
+.description {
+  font-size: 20px;
+  padding-bottom: 40px;
+  margin: 0px 0;
+  color: #b2b2b2;
+}
+.boxWrapper {
+  display: flex;
+}
+.boxWrapperTitle {
+  font-size: 26px;
+  color: white;
+  padding-top: 20px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #302f2f;
+}
+
+.box {
+  width: 25%;
+  padding-right: 40px;
+}
+.boxImg {
+  padding-bottom: 4px;
+}
+.boxImg img {
+  width: 100%;
+}
+
+.boxTitle {
+  color: #ffffff;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+.boxDescription {
+  font-size: 14px;
+}
+/* }
+.switchWrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 25px;
+}
+.switchTitle {
+  cursor: pointer;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #1b1b1b;
+}
+.switchTitle span {
+  font-size: 19px;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+.switchTitleFocus {
+  cursor: pointer;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #1b1b1b;
+}
+.switchTitleFocus span {
+  font-size: 19px;
+  font-weight: 500;
+  padding-bottom: 5px;
+  border-bottom: solid 3px #2074ec;
+}
+
+.subscribe_btn {
+  padding: 0px 8px;
+  margin: 5px 0;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #01b468;
+  cursor: pointer;
+} */
+.popup {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  color: #e2e2e2e2;
+
+  animation: popUpSlide 0.5s ease-in-out;
+  height: 100vh;
+  width: 100%;
+}
+@keyframes popUpSlide {
+  0% {
+    left: 200px;
+  }
+  100% {
+    left: 0;
+  }
+}
+.blur {
+  min-width: 30%;
+  background-color: #131313;
+  opacity: 90%;
+}
+/* .categoryTitle {
+  color: #b2b2b2;
+  padding-bottom: 10px;
+}
+.categoryWrapper {
+  display: flex;
+  width: 100%;
+}
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardUpper {
+  display: flex;
+}
+.cardTitle {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 3px;
+}
+.cardDescription {
+  font-size: 17px;
+}
+.cardImg {
+  max-width: 10%;
+  margin-right: 10px;
+}
+.cardImg img {
+  min-width: 100%;
+}
+.cardBtn {
+  padding: 0px 8px;
+  text-align: center;
+  margin: 5px 0;
+  height: 20px;
+  width: 60px;
+  font-size: 13px;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  background-color: #01b468;
+  cursor: pointer;
+} */
