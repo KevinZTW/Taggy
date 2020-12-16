@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { db } from "../../firebase.js";
@@ -15,27 +15,34 @@ export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
   const [lastQueryDoc, setLastQueryDoc] = useState("");
-
+  useMemo(() => {
+    console.log("clean up the feeds!@");
+    setLastVisible(0);
+    setAllFeeds([]);
+  }, [selectCategory]);
   const dispatch = useDispatch();
   const userRSSList = useSelector((state) => {
     return state.RSSReducer.UserRSSList;
   });
-
-  function batchFetchAllFeeds(userRSSList, lastVisible) {
-    console.log(userRSSList);
+  console.log("reremder");
+  console.log(allFeeds);
+  function batchFetchAllFeeds(RSSList, lastVisible) {
+    console.log(RSSList);
     if (lastVisible === 0) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
+        .where("RSSId", "in", RSSList)
         .orderBy("pubDate", "desc")
         .limit(15)
         .get()
         .then((snapshot) => {
           console.log("batchfetch start");
           let items = [...allFeeds];
+          console.log(items);
           snapshot.forEach((doc) => {
-            if (userRSSList.includes(doc.data().RSSId)) {
-              items.push(doc.data());
-            }
+            console.log(doc.data());
+
+            items.push(doc.data());
           });
           setLastQueryDoc(snapshot.docs[14]);
 
@@ -48,6 +55,7 @@ export default function Board(props) {
         console.log("else start, the last visible is", lastVisible);
 
         db.collection("RSSItem")
+          .where("RSSId", "in", RSSList)
           .orderBy("pubDate", "desc")
           .startAfter(lastQueryDoc)
           .limit(7)
@@ -192,13 +200,37 @@ export default function Board(props) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [lastVisible]);
+  const FrontEndRSSList = [
+    "EjzdgsJU72BvdxI1AY22",
+    "M6rvLDZkAAHN3WbgGZMi",
+    "NOulYNIAsYlMHRLTsoRf",
+    "NTFO9SHzN7727cvDwSJq",
+  ];
+  const BackEndRSSList = ["o8y1c7B2TYtaNa2CHwLg"];
+  const PMRSSList = ["cFG4OEd9QhF1DWOKDBRO", "uVlnTAMZMxQm7z1AYl3r"];
+  const UIUXRSSList = ["EjzdgsJU72BvdxI1AY22"];
+  const TechRSSList = ["EjzdgsJU72BvdxI1AY22"];
 
   useEffect(() => {
-    console.log(lastVisible);
-    if (userRSSList) {
-      batchFetchAllFeeds(userRSSList, lastVisible);
+    switch (selectCategory) {
+      case "Front End":
+        batchFetchAllFeeds(FrontEndRSSList, lastVisible);
+        break;
+      case "Back End":
+        batchFetchAllFeeds(BackEndRSSList, lastVisible);
+        break;
+      case "Product Managment":
+        batchFetchAllFeeds(PMRSSList, lastVisible);
+        break;
+      case "UI/UX":
+        batchFetchAllFeeds(UIUXRSSList, lastVisible);
+        break;
+      case "Tech News":
+        batchFetchAllFeeds(TechRSSList, lastVisible);
+        break;
+      default:
     }
-  }, [userRSSList, lastVisible]);
+  }, [selectCategory, lastVisible]);
 
   let allFeedsOutome;
 

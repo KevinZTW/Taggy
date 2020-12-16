@@ -460,8 +460,10 @@ app.addRSSItem = function (feed, RSSId) {
         db.collection("RSSItem")
           .add({
             RSSId: RSSId,
-            content: feed.items[i].content || "",
-            contentSnippet: feed.items[i].contentSnippet || "",
+            content: feed.items[i].content || feed.items[i]["content:encoded"],
+            contentSnippet:
+              feed.items[i].contentSnippet ||
+              feed.items[i]["content:encodedSnippet"],
             RSS: feed.title || "",
             title: feed.items[i].title || "",
             creator: feed.items[i].creator || "",

@@ -46,8 +46,9 @@ const addRSS = function (feed, RSSId) {
         console.log("Saved RSSItem ", feed.items[i].title);
         let pubDate = dayjs(feed.items[i].pubDate).valueOf();
         translation(
-          feed.items[i].content || "",
-          feed.items[i].contentSnippet || "",
+          feed.items[i].content || feed.items[i]["content:encoded"],
+          feed.items[i].contentSnippet ||
+            feed.items[i]["content:encodedSnippet"],
           feed.title || "",
           feed.items[i].title || "",
           feed.items[i].creator || "",
