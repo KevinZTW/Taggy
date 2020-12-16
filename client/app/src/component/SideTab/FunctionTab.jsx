@@ -8,28 +8,57 @@ import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-export default function FunctionTab() {
+import InboxIcon from "@material-ui/icons/Inbox";
+export default function FunctionTab(props) {
   return (
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
         <div className={styles.logoWrapper}>
-          <img src={logo} alt="" width="50px" />
+          <img src={logo} alt="" width="40px" />
         </div>
         <div className={styles.iconWrapper}>
-          <Link to={"/board"}>
-            <HomeWorkIcon fontSize="large" style={{ color: "#747474" }} />
+          <Link to={"/home"}>
+            <HomeWorkIcon
+              fontSize="medium"
+              style={
+                props.focus === "home"
+                  ? { color: "#FFFFFF" }
+                  : { color: "#747474" }
+              }
+            />
           </Link>
-          <Link to={"/rss"}>
-            <RssFeedIcon fontSize="large" style={{ color: "#747474" }} />
+          <Link to={"/board"}>
+            <InboxIcon
+              fontSize="medium"
+              style={
+                props.focus === "board"
+                  ? { color: "#FFFFFF" }
+                  : { color: "#747474" }
+              }
+            />
           </Link>
           <Link to={"/graph"}>
-            <InsertChartIcon fontSize="large" style={{ color: "#747474" }} />
+            <InsertChartIcon
+              fontSize="medium"
+              style={
+                props.focus === "graph"
+                  ? { color: "#FFFFFF" }
+                  : { color: "#747474" }
+              }
+            />
           </Link>
           <Link to={"/group"}>
-            <PeopleAltIcon fontSize="large" style={{ color: "#747474" }} />
+            <PeopleAltIcon
+              fontSize="medium"
+              style={
+                props.focus === "group"
+                  ? { color: "#FFFFFF" }
+                  : { color: "#747474" }
+              }
+            />
           </Link>
           <Link to={"/signup"}>
-            <AccountBoxIcon fontSize="large" style={{ color: "#747474" }} />
+            <AccountBoxIcon fontSize="medium" style={{ color: "#747474" }} />
           </Link>
         </div>
         <ExitToAppIcon

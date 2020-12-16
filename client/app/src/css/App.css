@@ -46,3 +46,7 @@ a:visited {
 .mde-preview-content pre {
   background: #003d79 !important;
 }
+
+.MuiTreeItem-label {
+  padding-left: 0px;
+}

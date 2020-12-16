@@ -10,6 +10,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
@@ -25,15 +26,25 @@ import Folder from "./Folder";
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
-
+    textAlign: "left",
+    padding: "0px",
     flexGrow: 1,
-    maxWidth: 400,
-    marginBottom: "10px",
+    maxWidth: 200,
+    marginBottom: "15px",
   },
 });
 
 export default function FolderTab() {
+  const itemstyle = makeStyles({
+    root: {
+      paddingLeft: "25px",
+
+      maxWidth: 200,
+      marginBottom: "5px",
+    },
+  });
   const classes = useStyles();
+  const itemStyle = itemstyle();
   const dispatch = useDispatch();
   const [addArticle, setAddArticle] = useState(false);
   const [tabChange, setTabChange] = useState("");
@@ -171,6 +182,7 @@ export default function FolderTab() {
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
               <TreeItem
+                className={itemStyle.root}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 key={folders[i].id}

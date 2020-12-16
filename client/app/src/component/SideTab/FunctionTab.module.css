@@ -2,6 +2,7 @@
   min-width: 60px;
 }
 .functionTab {
+  min-width: 60px;
   padding: 0 5px;
   background: #131313;
   border: solid 1px #2a2a2a;
@@ -27,7 +28,7 @@
   align-items: center;
 }
 .iconWrapper a {
-  padding-bottom: 8px;
+  padding-bottom: 20px;
 }
 @media (max-device-width: 640px) {
   .functionTab {

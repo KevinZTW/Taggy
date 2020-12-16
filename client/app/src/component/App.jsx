@@ -30,7 +30,7 @@ function App() {
           <Route path="/signin" component={Signin}></Route>
           <Route path="/board">
             <div className="content">
-              <FunctionTab />
+              <FunctionTab focus="board" />
               <FolderTab />
               <Board />
             </div>
@@ -38,21 +38,21 @@ function App() {
           <Route path="/article" component={Article}></Route>
           <Route path="/group">
             <div className="content">
-              <FunctionTab />
+              <FunctionTab focus="group" />
               <GroupFolderTab />
               <GroupBoard />
             </div>
           </Route>
           <Route path="/graph">
             <div className="content">
-              <FunctionTab />
+              <FunctionTab focus="graph" />
               <GraphBoard />
               <Graph />
             </div>
           </Route>
-          <Route path="/rss">
+          <Route path="/home">
             <div className="content">
-              <FunctionTab />
+              <FunctionTab focus="home" />
               <RSSTab key="123" />
               <RSSBoard />
             </div>

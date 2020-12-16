@@ -84,7 +84,9 @@ export default function Board(props) {
       return (
         <div className={styles.board}>
           <h1 className={styles.title}>Your Daily Feeds</h1>
-          <div className={styles.content}>Dont scroll fb! Lets read feeds~</div>
+          <div className={styles.content}>
+            Daily insights you need to keepahead
+          </div>
           {feedList}
         </div>
       );

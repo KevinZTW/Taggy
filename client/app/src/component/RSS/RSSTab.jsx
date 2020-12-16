@@ -16,9 +16,13 @@ import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
+import ExploreIcon from "@material-ui/icons/Explore";
 import { INITUSERRSSLIST } from "../../redux/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import TodayIcon from "@material-ui/icons/Today";
 import RSSFolder from "./RSSFolder";
+import RssFeedIcon from "@material-ui/icons/RssFeed";
+import SettingsIcon from "@material-ui/icons/Settings";
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -233,30 +237,41 @@ export default function RSSTab() {
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
-        <Link to={"/rss"}>
-          <div className={styles.sectionTitle}>RSS</div>
-          <TreeView
-            className={classes.root}
-            defaultExpanded={[""]}
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
+        <div className={styles.sectionTitle}>Home</div>
+        <div className={styles.keyTitleWrapper}>
+          <TodayIcon fontSize="small" />
+          <div className={styles.keyTitle}>Today</div>
+        </div>
+        <div className={styles.titleWrapper}>
+          <ExploreIcon fontSize="small" />
+          <div className={styles.keyTitle}>Explore</div>
+        </div>
+        <div className={styles.titleWrapper}>
+          <RssFeedIcon fontSize="small" />
+          <div
+            className={styles.keyTitle}
+            onClick={() => {
+              dispatch(SWITCHRSS("all"));
+            }}
           >
-            <TreeItem
-              nodeId="tagAll"
-              label={
-                <div className={styles.labelWrapper}>
-                  <div className={styles.labelTitle}>Your Feeds</div>
-                </div>
-              }
-              onClick={() => {
-                dispatch(SWITCHRSS("all"));
-              }}
-            ></TreeItem>
-            <DragDropContext onDragEnd={onDragEnd}>
-              {articleFolderList}
-            </DragDropContext>
-          </TreeView>
-        </Link>
+            My Feeds
+          </div>
+        </div>
+        <div className={styles.subscriptionWrapper}>
+          <div className={styles.subscription}>Subscription</div>
+          <SettingsIcon fontSize="small" style={{ color: "#b2b2b2" }} />
+        </div>
+        <TreeView
+          className={classes.root}
+          defaultExpanded={[""]}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
+          <DragDropContext onDragEnd={onDragEnd}>
+            {articleFolderList}
+          </DragDropContext>
+        </TreeView>
+
         <Link to={"/rssexplore"}>
           <div className={styles.subTitle}>Follow New Source</div>
         </Link>

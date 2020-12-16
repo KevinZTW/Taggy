@@ -25,6 +25,22 @@ export default function Board(props) {
   const groupName = useSelector((state) => {
     return state.groupReducer.groupName;
   });
+  // const memebrList = getMembers();
+  // function getMembers() {
+  //   let memberList = [];
+  //   return db
+  //     .collection("Member")
+  //     .get()
+  //     .then((snapShot) => {
+  //       sn;
+  //       memberList.push({
+  //         email: doc.data().emil,
+  //         uid: doc.data().uid,
+  //         password: doc.data().password,
+  //       });
+  //       return memberList;
+  //     });
+  // }
   useEffect(() => {
     function checkArticleUpdate(uid) {
       db.collection("Articles")

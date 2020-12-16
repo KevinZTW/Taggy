@@ -20,7 +20,9 @@ export default function RSSCard(props) {
         <div className={styles.wordWrapper}>
           <div className={styles.title}>{props.item.title}</div>
           <div className={styles.creator}>{props.item.creator}</div>
-          <div className={styles.content}>{props.item.contentSnippet}</div>
+          <div className={styles.content}>
+            {props.item.contentSnippet || props.item["content:encodedSnippet"]}
+          </div>
         </div>
       </div>
     </div>
