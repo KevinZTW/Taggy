@@ -32,7 +32,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RSSTab() {
+export default function RSSTab(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [addFolderInput, setAddFolderInput] = useState("");
@@ -234,29 +234,54 @@ export default function RSSTab() {
       setRSSFolders(newRSSFolders);
     }
   }
+  console.log(props.focus);
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
         <div className={styles.sectionTitle}>Home</div>
-        <div className={styles.keyTitleWrapper}>
-          <TodayIcon fontSize="small" />
-          <div className={styles.keyTitle}>Today</div>
-        </div>
-        <div className={styles.titleWrapper}>
-          <ExploreIcon fontSize="small" />
-          <div className={styles.keyTitle}>Explore</div>
-        </div>
-        <div className={styles.titleWrapper}>
-          <RssFeedIcon fontSize="small" />
+        <Link to={"/home"}>
           <div
-            className={styles.keyTitle}
-            onClick={() => {
-              dispatch(SWITCHRSS("all"));
-            }}
+            className={
+              props.focus === "home"
+                ? styles.keyTitleWrapper
+                : styles.titleWrapper
+            }
           >
-            My Feeds
+            <TodayIcon fontSize="small" />
+            <div className={styles.keyTitle}>Today</div>
           </div>
-        </div>
+        </Link>
+        <Link to={"/home/explore"}>
+          <div
+            className={
+              props.focus === "explore"
+                ? styles.keyTitleWrapper
+                : styles.titleWrapper
+            }
+          >
+            <ExploreIcon fontSize="small" />
+            <div className={styles.keyTitle}>Explore</div>
+          </div>
+        </Link>
+        <Link to={"/home/myfeeds"}>
+          <div
+            className={
+              props.focus === "myfeeds"
+                ? styles.keyTitleWrapper
+                : styles.titleWrapper
+            }
+          >
+            <RssFeedIcon fontSize="small" />
+            <div
+              className={styles.keyTitle}
+              onClick={() => {
+                dispatch(SWITCHRSS("all"));
+              }}
+            >
+              My Feeds
+            </div>
+          </div>
+        </Link>
         <div className={styles.subscriptionWrapper}>
           <div className={styles.subscription}>Subscription</div>
           <SettingsIcon fontSize="small" style={{ color: "#b2b2b2" }} />

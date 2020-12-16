@@ -15,6 +15,7 @@ import GraphBoard from "./Graph/GraphBoard";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
 import RSSBoard from "./RSS/RSSBoard";
+import RSSBoardToday from "./RSS/RSSBoard_Today";
 import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 //React.Memo
@@ -26,8 +27,27 @@ function App() {
       <div className="App">
         <MyRouter />
         <Switch>
-          <Route path="/signup" component={Signup}></Route>
-          <Route path="/signin" component={Signin}></Route>
+          <Route exact path="/home">
+            <div className="content">
+              <FunctionTab focus="home" />
+              <RSSTab focus="home" />
+              <RSSBoardToday />
+            </div>
+          </Route>
+          <Route path="/home/explore">
+            <div className="content">
+              <FunctionTab focus="home" />
+              <RSSTab focus="explore" />
+              <RSSBoard />
+            </div>
+          </Route>
+          <Route path="/home/myfeeds">
+            <div className="content">
+              <FunctionTab focus="home" />
+              <RSSTab focus="myfeeds" />
+              <RSSBoard />
+            </div>
+          </Route>
           <Route path="/board">
             <div className="content">
               <FunctionTab focus="board" />
@@ -50,13 +70,7 @@ function App() {
               <Graph />
             </div>
           </Route>
-          <Route path="/home">
-            <div className="content">
-              <FunctionTab focus="home" />
-              <RSSTab key="123" />
-              <RSSBoard />
-            </div>
-          </Route>
+
           <Route path="/rssexplore">
             <div className="content">
               <FunctionTab />
@@ -64,6 +78,8 @@ function App() {
               <RSSExplore />
             </div>
           </Route>
+          <Route path="/signup" component={Signup}></Route>
+          <Route path="/signin" component={Signin}></Route>
           <h1 className="title">Welcome to Taggy</h1>
         </Switch>
       </div>

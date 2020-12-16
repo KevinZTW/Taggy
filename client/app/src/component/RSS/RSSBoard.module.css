@@ -9,15 +9,45 @@
 }
 .title {
   color: white;
-  padding-top: 50px;
-  padding-bottom: 30px;
+  padding-top: 40px;
+  padding-bottom: 16px;
 }
-.content {
-  font-size: 15px;
 
-  margin: 2px 0;
-  color: white;
+.description {
+  font-size: 20px;
+  padding-bottom: 40px;
+  margin: 0px 0;
+  color: #b2b2b2;
 }
+.switchWrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 25px;
+}
+.switchTitle {
+  cursor: pointer;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #1b1b1b;
+}
+.switchTitle span {
+  font-size: 19px;
+  font-weight: 500;
+  padding-bottom: 5px;
+}
+.switchTitleFocus {
+  cursor: pointer;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #1b1b1b;
+}
+.switchTitleFocus span {
+  font-size: 19px;
+  font-weight: 500;
+  padding-bottom: 5px;
+  border-bottom: solid 3px #2074ec;
+}
+
 .subscribe_btn {
   padding: 0px 8px;
   margin: 5px 0;
