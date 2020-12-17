@@ -56,7 +56,7 @@ export default function AddArticle(props) {
         onClick={(e) => {
           if (user) {
             e.preventDefault();
-            postDataToServer(localUrl, {
+            postDataToServer(ec2Url, {
               url: reqUrl,
               uid: user.uid,
             });
@@ -68,11 +68,6 @@ export default function AddArticle(props) {
       <button>Cancel</button>
 
       <br />
-      {/* <a href="http://localhost:2000/route/article/before">Before</a>
-      <br />
-      <a href="http://localhost:2000/route/article/after">after</a>
-      <br />
-      <a href="http://localhost:2000/route/article/MD">Mark Down</a> */}
     </div>
   );
 }

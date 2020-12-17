@@ -89,7 +89,7 @@ export default function RSSPage(props) {
         />
         <BookmarkBorderIcon
           onClick={() => {
-            postDataToServer(localUrl, {
+            postDataToServer(ec2Url, {
               url: feedItem.link,
               uid: user.uid,
             });
