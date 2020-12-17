@@ -119,6 +119,7 @@ export default function Graph() {
     },
     [data]
   );
+  console.log(ref);
   const articleList = useSelector((state) => {
     console.log(state);
     return state.articleReducer.articleList;

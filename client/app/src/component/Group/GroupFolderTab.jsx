@@ -169,12 +169,15 @@ export default function GroupFolderTab() {
         groups[groupIds[i]] = info;
       }
       console.log(groups);
-      dispatch(
-        INITGROUPSELECT(
-          groups[Object.keys(groups)[0]].id,
-          groups[Object.keys(groups)[0]].name
-        )
-      );
+      if (groups[0]) {
+        dispatch(
+          INITGROUPSELECT(
+            groups[Object.keys(groups)[0]].id,
+            groups[Object.keys(groups)[0]].name
+          )
+        );
+      }
+
       //=========!!!!!!!!!!!!!!!!!!!===========
       // dispatch(GROUPINIT(groups));
 

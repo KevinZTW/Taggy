@@ -1,0 +1,36 @@
+.mobileFunctionTabWrapper {
+}
+.mobileFunctionTab {
+  padding: 0 5px;
+  background: #131313;
+  border: solid 1px #2a2a2a;
+  bottom: 0px;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  z-index: 4;
+  width: 100%;
+}
+
+.logoWrapper img {
+  max-width: 100%;
+}
+.mobileIconWrapper {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  flex: auto;
+  display: flex;
+  align-items: center;
+}
+.iconWrapper a {
+  padding-bottom: 20px;
+}
+
+@media (min-device-width: 640px) {
+  .mobileFunctionTabWrapper {
+    display: none;
+  }
+}

@@ -11,9 +11,15 @@ import AddArticle from "../AddArticle";
 import firebase from "firebase/app";
 import teamImg from "../../img/undraw_team.svg";
 import team_img from "../../img/undraw_team.svg";
+import { render } from "react-dom";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default function Board(props) {
   const dispatch = useDispatch();
+  const [memberList, setMemberList] = useState([]);
+  const [filteredMemberList, setFilteredMemberList] = useState([]);
+  const [memberEmailList, setMemberEmailList] = useState([]);
+
   const [addMember, setAddMember] = useState(false);
 
   const user = useSelector((state) => {
@@ -65,14 +71,140 @@ export default function Board(props) {
       checkArticleUpdate(groupId);
     }
   }, [groupId]);
+
+  useEffect(() => {
+    let unsubscribe;
+    function getLatestMemberList() {
+      unsubscribe = db.collection("Member").onSnapshot((snapshot) => {
+        let memberList = [];
+        let memberEmailList = [];
+        snapshot.forEach((doc) => {
+          memberList.push({
+            displayname: doc.data().displaynamename,
+            email: doc.data().email,
+            uid: doc.data().uid,
+          });
+        });
+        setMemberList(memberList);
+      });
+    }
+    getLatestMemberList();
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  function handleChange(input) {
+    if (input !== "") {
+      let filteredMemberList = memberList.filter((member) => {
+        console.log(member);
+        return member.email.includes(input);
+      });
+      console.log(filteredMemberList);
+      setFilteredMemberList(filteredMemberList);
+    }
+  }
+
+  function renderSearchResult(filteredMemberList) {
+    let searchResult = [];
+    filteredMemberList.forEach((member, index) => {
+      let colorList = [
+        "	#007979",
+        "#019858",
+        "#004B97",
+        "	#AE8F00",
+        "#408080",
+        "	#5B00AE",
+        "	#D94600",
+        "#5151A2",
+        "	#006000",
+        "	#000093",
+        "	#007979",
+        "#019858",
+        "#004B97",
+        "	#AE8F00",
+        "#408080",
+        "	#5B00AE",
+        "	#D94600",
+        "#5151A2",
+        "	#006000",
+        "	#000093",
+        "	#007979",
+        "#019858",
+        "#004B97",
+        "	#AE8F00",
+        "#408080",
+        "	#5B00AE",
+        "	#D94600",
+        "#5151A2",
+        "	#006000",
+        "	#000093",
+        "	#007979",
+        "#019858",
+        "#004B97",
+        "	#AE8F00",
+        "#408080",
+        "	#5B00AE",
+        "	#D94600",
+        "#5151A2",
+        "	#006000",
+        "	#000093",
+      ];
+
+      searchResult.push(
+        <div
+          className={styles.memberWrapper}
+          id={member.uid}
+          onClick={(e) => {
+            console.log(e.currentTarget);
+            addMemberToGroup(e.currentTarget.id, groupId);
+          }}
+        >
+          <div
+            className={styles.memberHead}
+            style={{ background: colorList[index] }}
+          >
+            {member.displayname[0]}
+          </div>
+          <div className={styles.wordWrapper}>
+            <div className={styles.displayname}>{member.displayname}</div>
+            <div className={styles.email}>{member.email}</div>
+          </div>
+          <button>Add</button>
+        </div>
+      );
+    });
+    return searchResult;
+  }
+  function addMemberToGroup(uid, groupId) {
+    db.collection("Member")
+      .doc(uid)
+      .update({
+        board: firebase.firestore.FieldValue.arrayUnion(groupId),
+      })
+      .then(() => {
+        db.collection("GroupBoard")
+          .doc(groupId)
+          .update({
+            member: firebase.firestore.FieldValue.arrayUnion(uid),
+          });
+      })
+      .then(() => {
+        alert("succesfully add to group");
+      });
+  }
   const articleList = useSelector((state) => {
     return state.articleReducer.articleList;
   });
   console.log(articleList);
+  let searchResult = renderSearchResult(filteredMemberList);
+  console.log(searchResult);
+  console.log(filteredMemberList);
   return (
     <div
       className={styles.boardWrapper}
       onClick={() => {
+        setFilteredMemberList([]);
         setAddMember(false);
       }}
     >
@@ -95,15 +227,29 @@ export default function Board(props) {
                 e.stopPropagation();
               }}
             >
-              <div>Add New Member</div>
+              <div className={styles.addTitle}>Invite to board</div>
+              <CloseIcon
+                className={styles.cancelIcon}
+                fontSize="small"
+                onClick={() => {
+                  setFilteredMemberList([]);
+                  setAddMember(false);
+                }}
+              />
               <form action="">
-                <input type="text" />
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    if (e.target.value === "") {
+                      setFilteredMemberList([]);
+                    }
+                    console.log("hihi");
+                    handleChange(e.target.value);
+                  }}
+                />
               </form>
-              <hr />
-              <div className={styles.memberWrapper}>
-                <div>kevin@gmail.com</div>
-                <button>Add</button>
-              </div>
+              {searchResult}
             </div>
           ) : (
             ""

@@ -19,10 +19,13 @@ let getRSSList = function () {
 
 let fetchRSS = function (url, RSSId) {
   console.log("get url", url);
+  let encodedUrl = encodeURI(url);
   let parser = new Parser();
 
   (async () => {
-    let feed = await parser.parseURL(url).catch((err) => console.log(err));
+    let feed = await parser
+      .parseURL(encodedUrl)
+      .catch((err) => console.log(err));
     addRSS(feed, RSSId);
   })();
 };

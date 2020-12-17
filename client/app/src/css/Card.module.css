@@ -22,10 +22,10 @@
 .color {
   height: 80px;
   width: 20%;
-  background: #4f4f4f;
+  background: #222121;
 }
 .img {
-  min-width: 100%;
+  max-width: 100%;
 }
 
 .actionContainer {

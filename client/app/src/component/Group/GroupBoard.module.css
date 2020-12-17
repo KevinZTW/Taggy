@@ -25,33 +25,67 @@
 }
 .addMemberWrapper {
   z-index: 4;
-  width: 200px;
+  width: 250px;
   position: absolute;
   background: #2a2a2a;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 2px;
   top: 25px;
   right: 0px;
+  text-align: center;
 }
 .addMemberWrapper input {
-  margin-top: 5px;
+  width: 100%;
+  margin-top: 10px;
   border: none;
-  border-radius: 4px;
-  background: #191919;
+
+  background: #3a3939;
   padding: 3px;
   color: #b2b2b2;
+}
+.addTitle {
+  color: white;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #b2b2b2;
+  font-weight: 600;
+}
+.cancelIcon {
+  position: absolute;
+  top: 8px;
+  right: 4px;
 }
 .memberWrapper {
   padding-top: 5px;
   display: flex;
+  align-items: center;
+}
+.memberHead {
+  color: rgb(255, 255, 255);
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+}
+.wordWrapper {
+  padding-left: 5px;
+  text-align: left;
+  flex: auto;
+}
+.displayname {
+  color: white;
+}
+.email {
+  font-size: 12px;
 }
 .memberWrapper button {
   padding: 0 8px;
   margin-left: 10px;
   height: 20px;
-  border-radius: 5px;
+  border-radius: 2px;
   border: none;
-  background-color: rgb(30, 171, 249);
+  color: rgb(80, 75, 75);
+  background-color: #b2b2b2;
   cursor: pointer;
 }
 

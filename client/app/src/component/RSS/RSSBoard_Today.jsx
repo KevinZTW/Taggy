@@ -63,9 +63,7 @@ export default function Board(props) {
           .then((snapshot) => {
             let items = [...allFeeds];
             snapshot.forEach((doc) => {
-              if (userRSSList.includes(doc.data().RSSId)) {
-                items.push(doc.data());
-              }
+              items.push(doc.data());
             });
 
             setLastQueryDoc(snapshot.docs[snapshot.docs.length - 1]);

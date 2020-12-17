@@ -11,24 +11,40 @@ export default function Signup() {
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
-        console.log(authResult.uid);
-        console.log(redirectUrl);
-        await db
+        console.log(authResult);
+        let newUser = await db
           .collection("Member")
           .doc(authResult.uid)
-          .set({
-            uid: authResult.uid,
-            email: authResult.email,
-            displaynamename: authResult.displayName,
-          })
-
-          .then(() => console.log("Add user to db successfully"))
-          .then(history.push("board"))
-          .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorMessage);
+          .get()
+          .then((doc) => {
+            if (doc.data()) {
+              console.log("existing user sign in");
+              return false;
+            } else {
+              console.log("new user! create it in db");
+              return true;
+            }
           });
+        if (newUser) {
+          await db
+            .collection("Member")
+            .doc(authResult.uid)
+            .set({
+              uid: authResult.uid,
+              email: authResult.email,
+              displaynamename: authResult.displayName,
+            })
+
+            .then(() => console.log("Add user to db successfully"))
+            .then(history.push("board"))
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(errorMessage);
+            });
+        } else {
+          console.log("exiting user signin");
+        }
       },
     },
     // Popup signin flow rather than redirect flow.

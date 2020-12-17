@@ -19,6 +19,7 @@ import RSSBoardToday from "./RSS/RSSBoard_Today";
 import RSSBoardExplore from "./RSS/RSSBoard_Explore";
 import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
+import MobileFunctionTab from "./SideTab/MobileFunctionTab";
 //React.Memo
 //state prop dispatch history
 
@@ -31,6 +32,7 @@ function App() {
           <Route exact path="/home">
             <div className="content">
               <FunctionTab focus="home" />
+              <MobileFunctionTab focus="home" />
               <RSSTab focus="home" />
               <RSSBoardToday />
             </div>
@@ -38,6 +40,7 @@ function App() {
           <Route path="/home/explore">
             <div className="content">
               <FunctionTab focus="home" />
+              <MobileFunctionTab focus="home" />
               <RSSTab focus="explore" />
               <RSSBoardExplore />
             </div>
@@ -45,6 +48,7 @@ function App() {
           <Route path="/home/myfeeds">
             <div className="content">
               <FunctionTab focus="home" />
+              <MobileFunctionTab focus="home" />
               <RSSTab focus="myfeeds" />
               <RSSBoard />
             </div>
@@ -52,6 +56,7 @@ function App() {
           <Route path="/board">
             <div className="content">
               <FunctionTab focus="board" />
+              <MobileFunctionTab focus="board" />
               <FolderTab />
               <Board />
             </div>
@@ -67,6 +72,7 @@ function App() {
           <Route path="/graph">
             <div className="content">
               <FunctionTab focus="graph" />
+              <MobileFunctionTab focus="graph" />
               <GraphBoard />
               <Graph />
             </div>
@@ -75,6 +81,7 @@ function App() {
           <Route path="/rssexplore">
             <div className="content">
               <FunctionTab />
+              <MobileFunctionTab focus="home" />
               <RSSTab key="12223" />
               <RSSExplore />
             </div>

@@ -1,5 +1,5 @@
 import { useLocation, useHistory } from "react-router-dom";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db, CheckFirebaseUserStatus } from "../../firebase.js";
@@ -99,8 +99,10 @@ export default function Article() {
     console.groupEnd();
   }
   useEffect(() => {
+    let unsubscribe;
     let getArticles = function () {
-      db.collection("Articles")
+      unsubscribe = db
+        .collection("Articles")
         .doc(id)
         .onSnapshot(function (doc) {
           if (doc.data() !== undefined) {
@@ -113,9 +115,23 @@ export default function Article() {
     };
     getArticles();
     return () => {
-      getArticles();
+      unsubscribe();
     };
   }, []);
+  function uploadNote(input) {
+    db.collection("Articles").doc(id).update({
+      note: input,
+    });
+  }
+  function getNote(id) {
+    db.collection("Articles")
+      .doc(id)
+      .onSnapshot((doc) => {
+        var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+        console.log(source, " data: ", doc.data());
+      });
+  }
+  const quillRef = React.useRef();
 
   return (
     <div className={styles.articleWrapper}>
@@ -149,10 +165,21 @@ export default function Article() {
         ></div>
         <div className={styles.note}>
           <div>Your Summary</div>
+
           <ReactQuill
+            className={styles.quill1}
+            onChangeSelection={(a, b, c) => {
+              console.log(a);
+              console.log(b);
+              console.log(c);
+            }}
             theme="snow"
+            ref={(el) => {
+              quillRef.current = el;
+            }}
             value={note}
             onChange={(e) => {
+              uploadNote(note);
               setNote(e);
             }}
           />
