@@ -44,14 +44,14 @@
 }
 .subscriptionWrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-bottom: 5px;
   padding-top: 10px;
 }
 .subscription {
   font-size: 14px;
   color: #b2b2b2;
-  padding-right: 100px;
+  padding-right: 95px;
   padding-left: 25px;
   font-weight: 500;
 }
@@ -83,7 +83,9 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 14px;
+
   padding-left: 5px;
 }
 .subTitle {
@@ -92,7 +94,13 @@
   padding-bottom: 5px;
   color: #b2b2b2;
 }
+.setting {
+  cursor: pointer;
+  padding-right: 4px;
+}
 
+.treeItem {
+}
 .popup {
   display: flex;
   position: fixed;
@@ -104,6 +112,7 @@
   height: 100vh;
   width: 100%;
 }
+
 @keyframes popUpSlide {
   0% {
     left: 200px;
@@ -112,6 +121,7 @@
     left: 0;
   }
 }
+
 .blur {
   min-width: 30%;
   background-color: #131313;

@@ -83,9 +83,9 @@ export default function Board(props) {
       }
       return (
         <div className={styles.board}>
-          <h1 className={styles.title}>Your Daily Feeds</h1>
-          <div className={styles.content}>
-            Daily insights you need to keepahead
+          <h1 className={styles.title}>Subscribed Feeds</h1>
+          <div className={styles.description}>
+            Daily insight with your choice
           </div>
           {feedList}
         </div>
@@ -93,9 +93,8 @@ export default function Board(props) {
     } else {
       return (
         <div className={styles.board}>
-          <h1 className={styles.title}>Your Daily Feeds</h1>
-          <div className={styles.content}>You dont have any feed</div>
-          <div>You dont have any feed</div>
+          <h1 className={styles.title}>Subscribed Feeds</h1>
+          <div className={styles.content}>You dont have any feed yet!</div>
         </div>
       );
     }

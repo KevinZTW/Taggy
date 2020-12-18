@@ -14,6 +14,8 @@ export default function CardWrapper() {
             content={articleList[i].content}
             id={articleList[i].id}
             key={articleList[i].id}
+            tags={articleList[i].tags}
+            link={articleList[i].link}
             htmlContent={articleList[i].readerHtml}
           />
         );

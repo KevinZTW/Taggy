@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -29,6 +30,7 @@ const useStyles = makeStyles({
     flexGrow: 10,
     maxWidth: 220,
     marginBottom: "10px",
+    paddingLeft: "25px",
   },
 });
 
@@ -38,7 +40,16 @@ export default function RSSTab(props) {
   const [addFolderInput, setAddFolderInput] = useState("");
   const [showPage, setShowPage] = useState(false);
   const [RSSFolders, setRSSFolders] = useState([]);
+  const folderstyle = makeStyles({
+    root: {
+      paddingLeft: "23px",
 
+      maxWidth: 200,
+      fontSize: "15px important",
+      marginBottom: "3px",
+    },
+  });
+  const folderStyle = folderstyle();
   function getUserRSSList(uid) {
     db.collection("Member")
       .doc(uid)
@@ -128,13 +139,14 @@ export default function RSSTab(props) {
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
               <TreeItem
+                className={styles.treeItem}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 key={folders[i].id}
                 nodeId={folders[i].id}
                 label={
                   <div className={styles.labelWrapper}>
-                    <FolderOpenIcon style={{ fontSize: 20 }} />
+                    <FolderOpenIcon style={{ fontSize: 17 }} />
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
                 }
@@ -175,17 +187,23 @@ export default function RSSTab(props) {
       console.log("move inside same folder");
       let newRSSFolders = [...RSSFolders];
       let newRSSIds;
+      console.log(newRSSFolders);
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
           let moveId = folder.RSSIds[source.index];
           newRSSIds = [...folder.RSSIds];
-
+          console.log(moveId);
+          console.log(newRSSIds);
           newRSSIds.splice(source.index, 1);
+          console.log(newRSSIds);
           newRSSIds.splice(destination.index, 0, moveId);
           console.log(newRSSIds);
+
           let moveItem = folder.RSS[source.index];
+          console.log(moveItem);
           folder.RSS.splice(source.index, 1);
           folder.RSS.splice(destination.index, 0, moveItem);
+          console.log();
           folder.RSSIds = newRSSIds;
         }
       });
@@ -284,7 +302,17 @@ export default function RSSTab(props) {
         </Link>
         <div className={styles.subscriptionWrapper}>
           <div className={styles.subscription}>Subscription</div>
-          <SettingsIcon fontSize="small" style={{ color: "#b2b2b2" }} />
+          <Link to={"/rssexplore"}>
+            <AddIcon fontSize="small" style={{ color: "#b2b2b2" }} />
+          </Link>
+          <SettingsIcon
+            onClick={() => {
+              setShowPage(true);
+            }}
+            className={styles.setting}
+            fontSize="small"
+            style={{ color: "#b2b2b2" }}
+          />
         </div>
         <TreeView
           className={classes.root}
@@ -297,17 +325,6 @@ export default function RSSTab(props) {
           </DragDropContext>
         </TreeView>
 
-        <Link to={"/rssexplore"}>
-          <div className={styles.subTitle}>Follow New Source</div>
-        </Link>
-        <div
-          className={styles.subTitle}
-          onClick={() => {
-            setShowPage(true);
-          }}
-        >
-          Add New Folder
-        </div>
         {showPage
           ? createPortal(
               <div className={styles.popup}>

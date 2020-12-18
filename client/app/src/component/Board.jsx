@@ -25,6 +25,7 @@ export default function Board(props) {
               content: doc.data().markDown.slice(0, 100),
               id: doc.data().id,
               tags: doc.data().tags,
+              link: doc.data().link,
               readerHtml: doc.data().readerHtml,
             });
           });
@@ -38,6 +39,7 @@ export default function Board(props) {
   return (
     <div className={styles.boardWrapper}>
       <div className={styles.title}>My Saved Article</div>
+      <div className={styles.description}>The best second brain</div>
       <CardWrapper />
     </div>
   );

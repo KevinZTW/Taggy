@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.cb1c7b6d.chunk.css",
-    "main.js": "/static/js/main.49ffeed4.chunk.js",
-    "main.js.map": "/static/js/main.49ffeed4.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.d3523cc1.js",
-    "runtime-main.js.map": "/static/js/runtime-main.d3523cc1.js.map",
+    "main.css": "/static/css/main.d17c34a9.chunk.css",
+    "main.js": "/static/js/main.8fc240c4.chunk.js",
+    "main.js.map": "/static/js/main.8fc240c4.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.1a648626.js",
+    "runtime-main.js.map": "/static/js/runtime-main.1a648626.js.map",
     "static/css/2.a2032d84.chunk.css": "/static/css/2.a2032d84.chunk.css",
-    "static/js/2.feefeb9f.chunk.js": "/static/js/2.feefeb9f.chunk.js",
-    "static/js/2.feefeb9f.chunk.js.map": "/static/js/2.feefeb9f.chunk.js.map",
-    "static/js/3.6864fbae.chunk.js": "/static/js/3.6864fbae.chunk.js",
-    "static/js/3.6864fbae.chunk.js.map": "/static/js/3.6864fbae.chunk.js.map",
+    "static/js/2.b21803b6.chunk.js": "/static/js/2.b21803b6.chunk.js",
+    "static/js/2.b21803b6.chunk.js.map": "/static/js/2.b21803b6.chunk.js.map",
+    "static/js/3.e2cab2a8.chunk.js": "/static/js/3.e2cab2a8.chunk.js",
+    "static/js/3.e2cab2a8.chunk.js.map": "/static/js/3.e2cab2a8.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.a2032d84.chunk.css.map": "/static/css/2.a2032d84.chunk.css.map",
-    "static/css/main.cb1c7b6d.chunk.css.map": "/static/css/main.cb1c7b6d.chunk.css.map",
-    "static/js/2.feefeb9f.chunk.js.LICENSE.txt": "/static/js/2.feefeb9f.chunk.js.LICENSE.txt",
+    "static/css/main.d17c34a9.chunk.css.map": "/static/css/main.d17c34a9.chunk.css.map",
+    "static/js/2.b21803b6.chunk.js.LICENSE.txt": "/static/js/2.b21803b6.chunk.js.LICENSE.txt",
     "static/media/frontendWeekly_box.7a31f69e.jpg": "/static/media/frontendWeekly_box.7a31f69e.jpg",
     "static/media/medium_box.0d2fa2ef.png": "/static/media/medium_box.0d2fa2ef.png",
     "static/media/taggy_logo_3x.02226159.png": "/static/media/taggy_logo_3x.02226159.png",
     "static/media/undraw_team.3cf994a5.svg": "/static/media/undraw_team.3cf994a5.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.d3523cc1.js",
+    "static/js/runtime-main.1a648626.js",
     "static/css/2.a2032d84.chunk.css",
-    "static/js/2.feefeb9f.chunk.js",
-    "static/css/main.cb1c7b6d.chunk.css",
-    "static/js/main.49ffeed4.chunk.js"
+    "static/js/2.b21803b6.chunk.js",
+    "static/css/main.d17c34a9.chunk.css",
+    "static/js/main.8fc240c4.chunk.js"
   ]
 }

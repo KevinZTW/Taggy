@@ -32,6 +32,13 @@ a:visited {
 .title {
   color: white;
 }
+
+/* for Highlighter */
+
+.highLighter {
+  background-image: linear-gradient(transparent 50%, #1035ac 50%);
+}
+
 /* for MDE  */
 .mde-preview {
   color: white !important;

@@ -2,6 +2,12 @@
   width: 100%;
   color: #b2b2b2;
   padding-left: 30px;
+  padding-right: 20px;
+}
+@media (min-device-width: 640px) {
+  .boardWrapper {
+    margin-left: 50px;
+  }
 }
 
 .graphBoardWrapper {
@@ -10,14 +16,14 @@
 
 .title {
   font-size: 30px;
-  padding-bottom: 20px;
+  padding-top: 40px;
+  padding-bottom: 16px;
   color: white;
   font-weight: bold;
 }
-
 .description {
-  font-size: 15px;
-  padding-bottom: 20px;
+  font-size: 20px;
+  padding-bottom: 40px;
+  margin: 0px 0;
   color: #b2b2b2;
-  font-weight: bold;
 }

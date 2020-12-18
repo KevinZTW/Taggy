@@ -27,7 +27,6 @@ export default function RSSFolder(props) {
     if (RSS.length > 0) {
       let count = 0;
       for (let i in RSS) {
-        console.log(RSS[i]);
         RSSList.push(
           <Draggable draggableId={RSS[i].id} index={count} key={RSS[i].id}>
             {(provided) => (

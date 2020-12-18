@@ -10,10 +10,13 @@ import ReactQuill from "react-quill";
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
 import "react-quill/dist/quill.snow.css";
+import { render } from "react-dom";
 export default function Article() {
   let [tags, setTags] = useState({});
-  let [article, setArticle] = useState({});
   let [note, setNote] = useState("");
+  let [article, setArticle] = useState({});
+
+  const [renderArticle, setRenderArticle] = useState(article.readerHtml);
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);
@@ -21,6 +24,7 @@ export default function Article() {
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
+
   const customStyles = {
     menu: (provided, state) => ({
       ...provided,
@@ -100,6 +104,7 @@ export default function Article() {
   }
   useEffect(() => {
     let unsubscribe;
+    let unsubscribeNote;
     let getArticles = function () {
       unsubscribe = db
         .collection("Articles")
@@ -110,28 +115,161 @@ export default function Article() {
               title: doc.data().title,
               readerHtml: doc.data().readerHtml,
             });
+            setRenderArticle(doc.data().readerHtml);
           }
         });
     };
+    function noteUpdateListener(id) {
+      unsubscribeNote = db
+        .collection("Articles")
+        .doc(id)
+        .onSnapshot((doc) => {
+          if (doc.data().note) {
+            var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
+            console.log(source, " data: ", doc.data().note);
+            if (doc.data().note !== note) {
+              setNote(doc.data().note);
+            }
+          }
+        });
+    }
+    noteUpdateListener(id);
     getArticles();
     return () => {
       unsubscribe();
+      unsubscribeNote();
     };
   }, []);
   function uploadNote(input) {
-    db.collection("Articles").doc(id).update({
-      note: input,
-    });
-  }
-  function getNote(id) {
     db.collection("Articles")
       .doc(id)
-      .onSnapshot((doc) => {
-        var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-        console.log(source, " data: ", doc.data());
+      .update({
+        note: input,
+      })
+      .then(() => {
+        console.log("save!");
+      });
+  }
+
+  function findIndexInArticle(
+    articleString,
+    startIndex,
+    startTextContent,
+    endIndex,
+    endTextContent
+  ) {
+    let articleStart = articleString.indexOf(startTextContent) + startIndex;
+    let articleStartTail =
+      articleString.indexOf(startTextContent) + startTextContent.length;
+    let articleEnd = articleString.indexOf(endTextContent) + endIndex;
+    let articleEndHead = articleString.indexOf(endTextContent);
+    return {
+      articleStart: articleStart,
+      articleStartTail: articleStartTail,
+      articleEnd: articleEnd,
+      articleEndHead: articleEndHead,
+    };
+  }
+  function handleMouseUp() {
+    console.log(renderArticle);
+    var selection = window.getSelection();
+    // console.log(selection.getRangeAt(0).extractContents());
+    let dom = selection.getRangeAt(0).cloneContents();
+
+    console.log(dom.children);
+
+    [...dom.children].forEach((e) => {
+      console.log(e.textContent);
+    });
+    console.dir(selection.anchorNode);
+    console.dir(selection.anchorNode.nextSibling);
+    let sibiling = selection.anchorNode.nextSibling;
+    console.log(sibiling);
+    console.log(
+      selection.anchorOffset,
+      selection.focusOffset - 1,
+      selection.anchorNode.textContent,
+      selection.focusNode.textContent
+    );
+
+    let {
+      articleStart,
+      articleEnd,
+      articleStartTail,
+      articleEndHead,
+    } = findIndexInArticle(
+      renderArticle,
+      selection.anchorOffset,
+      selection.anchorNode.textContent,
+      selection.focusOffset,
+      selection.focusNode.textContent
+    );
+    console.log(articleStart);
+    console.log(articleEnd);
+
+    if (articleStart !== articleEnd) {
+      if (
+        selection.anchorNode.textContent === selection.focusNode.textContent
+      ) {
+        console.log("same node");
+        console.log(renderArticle.substr(0, articleStart));
+        console.log(
+          renderArticle.substr(articleStart, articleEnd - articleStart)
+        );
+        console.log(renderArticle.substr(articleEnd, renderArticle.length));
+        let tempArticle =
+          renderArticle.substr(0, articleStart) +
+          "<span class=highLighter >" +
+          renderArticle.substr(articleStart, articleEnd - articleStart) +
+          "</span>" +
+          renderArticle.substr(articleEnd, renderArticle.length);
+        console.log(tempArticle);
+        setRenderArticle(tempArticle);
+      } else {
+        console.log("cross node");
+        console.log(renderArticle.substr(0, articleStart));
+
+        let tempArticle =
+          renderArticle.substr(0, articleStart) +
+          "<span class=highLighter >" +
+          renderArticle.substr(articleStart, articleStartTail - articleStart) +
+          "</span>" +
+          renderArticle.substr(
+            articleStartTail,
+            articleEndHead - articleStartTail
+          ) +
+          "<span class=highLighter >" +
+          renderArticle.substr(articleEndHead, articleEnd - articleEndHead) +
+          "</span>" +
+          renderArticle.substr(articleEnd, renderArticle.length);
+        console.log(tempArticle);
+        setRenderArticle(tempArticle);
+      }
+    }
+
+    // console.log(article.readerHtml);
+  }
+
+  function storeHighLighter(start, end, uid) {
+    db.collection("test")
+      .doc("zGPvAjHYjMqFTHBuAzTX")
+      .collection("highlight")
+      .add({ start: 2, end: 5, uid: "ua112" })
+      .then((docRef) => {
+        docRef.update({ id: docRef.id });
       });
   }
   const quillRef = React.useRef();
+
+  var selection = window.getSelection();
+  useEffect(() => {
+    let articleMain = document.querySelector("." + styles.articleMain);
+
+    articleMain.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      articleMain.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [renderArticle]);
 
   return (
     <div className={styles.articleWrapper}>
@@ -161,26 +299,26 @@ export default function Article() {
       <div className={styles.articleMain}>
         <div
           className={styles.articleBody}
-          dangerouslySetInnerHTML={{ __html: article.readerHtml }}
+          dangerouslySetInnerHTML={{ __html: renderArticle }}
         ></div>
         <div className={styles.note}>
           <div>Your Summary</div>
 
           <ReactQuill
             className={styles.quill1}
-            onChangeSelection={(a, b, c) => {
-              console.log(a);
-              console.log(b);
-              console.log(c);
-            }}
+            onChangeSelection={(a, b, c) => {}}
             theme="snow"
             ref={(el) => {
               quillRef.current = el;
             }}
             value={note}
-            onChange={(e) => {
-              uploadNote(note);
-              setNote(e);
+            onChange={(e, a, source) => {
+              console.log(source);
+              console.log(e);
+              console.log(note);
+              if (source === "user") {
+                uploadNote(e);
+              }
             }}
           />
         </div>

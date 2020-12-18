@@ -1,12 +1,9 @@
 .container {
   position: relative;
-  max-width: 70%;
+  padding-bottom: 20px;
+  width: 70%;
 }
-@media (max-width: 1024px) {
-  .container {
-    max-width: 100%;
-  }
-}
+
 .card {
   margin-right: 15px;
   margin-bottom: 15px;
@@ -18,11 +15,12 @@
   overflow: hidden;
   word-break: break-all;
 }
-
+.imgWrapper {
+  border-radius: 5px;
+  height: 100px;
+  width: 120px;
+}
 .color {
-  height: 80px;
-  width: 20%;
-  background: #222121;
 }
 .img {
   max-width: 100%;
@@ -30,7 +28,7 @@
 
 .actionContainer {
   flex: auto;
-  width: 30%;
+  width: 40%;
   display: flex;
   justify-content: flex-end;
 }
@@ -67,4 +65,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+@media (max-width: 425px) {
+  .container {
+    width: 100%;
+  }
 }
