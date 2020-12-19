@@ -6,17 +6,22 @@
 }
 
 .board {
+  padding-top: 40px;
   padding-left: 10px;
   border-radius: 10px;
 }
-@media (min-device-width: 640px) {
+@media (min-device-width: 800px) {
   .board {
     margin-left: 50px;
   }
 }
+
+.arrowBack {
+}
 .title {
+  position: relative;
   color: white;
-  padding-top: 40px;
+
   padding-bottom: 16px;
 }
 
@@ -25,6 +30,27 @@
   padding-bottom: 40px;
   margin: 0px 0;
   color: #b2b2b2;
+}
+
+.channelDescription {
+  font-size: 20px;
+
+  margin: 0px 0;
+  color: #b2b2b2;
+}
+.channelSubscribe_btn {
+  padding: 0px 8px;
+  line-height: 30px;
+  font-weight: 500;
+  width: 4rem;
+  margin: 10px 0;
+  text-align: center;
+  height: 30px;
+  border-radius: 5px;
+  border: solid 1px #01b468;
+
+  color: #01b468;
+  cursor: pointer;
 }
 .switchWrapper {
   display: flex;
@@ -58,11 +84,13 @@
 
 .subscribe_btn {
   padding: 0px 8px;
+  width: 10rem;
   margin: 5px 0;
   height: 30px;
   border-radius: 5px;
   border: none;
   background-color: #01b468;
+  color: white;
   cursor: pointer;
 }
 

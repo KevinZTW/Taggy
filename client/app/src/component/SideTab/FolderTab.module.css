@@ -56,19 +56,19 @@
   font-weight: 500;
 }
 .importWrapper {
-  width: 70%;
-  margin-left: 30px;
-  background-color: #f1eaea;
-  border-radius: 6px;
-  padding: 7px 5px;
+  width: 85%;
+  margin-left: 26px;
+  background-color: #164cdf;
+  border-radius: 18px;
+  padding: 7px 8px;
   margin-bottom: 20px;
-  padding-left: 2px;
+  padding-left: 8px;
   display: flex;
   align-items: center;
 }
 
 .importTitle {
-  color: black;
+  color: white;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

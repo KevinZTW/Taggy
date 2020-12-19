@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
+import HomeIcon from "@material-ui/icons/Home";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
@@ -18,7 +19,7 @@ export default function FunctionTab(props) {
         <div className={styles.mobileIconWrapper}>
           <MenuIcon fontSize="large" style={{ color: "#747474" }} />
           <Link to={"/home"}>
-            <HomeWorkIcon
+            <HomeIcon
               fontSize="large"
               style={
                 props.focus === "home"
@@ -27,11 +28,11 @@ export default function FunctionTab(props) {
               }
             />
           </Link>
-          <Link to={"/home/explore"}>
+          <Link to={"/home/channels"}>
             <ExploreIcon
               fontSize="large"
               style={
-                props.focus === "graph"
+                props.focus === "channels"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
@@ -41,7 +42,7 @@ export default function FunctionTab(props) {
             <RssFeedIcon
               fontSize="large"
               style={
-                props.focus === "home"
+                props.focus === "myfeeds"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }

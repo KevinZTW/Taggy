@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { auth } from "./../firebase.js";
+
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Article from "./Article/Aritcle";
 import Header from "./Header/Header";
@@ -14,6 +15,7 @@ import Graph from "./Graph/Graph1";
 import GraphBoard from "./Graph/GraphBoard";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
+
 import RSSBoard from "./RSS/RSSBoard";
 import RSSBoardToday from "./RSS/RSSBoard_Today";
 import RSSBoardExplore from "./RSS/RSSBoard_Explore";
@@ -22,7 +24,6 @@ import FunctionTab from "./SideTab/FunctionTab";
 import MobileFunctionTab from "./SideTab/MobileFunctionTab";
 //React.Memo
 //state prop dispatch history
-
 function App() {
   return (
     <Router>
@@ -37,18 +38,19 @@ function App() {
               <RSSBoardToday />
             </div>
           </Route>
-          <Route path="/home/explore">
+          <Route path="/home/channels">
             <div className="content">
               <FunctionTab focus="home" />
-              <MobileFunctionTab focus="home" />
-              <RSSTab focus="explore" />
+              <MobileFunctionTab focus="channels" />
+              <RSSTab focus="channels" />
               <RSSBoardExplore />
             </div>
           </Route>
+
           <Route path="/home/myfeeds">
             <div className="content">
               <FunctionTab focus="home" />
-              <MobileFunctionTab focus="home" />
+              <MobileFunctionTab focus="myfeeds" />
               <RSSTab focus="myfeeds" />
               <RSSBoard />
             </div>

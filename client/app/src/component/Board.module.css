@@ -4,7 +4,7 @@
   padding-left: 30px;
   padding-right: 20px;
 }
-@media (min-device-width: 640px) {
+@media (min-device-width: 800px) {
   .boardWrapper {
     margin-left: 50px;
   }

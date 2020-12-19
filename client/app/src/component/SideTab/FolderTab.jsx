@@ -255,7 +255,7 @@ export default function FolderTab() {
                 setAddArticle(true);
               }}
             >
-              <AddCircleIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+              <AddCircleIcon style={{ fontSize: 20, color: "white" }} />
               <div className={styles.importTitle}>Import Article</div>
             </div>
             <TreeItem

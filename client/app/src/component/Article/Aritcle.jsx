@@ -233,7 +233,7 @@ export default function Article() {
         setRenderArticle(tempArticle);
       } else {
         console.log("cross node==========");
-        let highLightId = user.uid + "_" + Date.now().toString().substr(0, 5);
+        let highLightId = user.uid + "_" + Date.now().toString();
         highLighting(dom, highLightId);
         let highlight = {
           id: highLightId,

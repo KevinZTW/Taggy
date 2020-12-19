@@ -269,10 +269,10 @@ export default function RSSTab(props) {
             <div className={styles.keyTitle}>Today</div>
           </div>
         </Link>
-        <Link to={"/home/explore"}>
+        <Link to={"/home/channels"}>
           <div
             className={
-              props.focus === "explore"
+              props.focus === "channels"
                 ? styles.keyTitleWrapper
                 : styles.titleWrapper
             }

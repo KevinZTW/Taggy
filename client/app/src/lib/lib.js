@@ -415,21 +415,23 @@ app.addRSSToMember = function (uid, feedId) {
 };
 
 app.subscribeRSS = async function (uid, title, url, feed) {
-  console.log("add to ", uid, title, url);
-  app.checkRSSInFetchList(url).then((RSSId) => {
-    if (RSSId) {
-      console.log("RSS already in Fetch List");
-      app.addRSSToMember(uid, RSSId);
-    } else {
-      console.log("Add RSS to fetch List");
-      app.addRSSToFetchList(feed, url).then((RSSId) => {
-        console.log("add RSS to member");
+  if (url & feed) {
+    console.log("add to ", uid, title, url);
+    app.checkRSSInFetchList(url).then((RSSId) => {
+      if (RSSId) {
+        console.log("RSS already in Fetch List");
         app.addRSSToMember(uid, RSSId);
-        console.log("Add feed to RSSItem");
-        app.addRSSItem(feed, RSSId);
-      });
-    }
-  });
+      } else {
+        console.log("Add RSS to fetch List");
+        app.addRSSToFetchList(feed, url).then((RSSId) => {
+          console.log("add RSS to member");
+          app.addRSSToMember(uid, RSSId);
+          console.log("Add feed to RSSItem");
+          app.addRSSItem(feed, RSSId);
+        });
+      }
+    });
+  }
 };
 app.checkRSSItem = function (title, item) {
   return db

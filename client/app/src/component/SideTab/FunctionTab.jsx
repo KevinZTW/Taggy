@@ -6,6 +6,7 @@ import InsertChartIcon from "@material-ui/icons/InsertChart";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import HomeIcon from "@material-ui/icons/Home";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import InboxIcon from "@material-ui/icons/Inbox";
@@ -14,11 +15,13 @@ export default function FunctionTab(props) {
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
         <div className={styles.logoWrapper}>
-          <img src={logo} alt="" width="40px" />
+          <Link to={"/home"}>
+            <img src={logo} alt="" width="40px" />
+          </Link>
         </div>
         <div className={styles.iconWrapper}>
           <Link to={"/home"}>
-            <HomeWorkIcon
+            <HomeIcon
               fontSize="medium"
               style={
                 props.focus === "home"
