@@ -57,3 +57,6 @@ a:visited {
 .MuiTreeItem-label {
   padding-left: 0px;
 }
+[z] {
+  display: none;
+}

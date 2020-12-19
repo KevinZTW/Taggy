@@ -10,8 +10,9 @@ import ReactQuill from "react-quill";
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
 import "react-quill/dist/quill.snow.css";
-import { render } from "react-dom";
 export default function Article() {
+  console.log("rerender");
+  let [highLights, setHighLights] = useState([]);
   let [tags, setTags] = useState({});
   let [note, setNote] = useState("");
   let [article, setArticle] = useState({});
@@ -24,7 +25,7 @@ export default function Article() {
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
-
+  console.log(highLights);
   const customStyles = {
     menu: (provided, state) => ({
       ...provided,
@@ -158,11 +159,13 @@ export default function Article() {
     endIndex,
     endTextContent
   ) {
-    let articleStart = articleString.indexOf(startTextContent) + startIndex;
+    let encodedStart = startTextContent.replace("&", "&amp;");
+    let encodedEnd = endTextContent.replace("&", "&amp;");
+    let articleStart = articleString.indexOf(encodedStart) + startIndex;
     let articleStartTail =
-      articleString.indexOf(startTextContent) + startTextContent.length;
-    let articleEnd = articleString.indexOf(endTextContent) + endIndex;
-    let articleEndHead = articleString.indexOf(endTextContent);
+      articleString.indexOf(encodedStart) + encodedStart.length;
+    let articleEnd = articleString.indexOf(encodedEnd) + endIndex;
+    let articleEndHead = articleString.indexOf(encodedEnd);
     return {
       articleStart: articleStart,
       articleStartTail: articleStartTail,
@@ -170,27 +173,31 @@ export default function Article() {
       articleEndHead: articleEndHead,
     };
   }
+
   function handleMouseUp() {
-    console.log(renderArticle);
     var selection = window.getSelection();
-    // console.log(selection.getRangeAt(0).extractContents());
+    let tempRenderArticle = renderArticle;
     let dom = selection.getRangeAt(0).cloneContents();
-
+    console.log(dom);
+    console.log(dom.textContent);
     console.log(dom.children);
+    console.log([...dom.children]);
 
-    [...dom.children].forEach((e) => {
-      console.log(e.textContent);
+    [...dom.children].forEach((child) => {
+      console.log(child.children);
+      console.log(child.textContent);
     });
-    console.dir(selection.anchorNode);
-    console.dir(selection.anchorNode.nextSibling);
-    let sibiling = selection.anchorNode.nextSibling;
-    console.log(sibiling);
-    console.log(
-      selection.anchorOffset,
-      selection.focusOffset - 1,
-      selection.anchorNode.textContent,
-      selection.focusNode.textContent
-    );
+
+    // console.dir(selection.anchorNode);
+    // console.dir(selection.anchorNode.nextSibling);
+    // let sibiling = selection.anchorNode.nextSibling;
+    // console.log(sibiling);
+    // console.log(
+    //   selection.anchorOffset,
+    //   selection.focusOffset - 1,
+    //   selection.anchorNode.textContent,
+    //   selection.focusNode.textContent
+    // );
 
     let {
       articleStart,
@@ -204,46 +211,107 @@ export default function Article() {
       selection.focusOffset,
       selection.focusNode.textContent
     );
-    console.log(articleStart);
-    console.log(articleEnd);
 
     if (articleStart !== articleEnd) {
       if (
-        selection.anchorNode.textContent === selection.focusNode.textContent
+        selection.anchorNode.textContent === selection.focusNode.textContent &&
+        false
       ) {
         console.log("same node");
-        console.log(renderArticle.substr(0, articleStart));
-        console.log(
-          renderArticle.substr(articleStart, articleEnd - articleStart)
-        );
-        console.log(renderArticle.substr(articleEnd, renderArticle.length));
+        // console.log(renderArticle.substr(0, articleStart));
+        // console.log(
+        //   renderArticle.substr(articleStart, articleEnd - articleStart)
+        // );
+        // // console.log(renderArticle.substr(articleEnd, renderArticle.length));
         let tempArticle =
           renderArticle.substr(0, articleStart) +
           "<span class=highLighter >" +
           renderArticle.substr(articleStart, articleEnd - articleStart) +
           "</span>" +
           renderArticle.substr(articleEnd, renderArticle.length);
-        console.log(tempArticle);
+        // // console.log(tempArticle);
         setRenderArticle(tempArticle);
       } else {
-        console.log("cross node");
-        console.log(renderArticle.substr(0, articleStart));
+        console.log("cross node==========");
+        let highLightId = user.uid + "_" + Date.now().toString().substr(0, 5);
+        highLighting(dom, highLightId);
+        let highlight = {
+          id: highLightId,
+          text: dom.textContent,
+        };
+        setHighLights([...highLights, highlight]);
+        function highLighting(dom, highLightId) {
+          //整體
+          console.log(highLightId);
+          if ([...dom.children][0]) {
+            //有 child 的情況
+            [...dom.children].forEach((child) => {
+              highLighting(child, highLightId);
+            });
+            //child 以外的部分
+            let father = dom.textContent;
 
-        let tempArticle =
-          renderArticle.substr(0, articleStart) +
-          "<span class=highLighter >" +
-          renderArticle.substr(articleStart, articleStartTail - articleStart) +
-          "</span>" +
-          renderArticle.substr(
-            articleStartTail,
-            articleEndHead - articleStartTail
-          ) +
-          "<span class=highLighter >" +
-          renderArticle.substr(articleEndHead, articleEnd - articleEndHead) +
-          "</span>" +
-          renderArticle.substr(articleEnd, renderArticle.length);
-        console.log(tempArticle);
-        setRenderArticle(tempArticle);
+            let firstChildIndex = father.indexOf(
+              [...dom.children][0].textContent
+            );
+            // father head
+            let fatherHead = father.substr(0, firstChildIndex);
+            // father tail
+            let fatherTail = father.substr(firstChildIndex, father.length);
+
+            [...dom.children].forEach((child) => {
+              fatherHead = fatherHead.replace(child.textContent, "");
+              fatherTail = fatherTail.replace(child.textContent, "");
+            });
+            console.error("來處理", fatherHead);
+            findTextAddSpan(fatherHead, highLightId);
+            console.error("來處理", fatherTail);
+            findTextAddSpan(fatherTail, highLightId);
+          } else {
+            //沒有的情況
+            let father = dom.textContent;
+            findTextAddSpan(father, highLightId);
+          }
+        }
+
+        function findTextAddSpan(targetText, id) {
+          console.log(targetText);
+          console.log(id);
+          var encodedText = targetText.replace("&", "&amp;");
+          let indexStart = tempRenderArticle.indexOf(encodedText);
+          console.warn(indexStart);
+          let indexEnd = indexStart + targetText.length;
+          if (indexStart !== -1) {
+            let temp =
+              tempRenderArticle.substr(0, indexStart) +
+              `<span class=highLighter data-id="${id}">` +
+              tempRenderArticle.substr(indexStart, targetText.length) +
+              `</span><input z="${id}">` +
+              tempRenderArticle.substr(indexEnd, renderArticle.length);
+
+            tempRenderArticle = temp;
+          }
+        }
+
+        setRenderArticle(tempRenderArticle);
+
+        // console.log(renderArticle.substr(0, articleStart));
+        //=======< old code>==========================
+        // let tempArticle =
+        //   renderArticle.substr(0, articleStart) +
+        //   "<span class=highLighter >" +
+        //   renderArticle.substr(articleStart, articleStartTail - articleStart) +
+        //   "</span>" +
+        //   renderArticle.substr(
+        //     articleStartTail,
+        //     articleEndHead - articleStartTail
+        //   ) +
+        //   "<span class=highLighter >" +
+        //   renderArticle.substr(articleEndHead, articleEnd - articleEndHead) +
+        //   "</span>" +
+        //   renderArticle.substr(articleEnd, renderArticle.length);
+        // console.log(tempArticle);
+        // setRenderArticle(tempArticle);
       }
     }
 
@@ -261,7 +329,38 @@ export default function Article() {
   }
   const quillRef = React.useRef();
 
-  var selection = window.getSelection();
+  function renderHightLight(highLights) {
+    let highLightBoxes = [];
+    highLights.forEach((highLight) => {
+      highLightBoxes.push(
+        <div>
+          <div>{highLight.id}</div>
+          <div>{highLight.text}</div>
+          <div
+            onClick={() => {
+              console.log(highLight.id);
+              deleteHightLight(highLight.id);
+            }}
+          >
+            Delete
+          </div>
+        </div>
+      );
+    });
+    return highLightBoxes;
+  }
+
+  function deleteHightLight(id) {
+    console.log("delete", id);
+    let tempArticle = renderArticle;
+    console.log(tempArticle);
+
+    tempArticle = tempArticle
+      .replaceAll(`<span class=highLighter data-id="${id}">`, "")
+      .replaceAll(`</span><input z="${id}">`, "");
+    console.log(tempArticle);
+    setRenderArticle(tempArticle);
+  }
   useEffect(() => {
     let articleMain = document.querySelector("." + styles.articleMain);
 
@@ -270,7 +369,7 @@ export default function Article() {
       articleMain.removeEventListener("mouseup", handleMouseUp);
     };
   }, [renderArticle]);
-
+  let highLightBoxes = renderHightLight(highLights);
   return (
     <div className={styles.articleWrapper}>
       <img
@@ -321,6 +420,8 @@ export default function Article() {
               }
             }}
           />
+          <div>Your highlights</div>
+          {highLightBoxes}
         </div>
       </div>
     </div>
