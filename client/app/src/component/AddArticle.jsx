@@ -18,6 +18,7 @@ export default function AddArticle(props) {
       uid: "12344",
     }
   ) {
+    setLoading(true);
     fetch(url, {
       method: "post",
       headers: {
@@ -32,13 +33,14 @@ export default function AddArticle(props) {
             "Looks like there was a problem. Status Code: " + response.status
           );
           return;
+        } else {
+          response.json().then(function (data) {
+            if (data.msg === "data sucessfully save in backend") {
+              setTimeout(props.close, 2500);
+            } else {
+            }
+          });
         }
-        response.json().then(function (data) {
-          if (data.msg === "data sucessfully save in backend") {
-            props.close();
-          } else {
-          }
-        });
       })
       .catch(function (err) {
         console.log("Fetch Error :-S", err);
