@@ -1,6 +1,11 @@
 .articleWrapper {
   padding: 10px 20px;
+  display: flex;
 }
+.main {
+  padding-right: 0.5rem;
+}
+
 .title {
   font-size: 30px;
   padding-bottom: 20px;
@@ -15,7 +20,6 @@
 .tagWrapper {
   display: flex;
   padding-bottom: 10px;
-  padding-left: 10px;
 }
 .tag {
   background-color: #5b5b5b;
@@ -37,21 +41,65 @@
 .addTag:focus {
   display: flex;
 }
-.articleMain {
+
+.actionIconWrapper {
   display: flex;
-  flex-direction: row;
+  align-items: center;
 }
 
+.showNoteIcon {
+}
+.articleMain {
+  padding: 0.4rem 0;
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+}
+
+.noteWrapper {
+  min-width: 45%;
+}
 .note {
-  min-width: 40%;
+  position: fixed;
+  top: 3.5rem;
+  right: 2rem;
+  width: 40%;
+  animation: popUpSlide 0.4s;
   color: #dcdcdc;
-  padding: 15px;
+  padding-left: 1rem;
+}
+
+@keyframes popUpSlide {
+  0% {
+    right: -200px;
+  }
+  100% {
+    right: 1rem;
+  }
+}
+
+.noteTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+}
+.highLightTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding-top: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+.highLightBox {
+  background-color: #1b1f2c;
+  padding: 0.5rem;
+  border-left: solid 6px;
+  margin-bottom: 1rem;
 }
 
 .articleBody {
   padding: 20px;
   border: solid 1px white;
-  max-width: 60%;
   background: #121212;
   line-height: 1.7;
   color: #dcdcdc;
@@ -110,11 +158,45 @@ a:visited {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
+
+/* hgihLight function */
+.highLightOffWrapper,
+.highLightOnWrapper {
+  cursor: pointer;
+  width: 2.5rem;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  padding: 0.3rem 0;
+}
+.highLightOffWrapper:hover,
+.noteOffWrapper:hover {
+  background-color: #293452;
+}
+
+.highLightOnWrapper,
+.noteOnWrapper {
+  background-color: #1a3a92;
+}
+
+.noteOnWrapper,
+.noteOffWrapper {
+  cursor: pointer;
+  width: 2.5rem;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  margin-left: 0.5rem;
+  padding: 0.3rem 0;
+}
+
 @media (max-width: 632px) {
   .note {
     display: none;
   }
-
+  .highLightOffWrapper {
+    display: none;
+  }
   .articleBody {
     max-width: 95%;
   }

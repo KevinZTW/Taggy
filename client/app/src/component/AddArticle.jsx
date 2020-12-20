@@ -1,10 +1,12 @@
 import styles from "./AddArticle.module.css";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { localUrl, ec2Url } from "../config.js";
 import { style } from "d3";
 
 export default function AddArticle(props) {
+  const [loading, setLoading] = useState(false);
   const [reqUrl, setReqUrl] = useState("");
   const user = useSelector((state) => {
     return state.memberReducer.user;
@@ -32,7 +34,10 @@ export default function AddArticle(props) {
           return;
         }
         response.json().then(function (data) {
-          console.log(data);
+          if (data.msg === "data sucessfully save in backend") {
+            props.close();
+          } else {
+          }
         });
       })
       .catch(function (err) {
@@ -41,9 +46,12 @@ export default function AddArticle(props) {
   }
   return (
     <div className={styles.addArticle}>
-      <div className={styles.title}>Import Article</div>
-      <div className={styles.description}>Import the web content you love</div>
+      <div className={styles.title}>Import article </div>
+      <div className={styles.description}>
+        Enter the url, we would clip and save the website content
+      </div>
       <input
+        placeholder="https://www....."
         type="text"
         name="input"
         className={styles.input}
@@ -63,11 +71,15 @@ export default function AddArticle(props) {
           }
         }}
       >
-        Import Article
+        Import
       </button>
-      <button>Cancel</button>
+      <button className={styles.cancel} onClick={props.close}>
+        Cancel
+      </button>
 
       <br />
+      <br />
+      {loading ? <LinearProgress /> : ""}
     </div>
   );
 }

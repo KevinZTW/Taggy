@@ -1,4 +1,5 @@
 .addArticle {
+  padding: 2rem;
   width: 100%;
 
   background-color: #121212;
@@ -25,7 +26,7 @@
   height: 30px;
   background-color: black;
   color: #6c6c6c;
-  margin-right: 20px;
+  padding-left: 1rem;
   font-size: 17px;
 }
 
@@ -35,6 +36,19 @@
   height: 30px;
   border-radius: 5px;
   border: none;
-  background-color: rgb(30, 171, 249);
+  background-color: #164cdf;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cancel {
+  padding: 0 8px;
+  margin-left: 10px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  background-color: #b2b2b2;
+  color: white;
+  font-weight: 600;
   cursor: pointer;
 }

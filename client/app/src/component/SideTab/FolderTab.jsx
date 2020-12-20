@@ -285,7 +285,12 @@ export default function FolderTab() {
                       setAddArticle(false);
                     }}
                   ></div>
-                  <AddArticle user={user} />
+                  <AddArticle
+                    user={user}
+                    close={() => {
+                      setAddArticle(false);
+                    }}
+                  />
                 </div>,
                 document.body
               )
