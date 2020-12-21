@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { auth } from "./../firebase.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Landing from "./Landing";
 import Article from "./Article/Aritcle";
 import Header from "./Header/Header";
 import Signup from "./Member/Signup";
@@ -22,6 +23,7 @@ import RSSBoardExplore from "./RSS/RSSBoard_Explore";
 import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 import MobileFunctionTab from "./SideTab/MobileFunctionTab";
+
 //React.Memo
 //state prop dispatch history
 function App() {
@@ -90,7 +92,7 @@ function App() {
           </Route>
           <Route path="/signup" component={Signup}></Route>
           <Route path="/signin" component={Signin}></Route>
-          <h1 className="title">Welcome to Taggy</h1>
+          <Route path="/" component={Landing}></Route>
         </Switch>
       </div>
     </Router>

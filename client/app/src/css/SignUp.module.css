@@ -1,6 +1,54 @@
 .wrapper {
   text-align: center;
   display: flex;
+  flex-direction: column;
+
+  padding: 2rem;
+}
+
+.headWrapper {
+  padding: 0rem 0rem;
+  display: flex;
+  align-items: center;
+}
+.homeWrapper {
+  width: 10rem;
+  display: flex;
+  flex-direction: row;
+}
+.logoTitle {
+  padding-left: 0.6rem;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 2rem;
+  line-height: 3rem;
+  color: white;
+  font-weight: 600;
+  margin-right: auto;
+}
+.logoWrapper {
+  display: flex;
+  width: 3rem;
+}
+.logoWrapper img {
+  width: 100%;
+}
+.logInWrapper {
+  margin-left: auto;
+}
+.logInBtn {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.SignUpBtn {
+  padding-left: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+}
+.blockWrapper {
+  padding-top: 5rem;
+  display: flex;
   justify-content: center;
 }
 .block {

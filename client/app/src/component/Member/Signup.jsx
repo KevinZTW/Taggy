@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from "../../img/taggy_logo_1x.png";
 import "../../css/App.css";
 import styles from "../../css/SignUp.module.css";
 import { Link } from "react-router-dom";
@@ -87,54 +88,72 @@ export default function Signup() {
   }
   return (
     <div className={styles.wrapper}>
-      <div className={styles.block}>
-        <h2 className={styles.title}>Sign Up</h2>
-        <form
-          className={styles.form}
-          onSubmit={(e) => {
-            e.preventDefault();
-            firebaseSignUp(name, email, password);
-          }}
-        >
-          <div className={styles.inputbox}>
-            <label htmlFor="username">User Name</label>
-            <input
-              type="text"
-              name="username"
-              value={name}
-              onChange={(e) => {
-                setName(e.currentTarget.value);
-              }}
-            />
+      <div className={styles.headWrapper}>
+        <Link to={"/"}>
+          <div className={styles.homeWrapper}>
+            <div className={styles.logoWrapper}>
+              <img src={logo} alt="" />
+            </div>
+            <div className={styles.logoTitle}>Taggy</div>
           </div>
-          <div className={styles.inputbox}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.currentTarget.value);
-              }}
-            />
+        </Link>
+        <Link to={"/signin"} className={styles.logInWrapper}>
+          <div className={styles.logInBtn}>Sign in</div>
+        </Link>
+        <Link to={"/signup"}>
+          <div className={styles.SignUpBtn}>Sign up</div>
+        </Link>
+      </div>
+      <div className={styles.blockWrapper}>
+        <div className={styles.block}>
+          <h2 className={styles.title}>Sign Up</h2>
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              firebaseSignUp(name, email, password);
+            }}
+          >
+            <div className={styles.inputbox}>
+              <label htmlFor="username">User Name</label>
+              <input
+                type="text"
+                name="username"
+                value={name}
+                onChange={(e) => {
+                  setName(e.currentTarget.value);
+                }}
+              />
+            </div>
+            <div className={styles.inputbox}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.currentTarget.value);
+                }}
+              />
+            </div>
+            <div className={styles.inputbox}>
+              <label htmlFor="email">Password</label>
+              <input
+                type="password"
+                name="passowrd"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.currentTarget.value);
+                }}
+              />
+            </div>
+            <button>Sign Up</button>
+          </form>
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+          <div className={styles.login}>
+            <span>Already have an account? </span>
+            <Link to={"/Signin"}>Sign in</Link>
           </div>
-          <div className={styles.inputbox}>
-            <label htmlFor="email">Password</label>
-            <input
-              type="password"
-              name="passowrd"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.currentTarget.value);
-              }}
-            />
-          </div>
-          <button>Sign Up</button>
-        </form>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-        <div className={styles.login}>
-          <span>Already have an account? </span>
-          <Link to={"/Signin"}>Sign in</Link>
         </div>
       </div>
     </div>

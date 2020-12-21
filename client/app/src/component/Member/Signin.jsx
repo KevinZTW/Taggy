@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from "../../img/taggy_logo_1x.png";
 import { useHistory } from "react-router-dom";
 import "../../css/App.css";
 import styles from "../../css/SignUp.module.css";
@@ -73,44 +74,62 @@ export default function Signup() {
   }
   return (
     <div className={styles.wrapper}>
-      <div className="block" className={styles.block}>
-        <h2 className={styles.title}>Sign In</h2>
-        <form
-          className={styles.form}
-          onSubmit={(e) => {
-            e.preventDefault();
-            firebaseSignIn(email, password);
-          }}
-        >
-          {/* <div className={styles.inputbox}>
+      <div className={styles.headWrapper}>
+        <Link to={"/"}>
+          <div className={styles.homeWrapper}>
+            <div className={styles.logoWrapper}>
+              <img src={logo} alt="" />
+            </div>
+            <div className={styles.logoTitle}>Taggy</div>
+          </div>
+        </Link>
+        <Link to={"/signin"} className={styles.logInWrapper}>
+          <div className={styles.logInBtn}>Sign in</div>
+        </Link>
+        <Link to={"/signup"}>
+          <div className={styles.SignUpBtn}>Sign up</div>
+        </Link>
+      </div>
+      <div className={styles.blockWrapper}>
+        <div className="block" className={styles.block}>
+          <h2 className={styles.title}>Sign In</h2>
+          <form
+            className={styles.form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              firebaseSignIn(email, password);
+            }}
+          >
+            {/* <div className={styles.inputbox}>
             <label htmlFor="username">User Name</label>
             <input type="text" name="username" />
           </div> */}
-          <div className={styles.inputbox}>
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              name="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.currentTarget.value);
-              }}
-            />
-          </div>
-          <div className={styles.inputbox}>
-            <label htmlFor="email">Password</label>
-            <input
-              type="password"
-              name="passowrd"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.currentTarget.value);
-              }}
-            />
-          </div>
-          <button>Sign In</button>
-          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
-        </form>
+            <div className={styles.inputbox}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                name="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.currentTarget.value);
+                }}
+              />
+            </div>
+            <div className={styles.inputbox}>
+              <label htmlFor="email">Password</label>
+              <input
+                type="password"
+                name="passowrd"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.currentTarget.value);
+                }}
+              />
+            </div>
+            <button>Sign In</button>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
+          </form>
+        </div>
       </div>
     </div>
   );
