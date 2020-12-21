@@ -10,7 +10,10 @@ import HomeIcon from "@material-ui/icons/Home";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import InboxIcon from "@material-ui/icons/Inbox";
+import { useDispatch } from "react-redux";
+import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
 export default function FunctionTab(props) {
+  const dispatch = useDispatch();
   return (
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
@@ -32,6 +35,9 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/board"}>
             <InboxIcon
+              onClick={() => {
+                dispatch(SWITCHARTICLE("all"));
+              }}
               fontSize="medium"
               style={
                 props.focus === "board"

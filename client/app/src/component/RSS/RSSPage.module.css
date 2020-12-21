@@ -1,6 +1,6 @@
 .page {
   /* animation-name: RSSPageSlide; */
-
+  min-width: 80vw;
   background: #121212;
   padding-left: 40px;
   height: calc(100%);

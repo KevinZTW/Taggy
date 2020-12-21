@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 export default function RSSPage(props) {
   console.log("page rerender, props is ", props.item);
   const [feedItem, setFeedItem] = useState({});
-
+  const [youtube, setYoutube] = useState(false);
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);
@@ -80,29 +80,74 @@ export default function RSSPage(props) {
   //     getArticles();
   //   }, []);
   console.log(feedItem);
+  let youtubeUrl = "";
+  if (feedItem.media) {
+    youtubeUrl = feedItem.media[0]["media:content"][0]["$"]["url"].replace(
+      "https://www.youtube.com/v/",
+      ""
+    );
+    console.log(feedItem.media[0]);
+    console.log(feedItem.media[0]["media:thumbnail"][0]["$"]["url"]);
+    console.log(feedItem.media[0]["media:content"][0]["$"]["url"]);
+  }
+
   return (
-    <div className={styles.page}>
-      <div className={styles.head}>
-        <ArrowBack
-          style={{ color: "#FFFCEC", cursor: "pointer" }}
-          onClick={props.onClick}
-        />
-        <BookmarkBorderIcon
-          onClick={() => {
-            postDataToServer(ec2Url, {
-              url: feedItem.link,
-              uid: user.uid,
-            });
-          }}
-        />
-      </div>
-      <div className={styles.title}>{feedItem.title}</div>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: feedItem.content || feedItem["content:encoded"],
-        }}
-        className={styles.content}
-      ></div>
+    <div>
+      {feedItem.media ? (
+        <div className={styles.page}>
+          <div className={styles.head}>
+            <ArrowBack
+              style={{ color: "#FFFCEC", cursor: "pointer" }}
+              onClick={props.onClick}
+            />
+            <BookmarkBorderIcon
+              onClick={() => {
+                postDataToServer(ec2Url, {
+                  url: feedItem.link,
+                  uid: user.uid,
+                });
+              }}
+            />
+          </div>
+          <div className={styles.title}>{feedItem.title}</div>
+          <iframe
+            width="640"
+            height="390"
+            title="hihi"
+            src={"https://www.youtube.com/embed/" + youtubeUrl}
+          ></iframe>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: feedItem.content || feedItem["content:encoded"],
+            }}
+            className={styles.content}
+          ></div>
+        </div>
+      ) : (
+        <div className={styles.page}>
+          <div className={styles.head}>
+            <ArrowBack
+              style={{ color: "#FFFCEC", cursor: "pointer" }}
+              onClick={props.onClick}
+            />
+            <BookmarkBorderIcon
+              onClick={() => {
+                postDataToServer(ec2Url, {
+                  url: feedItem.link,
+                  uid: user.uid,
+                });
+              }}
+            />
+          </div>
+          <div className={styles.title}>{feedItem.title}</div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: feedItem.content || feedItem["content:encoded"],
+            }}
+            className={styles.content}
+          ></div>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,10 +7,11 @@ import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
-import sfLogo from "../../img/sf_logo.png";
-import { style } from "d3";
+import youtube from "../../img/youtube_logo.png";
+
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
+  const [showChannelPage, setShowChannelPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
   const dispatch = useDispatch();
   console.log("rerender");
@@ -60,12 +61,12 @@ export default function Board(props) {
     }
 
     return (
-      <div className={styles.board}>
+      <div className={styles.channelPopUpboard}>
         <h1 className={styles.title}>{feed.title}</h1>
         <div dangerouslySetInnerHTML={{ __html: feed.description }}></div>
         {feed.title ? (
           <button
-            className={styles.subscribe_btn}
+            className={styles.channelSubscribe_btn}
             onClick={() => {
               app.subscribeRSS(user.uid, feed.title, searchFeedUrl, feed);
             }}
@@ -111,86 +112,45 @@ export default function Board(props) {
   }, [user]);
   return (
     <div className={styles.boardWrapper}>
-      <FindRSS className="headMemberIcon" user={props.user} />
-      <div className={styles.title}># Explore</div>
-      <div className={styles.categoryTitle}>Tech</div>
-      <div className={styles.categoryWrapper}>
-        <div className={styles.categoryCard}>
-          <div className={styles.cardUpper}>
-            <div className={styles.cardImg}>
-              <img src={sfLogo} alt="" />
-            </div>
-            <div className={styles.cardWording}>
-              <div className={styles.cardTitle}>Segment Fault - 前端</div>
-              <div className={styles.cardDescription}>前端新知</div>
-            </div>
-          </div>
-          <div className={styles.cardBtn}>Follow</div>
-        </div>
-        <div className={styles.categoryCard}>
-          <div className={styles.cardUpper}>
-            <div className={styles.cardImg}>
-              <img src={sfLogo} alt="" />
-            </div>
-            <div className={styles.cardWording}>
-              <div className={styles.cardTitle}>掘金前端</div>
-              <div className={styles.cardDescription}>前端新知</div>
-            </div>
-          </div>
-          <div className={styles.cardBtn}>Follow</div>
-        </div>
-        <div className={styles.categoryCard}>
-          <div className={styles.cardUpper}>
-            <div className={styles.cardImg}>
-              <img src={sfLogo} alt="" />
-            </div>
-            <div className={styles.cardWording}>
-              <div className={styles.cardTitle}>Segment Fault - 前端</div>
-              <div className={styles.cardDescription}>前端新知</div>
-            </div>
-          </div>
-          <div className={styles.cardBtn}>Follow</div>
-        </div>
-        <div className={styles.categoryCard}>
-          <div className={styles.cardUpper}>
-            <div className={styles.cardImg}>
-              <img src={sfLogo} alt="" />
-            </div>
-            <div className={styles.cardWording}>
-              <div className={styles.cardTitle}>Segment Fault - 前端</div>
-              <div className={styles.cardDescription}>前端新知</div>
-            </div>
-          </div>
-          <div className={styles.cardBtn}>Follow</div>
-        </div>
-        <div className={styles.categoryCard}>
-          <div className={styles.cardUpper}>
-            <div className={styles.cardImg}>
-              <img src={sfLogo} alt="" />
-            </div>
-            <div className={styles.cardWording}>
-              <div className={styles.cardTitle}>Segment Fault - 前端</div>
-              <div className={styles.cardDescription}>前端新知</div>
-            </div>
-          </div>
-          <div className={styles.cardBtn}>Follow</div>
-        </div>
-      </div>
+      <div className={styles.board}>
+        <h1 className={styles.title}>Add RSS Subscription</h1>
 
-      {searchOutcome}
-      {showPage ? (
-        <div className={styles.popup}>
-          <div
-            className={styles.blur}
-            onClick={() => {
-              setShowPage(false);
-            }}
-          ></div>
-          {feedPage}
+        <div className={styles.description}>
+          Add new source to reach this world
         </div>
-      ) : (
-        ""
-      )}
+        <FindRSS
+          user={props.user}
+          showChannel={() => {
+            setShowChannelPage(true);
+          }}
+        />
+        {showChannelPage ? (
+          <div className={styles.popup}>
+            <div
+              className={styles.blur}
+              onClick={() => {
+                setShowChannelPage(false);
+              }}
+            ></div>
+            {searchOutcome}
+          </div>
+        ) : (
+          ""
+        )}
+        {showPage ? (
+          <div className={styles.popup}>
+            <div
+              className={styles.blur}
+              onClick={() => {
+                setShowPage(false);
+              }}
+            ></div>
+            {feedPage}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 }

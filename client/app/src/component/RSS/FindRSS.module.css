@@ -1,7 +1,4 @@
 .addArticle {
-  margin-bottom: 10px;
-  margin-left: 20px;
-  margin-top: 100px;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -32,10 +29,12 @@
 
 .add {
   padding: 0 8px;
-  width: 60px;
+  width: 4.5rem;
+  text-align: center;
+  font-weight: 500;
   margin-left: 10px;
   font-size: 17px;
-  height: 46px;
+  height: 2rem;
   border-radius: 5px;
   border: none;
   background-color: #01b468;

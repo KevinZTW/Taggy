@@ -13,8 +13,25 @@ export default function FindRSS(props) {
     return state.memberReducer.user;
   });
   function requestRSS(url) {
+    if (url.includes("medium.com/@")) {
+      console.log(url);
+
+      console.log(" medium member");
+      url =
+        "https://medium.com/feed/@" + url.replace("https://medium.com/@", "");
+    } else if (url.includes("medium.com/")) {
+      url = "https://medium.com/feed/" + url.replace("https://medium.com/", "");
+    } else if (url.includes("youtube.com/channel")) {
+      url =
+        "https://www.youtube.com/feeds/videos.xml?channel_id=" +
+        url.replace("https://www.youtube.com/channel/", "");
+    }
     const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
-    let parser = new RSSParser();
+    let parser = new RSSParser({
+      customFields: {
+        item: [["media:group", "media", { keepArray: true }]],
+      },
+    });
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
         fetch(local + "rss/fetch", {
@@ -30,11 +47,13 @@ export default function FindRSS(props) {
           } else {
             response.json().then((data) => {
               dispatch(GETRSSRESPONSE(data.rss, url));
+              props.showChannel();
             });
           }
         });
       } else {
         console.log(feed);
+        props.showChannel();
         console.log(feed.title);
         dispatch(GETRSSRESPONSE(feed, url));
         feed.items.forEach(function (entry) {
@@ -46,7 +65,6 @@ export default function FindRSS(props) {
 
   return (
     <div className={styles.addArticle}>
-      <div class={styles.addTitle}>Add new source to reach this world</div>
       <form
         className={styles.addForm}
         action=""
@@ -62,12 +80,22 @@ export default function FindRSS(props) {
           name="input"
           className={styles.input}
           value={reqUrl}
+          placeholder=""
           onChange={(e) => setReqUrl(e.currentTarget.value)}
         />
         <button type="submit" className={styles.add}>
-          搜尋
+          Search
         </button>
       </form>
+      <br />
+      <div class={styles.addTitle}>
+        Now supporting general rss link, youtube and medium channel/member's
+        article
+      </div>
+      <div class={styles.addTitle}>e.g.</div>
+      <div>https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA</div>
+      <div>https://medium.com/appworks-school</div>
+      <div>https://medium.com/@lindingchi</div>
     </div>
   );
 }

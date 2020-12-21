@@ -1,5 +1,6 @@
 .functionTabWrapper {
-  min-width: 60px;
+  min-width: 5vw;
+  height: 100vh;
 }
 .functionTab {
   min-width: 60px;

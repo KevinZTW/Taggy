@@ -16,6 +16,14 @@
   }
 }
 
+.channelPopUpboard {
+  width: 80vw;
+  padding-top: 40px;
+  padding-left: 3rem;
+  border-radius: 10px;
+  background: #131313;
+}
+
 .arrowBack {
 }
 .title {
@@ -48,7 +56,7 @@
   height: 30px;
   border-radius: 5px;
   border: solid 1px #01b468;
-
+  background-color: #131313;
   color: #01b468;
   cursor: pointer;
 }
@@ -114,7 +122,7 @@
   }
 }
 .blur {
-  min-width: 30%;
+  min-width: 20vw;
   background-color: #131313;
   opacity: 90%;
 }
