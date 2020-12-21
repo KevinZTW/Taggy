@@ -3,16 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { local, ec2Url } from "../../config.js";
 import styles from "./FindRSS.module.css";
 import * as RSSParser from "rss-parser";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
 import Axios from "axios";
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
   function requestRSS(url) {
+    setLoading(true);
     if (url.includes("medium.com/@")) {
       console.log(url);
 
@@ -32,9 +35,11 @@ export default function FindRSS(props) {
         item: [["media:group", "media", { keepArray: true }]],
       },
     });
+    console.log("start to send the requett");
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
-        fetch(local + "rss/fetch", {
+        console.log("error, refetch from nbackend");
+        fetch("https://www.shopcard.site/route/" + "rss/fetch", {
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -47,15 +52,18 @@ export default function FindRSS(props) {
           } else {
             response.json().then((data) => {
               dispatch(GETRSSRESPONSE(data.rss, url));
+              setLoading(false);
               props.showChannel();
             });
           }
         });
       } else {
+        console.log("get feed, ");
         console.log(feed);
         props.showChannel();
         console.log(feed.title);
         dispatch(GETRSSRESPONSE(feed, url));
+        setLoading(false);
         feed.items.forEach(function (entry) {
           console.log(entry.title + ":" + entry.link);
         });
@@ -87,12 +95,14 @@ export default function FindRSS(props) {
           Search
         </button>
       </form>
+      {loading ? <LinearProgress className={styles.progress} /> : ""}
       <br />
       <div class={styles.addTitle}>
         Now supporting general rss link, youtube and medium channel/member's
         article
       </div>
       <div class={styles.addTitle}>e.g.</div>
+
       <div>https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA</div>
       <div>https://medium.com/appworks-school</div>
       <div>https://medium.com/@lindingchi</div>

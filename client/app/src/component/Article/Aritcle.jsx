@@ -470,7 +470,7 @@ export default function Article() {
   }
   return (
     <div className={styles.articleWrapper}>
-      <div className={styles.main}>
+      <div className={styles.main} style={{ width: showNote ? "55%" : "100%" }}>
         <div className={styles.head}>
           <Link to={"/board"}>
             <ArrowBack style={{ color: "#FFFCEC" }} />

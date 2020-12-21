@@ -37,7 +37,7 @@ export default function Signup() {
             })
 
             .then(() => console.log("Add user to db successfully"))
-            .then(history.push("board"))
+            .then(history.push("home"))
             .catch((error) => {
               var errorCode = error.code;
               var errorMessage = error.message;

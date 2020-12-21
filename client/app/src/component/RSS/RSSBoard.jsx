@@ -23,19 +23,20 @@ export default function Board(props) {
 
   function batchFetchAllFeeds(userRSSList, lastVisible) {
     console.log(userRSSList);
-    if (lastVisible === 0) {
+    if (lastVisible === 0 && userRSSList[0]) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
         .orderBy("pubDate", "desc")
+        .where("RSSId", "in", userRSSList)
         .limit(15)
         .get()
         .then((snapshot) => {
           console.log("batchfetch start");
           let items = [...allFeeds];
           snapshot.forEach((doc) => {
-            if (userRSSList.includes(doc.data().RSSId)) {
-              items.push(doc.data());
-            }
+            console.log(doc.data());
+
+            items.push(doc.data());
           });
           setLastQueryDoc(snapshot.docs[14]);
 
@@ -44,20 +45,19 @@ export default function Board(props) {
           console.log("se set items as ", items);
         });
     } else {
-      if (lastQueryDoc) {
+      if (lastQueryDoc && userRSSList[0]) {
         console.log("else start, the last visible is", lastVisible);
 
         db.collection("RSSItem")
           .orderBy("pubDate", "desc")
+          .where("RSSId", "in", userRSSList)
           .startAfter(lastQueryDoc)
           .limit(7)
           .get()
           .then((snapshot) => {
             let items = [...allFeeds];
             snapshot.forEach((doc) => {
-              if (userRSSList.includes(doc.data().RSSId)) {
-                items.push(doc.data());
-              }
+              items.push(doc.data());
             });
 
             setLastQueryDoc(snapshot.docs[snapshot.docs.length - 1]);
@@ -69,6 +69,7 @@ export default function Board(props) {
 
   function renderAllFeeds(feedItems) {
     if (feedItems) {
+      console.log(feedItems);
       let feedList = [];
       for (let i in feedItems) {
         feedList.push(

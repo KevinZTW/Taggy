@@ -93,7 +93,8 @@ export default function Board(props) {
           <div
             className={styles.channelSubscribe_btn}
             onClick={() => {
-              app.addRSSToMember(user.uid, ChannelRSSId);
+              console.log("add", props.channelId);
+              app.addRSSToMember(user.uid, props.channelId);
             }}
           >
             Follow

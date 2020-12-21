@@ -365,7 +365,10 @@ app.checkUserHasUncaFolder = function (uid) {
       .doc(uid)
       .get()
       .then((doc) => {
-        if (doc.data().RSSFolders.includes("unCa_" + uid)) {
+        if (
+          doc.data().RSSFolders &&
+          doc.data().RSSFolders.includes("unCa_" + uid)
+        ) {
           resolve(true);
         } else resolve(false);
       });
@@ -415,23 +418,22 @@ app.addRSSToMember = function (uid, feedId) {
 };
 
 app.subscribeRSS = async function (uid, title, url, feed) {
-  if (url & feed) {
-    console.log("add to ", uid, title, url);
-    app.checkRSSInFetchList(url).then((RSSId) => {
-      if (RSSId) {
-        console.log("RSS already in Fetch List");
+  console.log("hihi");
+  console.log("add to ", uid, title, url);
+  app.checkRSSInFetchList(url).then((RSSId) => {
+    if (RSSId) {
+      console.log("RSS already in Fetch List");
+      app.addRSSToMember(uid, RSSId);
+    } else {
+      console.log("Add RSS to fetch List");
+      app.addRSSToFetchList(feed, url).then((RSSId) => {
+        console.log("add RSS to member");
         app.addRSSToMember(uid, RSSId);
-      } else {
-        console.log("Add RSS to fetch List");
-        app.addRSSToFetchList(feed, url).then((RSSId) => {
-          console.log("add RSS to member");
-          app.addRSSToMember(uid, RSSId);
-          console.log("Add feed to RSSItem");
-          app.addRSSItem(feed, RSSId);
-        });
-      }
-    });
-  }
+        console.log("Add feed to RSSItem");
+        app.addRSSItem(feed, RSSId);
+      });
+    }
+  });
 };
 app.checkRSSItem = function (title, item) {
   return db
@@ -465,7 +467,8 @@ app.addRSSItem = function (feed, RSSId) {
             content: feed.items[i].content || feed.items[i]["content:encoded"],
             contentSnippet:
               feed.items[i].contentSnippet ||
-              feed.items[i]["content:encodedSnippet"],
+              feed.items[i]["content:encodedSnippet"] ||
+              feed.items[i].media[0]["media:description"][0],
             RSS: feed.title || "",
             title: feed.items[i].title || "",
             creator: feed.items[i].creator || "",
@@ -474,6 +477,7 @@ app.addRSSItem = function (feed, RSSId) {
             link: feed.items[i].link || "",
             pubDate: dayjs(feed.items[i].pubDate).valueOf() || "",
             author: feed.items[i].author || "",
+            media: feed.items[i].media || "",
           })
           .then((docRef) => docRef.update({ id: docRef.id }))
           .then(console.log("store successfully!"));
@@ -504,7 +508,7 @@ app.getMemberRSSFolders = function (uid) {
                   RSSFolders.push({
                     id: doc.data().id,
                     name: doc.data().name,
-                    RSSIds: doc.data().RSS,
+                    RSSIds: doc.data().RSS || [],
                     RSS: [],
                   });
                 });

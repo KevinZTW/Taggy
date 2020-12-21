@@ -61,3 +61,8 @@ a:visited {
 [z] {
   display: none;
 }
+
+/* progress bar */
+.MuiLinearProgress-barColorPrimary {
+  background-color: #01b468 !important;
+}

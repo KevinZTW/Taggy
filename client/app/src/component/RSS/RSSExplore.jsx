@@ -7,6 +7,7 @@ import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
+
 import youtube from "../../img/youtube_logo.png";
 
 export default function Board(props) {
@@ -124,6 +125,7 @@ export default function Board(props) {
             setShowChannelPage(true);
           }}
         />
+
         {showChannelPage ? (
           <div className={styles.popup}>
             <div

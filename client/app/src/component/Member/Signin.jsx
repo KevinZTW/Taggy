@@ -36,13 +36,14 @@ export default function Signup() {
             })
 
             .then(() => console.log("Add user to db successfully"))
-            .then(history.push("board"))
+            .then(history.push("home"))
             .catch((error) => {
               var errorCode = error.code;
               var errorMessage = error.message;
               console.log(errorMessage);
             });
         } else {
+          history.push("home");
           console.log("exiting user signin");
         }
       },
@@ -62,7 +63,7 @@ export default function Signup() {
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
         console.log("you click sign in and successfully");
-        history.push("/board");
+        history.push("/home");
         // Signed in
       })
       .catch((error) => {

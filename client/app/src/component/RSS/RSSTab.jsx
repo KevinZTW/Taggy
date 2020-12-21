@@ -86,25 +86,29 @@ export default function RSSTab(props) {
   useEffect(() => {
     function getRSSFolders() {
       if (user) {
-        app
-          .getMemberRSSFolders(user.uid)
-          .then((RSSFolders) => {
-            setRSSFolders(RSSFolders);
-            return RSSFolders;
-          })
-          .then((RSSFolders) => {
-            RSSFolders.forEach(async (folder) => {
-              if (folder.RSSIds) {
-                await folder.RSSIds.forEach(async (RSSId) => {
-                  let RSS = await app.getRSSInfo(RSSId);
-                  folder.RSS.push(RSS);
+        db.collection("Member")
+          .doc(user.uid)
+          .onSnapshot((doc) => {
+            app
+              .getMemberRSSFolders(user.uid)
+              .then((RSSFolders) => {
+                setRSSFolders(RSSFolders);
+                return RSSFolders;
+              })
+              .then((RSSFolders) => {
+                RSSFolders.forEach(async (folder) => {
+                  if (folder.RSSIds) {
+                    await folder.RSSIds.forEach(async (RSSId) => {
+                      let RSS = await app.getRSSInfo(RSSId);
+                      folder.RSS.push(RSS);
+                    });
+                  }
+
+                  return folder;
                 });
-              }
 
-              return folder;
-            });
-
-            setRSSFolders(RSSFolders);
+                setRSSFolders(RSSFolders);
+              });
           });
       }
     }
@@ -221,12 +225,14 @@ export default function RSSTab(props) {
     if (destination.droppableId !== source.droppableId) {
       console.log("move to another folder");
       let newRSSFolders = [...RSSFolders];
+      console.log(newRSSFolders);
       let moveId;
       let moveItem;
       let newSourceRSSIds;
       let newDestinationRSSIds;
       newRSSFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
+          console.log(folder);
           moveId = folder.RSSIds[source.index];
           moveItem = folder.RSS[source.index];
           newSourceRSSIds = [...folder.RSSIds];
@@ -240,6 +246,7 @@ export default function RSSTab(props) {
       });
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
+          console.log(folder);
           newDestinationRSSIds = [...folder.RSSIds];
           newDestinationRSSIds.splice(destination.index, 0, moveId);
           folder.RSS.splice(destination.index, 0, moveItem);

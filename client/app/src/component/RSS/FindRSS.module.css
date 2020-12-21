@@ -40,3 +40,9 @@
   background-color: #01b468;
   cursor: pointer;
 }
+.progress {
+  width: 70%;
+}
+.MuiLinearProgress-barColorPrimary {
+  background-color: blue !important;
+}

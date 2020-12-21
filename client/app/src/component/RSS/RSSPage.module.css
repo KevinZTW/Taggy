@@ -26,7 +26,6 @@
   color: white;
   font-weight: bold;
 }
-
 .head {
   padding-top: 10px;
 }
@@ -37,17 +36,18 @@
   max-width: 100%;
   background: #121212;
   line-height: 1.7;
-  color: #dcdcdc;
+  color: #dcdcdc !important;
 }
 
 .content p {
   padding-bottom: 15px;
+  color: #dcdcdc !important;
 }
 .content pre {
   background: #222222;
 
   border-left: 20px solid #39382e;
-  color: #ffd306;
+  color: #ffd306 !important;
   page-break-inside: avoid;
   font-family: monospace;
   font-size: 14px;
@@ -94,6 +94,11 @@
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
+
+.content blockquote {
+  background-color: #222222 !important;
+}
+
 @media (max-width: 632px) {
   .note {
     display: none;

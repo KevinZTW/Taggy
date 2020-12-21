@@ -24,10 +24,20 @@ const checkRSSItem = function (item) {
         }
       });
   } else {
-    console.log("Guid is not existed");
-    return new Promise((resovle, reject) => {
-      resolve("skip");
-    });
+    console.log("Guid is not existed, check link ");
+    return db
+      .collection("RSSItem")
+      .where("link", "==", item.link)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          console.log("check and not in db ");
+          return "save";
+        } else {
+          console.log("already in db");
+          return "skip";
+        }
+      });
   }
 };
 async function translation(a, b, c, d, e) {

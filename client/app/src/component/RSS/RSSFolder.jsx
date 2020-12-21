@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import styles from "../SideTab/FolderTab.module.css";
 import { Draggable } from "react-beautiful-dnd";
 import { SWITCHRSS } from "../../redux/actions";
+import { Link } from "react-router-dom";
 export default function RSSFolder(props) {
   const [RSS, setRSS] = useState([]);
   const dispatch = useDispatch();
@@ -35,21 +36,23 @@ export default function RSSFolder(props) {
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
               >
-                <TreeItem
-                  key={RSS[i].id}
-                  nodeId={RSS[i].id}
-                  label={
-                    <div className={styles.labelWrapper}>
-                      <BookmarkIcon style={{ fontSize: 20 }} />
-                      <div className={styles.labelTitle}>{RSS[i].title}</div>
-                    </div>
-                  }
-                  onClick={() => {
-                    console.log(RSS[i].id);
-                    dispatch(SWITCHRSS(RSS[i].id));
-                    //   dispatch(SWITCHARTICLE(tabs[i].id));
-                  }}
-                />
+                <Link to={"/home/myfeeds"}>
+                  <TreeItem
+                    key={RSS[i].id}
+                    nodeId={RSS[i].id}
+                    label={
+                      <div className={styles.labelWrapper}>
+                        <BookmarkIcon style={{ fontSize: 20 }} />
+                        <div className={styles.labelTitle}>{RSS[i].title}</div>
+                      </div>
+                    }
+                    onClick={() => {
+                      console.log(RSS[i].id);
+                      dispatch(SWITCHRSS(RSS[i].id));
+                      //   dispatch(SWITCHARTICLE(tabs[i].id));
+                    }}
+                  />
+                </Link>
               </div>
             )}
           </Draggable>

@@ -8,6 +8,9 @@ import medium from "../../img/medium_box.png";
 import dailydev from "../../img/dailydev_box.png";
 import dailyJS from "../../img/dailyJS_box.png";
 import airbnb from "../../img/airbnb_box.jpg";
+import google from "../../img/google_box.png";
+import logrocket from "../../img/logrocket_box.jpg";
+import plain from "../../img/plain_english_box.jpg";
 import RSSCard from "./RSSCard";
 import { db } from "../../firebase.js";
 import { INITARTICLE } from "../../redux/actions";
@@ -30,7 +33,7 @@ export default function RSSBoardExplore(props) {
         <div className={styles.board}>
           <h1 className={styles.title}>Explore</h1>
           <div className={styles.description}>
-            Discover the best sources for any topic
+            Discover the best sources for topic you like
           </div>
           <h1 className={styles.boxWrapperTitle}>Feature</h1>
           <div className={styles.boxWrapper}>
@@ -49,39 +52,42 @@ export default function RSSBoardExplore(props) {
               </Link>
             </div>
             <div className={styles.box}>
-              <Link to="?channelId=I14qjeQLYk4hfxBTW1lF&title=Bits and Pieces&description=The best of web development articles, tutorials, and news.">
-                <div className={styles.boxImg}>
-                  <img src={medium} alt="" />
-                </div>
-                <div className={styles.boxTitle}>Bits and Pieces</div>
-                <div className={styles.boxDescription}>
-                  The best of web development articles, tutorials, and news.
-                </div>
-              </Link>
-            </div>
-            <div className={styles.box}>
               <Link
-                to="?channelId=vqUF9fbocSHkwYzOi2fY&title=Daily.dev&description=Daily is an open source browser extension which provides curated
-                dev news to your new tab"
+                to="?channelId=fzKiwTaqX94LqJLuH3bx&title=Google Developers&description=Engineering and technology articles for developers, written
+                  and curated by Googlers. The views expressed are those of the
+                  authors and don't necessarily reflect those of Google."
               >
                 <div className={styles.boxImg}>
-                  <img src={dailydev} alt="" />
+                  <img src={google} alt="" />
                 </div>
-                <div className={styles.boxTitle}>Daily.dev</div>
+                <div className={styles.boxTitle}>Google Developers</div>
                 <div className={styles.boxDescription}>
-                  Daily is an open source browser extension which provides
-                  curated dev news to your new tab
+                  Engineering and technology articles for developers, written
+                  and curated by Googlers.
                 </div>
               </Link>
             </div>
             <div className={styles.box}>
-              <Link to="?channelId=5L6M2nLNRkXNjjFCu1gB&title=Daily JS&description=JavaScript news and opinion.">
+              <Link to="?channelId=K7eGFfzcCrXErhBPsKM0&title=JavaScript In Plain English - Medium&description=New JavaScript + Web Development articles every day">
                 <div className={styles.boxImg}>
-                  <img src={dailyJS} alt="" />
+                  <img src={plain} alt="" />
                 </div>
-                <div className={styles.boxTitle}>Daily JS</div>
+                <div className={styles.boxTitle}>
+                  JavaScript In Plain English - Medium
+                </div>
                 <div className={styles.boxDescription}>
-                  JavaScript news and opinion.
+                  New JavaScript + Web Development articles every day
+                </div>
+              </Link>
+            </div>
+            <div className={styles.box}>
+              <Link to="?channelId=KcRLeBkx37MWou5HbGKe&title=LogRocket Blog&description=For Frontend Developers and Web App Engineers">
+                <div className={styles.boxImg}>
+                  <img src={logrocket} alt="" />
+                </div>
+                <div className={styles.boxTitle}>LogRocket Blog</div>
+                <div className={styles.boxDescription}>
+                  For Frontend Developers and Web App Engineers
                 </div>
               </Link>
             </div>
