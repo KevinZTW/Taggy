@@ -16,5 +16,5 @@ greenlock
     //, debug: true
   })
   .serve(app);
-loopAndFetchRSS();
+
 setInterval(loopAndFetchRSS, 43200000); //half day
