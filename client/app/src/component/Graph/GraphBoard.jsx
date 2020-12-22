@@ -24,6 +24,7 @@ export default function GraphBoard() {
               title: doc.data().title,
               content: doc.data().markDown.slice(0, 100),
               id: doc.data().id,
+              link: doc.data().link,
               tags: doc.data().tags,
               readerHtml: doc.data().readerHtml,
             });

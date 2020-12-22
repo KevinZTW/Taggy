@@ -6,8 +6,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { deleteArticle } from "../firebase.js";
 export default function Card(props) {
   var elem = document.createElement("div");
+  console.log(props.link);
   elem.innerHTML = props.htmlContent;
   let src;
+
   if (elem.querySelector("img") && props.link) {
     console.log(elem.querySelector("img").getAttribute("data-src"));
 

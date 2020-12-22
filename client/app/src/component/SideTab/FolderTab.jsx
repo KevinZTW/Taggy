@@ -10,7 +10,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
-
+import SettingsIcon from "@material-ui/icons/Settings";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
@@ -38,7 +38,7 @@ export default function FolderTab() {
   const itemstyle = makeStyles({
     root: {
       paddingLeft: "25px",
-
+      color: "#B5B5B5",
       maxWidth: 200,
       marginBottom: "5px",
     },
@@ -190,7 +190,7 @@ export default function FolderTab() {
                 label={
                   <div className={styles.labelWrapper}>
                     <FolderOpenIcon
-                      style={{ fontSize: 20, color: "#5B5B5B" }}
+                      style={{ fontSize: 20, color: "#B5B5B5" }}
                     />
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
@@ -243,6 +243,15 @@ export default function FolderTab() {
       <div className={styles.folderTab}>
         <Link to={"/board"}>
           <div className={styles.sectionTitle}>My Board</div>
+          <div
+            className={styles.importWrapper}
+            onClick={() => {
+              setAddArticle(true);
+            }}
+          >
+            <AddCircleIcon style={{ fontSize: 20, color: "white" }} />
+            <div className={styles.importTitle}>Import Article</div>
+          </div>
           <TreeView
             className={classes.root}
             defaultExpanded={[""]}
@@ -250,28 +259,27 @@ export default function FolderTab() {
             defaultExpandIcon={<ChevronRightIcon />}
           >
             <div
-              className={styles.importWrapper}
-              onClick={() => {
-                setAddArticle(true);
-              }}
-            >
-              <AddCircleIcon style={{ fontSize: 20, color: "white" }} />
-              <div className={styles.importTitle}>Import Article</div>
-            </div>
-            <TreeItem
-              nodeId="tagAll"
-              label={
-                <div className={styles.labelWrapper}>
-                  <DescriptionIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
-                  <div className={styles.labelTitle}>All Articles</div>
-                </div>
-              }
+              className={styles.keyTitleWrapper}
               onClick={() => {
                 console.log("all");
                 dispatch(SWITCHARTICLE("all"));
               }}
-            ></TreeItem>
-            <div>Tags</div>
+            >
+              <DescriptionIcon style={{ fontSize: 20 }} />
+              <div className={styles.keyTitle}>All Articles</div>
+            </div>
+
+            <div className={styles.tagWrapper}>
+              <div className={styles.tag}>Tags</div>
+              <SettingsIcon
+                onClick={() => {
+                  setEditFolder(true);
+                }}
+                className={styles.setting}
+                fontSize="small"
+                style={{ color: "#b2b2b2" }}
+              />
+            </div>
             <DragDropContext onDragEnd={onDragEnd}>
               {articleFolderList}
             </DragDropContext>
@@ -306,6 +314,9 @@ export default function FolderTab() {
                   ></div>
                   <div className={styles.addFolder}>
                     <div className={styles.addTitle}>Add New Folder</div>
+                    <div className={styles.addSubTitle}>
+                      Create folder for the tags you created
+                    </div>
                     <form id="addForm" action="">
                       <input
                         className={styles.input}
@@ -345,14 +356,6 @@ export default function FolderTab() {
                 document.body
               )
             : ""}
-          <div
-            className={styles.subTitle}
-            onClick={() => {
-              setEditFolder(true);
-            }}
-          >
-            Add Folder
-          </div>
         </Link>
       </div>
     </div>

@@ -55,7 +55,9 @@ export default function RSSTab(props) {
       .doc(uid)
       .get()
       .then((doc) => {
-        dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
+        if (doc.data().subscribedRSS) {
+          dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
+        }
       });
   }
   function addNewGroup(uid, name) {

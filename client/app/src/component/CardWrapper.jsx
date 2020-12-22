@@ -6,8 +6,10 @@ export default function CardWrapper() {
   const list = useSelector((state) => {
     let list = [];
     let articleList = state.articleReducer.articleList;
+
     if (state.articleReducer.tagSelected === "all") {
       for (let i in articleList) {
+        console.log(articleList[i].link);
         list.push(
           <Card
             title={articleList[i].title}
@@ -33,6 +35,7 @@ export default function CardWrapper() {
               content={articleList[i].content}
               id={articleList[i].id}
               key={articleList[i].id}
+              link={articleList[i].link}
               htmlContent={articleList[i].readerHtml}
             />
           );

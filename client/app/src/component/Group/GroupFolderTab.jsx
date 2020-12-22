@@ -162,14 +162,16 @@ export default function GroupFolderTab() {
     }
     async function memberGroupInit(user) {
       let groupIds = await getMemberGroups(user);
+
       let groups = {};
       console.log(groupIds);
       for (let i in groupIds) {
         let info = await getGroupDbInfo(groupIds[i]);
         groups[groupIds[i]] = info;
       }
-      console.log(groups);
-      if (groups[0]) {
+      console.warn(groups);
+      if (groups[Object.keys(groups)[0]]) {
+        console.warn(groups[Object.keys(groups)[0]].id);
         dispatch(
           INITGROUPSELECT(
             groups[Object.keys(groups)[0]].id,
