@@ -183,7 +183,7 @@ export default function Board(props) {
               setSelectCategory("Front End");
             }}
           >
-            <span>Front End</span>
+            <span>Front-End</span>
           </div>
           <div
             className={
@@ -195,7 +195,7 @@ export default function Board(props) {
               setSelectCategory("Back End");
             }}
           >
-            <span>Back End</span>
+            <span>Back-End</span>
           </div>
           <div
             className={

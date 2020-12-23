@@ -26,7 +26,7 @@ let fetchRSS = function (url, RSSId) {
     let feed = await parser
       .parseURL(encodedUrl)
       .catch((err) => console.log(err));
-    if (feed.items) {
+    if (feed && feed.items) {
       addRSS(feed, RSSId);
     }
   })();

@@ -9,6 +9,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
+import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -24,6 +25,7 @@ import TodayIcon from "@material-ui/icons/Today";
 import RSSFolder from "./RSSFolder";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import SettingsIcon from "@material-ui/icons/Settings";
+
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -40,6 +42,7 @@ export default function RSSTab(props) {
   const [addFolderInput, setAddFolderInput] = useState("");
   const [showPage, setShowPage] = useState(false);
   const [RSSFolders, setRSSFolders] = useState([]);
+  const [expanded, setExpanded] = useState([]);
   const folderstyle = makeStyles({
     root: {
       paddingLeft: "23px",
@@ -91,24 +94,37 @@ export default function RSSTab(props) {
         db.collection("Member")
           .doc(user.uid)
           .onSnapshot((doc) => {
+            console.log("sth changed, refetch");
             app
               .getMemberRSSFolders(user.uid)
               .then((RSSFolders) => {
-                setRSSFolders(RSSFolders);
+                // setRSSFolders(RSSFolders);
                 return RSSFolders;
               })
-              .then((RSSFolders) => {
-                RSSFolders.forEach(async (folder) => {
+              .then(async (RSSFolders) => {
+                console.log("=================105");
+                for (const folder of RSSFolders) {
+                  console.log("107");
                   if (folder.RSSIds) {
-                    await folder.RSSIds.forEach(async (RSSId) => {
+                    console.log("109");
+                    for (const RSSId of folder.RSSIds) {
+                      console.log("111");
+                      console.log("get info");
                       let RSS = await app.getRSSInfo(RSSId);
+                      console.log("114");
+                      console.log("push to rss");
                       folder.RSS.push(RSS);
-                    });
+                      console.log(folder);
+                    }
                   }
+                  console.log(folder);
+                  // return folder;
+                }
 
-                  return folder;
-                });
-
+                for (let i in RSSFolders) {
+                  // setExpanded([...expanded, RSSFolders[i].id]);
+                }
+                console.log("set rssfolders");
                 setRSSFolders(RSSFolders);
               });
           });
@@ -138,9 +154,13 @@ export default function RSSTab(props) {
       });
   }
   function showRSSFolders(folders) {
+    console.log("show rss folders run", folders);
     let RSSFolderList = [];
     if (folders.length > 0) {
       for (let i in folders) {
+        console.log(i);
+        console.log(folders[i]);
+        console.log(folders[i].RSS);
         RSSFolderList.push(
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
@@ -262,10 +282,11 @@ export default function RSSTab(props) {
     }
   }
   console.log(props.focus);
+  console.log("rerender");
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
-        <div className={styles.sectionTitle}>Home</div>
+        <div className={styles.sectionTitle}>Taggy</div>
         <Link to={"/home"}>
           <div
             className={
@@ -314,7 +335,7 @@ export default function RSSTab(props) {
           <Link to={"/rssexplore"}>
             <AddIcon fontSize="small" style={{ color: "#b2b2b2" }} />
           </Link>
-          <SettingsIcon
+          <CreateNewFolderIcon
             onClick={() => {
               setShowPage(true);
             }}
@@ -325,7 +346,7 @@ export default function RSSTab(props) {
         </div>
         <TreeView
           className={classes.root}
-          defaultExpanded={[""]}
+          defaultexpanded={expanded}
           defaultCollapseIcon={<ExpandMoreIcon />}
           defaultExpandIcon={<ChevronRightIcon />}
         >

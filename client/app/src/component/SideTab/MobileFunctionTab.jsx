@@ -17,57 +17,61 @@ export default function FunctionTab(props) {
     <div className={styles.mobileFunctionTabWrapper}>
       <div className={styles.mobileFunctionTab}>
         <div className={styles.mobileIconWrapper}>
-          <MenuIcon fontSize="large" style={{ color: "#747474" }} />
           <Link to={"/home"}>
             <HomeIcon
-              fontSize="large"
+              fontSize="small"
               style={
                 props.focus === "home"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
             />
+            <div className={styles.title}>Home</div>
           </Link>
           <Link to={"/home/channels"}>
             <ExploreIcon
-              fontSize="large"
+              fontSize="small"
               style={
                 props.focus === "channels"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
             />
+            <div className={styles.title}>Channels</div>
           </Link>
           <Link to={"/home/myfeeds"}>
             <RssFeedIcon
-              fontSize="large"
+              fontSize="small"
               style={
                 props.focus === "myfeeds"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
             />
+            <div className={styles.title}>Feeds</div>
           </Link>
           <Link to={"/board"}>
             <InboxIcon
-              fontSize="large"
+              fontSize="small"
               style={
                 props.focus === "board"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
             />
+            <div className={styles.title}>Board</div>
           </Link>
 
           <Link to={"/group"}>
             <PeopleAltIcon
-              fontSize="large"
+              fontSize="small"
               style={
                 props.focus === "group"
                   ? { color: "#FFFFFF" }
                   : { color: "#747474" }
               }
             />
+            <div className={styles.title}>Group</div>
           </Link>
         </div>
       </div>

@@ -1,10 +1,12 @@
 .page {
   /* animation-name: RSSPageSlide; */
+
   min-width: 80vw;
   background: #121212;
   padding-left: 40px;
   height: calc(100%);
   overflow: auto;
+  z-index: 99999;
 }
 /* @keyframes RSSPageSlide {
   0% {
@@ -22,14 +24,29 @@
 } */
 .title {
   font-size: 30px;
+  padding-top: 0.5rem;
   padding-bottom: 20px;
   color: white;
   font-weight: bold;
+  align-items: center;
 }
 .head {
+  margin-top: 0.5rem;
+  display: flex;
   padding-top: 10px;
 }
-
+.backIcon {
+  margin-right: 1rem;
+}
+.saveIcon:hover + .save {
+  display: block;
+}
+.save {
+  border: solid 1px #01b468;
+  padding: 0.1rem 0.4rem;
+  color: #01b468;
+  display: none;
+}
 .content {
   padding: 20px;
 
@@ -103,8 +120,21 @@
   .note {
     display: none;
   }
-
+  .page {
+    width: 100vw;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
   .content {
     max-width: 95%;
+    padding-left: 0rem;
+    padding-right: 0rem;
+    margin: 0;
+    max-width: 100%;
+  }
+  .head {
+    margin-top: 1rem;
+    display: flex;
+    padding-top: 10px;
   }
 }

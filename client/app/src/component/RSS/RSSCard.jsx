@@ -48,7 +48,6 @@ export default function RSSCard(props) {
               props.item["content:encodedSnippet"] ||
               props.item.media[0]["media:description"][0]}
           </div>
-          <div>Delete</div>
         </div>
       </div>
     </div>

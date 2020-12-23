@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.39ac329a.chunk.css",
-    "main.js": "/static/js/main.3628b81b.chunk.js",
-    "main.js.map": "/static/js/main.3628b81b.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.c0c4c12c.js",
-    "runtime-main.js.map": "/static/js/runtime-main.c0c4c12c.js.map",
-    "static/css/2.a2032d84.chunk.css": "/static/css/2.a2032d84.chunk.css",
-    "static/js/2.3b538c55.chunk.js": "/static/js/2.3b538c55.chunk.js",
-    "static/js/2.3b538c55.chunk.js.map": "/static/js/2.3b538c55.chunk.js.map",
-    "static/js/3.cf1ebebc.chunk.js": "/static/js/3.cf1ebebc.chunk.js",
-    "static/js/3.cf1ebebc.chunk.js.map": "/static/js/3.cf1ebebc.chunk.js.map",
+    "main.css": "/static/css/main.f8a2381d.chunk.css",
+    "main.js": "/static/js/main.9b5cb635.chunk.js",
+    "main.js.map": "/static/js/main.9b5cb635.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.65d0bf07.js",
+    "runtime-main.js.map": "/static/js/runtime-main.65d0bf07.js.map",
+    "static/css/2.2655ce4e.chunk.css": "/static/css/2.2655ce4e.chunk.css",
+    "static/js/2.63ce6736.chunk.js": "/static/js/2.63ce6736.chunk.js",
+    "static/js/2.63ce6736.chunk.js.map": "/static/js/2.63ce6736.chunk.js.map",
+    "static/js/3.a70aaa5b.chunk.js": "/static/js/3.a70aaa5b.chunk.js",
+    "static/js/3.a70aaa5b.chunk.js.map": "/static/js/3.a70aaa5b.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/2.a2032d84.chunk.css.map": "/static/css/2.a2032d84.chunk.css.map",
-    "static/css/main.39ac329a.chunk.css.map": "/static/css/main.39ac329a.chunk.css.map",
-    "static/js/2.3b538c55.chunk.js.LICENSE.txt": "/static/js/2.3b538c55.chunk.js.LICENSE.txt",
+    "static/css/2.2655ce4e.chunk.css.map": "/static/css/2.2655ce4e.chunk.css.map",
+    "static/css/main.f8a2381d.chunk.css.map": "/static/css/main.f8a2381d.chunk.css.map",
+    "static/js/2.63ce6736.chunk.js.LICENSE.txt": "/static/js/2.63ce6736.chunk.js.LICENSE.txt",
     "static/media/airbnb_box.0e6eb5a0.jpg": "/static/media/airbnb_box.0e6eb5a0.jpg",
     "static/media/frontendWeekly_box.7a31f69e.jpg": "/static/media/frontendWeekly_box.7a31f69e.jpg",
     "static/media/landing_right.515cb51b.png": "/static/media/landing_right.515cb51b.png",
@@ -22,10 +22,10 @@
     "static/media/undraw_team.3cf994a5.svg": "/static/media/undraw_team.3cf994a5.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c0c4c12c.js",
-    "static/css/2.a2032d84.chunk.css",
-    "static/js/2.3b538c55.chunk.js",
-    "static/css/main.39ac329a.chunk.css",
-    "static/js/main.3628b81b.chunk.js"
+    "static/js/runtime-main.65d0bf07.js",
+    "static/css/2.2655ce4e.chunk.css",
+    "static/js/2.63ce6736.chunk.js",
+    "static/css/main.f8a2381d.chunk.css",
+    "static/js/main.9b5cb635.chunk.js"
   ]
 }

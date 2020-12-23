@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import { resolve } from "path";
 import firebase from "firebase/app";
 import { db, FieldValue } from "../firebase.js";
@@ -374,8 +376,24 @@ app.checkUserHasUncaFolder = function (uid) {
       });
   });
 };
+const notify_addRSS_success = () =>
+  toast.dark(
+    <div>
+      successfully subscribte the RSS{" "}
+      <Link to="/home/feeds">check it in feeds</Link>
+    </div>,
 
-app.addRSSToMember = function (uid, feedId) {
+    {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    }
+  );
+app.addRSSToMember = function (uid, feedId, callback) {
   return new Promise(async (resolve, reject) => {
     if (!(await app.checkUserHasUncaFolder(uid))) {
       console.log("user dont have unCat folder, create and as RSS to it ");
@@ -396,7 +414,11 @@ app.addRSSToMember = function (uid, feedId) {
                 "unCa_" + uid
               ),
             })
-            .then(console.log("successfully add to user"));
+            .then(() => {
+              console.log("successfully add to user");
+              notify_addRSS_success();
+              callback();
+            });
         });
     } else {
       console.log("user already has unCat folder, as RSS to it ");
@@ -411,7 +433,11 @@ app.addRSSToMember = function (uid, feedId) {
             .update({
               subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
             })
-            .then(console.log("successfully add to user"));
+            .then(() => {
+              console.log("successfully add to user");
+              notify_addRSS_success();
+              callback();
+            });
         });
     }
   });

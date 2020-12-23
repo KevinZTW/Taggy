@@ -10,11 +10,6 @@
   padding-left: 10px;
   border-radius: 10px;
 }
-@media (min-device-width: 800px) {
-  .board {
-    margin-left: 50px;
-  }
-}
 
 .channelPopUpboard {
   overflow-y: scroll;
@@ -47,6 +42,22 @@
   margin: 0px 0;
   color: #b2b2b2;
 }
+
+.channelSubscribed {
+  padding: 0px 8px;
+  line-height: 30px;
+  font-weight: 500;
+  width: 6rem;
+  margin: 10px 0;
+  text-align: center;
+  height: 30px;
+  border-radius: 5px;
+  border: solid 1px #01b468;
+  background-color: #01b468;
+  color: white;
+  cursor: pointer;
+}
+
 .channelSubscribe_btn {
   padding: 0px 8px;
   line-height: 30px;
@@ -117,17 +128,17 @@
 @keyframes popUpSlide {
   0% {
     left: 200px;
-    opacity: 70%;
+    opacity: 0.7;
   }
   100% {
     left: 0;
-    opacity: 100%;
+    opacity: 1;
   }
 }
 .blur {
   min-width: 20vw;
   background-color: #131313;
-  opacity: 90%;
+  opacity: 0.9;
 }
 .categoryTitle {
   color: #b2b2b2;
@@ -173,4 +184,18 @@
   border: none;
   background-color: #01b468;
   cursor: pointer;
+}
+@media (min-device-width: 800px) {
+  .board {
+    margin-left: 50px;
+  }
+}
+@media (max-width: 632px) {
+  .popup {
+    z-index: 99;
+  }
+  .blur {
+    min-width: 0;
+    width: 20vw;
+  }
 }

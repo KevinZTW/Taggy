@@ -66,3 +66,12 @@ a:visited {
 .MuiLinearProgress-barColorPrimary {
   background-color: #01b468 !important;
 }
+
+/* toast */
+.Toastify__toast--dark {
+  background-color: #3c3c3c !important;
+}
+.Toastify__toast--dark a {
+  color: #01b468;
+  text-decoration: underline;
+}

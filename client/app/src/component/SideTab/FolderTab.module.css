@@ -1,6 +1,15 @@
 .folderTabWrapper {
   min-width: 250px;
 }
+.mobileFolderTabWrapper {
+}
+.mobileFolderTab {
+  background: #191919;
+  border: solid 1px #2a2a2a;
+  height: 100vh;
+  min-width: 80vw;
+  padding: 20px 0px;
+}
 .folderTab {
   position: fixed;
   top: 0px;
@@ -123,7 +132,7 @@
   left: 0;
   top: 0;
   color: #e2e2e2e2;
-
+  z-index: 99;
   animation: popUpSlide 0.4s;
   height: 100vh;
   width: 100%;
@@ -136,11 +145,12 @@
 }
 
 .addFolder {
-  padding-top: 50px;
-  padding-left: 5rem;
+  padding-top: 2.7rem;
+  padding-left: 7.8rem;
   background-color: #131313;
   width: 80%;
 }
+
 .addTitle {
   color: #e0e0e0;
   font-weight: bold;
@@ -197,5 +207,17 @@
 @media (max-device-width: 640px) {
   .folderTabWrapper {
     display: none;
+  }
+  .addFolder {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    background-color: #131313;
+    width: 80%;
+  }
+  .input {
+    width: 50%;
+  }
+  .tag {
+    padding-right: 55vw;
   }
 }

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { local, ec2Url } from "../../config.js";
 import styles from "./FindRSS.module.css";
@@ -11,6 +12,16 @@ export default function FindRSS(props) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const notify_fail = () =>
+    toast.warn(<div>Sorry....sth goes wrong, please try again later</div>, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
@@ -36,6 +47,7 @@ export default function FindRSS(props) {
       },
     });
     console.log("start to send the requett");
+    let starttime = Date.now();
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
         console.log("error, refetch from nbackend");
@@ -49,6 +61,7 @@ export default function FindRSS(props) {
         }).then(function (response) {
           if (response.status !== 200) {
             console.log("sth goes wrong in backend ");
+            notify_fail();
           } else {
             response.json().then((data) => {
               dispatch(GETRSSRESPONSE(data.rss, url));
@@ -58,7 +71,37 @@ export default function FindRSS(props) {
           }
         });
       } else {
-        console.log("get feed, ");
+        console.log(
+          "get feed, it took",
+          (Date.now() - starttime) / 1000,
+          "seconds"
+        );
+        // ==================== speed testing
+        // let starttime2 = Date.now();
+        // console.log("start to send the requett to back end");
+        // fetch("https://www.shopcard.site/route/" + "rss/fetch", {
+        //   method: "post",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({ url: url }),
+        // }).then(function (response) {
+        //   if (response.status !== 200) {
+        //     console.log("sth goes wrong in backend ");
+        //   } else {
+        //     response.json().then((data) => {
+        //       console.log(
+        //         "it tooks",
+        //         (Date.now() - starttime2) / 1000,
+        //         "seconds"
+        //       );
+        //       dispatch(GETRSSRESPONSE(data.rss, url));
+        //       setLoading(false);
+        //       props.showChannel();
+        //     });
+        //   }
+        // });
+        // upper are speed testing
         console.log(feed);
         props.showChannel();
         console.log(feed.title);

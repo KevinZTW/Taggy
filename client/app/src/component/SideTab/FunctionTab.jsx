@@ -3,6 +3,7 @@ import logo from "../../img/taggy_logo_3x.png";
 import { Link } from "react-router-dom";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import HomeWorkIcon from "@material-ui/icons/HomeWork";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -25,7 +26,6 @@ export default function FunctionTab(props) {
         <div className={styles.iconWrapper}>
           <Link to={"/home"}>
             <HomeIcon
-              fontSize="medium"
               style={
                 props.focus === "home"
                   ? { color: "#FFFFFF" }
@@ -34,11 +34,11 @@ export default function FunctionTab(props) {
             />
           </Link>
           <Link to={"/board"}>
-            <InboxIcon
+            <BookmarkBorderIcon
               onClick={() => {
                 dispatch(SWITCHARTICLE("all"));
               }}
-              fontSize="medium"
+              fontSize="small"
               style={
                 props.focus === "board"
                   ? { color: "#FFFFFF" }
@@ -48,7 +48,7 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/graph"}>
             <InsertChartIcon
-              fontSize="medium"
+              fontSize="small"
               style={
                 props.focus === "graph"
                   ? { color: "#FFFFFF" }
@@ -58,7 +58,7 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/group"}>
             <PeopleAltIcon
-              fontSize="medium"
+              fontSize="small"
               style={
                 props.focus === "group"
                   ? { color: "#FFFFFF" }

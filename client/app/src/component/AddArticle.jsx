@@ -1,4 +1,5 @@
 import styles from "./AddArticle.module.css";
+import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -11,6 +12,16 @@ export default function AddArticle(props) {
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+  const notify_fail = () =>
+    toast.warn(<div>Sorry....sth goes wrong, please try again later</div>, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   function postDataToServer(
     url,
     data = {
@@ -32,6 +43,7 @@ export default function AddArticle(props) {
           console.log(
             "Looks like there was a problem. Status Code: " + response.status
           );
+          notify_fail();
           return;
         } else {
           response.json().then(function (data) {
@@ -44,6 +56,7 @@ export default function AddArticle(props) {
       })
       .catch(function (err) {
         console.log("Fetch Error :-S", err);
+        notify_fail();
       });
   }
   return (
@@ -75,9 +88,9 @@ export default function AddArticle(props) {
       >
         Import
       </button>
-      <button className={styles.cancel} onClick={props.close}>
+      {/* <button className={styles.cancel} onClick={props.close}>
         Cancel
-      </button>
+      </button> */}
 
       <br />
       <br />

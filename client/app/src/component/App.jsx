@@ -16,20 +16,22 @@ import Graph from "./Graph/Graph1";
 import GraphBoard from "./Graph/GraphBoard";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import RSSBoard from "./RSS/RSSBoard";
 import RSSBoardToday from "./RSS/RSSBoard_Today";
 import RSSBoardExplore from "./RSS/RSSBoard_Explore";
 import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 import MobileFunctionTab from "./SideTab/MobileFunctionTab";
-
+import MobileBurger from "./SideTab/Mobile_Burger";
 //React.Memo
 //state prop dispatch history
 function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer />
         <MyRouter />
         <Switch>
           <Route exact path="/home">
@@ -37,6 +39,7 @@ function App() {
               <FunctionTab focus="home" />
               <MobileFunctionTab focus="home" />
               <RSSTab focus="home" />
+              <MobileBurger />
               <RSSBoardToday />
             </div>
           </Route>
@@ -62,6 +65,7 @@ function App() {
               <FunctionTab focus="board" />
               <MobileFunctionTab focus="board" />
               <FolderTab />
+              <MobileBurger />
               <Board />
             </div>
           </Route>
@@ -69,6 +73,7 @@ function App() {
           <Route path="/group">
             <div className="content">
               <FunctionTab focus="group" />
+              <MobileFunctionTab focus="group" />
               <GroupFolderTab />
               <GroupBoard />
             </div>

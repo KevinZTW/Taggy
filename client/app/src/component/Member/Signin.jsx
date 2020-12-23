@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import logo from "../../img/taggy_logo_1x.png";
 import { useHistory } from "react-router-dom";
 import "../../css/App.css";
@@ -8,6 +9,19 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { db, auth } from "../../firebase.js";
 import firebase from "firebase/app";
 export default function Signup() {
+  const notify_fail = () =>
+    toast.warn(
+      <div>Sign in fail, please check your account and password</div>,
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
@@ -41,6 +55,7 @@ export default function Signup() {
               var errorCode = error.code;
               var errorMessage = error.message;
               console.log(errorMessage);
+              notify_fail();
             });
         } else {
           history.push("home");
@@ -71,6 +86,7 @@ export default function Signup() {
         var errorMessage = error.message;
         console.log(errorCode);
         console.log(errorMessage);
+        notify_fail();
       });
   }
   return (

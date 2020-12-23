@@ -11,6 +11,7 @@ import RSSPage from "./RSSPage";
 import { useLocation, useHistory } from "react-router-dom";
 import "./RSSPage.css";
 export default function Board(props) {
+  const [isFollowed, setIsFollowed] = useState(false);
   const [allFeeds, setAllFeeds] = useState([]);
   const [channelFeeds, setChannelFeeds] = useState({});
   const [lastVisible, setLastVisible] = useState(0);
@@ -26,6 +27,7 @@ export default function Board(props) {
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+
   function batchFetchAllFeeds(channelRSSId, lastVisible) {
     console.log(channelRSSId);
     if (lastVisible === 0) {
@@ -90,15 +92,21 @@ export default function Board(props) {
           </Link>
           <h1 className={styles.title}>{channelTitle} </h1>
           <div className={styles.channelDescription}>{channelDescription}</div>
-          <div
-            className={styles.channelSubscribe_btn}
-            onClick={() => {
-              console.log("add", props.channelId);
-              app.addRSSToMember(user.uid, props.channelId);
-            }}
-          >
-            Follow
-          </div>
+          {isFollowed ? (
+            <div className={styles.channelSubscribed}>Following</div>
+          ) : (
+            <div
+              className={styles.channelSubscribe_btn}
+              onClick={() => {
+                console.log("add", props.channelId);
+                app.addRSSToMember(user.uid, props.channelId, () => {
+                  setIsFollowed(true);
+                });
+              }}
+            >
+              Follow
+            </div>
+          )}
           {feedList}
         </div>
       );
@@ -115,9 +123,8 @@ export default function Board(props) {
       />
     );
   }
-
-  const ChannelRSSId = useSelector((state) => {
-    return state.RSSReducer.ChannelRSSId;
+  const userRSSList = useSelector((state) => {
+    return state.RSSReducer.UserRSSList;
   });
 
   useEffect(() => {
@@ -142,8 +149,13 @@ export default function Board(props) {
   }, [lastVisible]);
 
   useEffect(() => {
-    console.log(lastVisible);
-
+    if (userRSSList) {
+      if (userRSSList.includes(props.channelId)) {
+        setIsFollowed(true);
+      }
+    }
+  }, [userRSSList]);
+  useEffect(() => {
     batchFetchAllFeeds(props.channelId, lastVisible);
   }, [props.channelId, lastVisible]);
 

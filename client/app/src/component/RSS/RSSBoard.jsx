@@ -14,7 +14,7 @@ export default function Board(props) {
   const [lastVisible, setLastVisible] = useState(0);
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
-  const [lastQueryDoc, setLastQueryDoc] = useState("");
+  const [lastQueryDoc0, setLastQueryDoc0] = useState("");
   const lastVisibleNumber = useRef(lastVisible);
   const dispatch = useDispatch();
   const userRSSList = useSelector((state) => {
@@ -27,31 +27,28 @@ export default function Board(props) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
         .orderBy("pubDate", "desc")
-        .where("RSSId", "in", userRSSList)
-        .limit(15)
+        .where("RSSId", "in", userRSSList.slice(0, 9))
+        .limit(7)
         .get()
         .then((snapshot) => {
-          console.log("batchfetch start");
           let items = [...allFeeds];
           snapshot.forEach((doc) => {
             console.log(doc.data());
 
             items.push(doc.data());
           });
-          setLastQueryDoc(snapshot.docs[14]);
-
-          console.log("finsih loop");
+          setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
           setAllFeeds(items);
           console.log("se set items as ", items);
         });
     } else {
-      if (lastQueryDoc && userRSSList[0]) {
+      if (lastQueryDoc0 && userRSSList[0]) {
         console.log("else start, the last visible is", lastVisible);
 
         db.collection("RSSItem")
           .orderBy("pubDate", "desc")
-          .where("RSSId", "in", userRSSList)
-          .startAfter(lastQueryDoc)
+          .where("RSSId", "in", userRSSList.slice(0, 9))
+          .startAfter(lastQueryDoc0)
           .limit(7)
           .get()
           .then((snapshot) => {
@@ -60,7 +57,7 @@ export default function Board(props) {
               items.push(doc.data());
             });
 
-            setLastQueryDoc(snapshot.docs[snapshot.docs.length - 1]);
+            setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
             setAllFeeds(items);
           });
       }

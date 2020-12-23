@@ -18,19 +18,37 @@
 .mobileIconWrapper {
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 15px;
   justify-content: space-between;
   flex: auto;
   display: flex;
   align-items: center;
 }
-.iconWrapper a {
-  padding-bottom: 20px;
+.mobileIconWrapper a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+.burgerWrapper {
+  position: absolute;
+  top: 2.7rem;
+  right: 1rem;
+  z-index: 3;
+}
+.title {
+  font-weight: 600;
+  font-size: 0.5rem;
+}
 @media (min-device-width: 640px) {
   .mobileFunctionTabWrapper {
+    display: none;
+  }
+  .mobileFunctionTab {
+    border: none;
+  }
+  .burgerWrapper {
     display: none;
   }
 }

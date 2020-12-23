@@ -3,6 +3,7 @@ import { localUrl, ec2Url } from "../../config.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase.js";
+import { ToastContainer, toast } from "react-toastify";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import styles from "./RSSPage.module.css";
@@ -17,7 +18,36 @@ export default function RSSPage(props) {
   const location = useLocation();
   let search = location.search;
   let params = new URLSearchParams(search);
+  const notify_success = () =>
+    toast.dark(
+      <div>
+        successfully save to article <Link to="/board">go check it</Link>
+      </div>,
 
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
+  const notify_fail = () =>
+    toast.warn(
+      <div>fail, please try again later</div>,
+
+      {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
@@ -41,15 +71,17 @@ export default function RSSPage(props) {
           console.log(
             "Looks like there was a problem. Status Code: " + response.status
           );
+          notify_fail();
           return;
         }
         response.json().then(function (data) {
           console.log(data);
-          alert(data.msg);
+          notify_success();
         });
       })
       .catch(function (err) {
         console.log("Fetch Error :-S", err);
+        notify_fail();
       });
   }
   useEffect(() => {
@@ -100,7 +132,9 @@ export default function RSSPage(props) {
               style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={props.onClick}
             />
+
             <BookmarkBorderIcon
+              style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={() => {
                 postDataToServer(ec2Url, {
                   url: feedItem.link,
@@ -127,10 +161,14 @@ export default function RSSPage(props) {
         <div className={styles.page}>
           <div className={styles.head}>
             <ArrowBack
+              className={styles.backIcon}
               style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={props.onClick}
             />
+
             <BookmarkBorderIcon
+              className={styles.saveIcon}
+              style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={() => {
                 postDataToServer(ec2Url, {
                   url: feedItem.link,
@@ -138,6 +176,7 @@ export default function RSSPage(props) {
                 });
               }}
             />
+            <div className={styles.save}>Save to article</div>
           </div>
           <div className={styles.title}>{feedItem.title}</div>
           <div

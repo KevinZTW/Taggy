@@ -66,6 +66,7 @@
   animation: popUpSlide 0.4s;
   color: #dcdcdc;
   padding-left: 1rem;
+  overflow-y: scroll;
 }
 
 @keyframes popUpSlide {
@@ -191,13 +192,26 @@ a:visited {
 }
 
 @media (max-width: 632px) {
+  .articleWrapper {
+    padding: 1rem 2rem;
+  }
+  .articleBody {
+    max-width: 100%;
+  }
   .note {
-    display: none;
+    background-color: #121212;
+    left: 55vw;
+    width: 40%;
+    z-index: 8;
   }
   .highLightOffWrapper {
     display: none;
   }
-  .articleBody {
-    max-width: 95%;
+  .main {
+    padding-right: 0;
+  }
+
+  .noteWrapper {
+    z-index: 8;
   }
 }
