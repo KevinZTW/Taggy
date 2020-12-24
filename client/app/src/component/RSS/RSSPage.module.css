@@ -84,12 +84,16 @@
 .content h3 {
   font-size: 1.3rem;
   padding: 20px 0;
+  color: #dcdcdc !important;
 }
-
+.content h4 {
+  color: #dcdcdc !important;
+}
 .content img {
   padding-bottom: 20px;
   margin-left: 15%;
-  max-width: 70%;
+  max-width: 70% !important
+  ;
 }
 
 .content > a:link,
