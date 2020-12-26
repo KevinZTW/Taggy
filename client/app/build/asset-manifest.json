@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.7b4eed7c.chunk.css",
-    "main.js": "/static/js/main.d9e14278.chunk.js",
-    "main.js.map": "/static/js/main.d9e14278.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.76eefa22.js",
-    "runtime-main.js.map": "/static/js/runtime-main.76eefa22.js.map",
+    "main.css": "/static/css/main.90ca4099.chunk.css",
+    "main.js": "/static/js/main.e0340b48.chunk.js",
+    "main.js.map": "/static/js/main.e0340b48.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.2d7675c4.js",
+    "runtime-main.js.map": "/static/js/runtime-main.2d7675c4.js.map",
     "static/css/2.2655ce4e.chunk.css": "/static/css/2.2655ce4e.chunk.css",
-    "static/js/2.3ab38e9c.chunk.js": "/static/js/2.3ab38e9c.chunk.js",
-    "static/js/2.3ab38e9c.chunk.js.map": "/static/js/2.3ab38e9c.chunk.js.map",
-    "static/js/3.cd8114fc.chunk.js": "/static/js/3.cd8114fc.chunk.js",
-    "static/js/3.cd8114fc.chunk.js.map": "/static/js/3.cd8114fc.chunk.js.map",
+    "static/js/2.e7ca05b5.chunk.js": "/static/js/2.e7ca05b5.chunk.js",
+    "static/js/2.e7ca05b5.chunk.js.map": "/static/js/2.e7ca05b5.chunk.js.map",
+    "static/js/3.db11fdb4.chunk.js": "/static/js/3.db11fdb4.chunk.js",
+    "static/js/3.db11fdb4.chunk.js.map": "/static/js/3.db11fdb4.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.2655ce4e.chunk.css.map": "/static/css/2.2655ce4e.chunk.css.map",
-    "static/css/main.7b4eed7c.chunk.css.map": "/static/css/main.7b4eed7c.chunk.css.map",
-    "static/js/2.3ab38e9c.chunk.js.LICENSE.txt": "/static/js/2.3ab38e9c.chunk.js.LICENSE.txt",
+    "static/css/main.90ca4099.chunk.css.map": "/static/css/main.90ca4099.chunk.css.map",
+    "static/js/2.e7ca05b5.chunk.js.LICENSE.txt": "/static/js/2.e7ca05b5.chunk.js.LICENSE.txt",
     "static/media/airbnb_box.0e6eb5a0.jpg": "/static/media/airbnb_box.0e6eb5a0.jpg",
     "static/media/frontendWeekly_box.7a31f69e.jpg": "/static/media/frontendWeekly_box.7a31f69e.jpg",
     "static/media/landing_right.515cb51b.png": "/static/media/landing_right.515cb51b.png",
@@ -22,10 +22,10 @@
     "static/media/undraw_team.3cf994a5.svg": "/static/media/undraw_team.3cf994a5.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.76eefa22.js",
+    "static/js/runtime-main.2d7675c4.js",
     "static/css/2.2655ce4e.chunk.css",
-    "static/js/2.3ab38e9c.chunk.js",
-    "static/css/main.7b4eed7c.chunk.css",
-    "static/js/main.d9e14278.chunk.js"
+    "static/js/2.e7ca05b5.chunk.js",
+    "static/css/main.90ca4099.chunk.css",
+    "static/js/main.e0340b48.chunk.js"
   ]
 }

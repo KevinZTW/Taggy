@@ -35,6 +35,10 @@
   display: flex;
   padding-top: 10px;
 }
+.arrowWrapper {
+  width: 2rem;
+  height: 2rem;
+}
 .backIcon {
   margin-right: 1rem;
 }

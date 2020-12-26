@@ -23,6 +23,8 @@
   width: 150px;
 }
 .color {
+  height: 100%;
+  border-radius: 4px;
 }
 
 .img {
@@ -31,7 +33,10 @@
 }
 .title {
   font-weight: bold;
-
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
   color: #e0e0e0;
 }
 
@@ -40,10 +45,11 @@
   padding-top: 5px;
   padding-bottom: 10px;
   font-weight: 500;
-  line-height: 19px;
+  line-height: 1rem;
   color: #818181;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  overflow: hidden;
   -webkit-box-orient: vertical;
 }
 .wordWrapper {

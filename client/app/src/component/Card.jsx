@@ -15,7 +15,7 @@ export default function Card(props) {
 
     if (props.link.includes("segmentfault")) {
       src = elem.querySelector("img")
-        ? "https://segmentfault.com" +
+        ? // ? "https://segmentfault.com" +
           elem.querySelector("img").getAttribute("data-src")
         : null;
     } else if (
@@ -35,8 +35,17 @@ export default function Card(props) {
       <div className={styles.card}>
         <Link to={`/article?id=${props.id}`}>
           <div className={styles.imgWrapper}>
-            <div className={styles.color}>
-              <img src={src} alt="" className={styles.img} />
+            <div
+              className={styles.color}
+              style={{
+                backgroundImage: "url(" + src + ")",
+                backgroundRepeat: "no-repeat",
+                background: "cover",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            >
+              {/* <img src={src} alt="" className={styles.img} /> */}
             </div>
           </div>
         </Link>

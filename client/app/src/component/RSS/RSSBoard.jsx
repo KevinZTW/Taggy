@@ -81,9 +81,9 @@ export default function Board(props) {
       }
       return (
         <div className={styles.board}>
-          <h1 className={styles.title}>Subscribed Feeds</h1>
+          <h1 className={styles.title}>My Feeds</h1>
           <div className={styles.description}>
-            Daily insight with your choice
+            Feeds from your subscribed RSS
           </div>
           {feedList}
         </div>

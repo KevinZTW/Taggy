@@ -96,6 +96,7 @@ export default function Graph() {
           .attr("fill", "white")
           .attr("id", (d) => d.tagId)
           .on("click", (a) => {
+            d3.select(this).style("stroke", "yellow");
             console.log(a);
             console.log(a.target.id);
             dispatch(SWITCHARTICLE(a.target.id));

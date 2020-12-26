@@ -35,12 +35,14 @@
   border-left: solid 3px #2074ec;
   padding-left: 20px;
   color: white;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   display: flex;
   align-items: center;
 }
 .titleWrapper {
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   padding-left: 24px;
   color: #b2b2b2;
   display: flex;

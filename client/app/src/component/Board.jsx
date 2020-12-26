@@ -38,8 +38,10 @@ export default function Board(props) {
   }, [user]);
   return (
     <div className={styles.boardWrapper}>
-      <div className={styles.title}>My Saved Article</div>
-      <div className={styles.description}>The best second brain</div>
+      <div className={styles.title}>Saved Article</div>
+      <div className={styles.description}>
+        The article you saved from web and RSS feed, read it anytime you want!
+      </div>
       <CardWrapper />
     </div>
   );

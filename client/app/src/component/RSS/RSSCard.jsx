@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./RSSCard.module.css";
 import { db } from "../../firebase.js";
+import Highlighter from "react-highlight-words";
 
 export default function RSSCard(props) {
   console.log(props.item);
@@ -33,20 +34,44 @@ export default function RSSCard(props) {
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>
         <div className={styles.imgWrapper}>
-          <div className={styles.color}>
-            <img src={src} alt="" className={styles.img} />
-          </div>
+          <div
+            className={styles.color}
+            style={{
+              backgroundImage: "url(" + src + ")",
+              backgroundRepeat: "no-repeat",
+              background: "cover",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          ></div>
+          {/* <img src={src} alt="" className={styles.img} /> */}
         </div>
 
         <div className={styles.wordWrapper}>
-          <div className={styles.title}>{props.item.title}</div>
+          <div className={styles.title}>
+            {props.highLight ? (
+              <Highlighter
+                textToHighlight={props.item.title}
+                searchWords={[props.highLight]}
+              />
+            ) : (
+              props.item.title
+            )}
+          </div>
           <div className={styles.creator}>
             {props.item.RSS} / {showDay}
           </div>
           <div className={styles.content}>
-            {props.item.contentSnippet ||
+            {props.highLight ? (
+              <Highlighter
+                textToHighlight={props.item.contentSnippet}
+                searchWords={[props.highLight]}
+              />
+            ) : (
+              props.item.contentSnippet ||
               props.item["content:encodedSnippet"] ||
-              props.item.media[0]["media:description"][0]}
+              props.item.media[0]["media:description"][0]
+            )}
           </div>
         </div>
       </div>

@@ -128,11 +128,12 @@ export default function RSSPage(props) {
       {feedItem.media ? (
         <div className={styles.page}>
           <div className={styles.head}>
-            <ArrowBack
-              style={{ color: "#FFFCEC", cursor: "pointer" }}
-              onClick={props.onClick}
-            />
-
+            <div className={styles.arrowWrapper}>
+              <ArrowBack
+                style={{ color: "#FFFCEC", cursor: "pointer" }}
+                onClick={props.onClick}
+              />
+            </div>
             <BookmarkBorderIcon
               style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={() => {

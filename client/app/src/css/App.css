@@ -75,3 +75,7 @@ a:visited {
   color: #01b468;
   text-decoration: underline;
 }
+/* d3 graph */
+.svgText:active {
+  stroke: #01b468;
+}

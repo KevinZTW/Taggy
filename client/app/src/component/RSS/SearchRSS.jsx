@@ -8,7 +8,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
 import Axios from "axios";
 export default function FindRSS(props) {
-  const [reqUrl, setReqUrl] = useState("react 生命週期");
+  const [reqUrl, setReqUrl] = useState("redux");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 

@@ -168,9 +168,9 @@ export default function Board(props) {
   return (
     <div className={styles.boardWrapper}>
       <div className={styles.board}>
-        <h1 className={styles.title}>Today News</h1>
+        <h1 className={styles.title}>Today</h1>
         <div className={styles.description}>
-          The insights you need to keep ahead
+          Trendy feeds from top blogs selected by Taggy
         </div>
         <div className={styles.switchWrapper}>
           <div

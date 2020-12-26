@@ -26,6 +26,7 @@ export default function Board(props) {
     console.log(feedItem);
     return (
       <RSSPage
+        highLight={searchFeed.title}
         item={feedItem}
         onClick={() => {
           setShowPage(false);
@@ -53,6 +54,7 @@ export default function Board(props) {
     for (let i in feed.items) {
       feedList.push(
         <RSSCard
+          highLight={feed.title}
           item={feed.items[i]}
           onClick={(e) => {
             console.log("hihi");
