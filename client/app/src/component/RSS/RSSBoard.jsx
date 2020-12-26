@@ -27,7 +27,7 @@ export default function Board(props) {
       console.log("last visible equal zero!");
       db.collection("RSSItem")
         .orderBy("pubDate", "desc")
-        .where("RSSId", "in", userRSSList.slice(0, 9))
+        .where("RSSId", "in", userRSSList.slice(0, 10))
         .limit(7)
         .get()
         .then((snapshot) => {

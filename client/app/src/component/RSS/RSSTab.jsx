@@ -1,3 +1,4 @@
+import SearchIcon from "@material-ui/icons/Search";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "../SideTab/FolderTab.module.css";
@@ -327,6 +328,20 @@ export default function RSSTab(props) {
               }}
             >
               My Feeds
+            </div>
+          </div>
+        </Link>
+        <Link to={"/home/searchfeeds"}>
+          <div
+            className={
+              props.focus === "searchfeeds"
+                ? styles.keyTitleWrapper
+                : styles.titleWrapper
+            }
+          >
+            <SearchIcon fontSize="small" />
+            <div className={styles.keyTitle} onClick={() => {}}>
+              Search Feeds
             </div>
           </div>
         </Link>

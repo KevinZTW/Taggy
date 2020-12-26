@@ -116,4 +116,16 @@ function cleanUsersData() {
       });
     });
 }
+
+function killFeeds(RSSId) {
+  db.collection("RSSItem")
+    .where("RSSId", "==", "vJwY55oznp57CbRGdh1E")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        console.log(doc.data());
+        doc.ref.delete();
+      });
+    });
+}
 // cleanUsersData();

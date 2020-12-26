@@ -2,11 +2,8 @@ import { db } from "../firebase.js";
 import OpenCC from "opencc";
 import dayjs from "dayjs";
 import { resolve } from "path";
+import { connection, query } from "./mysqlconfig.js";
 
-let test = Date.now();
-let test2 = dayjs(test).valueOf();
-console.log(test2);
-const converter = new OpenCC("s2t.json");
 const checkRSSItem = function (item) {
   console.log("let check", item.guid);
   if (item.guid) {
@@ -90,4 +87,17 @@ const addRSS = function (feed, RSSId) {
   }
 };
 
-export { addRSS };
+const searchRSS = async (keyWord) => {
+  const sql = `SELECT * FROM Feed WHERE MATCH (FeedTitle, FeedContent) AGAINST ('${keyWord}' IN NATURAL LANGUAGE MODE);`;
+
+  return await query(sql, []);
+};
+
+// searchRSS("應用").then((result) => {
+//   console.log("hihi");
+//   console.log(result);
+// });
+export const RSS = {
+  searchRSS: searchRSS,
+};
+export { addRSS, searchRSS };

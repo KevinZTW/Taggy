@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { auth } from "./../firebase.js";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Article from "./Article/Aritcle";
 import Header from "./Header/Header";
 import Signup from "./Member/Signup";
+import { auth } from "./../firebase.js";
 import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
@@ -16,6 +16,7 @@ import Graph from "./Graph/Graph1";
 import GraphBoard from "./Graph/GraphBoard";
 import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
+import RSSSearch from "./RSS/RSSSearch";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RSSBoard from "./RSS/RSSBoard";
@@ -58,6 +59,14 @@ function App() {
               <MobileFunctionTab focus="myfeeds" />
               <RSSTab focus="myfeeds" />
               <RSSBoard />
+            </div>
+          </Route>
+          <Route path="/home/searchfeeds">
+            <div className="content">
+              <FunctionTab focus="home" />
+              <MobileFunctionTab focus="myfeeds" />
+              <RSSTab focus="searchfeeds" />
+              <RSSSearch />
             </div>
           </Route>
           <Route path="/board">
