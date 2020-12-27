@@ -76,8 +76,8 @@ function syncFeeds() {
       });
     });
 }
-function syncFeeds() {
-  db.collection("RSSItem")
+function syncArticles() {
+  db.collection("Articles")
     .get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {

@@ -101,7 +101,7 @@
   max-width: 100%;
   padding: 20px;
   border: solid 1px white;
-  background: #121212;
+  background: #000f24;
   line-height: 1.7;
   color: #dcdcdc;
 }
@@ -199,7 +199,7 @@ a:visited {
     max-width: 100%;
   }
   .note {
-    background-color: #121212;
+    background-color: #000f24;
     left: 55vw;
     width: 40%;
     z-index: 8;

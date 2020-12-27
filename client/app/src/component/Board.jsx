@@ -22,7 +22,7 @@ export default function Board(props) {
           querySnapshot.forEach(function (doc) {
             list.push({
               title: doc.data().title,
-              content: doc.data().markDown.slice(0, 100),
+              content: doc.data().markDown.slice(100, 200),
               id: doc.data().id,
               tags: doc.data().tags,
               link: doc.data().link,

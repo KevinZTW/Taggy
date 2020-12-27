@@ -8,6 +8,7 @@ import styles from "../SideTab/FolderTab.module.css";
 import { Draggable } from "react-beautiful-dnd";
 import { SWITCHRSS } from "../../redux/actions";
 import { Link } from "react-router-dom";
+import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 export default function RSSFolder(props) {
   const [RSS, setRSS] = useState([]);
   const dispatch = useDispatch();
@@ -41,11 +42,17 @@ export default function RSSFolder(props) {
               >
                 <Link to={"/home/myfeeds"}>
                   <TreeItem
+                    className={styles.treeItem}
                     key={RSS[i].id}
                     nodeId={RSS[i].id}
                     label={
                       <div className={styles.labelWrapper}>
-                        <BookmarkIcon style={{ fontSize: 20 }} />
+                        <LocalOfferOutlinedIcon
+                          style={{
+                            fontSize: 20,
+                            color: "rgba(225,225,225,0.3)",
+                          }}
+                        />
                         <div className={styles.labelTitle}>{RSS[i].title}</div>
                       </div>
                     }

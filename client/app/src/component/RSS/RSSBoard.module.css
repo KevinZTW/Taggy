@@ -17,7 +17,7 @@
   padding-top: 40px;
   padding-left: 3rem;
   border-radius: 10px;
-  background: #131313;
+  background: #000f24;
 }
 
 .arrowBack {
@@ -71,7 +71,7 @@
   height: 30px;
   border-radius: 5px;
   border: solid 1px #01b468;
-  background-color: #131313;
+  background-color: #000f24;
   color: #01b468;
   cursor: pointer;
 }
@@ -140,7 +140,7 @@
 }
 .blur {
   min-width: 20vw;
-  background-color: #131313;
+  background-color: #000f24;
   opacity: 0.9;
 }
 .categoryTitle {

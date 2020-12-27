@@ -1,12 +1,12 @@
 .functionTabWrapper {
-  min-width: 5vw;
+  min-width: 64px;
   height: 100vh;
 }
 .functionTab {
-  min-width: 60px;
-  padding: 0 5px;
-  background: #131313;
-  border: solid 1px #2a2a2a;
+  min-width: 64px;
+
+  background: #010a16;
+
   height: 100vh;
   top: 0px;
   display: flex;
@@ -16,13 +16,28 @@
 }
 
 .logoWrapper {
-  padding-top: 10px;
+  padding-top: 24px;
   max-width: 100%;
   padding-bottom: 100px;
 }
 .logoWrapper img {
   max-width: 100%;
 }
+
+.Icon:hover {
+  color: white !important;
+}
+
+.icon {
+  padding: 12px;
+}
+.icon:hover {
+  background-color: rgba(255, 255, 255, 17%);
+}
+.icon:hover > .Icon {
+  color: white !important;
+}
+
 .iconWrapper {
   padding-top: 150px;
   display: flex;
@@ -30,7 +45,7 @@
   align-items: center;
 }
 .iconWrapper a {
-  padding-bottom: 20px;
+  padding-bottom: 16px;
 }
 @media (max-device-width: 640px) {
   .functionTabWrapper {

@@ -1,3 +1,5 @@
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Tooltip from "@material-ui/core/Tooltip";
 import SearchIcon from "@material-ui/icons/Search";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -9,8 +11,10 @@ import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import AddIcon from "@material-ui/icons/Add";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import CreateNewFolderOutlinedIcon from "@material-ui/icons/CreateNewFolderOutlined";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -20,13 +24,15 @@ import { useDispatch } from "react-redux";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
 import ExploreIcon from "@material-ui/icons/Explore";
+import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import { INITUSERRSSLIST } from "../../redux/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodayIcon from "@material-ui/icons/Today";
 import RSSFolder from "./RSSFolder";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import SettingsIcon from "@material-ui/icons/Settings";
-
+import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
+import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -34,6 +40,7 @@ const useStyles = makeStyles({
     maxWidth: 220,
     marginBottom: "10px",
     paddingLeft: "25px",
+    paddingRight: "24px",
   },
 });
 
@@ -47,7 +54,7 @@ export default function RSSTab(props) {
   const folderstyle = makeStyles({
     root: {
       paddingLeft: "23px",
-
+      paddingBottom: "8px",
       maxWidth: 200,
       fontSize: "15px important",
       marginBottom: "3px",
@@ -166,14 +173,15 @@ export default function RSSTab(props) {
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
               <TreeItem
-                className={styles.treeItem}
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 key={folders[i].id}
                 nodeId={folders[i].id}
                 label={
                   <div className={styles.labelWrapper}>
-                    <FolderOpenIcon style={{ fontSize: 17 }} />
+                    <FolderOpenIcon
+                      style={{ fontSize: 20, color: "rgba(225,225,225,0.3)" }}
+                    />
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
                 }
@@ -288,6 +296,12 @@ export default function RSSTab(props) {
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
         <div className={styles.sectionTitle}>Taggy</div>
+        <Link to={"/rssexplore"}>
+          <div className={styles.importWrapper}>
+            <AddOutlinedIcon style={{ fontSize: 20, color: "white" }} />
+            <div className={styles.importTitle}>Add RSS</div>
+          </div>
+        </Link>
         <Link to={"/home"}>
           <div
             className={
@@ -296,7 +310,14 @@ export default function RSSTab(props) {
                 : styles.titleWrapper
             }
           >
-            <TodayIcon fontSize="small" />
+            <TrendingUpOutlinedIcon
+              fontSize="small"
+              className={
+                props.focus === "home"
+                  ? styles.folderIcon_focus
+                  : styles.folderIcon
+              }
+            />
             <div className={styles.keyTitle}>Today</div>
           </div>
         </Link>
@@ -308,7 +329,14 @@ export default function RSSTab(props) {
                 : styles.titleWrapper
             }
           >
-            <ExploreIcon fontSize="small" />
+            <ExploreOutlinedIcon
+              fontSize="small"
+              className={
+                props.focus === "channels"
+                  ? styles.folderIcon_focus
+                  : styles.folderIcon
+              }
+            />
             <div className={styles.keyTitle}>Explore</div>
           </div>
         </Link>
@@ -320,7 +348,14 @@ export default function RSSTab(props) {
                 : styles.titleWrapper
             }
           >
-            <RssFeedIcon fontSize="small" />
+            <RssFeedIcon
+              fontSize="small"
+              className={
+                props.focus === "myfeeds"
+                  ? styles.folderIcon_focus
+                  : styles.folderIcon
+              }
+            />
             <div
               className={styles.keyTitle}
               onClick={() => {
@@ -339,7 +374,14 @@ export default function RSSTab(props) {
                 : styles.titleWrapper
             }
           >
-            <SearchIcon fontSize="small" />
+            <SearchIcon
+              fontSize="small"
+              className={
+                props.focus === "searchfeeds"
+                  ? styles.folderIcon_focus
+                  : styles.folderIcon
+              }
+            />
             <div className={styles.keyTitle} onClick={() => {}}>
               Search Feeds
             </div>
@@ -347,17 +389,16 @@ export default function RSSTab(props) {
         </Link>
         <div className={styles.subscriptionWrapper}>
           <div className={styles.subscription}>Subscription</div>
-          <Link to={"/rssexplore"}>
-            <AddIcon fontSize="small" style={{ color: "#b2b2b2" }} />
-          </Link>
-          <CreateNewFolderIcon
-            onClick={() => {
-              setShowPage(true);
-            }}
-            className={styles.setting}
-            fontSize="small"
-            style={{ color: "#b2b2b2" }}
-          />
+          <Tooltip title="Add new folder" placement="right" arrow>
+            <CreateNewFolderOutlinedIcon
+              onClick={() => {
+                setShowPage(true);
+              }}
+              className={styles.setting}
+              fontSize="small"
+              style={{ color: "#b2b2b2" }}
+            />
+          </Tooltip>
         </div>
         <TreeView
           className={classes.root}

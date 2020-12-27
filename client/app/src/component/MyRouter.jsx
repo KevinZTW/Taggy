@@ -22,7 +22,7 @@ export default function MyRouter() {
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
         // history.push("/home");
       } else {
-        if (location.pathname !== "/" || location.pathname !== "/signin")
+        if (location.pathname !== "/" && location.pathname !== "/signin")
           history.push("/signup");
       }
     });

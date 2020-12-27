@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: #131313;
+  background-color: #010a16;
 }
 a {
   direction: none;
@@ -78,4 +78,8 @@ a:visited {
 /* d3 graph */
 .svgText:active {
   stroke: #01b468;
+}
+/* tree view */
+.MuiTreeItem-content {
+  padding-bottom: 8px;
 }

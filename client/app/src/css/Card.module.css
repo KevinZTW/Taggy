@@ -18,7 +18,7 @@
 .imgWrapper {
   border-radius: 5px;
   height: 100px;
-  width: 120px;
+  width: 150px;
 }
 .color {
   height: 100%;
@@ -45,21 +45,28 @@
   border: none;
 }
 
-.title {
+.titleWrapper {
   display: flex;
+}
+.title {
   font-weight: bold;
   color: #e0e0e0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .content {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   padding-top: 5px;
   padding-bottom: 10px;
-  line-height: 19px;
+  line-height: 1rem;
   color: #818181;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .wordWrapper {
   width: 80%;

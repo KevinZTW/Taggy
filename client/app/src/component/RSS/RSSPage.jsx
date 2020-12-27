@@ -1,4 +1,5 @@
 import { useLocation, useHistory } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import { localUrl, ec2Url } from "../../config.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -166,18 +167,18 @@ export default function RSSPage(props) {
               style={{ color: "#FFFCEC", cursor: "pointer" }}
               onClick={props.onClick}
             />
-
-            <BookmarkBorderIcon
-              className={styles.saveIcon}
-              style={{ color: "#FFFCEC", cursor: "pointer" }}
-              onClick={() => {
-                postDataToServer(ec2Url, {
-                  url: feedItem.link,
-                  uid: user.uid,
-                });
-              }}
-            />
-            <div className={styles.save}>Save to article</div>
+            <Tooltip title="save for later" backgroundColor="blue" arrow>
+              <BookmarkBorderIcon
+                className={styles.saveIcon}
+                style={{ color: "#FFFCEC", cursor: "pointer" }}
+                onClick={() => {
+                  postDataToServer(ec2Url, {
+                    url: feedItem.link,
+                    uid: user.uid,
+                  });
+                }}
+              />
+            </Tooltip>
           </div>
           <div className={styles.title}>{feedItem.title}</div>
           <div

@@ -6,13 +6,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { deleteArticle } from "../firebase.js";
 export default function Card(props) {
   var elem = document.createElement("div");
-  console.log(props.link);
+
   elem.innerHTML = props.htmlContent;
   let src;
 
   if (elem.querySelector("img") && props.link) {
-    console.log(elem.querySelector("img").getAttribute("data-src"));
-
     if (props.link.includes("segmentfault")) {
       src = elem.querySelector("img")
         ? // ? "https://segmentfault.com" +
@@ -50,8 +48,10 @@ export default function Card(props) {
           </div>
         </Link>
         <div className={styles.wordWrapper}>
-          <div className={styles.title}>
-            <Link to={`/article?id=${props.id}`}>{props.title}</Link>
+          <div className={styles.titleWrapper}>
+            <Link to={`/article?id=${props.id}`}>
+              <div className={styles.title}>{props.title}</div>
+            </Link>
             <div className={styles.actionContainer}>
               <ShareIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
               <DeleteIcon
