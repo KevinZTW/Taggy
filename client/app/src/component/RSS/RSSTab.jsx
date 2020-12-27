@@ -34,6 +34,7 @@ import RssFeedIcon from "@material-ui/icons/RssFeed";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
+import addRSSFolderImg from "../../img/add_RSS_folder.png";
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -429,41 +430,52 @@ export default function RSSTab(props) {
                   }}
                 ></div>
                 <div className={styles.addFolder}>
-                  <div className={styles.addTitle}>Add New Folder</div>
-                  <form id="addForm" action="">
-                    <input
-                      className={styles.input}
-                      type="text"
-                      placeholder="Folder Name"
-                      value={addFolderInput}
-                      onChange={(e) => {
-                        setAddFolderInput(e.target.value);
-                      }}
-                    />
-                    <button
-                      type="submit"
-                      className={styles.saveBtn}
-                      form="addForm"
-                      onClick={() => {
-                        if (user) {
-                          addRSSFolder(addFolderInput, user.uid);
+                  <div className={styles.addTitle}>Add new folder</div>
+                  <div className={styles.addSubTitle}>
+                    Create folder to organize RSS resources you love
+                  </div>
+                  <label className={styles.addFolderLabel} htmlFor="addForm">
+                    Enter new folder name
+                  </label>
+                  <div className={styles.addFormWrapper}>
+                    <form id="addForm" action="">
+                      <input
+                        className={styles.addInput}
+                        type="text"
+                        value={addFolderInput}
+                        onChange={(e) => {
+                          setAddFolderInput(e.target.value);
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        className={styles.saveBtn}
+                        form="addForm"
+                        onClick={() => {
+                          if (user) {
+                            addRSSFolder(addFolderInput, user.uid);
+                            setShowPage(false);
+                          } else {
+                            alert("Please login to add folder!");
+                          }
+                        }}
+                      >
+                        Create
+                      </button>
+                      <button
+                        onClick={() => {
                           setShowPage(false);
-                        } else {
-                          alert("Please login to add folder!");
-                        }
-                      }}
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowPage(false);
-                      }}
-                      className={styles.cancelBtn}
-                    >
-                      Cancel
-                    </button>
-                  </form>
+                        }}
+                        className={styles.cancelBtn}
+                      >
+                        Cancel
+                      </button>
+                    </form>
+                  </div>
+
+                  <div className={styles.imgWrapper}>
+                    <img src={addRSSFolderImg} alt="" />
+                  </div>
                 </div>
               </div>,
               document.body

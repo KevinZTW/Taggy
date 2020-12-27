@@ -32,6 +32,10 @@ a:visited {
 .title {
   color: white;
 }
+textarea:focus,
+input:focus {
+  outline: none;
+}
 /* Common component */
 
 /* for Highlighter */

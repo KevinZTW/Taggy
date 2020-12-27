@@ -174,68 +174,93 @@
 }
 
 .blur {
-  min-width: 20%;
-  background-color: #000f24;
-  opacity: 90%;
+  min-width: 313px;
+  background-color: #0e1622;
+  opacity: 85%;
 }
 
 .addFolder {
-  padding-top: 2.7rem;
-  padding-left: 7.8rem;
-  background-color: #000f24;
+  padding-top: 104px;
+  padding-left: 88px;
+  background-color: #0e1622;
   width: 80%;
 }
 
 .addTitle {
   color: #e0e0e0;
-  font-weight: bold;
-  font-size: 30px;
-  padding-bottom: 10px;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 32px;
+  letter-spacing: 0.64px;
+  padding-bottom: 16px;
 }
 
 .addSubTitle {
-  font-weight: bold;
+  font-weight: 600;
+  line-height: 20px;
+  font-size: 18px;
   padding-bottom: 5px;
-  color: #b2b2b2;
-  padding-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding-bottom: 4rem;
 }
-
-.input {
-  width: 30%;
-  padding-top: 7px;
+.addFolderLabel {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 20px;
+  font-family: "Open Sans" !important;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+.addFormWrapper {
+  padding-top: 8px;
+}
+.addInput {
+  display: inline-block;
+  width: 560px;
+  padding-top: 8px;
   padding-bottom: 7px;
-  border-radius: 5px;
-  height: 30px;
-  background-color: black;
+  border: none;
+  height: 48px;
+  border-radius: 4px;
+  background-color: rgba(32, 116, 236, 0.13);
   color: #6c6c6c;
   padding-left: 20px;
   font-size: 17px;
-  border: solid 1px white;
+
+  border-bottom: none;
 }
+
+.addInput:focus {
+  border-bottom: solid 1px #49b7f1;
+  transition: border-bottom 2s ease-out;
+
+  transform-origin: left;
+}
+
 .saveBtn {
-  padding: 0 8px;
-  width: 60px;
-  margin-left: 10px;
+  padding: 16px 24px;
+
+  margin-left: 24px;
   font-size: 13px;
   font-weight: bold;
-  height: 30px;
+
   border-radius: 5px;
   border: none;
   color: #e0e0e0;
-  background-color: #01b468;
+  background: #2074ec;
+
   cursor: pointer;
 }
 .cancelBtn {
-  padding: 0 8px;
-  width: 60px;
-  margin-left: 10px;
+  padding: 16px 24px;
+
+  margin-left: 12px;
   font-size: 13px;
   font-weight: bold;
-  height: 30px;
+  background-color: #0e1622 !important;
   border-radius: 5px;
-  border: none;
-  color: #e0e0e0;
-  background-color: #6c6c6c;
+  border: solid 1px #2074ec;
+  color: #2074ec;
   cursor: pointer;
 }
 
@@ -249,9 +274,13 @@
   color: #2074ec;
 }
 
-.treeItem {
+.imgWrapper {
+  padding-top: 72px;
+  width: 50%;
 }
-
+.imgWrapper img {
+  width: 100%;
+}
 @media (max-device-width: 640px) {
   .folderTabWrapper {
     display: none;
