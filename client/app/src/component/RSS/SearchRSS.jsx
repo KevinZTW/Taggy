@@ -27,7 +27,7 @@ export default function FindRSS(props) {
   });
   function searchRSS(keyWord) {
     setLoading(true);
-    fetch("http://localhost:3000/" + "route/rss/search", {
+    fetch("https://www.shopcard.site/" + "route/rss/search", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
