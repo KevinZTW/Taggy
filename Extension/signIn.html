@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)https://developer.chrome.com/extensions/examples/tutorials/getstarted/popup.html -->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Taggy - your best friend to collect knowledge</title>
+  </head>
+
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css"
+  />
+  <link rel="stylesheet" href="pop.css" />
+  <body>
+    <div class="headWrapper">
+      <div class="logoWrapper"><img src="./logo.png" alt="" /></div>
+      <h2 class="title">Taggy</h2>
+    </div>
+    <form action="" class="signInForm">
+      <label for="">Account</label
+      ><input type="text" name="account" class="account" />
+      <label for="">Password</label
+      ><input type="text" name="password" class="password" />
+    </form>
+    <div class="bottomWrapper">
+      <button class="signin save">Sign in</button>
+    </div>
+    <div id="firebaseui-auth-container"></div>
+    <div id="loader">Loading...</div>
+  </body>
+  <script src="signIn.js"></script>
+</html>

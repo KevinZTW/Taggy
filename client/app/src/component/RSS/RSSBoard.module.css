@@ -42,38 +42,43 @@
 
 .channelDescription {
   font-size: 20px;
-
+  padding-bottom: 8px;
   margin: 0px 0;
   color: #b2b2b2;
 }
 
 .channelSubscribed {
-  padding: 0px 8px;
+  padding: 6px 8px;
+
   line-height: 30px;
   font-weight: 500;
-  width: 6rem;
-  margin: 10px 0;
+  width: 120px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+
   text-align: center;
-  height: 30px;
+
   border-radius: 5px;
-  border: solid 1px #01b468;
-  background-color: #01b468;
+
+  background-color: #2074ec;
   color: white;
   cursor: pointer;
 }
 
 .channelSubscribe_btn {
-  padding: 0px 8px;
+  padding: 6px 8px;
+
   line-height: 30px;
   font-weight: 500;
-  width: 4rem;
+  width: 120px;
+
   margin: 10px 0;
   text-align: center;
-  height: 30px;
+
   border-radius: 5px;
-  border: solid 1px #01b468;
+  border: solid 1px #2074ec;
   background-color: #000f24;
-  color: #01b468;
+  color: #2074ec;
   cursor: pointer;
 }
 .switchWrapper {
@@ -196,6 +201,12 @@
   border: none;
   background-color: #01b468;
   cursor: pointer;
+}
+
+@media (min-device-width: 1440px) {
+  .channelDescription {
+    width: 80%;
+  }
 }
 @media (min-device-width: 800px) {
   .board {

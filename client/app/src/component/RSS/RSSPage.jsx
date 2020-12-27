@@ -43,7 +43,7 @@ export default function RSSPage(props) {
 
       {
         position: "top-center",
-        autoClose: 100000,
+        autoClose: 5000,
         transition: Zoom,
         hideProgressBar: true,
         closeOnClick: false,
