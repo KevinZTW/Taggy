@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/Card.module.css";
+import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { deleteArticle } from "../firebase.js";
+import Tooltip from "@material-ui/core/Tooltip";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 export default function Card(props) {
   var elem = document.createElement("div");
 
@@ -27,7 +30,13 @@ export default function Card(props) {
       src = elem.querySelector("img") ? elem.querySelector("img").src : null;
     }
   }
-
+  const CustomTooltip = withStyles((theme) => ({
+    tooltip: {
+      color: "white",
+      fontFamily: "Open Sans",
+      fontSize: 14,
+    },
+  }))(Tooltip);
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -53,14 +62,15 @@ export default function Card(props) {
               <div className={styles.title}>{props.title}</div>
             </Link>
             <div className={styles.actionContainer}>
-              <ShareIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
-              <DeleteIcon
-                style={{ fontSize: 20, color: "#5B5B5B" }}
-                className={styles.delete}
-                onClick={() => {
-                  deleteArticle(props.id);
-                }}
-              />
+              <CustomTooltip title="delete article" placement="right" arrow>
+                <DeleteOutlineOutlinedIcon
+                  style={{ fontSize: 20, color: "#5B5B5B" }}
+                  className={styles.delete}
+                  onClick={() => {
+                    deleteArticle(props.id);
+                  }}
+                />
+              </CustomTooltip>
             </div>
           </div>
           <Link to={`/article?id=${props.id}`}>

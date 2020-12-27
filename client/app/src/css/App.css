@@ -68,13 +68,32 @@ a:visited {
 }
 
 /* toast */
-.Toastify__toast--dark {
-  background-color: #3c3c3c !important;
+.Toastify__toast-container {
+  width: auto !important;
 }
+.Toastify__toast--dark {
+  padding-left: 16px !important;
+  background-color: #3d434d !important;
+}
+
 .Toastify__toast--dark a {
-  color: #01b468;
+  padding-left: 24px;
+  color: #56ccf2;
   text-decoration: underline;
 }
+.toastBody {
+  display: flex;
+  align-items: center;
+}
+.toastText {
+  padding-left: 4px;
+  padding-right: 8px;
+  font-family: "Open Sans" !important;
+  display: inline-block;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
 /* d3 graph */
 .svgText:active {
   stroke: #01b468;

@@ -13,23 +13,31 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import InboxIcon from "@material-ui/icons/Inbox";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
 export default function FunctionTab(props) {
   const dispatch = useDispatch();
+  const CustomTooltip = withStyles((theme) => ({
+    tooltip: {
+      color: "white",
+      fontFamily: "Open Sans",
+      fontSize: 14,
+    },
+  }))(Tooltip);
   return (
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
         <div className={styles.logoWrapper}>
           <Link to={"/home"}>
-            <Tooltip title="home" placement="right" arrow>
+            <CustomTooltip title="home" placement="right" arrow>
               <img src={logo} alt="" width="40px" />
-            </Tooltip>
+            </CustomTooltip>
           </Link>
         </div>
         <div className={styles.iconWrapper}>
           <Link to={"/home"}>
-            <Tooltip title="home" placement="right" arrow>
+            <CustomTooltip title="home" placement="right" arrow>
               <div className={styles.icon}>
                 <HomeOutlinedIcon
                   className={styles.Icon}
@@ -40,10 +48,10 @@ export default function FunctionTab(props) {
                   }
                 />
               </div>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
           <Link to={"/board"}>
-            <Tooltip title="board" placement="right" arrow>
+            <CustomTooltip title="board" placement="right" arrow>
               <div className={styles.icon}>
                 <BookmarkBorderIcon
                   className={styles.Icon}
@@ -58,10 +66,10 @@ export default function FunctionTab(props) {
                   }
                 />
               </div>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
           <Link to={"/graph"}>
-            <Tooltip title="graph" placement="right" arrow>
+            <CustomTooltip title="graph" placement="right" arrow>
               <div className={styles.icon}>
                 <AssessmentOutlinedIcon
                   className={styles.Icon}
@@ -73,10 +81,10 @@ export default function FunctionTab(props) {
                   }
                 />
               </div>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
           <Link to={"/group"}>
-            <Tooltip title="group" placement="right" arrow>
+            <CustomTooltip title="group" placement="right" arrow>
               <div className={styles.icon}>
                 <PeopleAltOutlinedIcon
                   fontSize="small"
@@ -88,10 +96,10 @@ export default function FunctionTab(props) {
                   }
                 />
               </div>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
           <Link to={"/"}>
-            <Tooltip title="log out" placement="right" arrow>
+            <CustomTooltip title="log out" placement="right" arrow>
               <div className={styles.icon}>
                 <ExitToAppIcon
                   className={styles.Icon}
@@ -108,7 +116,7 @@ export default function FunctionTab(props) {
                   }}
                 />
               </div>
-            </Tooltip>
+            </CustomTooltip>
           </Link>
         </div>
       </div>

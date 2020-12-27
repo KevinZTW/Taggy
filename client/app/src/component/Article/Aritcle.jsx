@@ -1,9 +1,11 @@
 import { useLocation, useHistory } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { db, CheckFirebaseUserStatus } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import styles from "../../css/Article.module.css";
 import { app } from "../../lib/lib.js";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
@@ -33,8 +35,14 @@ export default function Article() {
   let user = useSelector((state) => {
     return state.memberReducer.user;
   });
-  console.log(highLightOn);
-  console.log(lightOn.current);
+
+  const CustomTooltip = withStyles((theme) => ({
+    tooltip: {
+      color: "white",
+      fontFamily: "Open Sans",
+      fontSize: 14,
+    },
+  }))(Tooltip);
   const customStyles = {
     menu: (provided, state) => ({
       ...provided,
@@ -65,7 +73,7 @@ export default function Article() {
     },
     control: (styles) => ({
       ...styles,
-      backgroundColor: "#121212",
+      backgroundColor: "#000F24",
       minWidth: "300px",
     }),
   };
@@ -492,50 +500,58 @@ export default function Article() {
         </div>
         <div className={styles.actionIconWrapper}>
           {showNote ? (
-            <div className={styles.noteOnWrapper}>
-              <ChromeReaderModeIcon
-                className={styles.showNoteIcon}
-                style={{ color: "#FFFCEC" }}
-                onClick={() => {
-                  console.log("hihi");
-                  setShowNote(false);
-                }}
-              />
-            </div>
+            <CustomTooltip title="note tab" arrow>
+              <div className={styles.noteOnWrapper}>
+                <ChromeReaderModeIcon
+                  className={styles.showNoteIcon}
+                  style={{ color: "#FFFCEC" }}
+                  onClick={() => {
+                    console.log("hihi");
+                    setShowNote(false);
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           ) : (
-            <div className={styles.noteOffWrapper}>
-              <ChromeReaderModeIcon
-                className={styles.showNoteIcon}
-                style={{ color: "#FFFCEC" }}
-                onClick={() => {
-                  console.log("hihi");
-                  setShowNote(true);
-                }}
-              />
-            </div>
+            <CustomTooltip title="note tab" arrow>
+              <div className={styles.noteOffWrapper}>
+                <ChromeReaderModeIcon
+                  className={styles.showNoteIcon}
+                  style={{ color: "#FFFCEC" }}
+                  onClick={() => {
+                    console.log("hihi");
+                    setShowNote(true);
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           )}
 
           {highLightOn ? (
-            <div className={styles.highLightOnWrapper}>
-              <BorderColorIcon
-                style={{ color: "#FFFCEC" }}
-                onClick={() => {
-                  console.log("click");
-                  setHighLightOn(false);
-                  lightOn.current = false;
-                }}
-              />
-            </div>
+            <CustomTooltip title="article highlighter" arrow>
+              <div className={styles.highLightOnWrapper}>
+                <BorderColorIcon
+                  style={{ color: "#FFFCEC" }}
+                  onClick={() => {
+                    console.log("click");
+                    setHighLightOn(false);
+                    lightOn.current = false;
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           ) : (
-            <div className={styles.highLightOffWrapper}>
-              <BorderColorIcon
-                style={{ color: "#FFFCEC" }}
-                onClick={() => {
-                  setHighLightOn(true);
-                  lightOn.current = true;
-                }}
-              />
-            </div>
+            <CustomTooltip title="article highlighter" arrow>
+              <div className={styles.highLightOffWrapper}>
+                <BorderColorIcon
+                  style={{ color: "#FFFCEC" }}
+                  onClick={() => {
+                    setHighLightOn(true);
+                    lightOn.current = true;
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           )}
         </div>
         <div className={styles.articleMain}>

@@ -1,3 +1,4 @@
+import { Slide, Zoom, Flip, Bounce } from "react-toastify";
 import { useLocation, useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { localUrl, ec2Url } from "../../config.js";
@@ -9,9 +10,16 @@ import ArrowBack from "@material-ui/icons/ArrowBack";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import styles from "./RSSPage.module.css";
 import { app } from "../../lib/lib.js";
-
+import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
-
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    color: "white",
+    fontFamily: "Open Sans",
+    fontSize: 14,
+  },
+}))(Tooltip);
 export default function RSSPage(props) {
   console.log("page rerender, props is ", props.item);
   const [feedItem, setFeedItem] = useState({});
@@ -21,13 +29,22 @@ export default function RSSPage(props) {
   let params = new URLSearchParams(search);
   const notify_success = () =>
     toast.dark(
-      <div>
-        successfully save to article <Link to="/board">go check it</Link>
+      <div className="toastBody">
+        <BookmarkBorderOutlinedIcon
+          style={{ color: "rgba(255,255,255, 0.6)" }}
+        />
+        <div className="toastText">
+          Saved to<strong> My Board </strong>
+          <Link to="/board">
+            <strong>View item</strong>
+          </Link>
+        </div>
       </div>,
 
       {
-        position: "top-right",
-        autoClose: 2000,
+        position: "top-center",
+        autoClose: 100000,
+        transition: Zoom,
         hideProgressBar: true,
         closeOnClick: false,
         pauseOnHover: true,
@@ -131,19 +148,25 @@ export default function RSSPage(props) {
           <div className={styles.head}>
             <div className={styles.arrowWrapper}>
               <ArrowBack
-                style={{ color: "#FFFCEC", cursor: "pointer" }}
+                className={styles.Icon}
+                style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
                 onClick={props.onClick}
               />
             </div>
-            <BookmarkBorderIcon
-              style={{ color: "#FFFCEC", cursor: "pointer" }}
-              onClick={() => {
-                postDataToServer(ec2Url, {
-                  url: feedItem.link,
-                  uid: user.uid,
-                });
-              }}
-            />
+            <CustomTooltip title="save to my board" placement="right" arrow>
+              <div className={styles.arrowWrapper}>
+                <BookmarkBorderIcon
+                  className={styles.Icon}
+                  style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
+                  onClick={() => {
+                    postDataToServer(ec2Url, {
+                      url: feedItem.link,
+                      uid: user.uid,
+                    });
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           </div>
           <div className={styles.title}>{feedItem.title}</div>
           <iframe
@@ -162,23 +185,27 @@ export default function RSSPage(props) {
       ) : (
         <div className={styles.page}>
           <div className={styles.head}>
-            <ArrowBack
-              className={styles.backIcon}
-              style={{ color: "#FFFCEC", cursor: "pointer" }}
-              onClick={props.onClick}
-            />
-            <Tooltip title="save for later" backgroundColor="blue" arrow>
-              <BookmarkBorderIcon
-                className={styles.saveIcon}
-                style={{ color: "#FFFCEC", cursor: "pointer" }}
-                onClick={() => {
-                  postDataToServer(ec2Url, {
-                    url: feedItem.link,
-                    uid: user.uid,
-                  });
-                }}
+            <div className={styles.arrowWrapper}>
+              <ArrowBack
+                className={styles.Icon}
+                style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
+                onClick={props.onClick}
               />
-            </Tooltip>
+            </div>
+            <CustomTooltip title="save to my board" placement="right" arrow>
+              <div className={styles.arrowWrapper}>
+                <BookmarkBorderIcon
+                  className={styles.Icon}
+                  style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
+                  onClick={() => {
+                    postDataToServer(ec2Url, {
+                      url: feedItem.link,
+                      uid: user.uid,
+                    });
+                  }}
+                />
+              </div>
+            </CustomTooltip>
           </div>
           <div className={styles.title}>{feedItem.title}</div>
           <div

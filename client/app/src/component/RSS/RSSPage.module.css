@@ -2,7 +2,7 @@
   /* animation-name: RSSPageSlide; */
 
   min-width: 80vw;
-  background: #000f24;
+  background-color: #0e1622;
   padding-left: 40px;
   height: calc(100%);
   overflow: auto;
@@ -23,21 +23,36 @@
   }
 } */
 .title {
+  padding-left: 12px;
   font-size: 30px;
-  padding-top: 0.5rem;
+  padding-top: 56px;
   padding-bottom: 20px;
   color: white;
   font-weight: bold;
   align-items: center;
 }
 .head {
-  margin-top: 0.5rem;
+  z-index: 999;
+  width: 100%;
+  background-color: #011622;
+  position: fixed;
+
   display: flex;
   padding-top: 10px;
 }
+
 .arrowWrapper {
-  width: 2rem;
-  height: 2rem;
+  cursor: pointer;
+  padding: 12px;
+  width: 48px;
+  height: 48px;
+}
+
+.arrowWrapper:hover {
+  background-color: rgba(255, 255, 255, 17%);
+}
+.arrowWrapper:hover > .Icon {
+  color: white !important;
 }
 .backIcon {
   margin-right: 1rem;
@@ -52,10 +67,8 @@
   display: none;
 }
 .content {
-  padding: 20px;
-
-  max-width: 100%;
-  background: #000f24;
+  padding-left: 12px;
+  padding-right: 20vw;
   line-height: 1.7;
   color: #dcdcdc !important;
 }
@@ -95,7 +108,7 @@
 }
 .content img {
   padding-bottom: 20px;
-  margin-left: 15%;
+
   max-width: 70% !important
   ;
 }

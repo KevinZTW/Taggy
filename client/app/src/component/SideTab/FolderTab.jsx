@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 import { createPortal } from "react-dom";
 import styles from "./FolderTab.module.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,8 +9,10 @@ import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
+import CreateNewFolderOutlinedIcon from "@material-ui/icons/CreateNewFolderOutlined";
 import MarkunreadIcon from "@material-ui/icons/Markunread";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import SettingsIcon from "@material-ui/icons/Settings";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
@@ -190,7 +193,7 @@ export default function FolderTab() {
                 label={
                   <div className={styles.labelWrapper}>
                     <FolderOpenIcon
-                      style={{ fontSize: 20, color: "#B5B5B5" }}
+                      style={{ fontSize: 20, color: "rgba(255,255,255,0.3)" }}
                     />
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
@@ -244,12 +247,12 @@ export default function FolderTab() {
         <Link to={"/board"}>
           <div className={styles.sectionTitle}>My Board</div>
           <div
-            className={styles.importWrapper}
+            className={styles.addArticleWrapper}
             onClick={() => {
               setAddArticle(true);
             }}
           >
-            <AddCircleIcon style={{ fontSize: 20, color: "white" }} />
+            <AddOutlinedIcon style={{ fontSize: 20, color: "white" }} />
             <div className={styles.importTitle}>Import Article</div>
           </div>
           <TreeView
@@ -265,13 +268,15 @@ export default function FolderTab() {
                 dispatch(SWITCHARTICLE("all"));
               }}
             >
-              <DescriptionIcon style={{ fontSize: 20 }} />
+              <DescriptionOutlinedIcon
+                style={{ fontSize: 20, color: "#2074ec" }}
+              />
               <div className={styles.keyTitle}>All Articles</div>
             </div>
 
             <div className={styles.tagWrapper}>
               <div className={styles.tag}>Tags</div>
-              <SettingsIcon
+              <CreateNewFolderOutlinedIcon
                 onClick={() => {
                   setEditFolder(true);
                 }}

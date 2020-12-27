@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import TreeItem from "@material-ui/lab/TreeItem";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { app } from "../../lib/lib.js";
@@ -51,7 +51,9 @@ export default function Folder(props) {
                 nodeId={tags[i].id}
                 label={
                   <div className={styles.labelWrapper}>
-                    <BookmarkIcon style={{ fontSize: 20, color: "#5B5B5B" }} />
+                    <LocalOfferOutlinedIcon
+                      style={{ fontSize: 20, color: "#5B5B5B" }}
+                    />
                     {tags[i].label ? (
                       <div className={styles.labelTitle}>{tags[i].label}</div>
                     ) : (

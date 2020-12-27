@@ -169,6 +169,7 @@ a:visited {
   display: flex;
   justify-content: center;
   padding: 0.3rem 0;
+  margin-right: 0.5rem;
 }
 .highLightOffWrapper:hover,
 .noteOffWrapper:hover {
@@ -182,6 +183,7 @@ a:visited {
 
 .noteOnWrapper,
 .noteOffWrapper {
+  margin-right: 0.5rem;
   cursor: pointer;
   width: 2.5rem;
   border-radius: 0.3rem;
