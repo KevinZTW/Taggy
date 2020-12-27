@@ -1,4 +1,5 @@
 import { useLocation, useHistory } from "react-router-dom";
+import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 import { useRef, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import BorderColorIcon from "@material-ui/icons/BorderColor";
 import ReactQuill from "react-quill";
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
+import ChromeReaderModeOutlinedIcon from "@material-ui/icons/ChromeReaderModeOutlined";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import firebase from "firebase/app";
 import "react-quill/dist/quill.snow.css";
@@ -478,10 +480,12 @@ export default function Article() {
   }
   return (
     <div className={styles.articleWrapper}>
-      <div className={styles.main} style={{ width: showNote ? "55%" : "100%" }}>
+      <div className={showNote ? styles.mainWithNote : styles.main}>
         <div className={styles.head}>
           <Link to={"/board"}>
-            <ArrowBack style={{ color: "#FFFCEC" }} />
+            <div className={styles.arrowWrapper}>
+              <ArrowBack className={styles.Icon} />
+            </div>
           </Link>
         </div>
         <div className={styles.title}>{article.title}</div>
@@ -502,8 +506,7 @@ export default function Article() {
           {showNote ? (
             <CustomTooltip title="note tab" arrow>
               <div className={styles.noteOnWrapper}>
-                <ChromeReaderModeIcon
-                  className={styles.showNoteIcon}
+                <ChromeReaderModeOutlinedIcon
                   style={{ color: "#FFFCEC" }}
                   onClick={() => {
                     console.log("hihi");
@@ -516,8 +519,7 @@ export default function Article() {
             <CustomTooltip title="note tab" arrow>
               <div className={styles.noteOffWrapper}>
                 <ChromeReaderModeIcon
-                  className={styles.showNoteIcon}
-                  style={{ color: "#FFFCEC" }}
+                  className={styles.Icon}
                   onClick={() => {
                     console.log("hihi");
                     setShowNote(true);
@@ -530,10 +532,9 @@ export default function Article() {
           {highLightOn ? (
             <CustomTooltip title="article highlighter" arrow>
               <div className={styles.highLightOnWrapper}>
-                <BorderColorIcon
+                <BorderColorOutlinedIcon
                   style={{ color: "#FFFCEC" }}
                   onClick={() => {
-                    console.log("click");
                     setHighLightOn(false);
                     lightOn.current = false;
                   }}
@@ -543,8 +544,8 @@ export default function Article() {
           ) : (
             <CustomTooltip title="article highlighter" arrow>
               <div className={styles.highLightOffWrapper}>
-                <BorderColorIcon
-                  style={{ color: "#FFFCEC" }}
+                <BorderColorOutlinedIcon
+                  className={styles.Icon}
                   onClick={() => {
                     setHighLightOn(true);
                     lightOn.current = true;

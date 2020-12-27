@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import DescriptionOutlinedIcon from "@material-ui/icons/DescriptionOutlined";
 import { createPortal } from "react-dom";
 import styles from "./FolderTab.module.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { TreeView } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector } from "react-redux";
@@ -22,10 +22,17 @@ import { useDispatch } from "react-redux";
 import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
+import Tooltip from "@material-ui/core/Tooltip";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Folder from "./Folder";
-
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    color: "white",
+    fontFamily: "Open Sans",
+    fontSize: 14,
+  },
+}))(Tooltip);
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -276,14 +283,16 @@ export default function FolderTab() {
 
             <div className={styles.tagWrapper}>
               <div className={styles.tag}>Tags</div>
-              <CreateNewFolderOutlinedIcon
-                onClick={() => {
-                  setEditFolder(true);
-                }}
-                className={styles.setting}
-                fontSize="small"
-                style={{ color: "#b2b2b2" }}
-              />
+              <CustomTooltip title="add tags folder" arrow>
+                <CreateNewFolderOutlinedIcon
+                  onClick={() => {
+                    setEditFolder(true);
+                  }}
+                  className={styles.setting}
+                  fontSize="small"
+                  style={{ color: "#b2b2b2" }}
+                />
+              </CustomTooltip>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
               {articleFolderList}

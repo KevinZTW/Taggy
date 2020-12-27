@@ -108,8 +108,8 @@
 }
 .content img {
   padding-bottom: 20px;
-
-  max-width: 70% !important
+  height: auto !important;
+  max-width: 100% !important
   ;
 }
 

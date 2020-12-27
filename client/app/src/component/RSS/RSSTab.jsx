@@ -4,7 +4,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "../SideTab/FolderTab.module.css";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { TreeView } from "@material-ui/lab";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector } from "react-redux";
@@ -30,6 +30,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodayIcon from "@material-ui/icons/Today";
 import RSSFolder from "./RSSFolder";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
+
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
@@ -44,6 +45,13 @@ const useStyles = makeStyles({
   },
 });
 
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    color: "white",
+    fontFamily: "Open Sans",
+    fontSize: 14,
+  },
+}))(Tooltip);
 export default function RSSTab(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -389,7 +397,7 @@ export default function RSSTab(props) {
         </Link>
         <div className={styles.subscriptionWrapper}>
           <div className={styles.subscription}>Subscription</div>
-          <Tooltip title="Add new folder" placement="right" arrow>
+          <CustomTooltip title="Add new folder" placement="right" arrow>
             <CreateNewFolderOutlinedIcon
               onClick={() => {
                 setShowPage(true);
@@ -398,7 +406,7 @@ export default function RSSTab(props) {
               fontSize="small"
               style={{ color: "#b2b2b2" }}
             />
-          </Tooltip>
+          </CustomTooltip>
         </div>
         <TreeView
           className={classes.root}
