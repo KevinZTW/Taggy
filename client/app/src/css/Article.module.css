@@ -3,7 +3,7 @@
 }
 .main {
   background-color: #0e1622;
-  padding-top: 10px;
+  padding-top: 1rem;
   padding-left: 3rem;
   padding-right: 20rem;
 }
@@ -12,6 +12,7 @@
   padding-right: 0.2rem;
   padding-top: 1rem;
   padding-left: 3rem;
+  max-width: 55%;
 }
 
 .title {

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React from "react";
 
 import { Link } from "react-router-dom";
-import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import frontedWeekly from "../../img/frontendWeekly_box.jpg";
 import medium from "../../img/medium_box.png";
 import dailydev from "../../img/dailydev_box.png";
@@ -11,21 +10,16 @@ import airbnb from "../../img/airbnb_box.jpg";
 import google from "../../img/google_box.png";
 import logrocket from "../../img/logrocket_box.jpg";
 import plain from "../../img/plain_english_box.jpg";
-import RSSCard from "./RSSCard";
-import { db } from "../../firebase.js";
-import { INITARTICLE } from "../../redux/actions";
+
 import styles from "./RSSBoard_Explore.module.css";
-import { app } from "../../lib/lib.js";
-import RSSPage from "./RSSPage";
+
 import RSSChannel from "./RSSChannel";
 import "./RSSPage.css";
 export default function RSSBoardExplore(props) {
-  const [showPage, setShowPage] = useState(false);
-
   const location = useLocation();
-  let search = location.search;
-  let params = new URLSearchParams(search);
-  let channelId = params.get("channelId");
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const channelId = params.get("channelId");
   console.log(channelId);
   return (
     <div className={styles.boardWrapper}>

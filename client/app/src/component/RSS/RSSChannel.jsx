@@ -1,29 +1,29 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
-import { INITARTICLE } from "../../redux/actions";
+
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./RSSPage.css";
 export default function Board(props) {
   const [isFollowed, setIsFollowed] = useState(false);
   const [allFeeds, setAllFeeds] = useState([]);
-  const [channelFeeds, setChannelFeeds] = useState({});
+
   const [lastVisible, setLastVisible] = useState(0);
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
   const [lastQueryDoc, setLastQueryDoc] = useState("");
   const location = useLocation();
-  let search = location.search;
-  let params = new URLSearchParams(search);
-  let channelTitle = params.get("title");
-  let channelDescription = params.get("description");
-  const dispatch = useDispatch();
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const channelTitle = params.get("title");
+  const channelDescription = params.get("description");
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
@@ -39,7 +39,7 @@ export default function Board(props) {
         .get()
         .then((snapshot) => {
           console.log("batchfetch start");
-          let items = [...allFeeds];
+          const items = [...allFeeds];
           snapshot.forEach((doc) => {
             items.push(doc.data());
           });
@@ -59,7 +59,7 @@ export default function Board(props) {
           .limit(7)
           .get()
           .then((snapshot) => {
-            let items = [...allFeeds];
+            const items = [...allFeeds];
             snapshot.forEach((doc) => {
               items.push(doc.data());
             });
@@ -73,8 +73,8 @@ export default function Board(props) {
 
   function renderAllFeeds(feedItems) {
     if (feedItems) {
-      let feedList = [];
-      for (let i in feedItems) {
+      const feedList = [];
+      for (const i in feedItems) {
         feedList.push(
           <RSSCard
             item={feedItems[i]}
@@ -138,7 +138,7 @@ export default function Board(props) {
       if (winScroll > height - 20) {
         console.log("reach the bottom!", lastVisible);
 
-        let newLast = lastVisible + 7;
+        const newLast = lastVisible + 7;
         setLastVisible(newLast);
       }
     };
@@ -160,7 +160,7 @@ export default function Board(props) {
   }, [props.channelId, lastVisible]);
 
   const feedPage = renderFeedPage(feedItem);
-  let allFeedsOutome = renderAllFeeds(allFeeds);
+  const allFeedsOutome = renderAllFeeds(allFeeds);
   return (
     <div>
       {allFeedsOutome}

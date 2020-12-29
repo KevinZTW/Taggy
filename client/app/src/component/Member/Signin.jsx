@@ -101,7 +101,7 @@ export default function Signup() {
           </div>
         </Link>
         <Link to={"/signin"} className={styles.logInWrapper}>
-          <div className={styles.logInBtn}>Sign in</div>
+          <div className={styles.logInBtn}>Login</div>
         </Link>
         <Link to={"/signup"}>
           <div className={styles.SignUpBtn}>Sign up</div>

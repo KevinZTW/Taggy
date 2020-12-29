@@ -1,3 +1,6 @@
+import Button from "@material-ui/core/Button";
+import CreateNewFolderOutlinedIcon from "@material-ui/icons/CreateNewFolderOutlined";
+import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./FolderTab.module.css";
@@ -8,10 +11,6 @@ import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
-import MarkunreadIcon from "@material-ui/icons/Markunread";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import SettingsIcon from "@material-ui/icons/Settings";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
 import AddArticle from "../AddArticle";
@@ -20,6 +19,7 @@ import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import addTagFolderImg from "../../img/add_new_folder.png";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Folder from "./Folder";
 
@@ -60,7 +60,7 @@ export default function FolderTab(props) {
     return state.memberReducer.user;
   });
   function onDragEnd(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
     console.log(result);
 
     if (!destination) {
@@ -76,18 +76,18 @@ export default function FolderTab(props) {
     }
     if (destination.droppableId === source.droppableId) {
       console.log("move inside same folder");
-      let newArticleFolders = [...articleFolders];
+      const newArticleFolders = [...articleFolders];
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
           console.log("hihi");
-          let newTags = [...folder.tags];
-          let moveItem = { ...newTags[source.index] };
+          const newTags = [...folder.tags];
+          const moveItem = { ...newTags[source.index] };
           console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
           console.log(newTags);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -105,15 +105,15 @@ export default function FolderTab(props) {
     }
     if (destination.droppableId !== source.droppableId) {
       console.log("move to another folder");
-      let newArticleFolders = [...articleFolders];
+      const newArticleFolders = [...articleFolders];
       let moveItem;
       newArticleFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
-          let newTags = [...folder.tags];
+          const newTags = [...folder.tags];
           moveItem = { ...newTags[source.index] };
           newTags.splice(source.index, 1);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -125,11 +125,11 @@ export default function FolderTab(props) {
       });
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          let newTags = [...folder.tags];
+          const newTags = [...folder.tags];
 
           newTags.splice(destination.index, 0, moveItem);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -156,9 +156,9 @@ export default function FolderTab(props) {
             return articleFolders;
           })
           .then(async (articleFolders) => {
-            let tempFolderList = [];
+            const tempFolderList = [];
             for (let i = 0; i < articleFolders.length; i++) {
-              let tags = await app.getMemberFolderTags(articleFolders[i].id);
+              const tags = await app.getMemberFolderTags(articleFolders[i].id);
               console.log(tags);
               tempFolderList.push({ ...articleFolders[i], tags: tags });
             }
@@ -175,9 +175,9 @@ export default function FolderTab(props) {
   }, [user, tabChange]);
 
   function showArticleFolders(folders) {
-    let articleFolderList = [];
+    const articleFolderList = [];
     if (folders.length > 0) {
-      for (let i in folders) {
+      for (const i in folders) {
         articleFolderList.push(
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
@@ -249,8 +249,13 @@ export default function FolderTab(props) {
               setAddArticle(true);
             }}
           >
-            <AddCircleIcon style={{ fontSize: 20, color: "white" }} />
-            <div className={styles.importTitle}>Import Article</div>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddOutlinedIcon />}
+            >
+              Import Article
+            </Button>
           </div>
           <TreeView
             className={classes.root}
@@ -265,13 +270,13 @@ export default function FolderTab(props) {
                 dispatch(SWITCHARTICLE("all"));
               }}
             >
-              <DescriptionIcon style={{ fontSize: 20 }} />
+              <DescriptionIcon style={{ fontSize: 20, color: "#2074ec" }} />
               <div className={styles.keyTitle}>All Articles</div>
             </div>
 
             <div className={styles.tagWrapper}>
               <div className={styles.tag}>Tags</div>
-              <SettingsIcon
+              <CreateNewFolderOutlinedIcon
                 onClick={() => {
                   setEditFolder(true);
                 }}
@@ -317,40 +322,47 @@ export default function FolderTab(props) {
                     <div className={styles.addSubTitle}>
                       Create folder for the tags you created
                     </div>
-                    <form id="addForm" action="">
-                      <input
-                        className={styles.input}
-                        type="text"
-                        placeholder="Folder Name"
-                        value={addFolderInput}
-                        onChange={(e) => {
-                          setAddFolderInput(e.target.value);
-                        }}
-                      />
-                      <button
-                        type="submit"
-                        className={styles.saveBtn}
-                        form="addForm"
-                        onClick={() => {
-                          if (user) {
-                            addArticleFolder(addFolderInput, user.uid);
+                    <label htmlFor="addForm" className={styles.addFolderLabel}>
+                      Enter new folder name
+                    </label>
+                    <div className={styles.addFormWrapper}>
+                      <form id="addForm" action="">
+                        <input
+                          className={styles.addInput}
+                          type="text"
+                          value={addFolderInput}
+                          onChange={(e) => {
+                            setAddFolderInput(e.target.value);
+                          }}
+                        />
+                        <button
+                          type="submit"
+                          className={styles.saveBtn}
+                          form="addForm"
+                          onClick={() => {
+                            if (user) {
+                              addArticleFolder(addFolderInput, user.uid);
+                              setEditFolder(false);
+                            } else {
+                              alert("Please login to add folder!");
+                            }
+                          }}
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => {
                             setEditFolder(false);
-                          } else {
-                            alert("Please login to add folder!");
-                          }
-                        }}
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditFolder(false);
-                        }}
-                        className={styles.cancelBtn}
-                      >
-                        Cancel
-                      </button>
-                    </form>
+                          }}
+                          className={styles.cancelBtn}
+                        >
+                          Cancel
+                        </button>
+                      </form>
+                    </div>
+                    <div className={styles.tagsImgWrapper}>
+                      <img src={addTagFolderImg} alt="" />
+                    </div>
                   </div>
                 </div>,
                 document.body

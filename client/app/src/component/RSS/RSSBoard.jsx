@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
-import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
@@ -15,8 +14,7 @@ export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
   const [lastQueryDoc0, setLastQueryDoc0] = useState("");
-  const lastVisibleNumber = useRef(lastVisible);
-  const dispatch = useDispatch();
+
   const userRSSList = useSelector((state) => {
     return state.RSSReducer.UserRSSList;
   });
@@ -31,7 +29,7 @@ export default function Board(props) {
         .limit(7)
         .get()
         .then((snapshot) => {
-          let items = [...allFeeds];
+          const items = [...allFeeds];
           snapshot.forEach((doc) => {
             console.log(doc.data());
 
@@ -52,7 +50,7 @@ export default function Board(props) {
           .limit(7)
           .get()
           .then((snapshot) => {
-            let items = [...allFeeds];
+            const items = [...allFeeds];
             snapshot.forEach((doc) => {
               items.push(doc.data());
             });
@@ -66,9 +64,8 @@ export default function Board(props) {
 
   function renderAllFeeds(feedItems) {
     if (feedItems) {
-      console.log(feedItems);
-      let feedList = [];
-      for (let i in feedItems) {
+      const feedList = [];
+      for (const i in feedItems) {
         feedList.push(
           <RSSCard
             item={feedItems[i]}
@@ -128,7 +125,7 @@ export default function Board(props) {
       if (winScroll > height - 20) {
         console.log("reach the bottom!", lastVisible);
 
-        let newLast = lastVisible + 7;
+        const newLast = lastVisible + 7;
         setLastVisible(newLast);
       }
     };
@@ -146,6 +143,7 @@ export default function Board(props) {
   }, [userRSSList, lastVisible]);
   useEffect(() => {
     fetchChannelFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ChannelRSSId]);
 
   let allFeedsOutome;
@@ -174,10 +172,10 @@ export default function Board(props) {
   function renderChannelFeeds() {
     if (channelFeeds.items) {
       console.log(channelFeeds);
-      let items = channelFeeds.items;
-      let RSS = channelFeeds.RSS;
-      let feedList = [];
-      for (let i in items) {
+      const items = channelFeeds.items;
+      const RSS = channelFeeds.RSS;
+      const feedList = [];
+      for (const i in items) {
         console.log(items[i]);
         feedList.push(
           <RSSCard

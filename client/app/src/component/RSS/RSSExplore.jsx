@@ -8,8 +8,6 @@ import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
 import RSSPage from "./RSSPage";
 
-import youtube from "../../img/youtube_logo.png";
-
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [showChannelPage, setShowChannelPage] = useState(false);
@@ -47,8 +45,8 @@ export default function Board(props) {
   });
 
   function renderSearchFeed(feed) {
-    let feedList = [];
-    for (let i in feed.items) {
+    const feedList = [];
+    for (const i in feed.items) {
       feedList.push(
         <RSSCard
           item={feed.items[i]}
@@ -95,7 +93,7 @@ export default function Board(props) {
       db.collection("Articles")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
-          let list = [];
+          const list = [];
           querySnapshot.forEach(function (doc) {
             list.push({
               title: doc.data().title,
@@ -112,47 +110,45 @@ export default function Board(props) {
     }
   }, [user]);
   return (
-    <div className={styles.boardWrapper}>
-      <div className={styles.board}>
-        <h1 className={styles.title}>Add RSS Subscription</h1>
+    <div className={styles.addRSSBoard}>
+      <h1 className={styles.addTitle}>Add RSS source to subscribe</h1>
 
-        <div className={styles.description}>
-          Add new source to reach this world
-        </div>
-        <FindRSS
-          user={props.user}
-          showChannel={() => {
-            setShowChannelPage(true);
-          }}
-        />
-
-        {showChannelPage ? (
-          <div className={styles.popup}>
-            <div
-              className={styles.blur}
-              onClick={() => {
-                setShowChannelPage(false);
-              }}
-            ></div>
-            {searchOutcome}
-          </div>
-        ) : (
-          ""
-        )}
-        {showPage ? (
-          <div className={styles.popup}>
-            <div
-              className={styles.blur}
-              onClick={() => {
-                setShowPage(false);
-              }}
-            ></div>
-            {feedPage}
-          </div>
-        ) : (
-          ""
-        )}
+      <div className={styles.addSubTitle}>
+        We support RSS link & Youtube channel/Medium profile page link
       </div>
+      <FindRSS
+        user={props.user}
+        showChannel={() => {
+          setShowChannelPage(true);
+        }}
+      />
+
+      {showChannelPage ? (
+        <div className={styles.popup}>
+          <div
+            className={styles.blur}
+            onClick={() => {
+              setShowChannelPage(false);
+            }}
+          ></div>
+          {searchOutcome}
+        </div>
+      ) : (
+        ""
+      )}
+      {showPage ? (
+        <div className={styles.popup}>
+          <div
+            className={styles.blur}
+            onClick={() => {
+              setShowPage(false);
+            }}
+          ></div>
+          {feedPage}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

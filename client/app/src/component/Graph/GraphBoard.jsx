@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase.js";
 import CardWrapper from "../CardWrapper.jsx";
-import dispatch from "react-redux";
 import styles from "../Board.module.css";
 import { INITARTICLE } from "../../redux/actions";
-import AddArticle from "../AddArticle";
+
 export default function GraphBoard() {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
@@ -18,7 +16,7 @@ export default function GraphBoard() {
         .orderBy("date", "desc")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
-          let list = [];
+          const list = [];
           querySnapshot.forEach(function (doc) {
             list.push({
               title: doc.data().title,

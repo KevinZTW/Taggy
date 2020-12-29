@@ -1,6 +1,4 @@
 import * as d3 from "d3";
-import { dataSet } from "../../data.js";
-import { dataSet2 } from "../../data2.js";
 import { useD3 } from "../../hooks/useD3.js";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -48,8 +46,9 @@ export default function Graph() {
   const ref = useD3(
     (svg) => {
       let id;
-      const height = 1000;
+      const height = 800;
       const width = 1000;
+      svg.selectAll("*").remove();
       if (data.nodes) {
         const links = data.links.map((d) => Object.create(d));
         const nodes = data.nodes.map((d) => Object.create(d));
@@ -61,8 +60,7 @@ export default function Graph() {
             d3.forceLink(links).id((d) => d.id)
           )
           .force("charge", d3.forceManyBody().strength(-500).distanceMax([500]))
-          .force("x", d3.forceX())
-          .force("y", d3.forceY());
+          .force("center", d3.forceCenter(width / 2 - 300, height / 2));
 
         const link = svg
           .append("g")
@@ -77,27 +75,30 @@ export default function Graph() {
           .append("g")
           .attr("stroke-linecap", "round")
           .attr("stroke-linejoin", "round")
-          .selectAll("circle")
+          .selectAll("g")
           .data(nodes)
-          .join("circle")
-          .attr("r", 5)
-          .attr("fill", "#4F4F4F")
+          .join("g")
           .call(drag(simulation));
-
-        // const text = node
-        //   .append("text")
-        //   .text((d) => d.id)
-        //   .clone(true)
-        //   .lower()
-        //   .attr("stroke-width", 0.5)
-        //   .attr("stroke", "white")
-        //   .attr("fill", "white")
-        //   .attr("id", (d) => d.tagId)
-        //   .on("click", (a) => {
-        //     console.log(a);
-        //     console.log(a.target.id);
-        //     dispatch(SWITCHARTICLE(a.target.id));
-        //   });
+        const circle = node
+          .append("circle")
+          .attr("stroke-width", 1.5)
+          .attr("r", 5)
+          .attr("fill", "#4F4F4F");
+        const text = node
+          .append("text")
+          .text((d) => d.id)
+          .clone(true)
+          .lower()
+          .attr("stroke-width", 0.2)
+          .attr("stroke", "white")
+          .attr("fill", "white")
+          .attr("id", (d) => d.tagId)
+          .on("click", (a) => {
+            d3.select(this).style("stroke", "yellow");
+            console.log(a);
+            console.log(a.target.id);
+            dispatch(SWITCHARTICLE(a.target.id));
+          });
 
         node.append("title").text((d) => d.id);
 
@@ -108,8 +109,8 @@ export default function Graph() {
             .attr("x2", (d) => d.target.x)
             .attr("y2", (d) => d.target.y);
 
-          node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-          // text.attr("x", (d) => d.x + 10).attr("y", (d) => d.y);
+          circle.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+          text.attr("x", (d) => d.x + 10).attr("y", (d) => d.y);
         });
       }
 
@@ -117,6 +118,7 @@ export default function Graph() {
     },
     [data]
   );
+  console.log(ref);
   const articleList = useSelector((state) => {
     console.log(state);
     return state.articleReducer.articleList;
@@ -209,19 +211,26 @@ export default function Graph() {
   }, [user, articleList]);
   return (
     <div className={styles.graphWrapper}>
-      <svg
-        ref={ref}
-        style={{
-          height: 1000,
-          width: "100%",
-          marginRight: "20px",
-          marginLeft: "0px",
-        }}
-      >
-        <g className="plot-area" />
-        <g className="x-axis" />
-        <g className="y-axis" />
-      </svg>
+      <div className={styles.graphContainer}>
+        <div className={styles.titleWrapper}>
+          {/* <div className={styles.title}>Tags Graph</div> */}
+        </div>
+        <div className={styles.graph}>
+          <svg
+            ref={ref}
+            style={{
+              height: 800,
+              width: "100%",
+              marginRight: "20px",
+              marginLeft: "0px",
+            }}
+          >
+            <g className="plot-area" />
+            <g className="x-axis" />
+            <g className="y-axis" />
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,14 +1,16 @@
 .mobileFunctionTabWrapper {
 }
 .mobileFunctionTab {
-  padding: 0 5px;
+  padding-top: 8px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  padding-left: 4px;
   background: #000f24;
-  border: solid 1px #2a2a2a;
   bottom: 0px;
   position: fixed;
   display: flex;
   align-items: center;
-  z-index: 4;
+  z-index: 999;
   width: 100%;
 }
 
@@ -18,8 +20,7 @@
 .mobileIconWrapper {
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 5px;
-  padding-bottom: 15px;
+
   justify-content: space-between;
   flex: auto;
   display: flex;
@@ -34,7 +35,7 @@
 .burgerWrapper {
   position: absolute;
   top: 2.7rem;
-  right: 1rem;
+  right: 32px;
   z-index: 3;
 }
 .title {

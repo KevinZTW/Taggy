@@ -65,10 +65,22 @@ input:focus {
 [z] {
   display: none;
 }
+/* materila button */
 
+.MuiButton-contained {
+  background-color: #2074ec !important;
+  color: white !important ;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  font-family: "Open Sans" !important;
+  font-weight: 600 !important;
+}
+.MuiButton-contained:hover {
+  background-color: #216ad2 !important;
+}
 /* progress bar */
 .MuiLinearProgress-barColorPrimary {
-  background-color: #01b468 !important;
+  background-color: #56ccf2 !important;
 }
 
 /* toast */

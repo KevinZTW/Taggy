@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
-
+console.log("firebase init");
 var app = firebase.initializeApp({
   apiKey: "AIzaSyA4cFmihlY5pIDTssbGwk9YNfGEjRfEBh4",
   authDomain: "knowledge-base-tw.firebaseapp.com",
@@ -34,7 +34,7 @@ export const deleteArticle = function (id) {
 //============================== Auth ============================================================
 
 export function CheckFirebaseUserStatus(direct, getUserData) {
-  let history = useHistory();
+  const history = useHistory();
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       console.log(user);

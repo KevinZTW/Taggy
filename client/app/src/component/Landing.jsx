@@ -15,7 +15,7 @@ export default function Landing() {
           </div>
         </Link>
         <Link to={"/signin"} className={styles.logInWrapper}>
-          <div className={styles.logInBtn}>Sign in</div>
+          <div className={styles.logInBtn}>Log In</div>
         </Link>
         <Link to={"/signup"}>
           <div className={styles.SignUpBtn}>Sign up</div>

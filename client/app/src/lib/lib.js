@@ -1,21 +1,56 @@
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { resolve } from "path";
+import { toast } from "react-toastify";
+
 import firebase from "firebase/app";
-import { db, FieldValue } from "../firebase.js";
+
+import { db } from "../firebase.js";
 import dayjs from "dayjs";
 
-export const app = {};
+export const app = {
+  db: {},
+  article: {},
+  member: {},
+};
+
+app.db.queryDoc = function (collection, docId, callback) {
+  return db
+    .collection(collection)
+    .doc(docId)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        callback(doc);
+      } else {
+        Promise.reject("No Data");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+app.article.getMemberTagFoldersDetail = async function (uid) {
+  const memberTagFolderIds = await app.member.getMemberTagFolderIds(uid);
+  const memberTagFoldersDetail = memberTagFolderIds.map((id) => {});
+};
+
+app.member.getMemberTagFolderIds = function (uid) {
+  return app.db.queryDoc("Member", uid, (doc) => {
+    return doc.data().articleFolders;
+  });
+};
+
+const id = app.member.getMemberTagFolderIds("testUser");
+console.error(id);
+
 app.getMemberArticleFolders = function (uid) {
   return new Promise((resolve, reject) => {
-    db.collection("Member")
-      .doc(uid)
-      .get()
+    app.db
+      .queryDoc("Member", uid)
       .then(async (doc) => {
         if (doc.data()) {
-          let articleFolderIds = doc.data().articleFolders;
-          let articleFolders = [];
-          console.log(articleFolderIds);
+          const articleFolderIds = doc.data().articleFolders;
+          const articleFolders = [];
           if (articleFolderIds !== "" && articleFolderIds) {
             await db
               .collection("articleFolders")
@@ -34,23 +69,13 @@ app.getMemberArticleFolders = function (uid) {
                   });
                 });
               });
-            // for (let i in articleFolderIds) {
-            //   console.log(articleFolderIds[i]);
-            //   await db
-            //     .collection("articleFolders")
-            //     .doc(articleFolderIds[i])
-            //     .get()
-            //     .then((doc) => {
-            //       articleFolders.push({
-            //         id: doc.data().id,
-            //         name: doc.data().name,
-            //         tags: doc.data().tags,
-            //       });
-            //     });
-            // }
           }
           resolve(articleFolders);
         } else resolve("dont have this user");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("haha failed");
       });
   });
 };
@@ -62,8 +87,8 @@ app.getMemberFolderTags = function (folderId) {
       .get()
       .then(async (doc) => {
         if (doc.data()) {
-          let tagIds = doc.data().tags;
-          let folderTags = [];
+          const tagIds = doc.data().tags;
+          const folderTags = [];
           console.log(tagIds);
           if (tagIds && tagIds[0]) {
             await db
@@ -83,21 +108,6 @@ app.getMemberFolderTags = function (folderId) {
                   });
                 });
               });
-            // for (let i in tagIds) {
-            //   console.log(tagIds[i]);
-            // await db
-            //   .collection("Tags")
-            //   .doc(tagIds[i])
-            //   .get()
-            //   .then((doc) => {
-            //     folderTags.push({
-            //       id: tagIds[i],
-            //       value: doc.data().name,
-            //       label: doc.data().name,
-            //     });
-            //     console.log(folderTags);
-            //   });
-            // }
           }
           resolve(folderTags);
         } else resolve("");
@@ -111,11 +121,11 @@ app.getArticleTags = function (articleId) {
       .doc(articleId)
       .get()
       .then((doc) => {
-        let tags = doc.data().tags;
+        const tags = doc.data().tags;
 
-        let articleTags = [];
+        const articleTags = [];
         if (tags) {
-          for (let i in tags) {
+          for (const i in tags) {
             db.collection("Tags")
               .doc(tags[i])
               .get()
@@ -145,11 +155,11 @@ app.getMemberTags = function (uid) {
       .then(async (doc) => {
         console.log(doc.data());
         if (doc.data()) {
-          let tagIds = doc.data().tags;
-          let memberTags = [];
+          const tagIds = doc.data().tags;
+          const memberTags = [];
           console.log(tagIds);
           if (tagIds !== "" && tagIds) {
-            for (let i in tagIds) {
+            for (const i in tagIds) {
               await db
                 .collection("Tags")
                 .doc(tagIds[i])
@@ -171,7 +181,7 @@ app.getMemberTags = function (uid) {
 };
 
 app.initArticleTags = async function (articleId, uid) {
-  let articleTagSelection = {};
+  const articleTagSelection = {};
   await app.getArticleTags(articleId).then((articleTags) => {
     articleTagSelection.values = articleTags;
   });
@@ -190,10 +200,10 @@ app.checkTagUnderUser = function (name, uid) {
       .then(async (doc) => {
         console.log(uid);
         if (doc.data()) {
-          let tags = doc.data().tags;
+          const tags = doc.data().tags;
           console.log(tags);
           if (tags) {
-            for (let i in tags) {
+            for (const i in tags) {
               await db
                 .collection("Tags")
                 .doc(tags[i])
@@ -380,7 +390,7 @@ const notify_addRSS_success = () =>
   toast.dark(
     <div>
       successfully subscribte the RSS{" "}
-      <Link to="/home/feeds">check it in feeds</Link>
+      <Link to="/home/myfeeds">check it in feeds</Link>
     </div>,
 
     {
@@ -436,7 +446,9 @@ app.addRSSToMember = function (uid, feedId, callback) {
             .then(() => {
               console.log("successfully add to user");
               notify_addRSS_success();
-              callback();
+              if (typeof callback === "function") {
+                callback();
+              }
             });
         });
     }
@@ -467,7 +479,7 @@ app.checkRSSItem = function (title, item) {
     .where("title", "==", title)
     .get()
     .then((snapShot) => {
-      let titleList = [];
+      const titleList = [];
       snapShot.forEach((doc) => {
         titleList.push(doc.data().itemTitle);
       });
@@ -482,7 +494,7 @@ app.checkRSSItem = function (title, item) {
     });
 };
 app.addRSSItem = function (feed, RSSId) {
-  for (let i in feed.items) {
+  for (const i in feed.items) {
     app.checkRSSItem(feed.title, feed.items[i]).then((evaluate) => {
       console.log(evaluate);
       if (evaluate) {
@@ -521,11 +533,11 @@ app.getMemberRSSFolders = function (uid) {
       .get()
       .then(async (doc) => {
         if (doc.data()) {
-          let RSSFolderIds = doc.data().RSSFolders;
-          let RSSFolders = [];
+          const RSSFolderIds = doc.data().RSSFolders;
+          const RSSFolders = [];
           console.log(RSSFolderIds);
           if (RSSFolderIds !== "" && RSSFolderIds) {
-            for (let i in RSSFolderIds) {
+            for (const i in RSSFolderIds) {
               console.log(RSSFolderIds[i]);
               await db
                 .collection("RSSFolders")
@@ -564,7 +576,7 @@ app.getRSSInfo = function (RSSId) {
 };
 app.getChannelFeeds = function (RSSId) {
   return new Promise((resolve, reject) => {
-    let items = [];
+    const items = [];
     db.collection("RSSItem")
       .where("RSSId", "==", RSSId)
       // .orderBy("isoDate", "desc")
@@ -619,11 +631,11 @@ app.getGroupArticleFolders = function (uid) {
       .get()
       .then(async (doc) => {
         if (doc.data()) {
-          let articleFolderIds = doc.data().articleFolders;
-          let articleFolders = [];
+          const articleFolderIds = doc.data().articleFolders;
+          const articleFolders = [];
           console.log(articleFolderIds);
           if (articleFolderIds !== "" && articleFolderIds) {
-            for (let i in articleFolderIds) {
+            for (const i in articleFolderIds) {
               console.log(articleFolderIds[i]);
               await db
                 .collection("articleFolders")

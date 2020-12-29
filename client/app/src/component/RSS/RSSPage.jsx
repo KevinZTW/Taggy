@@ -1,17 +1,17 @@
-import { Slide, Zoom, Flip, Bounce } from "react-toastify";
-import { useLocation, useHistory } from "react-router-dom";
+import { Zoom } from "react-toastify";
+
 import Tooltip from "@material-ui/core/Tooltip";
-import { localUrl, ec2Url } from "../../config.js";
+import { ec2Url } from "../../config.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { db } from "../../firebase.js";
-import { ToastContainer, toast } from "react-toastify";
+
+import { toast } from "react-toastify";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import styles from "./RSSPage.module.css";
-import { app } from "../../lib/lib.js";
+
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
@@ -23,10 +23,7 @@ const CustomTooltip = withStyles((theme) => ({
 export default function RSSPage(props) {
   console.log("page rerender, props is ", props.item);
   const [feedItem, setFeedItem] = useState({});
-  const [youtube, setYoutube] = useState(false);
-  const location = useLocation();
-  let search = location.search;
-  let params = new URLSearchParams(search);
+
   const notify_success = () =>
     toast.dark(
       <div className="toastBody">
@@ -66,7 +63,7 @@ export default function RSSPage(props) {
         progress: undefined,
       }
     );
-  let user = useSelector((state) => {
+  const user = useSelector((state) => {
     return state.memberReducer.user;
   });
   function postDataToServer(
@@ -104,31 +101,11 @@ export default function RSSPage(props) {
   }
   useEffect(() => {
     if (props.item) {
-      console.log(props.item);
       setFeedItem(props.item);
     } else {
-      console.log("this is in else ...run");
-      //   console.log("useeffect run");
-      //   app.getFeedContent(feedId).then((feedItem) => {
-      //     console.log(feedItem);
-      //     setFeedItem(feedItem);
-      //   });
     }
   }, [props.item]);
 
-  //   useEffect(() => {
-  //     function getArticles() {
-  //       db.collection("Articles")
-  //         .doc(id)
-  //         .onSnapshot(function (doc) {
-  //           setArticle({
-  //             title: doc.data().title,
-  //             markDown: doc.data().markDown,
-  //           });
-  //         });
-  //     }
-  //     getArticles();
-  //   }, []);
   console.log(feedItem);
   let youtubeUrl = "";
   if (feedItem.media) {

@@ -1,23 +1,18 @@
-import { useEffect } from "react";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Article from "./Article/Aritcle";
-import Header from "./Header/Header";
 import Signup from "./Member/Signup";
-import { auth } from "./../firebase.js";
 import Signin from "./Member/Signin";
 import Board from "./Board";
 import MyRouter from "./MyRouter";
 import FolderTab from "./SideTab/FolderTab";
 import GroupFolderTab from "./Group/GroupFolderTab";
 import GroupBoard from "./Group/GroupBoard";
-import Graph from "./Graph/Graph1";
+import Graph from "./Graph/Graph";
 import GraphBoard from "./Graph/GraphBoard";
-import RSSHeader from "./RSS/RSSHeader";
 import RSSTab from "./RSS/RSSTab";
 import RSSSearch from "./RSS/RSSSearch";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RSSBoard from "./RSS/RSSBoard";
 import RSSBoardToday from "./RSS/RSSBoard_Today";
@@ -40,7 +35,7 @@ function App() {
               <FunctionTab focus="home" />
               <MobileFunctionTab focus="home" />
               <RSSTab focus="home" />
-              <MobileBurger />
+              <MobileBurger position="RSS" />
               <RSSBoardToday />
             </div>
           </Route>
@@ -49,6 +44,7 @@ function App() {
               <FunctionTab focus="home" />
               <MobileFunctionTab focus="channels" />
               <RSSTab focus="channels" />
+              <MobileBurger position="RSS" />
               <RSSBoardExplore />
             </div>
           </Route>
@@ -58,6 +54,7 @@ function App() {
               <FunctionTab focus="home" />
               <MobileFunctionTab focus="myfeeds" />
               <RSSTab focus="myfeeds" />
+              <MobileBurger position="RSS" />
               <RSSBoard />
             </div>
           </Route>
@@ -66,6 +63,7 @@ function App() {
               <FunctionTab focus="home" />
               <MobileFunctionTab focus="myfeeds" />
               <RSSTab focus="searchfeeds" />
+              <MobileBurger position="RSS" />
               <RSSSearch />
             </div>
           </Route>
@@ -74,7 +72,7 @@ function App() {
               <FunctionTab focus="board" />
               <MobileFunctionTab focus="board" />
               <FolderTab />
-              <MobileBurger />
+              <MobileBurger position="board" />
               <Board />
             </div>
           </Route>

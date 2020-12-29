@@ -98,7 +98,7 @@ export default function Signup() {
           </div>
         </Link>
         <Link to={"/signin"} className={styles.logInWrapper}>
-          <div className={styles.logInBtn}>Sign in</div>
+          <div className={styles.logInBtn}>Log In</div>
         </Link>
         <Link to={"/signup"}>
           <div className={styles.SignUpBtn}>Sign up</div>
@@ -152,7 +152,7 @@ export default function Signup() {
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
           <div className={styles.login}>
             <span>Already have an account? </span>
-            <Link to={"/Signin"}>Sign in</Link>
+            <Link to={"/Signin"}>Log In</Link>
           </div>
         </div>
       </div>

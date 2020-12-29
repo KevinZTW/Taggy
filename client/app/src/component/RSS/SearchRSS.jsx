@@ -8,7 +8,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
 import Axios from "axios";
 export default function FindRSS(props) {
-  const [reqUrl, setReqUrl] = useState("redux");
+  const [reqUrl, setReqUrl] = useState("appworks");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 

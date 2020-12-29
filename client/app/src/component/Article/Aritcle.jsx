@@ -1,15 +1,14 @@
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
 import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { db, CheckFirebaseUserStatus } from "../../firebase.js";
+import { db } from "../../firebase.js";
 import ArrowBack from "@material-ui/icons/ArrowBack";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import styles from "../../css/Article.module.css";
 import { app } from "../../lib/lib.js";
-import BorderColorIcon from "@material-ui/icons/BorderColor";
 import ReactQuill from "react-quill";
 import CreatableSelect from "react-select/creatable";
 import { useSelector } from "react-redux";
@@ -23,18 +22,18 @@ export default function Article() {
   const [highLightOn, setHighLightOn] = useState(false);
 
   const lightOn = useRef(highLightOn);
-  let [articleLoaded, setArticleLoaded] = useState(false);
-  let [highLights, setHighLights] = useState([]);
-  let [tags, setTags] = useState({});
-  let [note, setNote] = useState("");
-  let [article, setArticle] = useState({});
+  const [articleLoaded, setArticleLoaded] = useState(false);
+  const [highLights, setHighLights] = useState([]);
+  const [tags, setTags] = useState({});
+  const [note, setNote] = useState("");
+  const [article, setArticle] = useState({});
 
   const [renderArticle, setRenderArticle] = useState(article.readerHtml);
   const location = useLocation();
-  let search = location.search;
-  let params = new URLSearchParams(search);
-  let id = params.get("id");
-  let user = useSelector((state) => {
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const id = params.get("id");
+  const user = useSelector((state) => {
     return state.memberReducer.user;
   });
 
@@ -81,14 +80,12 @@ export default function Article() {
   };
   useEffect(() => {
     if (user) {
-      console.log("useeffect run");
-
       app.initArticleTags(id, user.uid).then((articleTagSelection) => {
         console.log(articleTagSelection);
         setTags(articleTagSelection);
       });
     }
-  }, [user]);
+  }, [id, user]);
   function handleChange(newValue, actionMeta) {
     switch (actionMeta.action) {
       case "select-option":
@@ -129,7 +126,6 @@ export default function Article() {
     }
   }, [articleLoaded]);
   useEffect(() => {
-    let unsubscribe;
     let unsubscribeNote;
     function getArticles() {
       db.collection("Articles")
@@ -189,13 +185,13 @@ export default function Article() {
     endIndex,
     endTextContent
   ) {
-    let encodedStart = startTextContent.replace("&", "&amp;");
-    let encodedEnd = endTextContent.replace("&", "&amp;");
-    let articleStart = articleString.indexOf(encodedStart) + startIndex;
-    let articleStartTail =
+    const encodedStart = startTextContent.replace("&", "&amp;");
+    const encodedEnd = endTextContent.replace("&", "&amp;");
+    const articleStart = articleString.indexOf(encodedStart) + startIndex;
+    const articleStartTail =
       articleString.indexOf(encodedStart) + encodedStart.length;
-    let articleEnd = articleString.indexOf(encodedEnd) + endIndex;
-    let articleEndHead = articleString.indexOf(encodedEnd);
+    const articleEnd = articleString.indexOf(encodedEnd) + endIndex;
+    const articleEndHead = articleString.indexOf(encodedEnd);
     return {
       articleStart: articleStart,
       articleStartTail: articleStartTail,
@@ -225,11 +221,11 @@ export default function Article() {
   function findTextAddSpan(targetText, hightLightId, tempRenderArticle) {
     console.warn(targetText);
     var encodedText = targetText.replace("&", "&amp;");
-    let indexStart = tempRenderArticle.indexOf(encodedText);
+    const indexStart = tempRenderArticle.indexOf(encodedText);
     console.log(indexStart);
-    let indexEnd = indexStart + targetText.length;
+    const indexEnd = indexStart + targetText.length;
     if (indexStart !== -1 && indexStart !== 0) {
-      let temp =
+      const temp =
         tempRenderArticle.substr(0, indexStart) +
         `<span class=highLighter data-id="${hightLightId}">` +
         tempRenderArticle.substr(indexStart, targetText.length) +
@@ -262,9 +258,9 @@ export default function Article() {
     if (lightOn.current) {
       var selection = window.getSelection();
       let tempRenderArticle = renderArticle;
-      let dom = selection.getRangeAt(0).cloneContents();
-      let allTextSlice = [];
-      let textSummary = dom.textContent;
+      const dom = selection.getRangeAt(0).cloneContents();
+      const allTextSlice = [];
+      const textSummary = dom.textContent;
       console.log(dom);
       console.log(dom.textContent);
       console.log(dom.children);
@@ -277,7 +273,7 @@ export default function Article() {
 
       // console.dir(selection.anchorNode);
       // console.dir(selection.anchorNode.nextSibling);
-      // let sibiling = selection.anchorNode.nextSibling;
+      // const sibiling = selection.anchorNode.nextSibling;
       // console.log(sibiling);
       // console.log(
       //   selection.anchorOffset,
@@ -286,12 +282,7 @@ export default function Article() {
       //   selection.focusNode.textContent
       // );
 
-      let {
-        articleStart,
-        articleEnd,
-        articleStartTail,
-        articleEndHead,
-      } = findIndexInArticle(
+      const { articleStart, articleEnd } = findIndexInArticle(
         renderArticle,
         selection.anchorOffset,
         selection.anchorNode.textContent,
@@ -311,7 +302,7 @@ export default function Article() {
           //   renderArticle.substr(articleStart, articleEnd - articleStart)
           // );
           // // console.log(renderArticle.substr(articleEnd, renderArticle.length));
-          let tempArticle =
+          const tempArticle =
             renderArticle.substr(0, articleStart) +
             "<span class=highLighter >" +
             renderArticle.substr(articleStart, articleEnd - articleStart) +
@@ -321,7 +312,7 @@ export default function Article() {
           setRenderArticle(tempArticle);
         } else {
           console.log("cross node==========");
-          let highLightId = user.uid + "_" + Date.now().toString();
+          const highLightId = user.uid + "_" + Date.now().toString();
           highLighting(dom, highLightId);
 
           function highLighting(dom, highLightId) {
@@ -333,9 +324,9 @@ export default function Article() {
                 highLighting(child, highLightId);
               });
               //child 以外的部分
-              let father = dom.textContent;
+              const father = dom.textContent;
 
-              let firstChildIndex = father.indexOf(
+              const firstChildIndex = father.indexOf(
                 [...dom.children][0].textContent
               );
               // father head
@@ -355,7 +346,7 @@ export default function Article() {
               console.log(tempRenderArticle.search("<span"));
             } else {
               //沒有的情況
-              let father = dom.textContent;
+              const father = dom.textContent;
               console.error("來處理", father);
               findTextAddSpan(father, highLightId);
               console.log(tempRenderArticle.search("<span"));
@@ -365,12 +356,12 @@ export default function Article() {
           function findTextAddSpan(targetText, hightLightId) {
             console.warn(targetText);
             var encodedText = targetText.replace("&", "&amp;");
-            let indexStart = tempRenderArticle.indexOf(encodedText);
+            const indexStart = tempRenderArticle.indexOf(encodedText);
             console.log(indexStart);
-            let indexEnd = indexStart + targetText.length;
+            const indexEnd = indexStart + targetText.length;
             if (indexStart !== -1 && indexStart !== 0) {
               allTextSlice.push(targetText);
-              let temp =
+              const temp =
                 tempRenderArticle.substr(0, indexStart) +
                 `<span class=highLighter data-id="${hightLightId}">` +
                 tempRenderArticle.substr(indexStart, targetText.length) +
@@ -380,7 +371,7 @@ export default function Article() {
               tempRenderArticle = temp;
             }
           }
-          let hightLight = {
+          const hightLight = {
             id: highLightId,
             textSlice: allTextSlice,
             uid: user.uid,
@@ -423,7 +414,7 @@ export default function Article() {
   const quillRef = React.useRef();
 
   function renderHightLight(highLights) {
-    let highLightBoxes = [];
+    const highLightBoxes = [];
     highLights.forEach((highLight) => {
       highLightBoxes.push(
         <div className={styles.highLightBox}>
@@ -453,7 +444,7 @@ export default function Article() {
       .replaceAll(`</span><input z="${id}">`, "");
 
     //remove highLight state
-    let tempHighLight = highLights.filter((item) => {
+    const tempHighLight = highLights.filter((item) => {
       return item.id !== id;
     });
 
@@ -466,7 +457,7 @@ export default function Article() {
     setRenderArticle(tempArticle);
   }
   useEffect(() => {
-    let articleMain = document.querySelector("." + styles.articleMain);
+    const articleMain = document.querySelector("." + styles.articleMain);
 
     articleMain.addEventListener("mouseup", handleMouseUp);
     return () => {
@@ -474,7 +465,7 @@ export default function Article() {
     };
   }, [renderArticle]);
   console.log(highLights);
-  let highLightBoxes = renderHightLight(highLights);
+  const highLightBoxes = renderHightLight(highLights);
   if (renderArticle) {
     console.error(renderArticle.search("<span class=highLighter"));
   }

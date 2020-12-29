@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import TreeItem from "@material-ui/lab/TreeItem";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import { app } from "../../lib/lib.js";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import styles from "./FolderTab.module.css";
 import { Skeleton } from "@material-ui/lab";
 import { SWITCHARTICLE } from "../../redux/actions";
-import { blue } from "@material-ui/core/colors";
+
 import { Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles({
@@ -19,27 +17,15 @@ const useStyles = makeStyles({
 export default function Folder(props) {
   console.log("rerender la ");
   const classes = useStyles();
-  const [tags, setTags] = useState([]);
+
   const dispatch = useDispatch();
-  let folderTags = props.folderTags;
-  // let user = props.user;
-  // useEffect(() => {
-  //   function getMemberFolderTags() {
-  //     if (user) {
-  //       app.getMemberFolderTags(props.folderId).then((folderTags) => {
-  //         setTags(folderTags);
-  //       });
-  //     }
-  //   }
-  //   getMemberFolderTags();
-  // }, [user]);
-  console.log("======================================");
-  console.log(folderTags);
+  const folderTags = props.folderTags;
+
   function showTabTreeList(tags) {
-    let tabList = [];
+    const tabList = [];
     if (tags) {
       let count = 0;
-      for (let i in tags) {
+      for (const i in tags) {
         tabList.push(
           <Draggable draggableId={tags[i].id} index={count} key={tags[i].id}>
             {(provided) => (

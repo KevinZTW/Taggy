@@ -6,10 +6,8 @@ import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
 import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
-import { app } from "../../lib/lib.js";
-import RSSPage from "./RSSPage";
 
-import youtube from "../../img/youtube_logo.png";
+import RSSPage from "./RSSPage";
 
 export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
@@ -45,13 +43,10 @@ export default function Board(props) {
     console.log(state.RSSReducer.feed);
     return state.RSSReducer.feed;
   });
-  const searchFeedUrl = useSelector((state) => {
-    return state.RSSReducer.url;
-  });
 
   function renderSearchFeed(feed) {
-    let feedList = [];
-    for (let i in feed.items) {
+    const feedList = [];
+    for (const i in feed.items) {
       feedList.push(
         <RSSCard
           highLight={feed.title}
@@ -95,7 +90,7 @@ export default function Board(props) {
       db.collection("Articles")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
-          let list = [];
+          const list = [];
           querySnapshot.forEach(function (doc) {
             list.push({
               title: doc.data().title,

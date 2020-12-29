@@ -8,10 +8,6 @@ import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import TreeItem from "@material-ui/lab/TreeItem";
-import { Link } from "react-router-dom";
-import MarkunreadIcon from "@material-ui/icons/Markunread";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import {
@@ -22,8 +18,8 @@ import {
 } from "../../redux/actions";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import Folder from "../SideTab/Folder";
+import { DragDropContext } from "react-beautiful-dnd";
+
 import GroupFolerSub from "./GroupFolderSub";
 const useStyles = makeStyles({
   root: {
@@ -53,7 +49,7 @@ export default function GroupFolderTab() {
     return state.memberReducer.user;
   });
   function onDragEnd(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
     console.log(result);
 
     if (!destination) {
@@ -69,18 +65,18 @@ export default function GroupFolderTab() {
     }
     if (destination.droppableId === source.droppableId) {
       console.log("move inside same folder");
-      let newArticleFolders = [...articleFolders];
+      const newArticleFolders = [...articleFolders];
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
           console.log("hihi");
-          let newTags = [...folder.tags];
-          let moveItem = { ...newTags[source.index] };
+          const newTags = [...folder.tags];
+          const moveItem = { ...newTags[source.index] };
           console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
           console.log(newTags);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -97,15 +93,15 @@ export default function GroupFolderTab() {
     }
     if (destination.droppableId !== source.droppableId) {
       console.log("move to another folder");
-      let newArticleFolders = [...articleFolders];
+      const newArticleFolders = [...articleFolders];
       let moveItem;
       newArticleFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
-          let newTags = [...folder.tags];
+          const newTags = [...folder.tags];
           moveItem = { ...newTags[source.index] };
           newTags.splice(source.index, 1);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -117,11 +113,11 @@ export default function GroupFolderTab() {
       });
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          let newTags = [...folder.tags];
+          const newTags = [...folder.tags];
 
           newTags.splice(destination.index, 0, moveItem);
           folder.tags = newTags;
-          let firestoreTagArr = [];
+          const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
@@ -161,12 +157,12 @@ export default function GroupFolderTab() {
         });
     }
     async function memberGroupInit(user) {
-      let groupIds = await getMemberGroups(user);
+      const groupIds = await getMemberGroups(user);
 
-      let groups = {};
+      const groups = {};
       console.log(groupIds);
-      for (let i in groupIds) {
-        let info = await getGroupDbInfo(groupIds[i]);
+      for (const i in groupIds) {
+        const info = await getGroupDbInfo(groupIds[i]);
         groups[groupIds[i]] = info;
       }
       console.warn(groups);
@@ -183,26 +179,26 @@ export default function GroupFolderTab() {
       //=========!!!!!!!!!!!!!!!!!!!===========
       // dispatch(GROUPINIT(groups));
 
-      for (let i in groupIds) {
-        let info = await getGroupDbInfo(groupIds[i]);
+      for (const i in groupIds) {
+        const info = await getGroupDbInfo(groupIds[i]);
         //info ={  id: "group1",
         //name: front end,
         //articleFolders: [id1, id2, id3],}
-        let folders = await app.getGroupArticleFolders(groupIds[i]);
+        const folders = await app.getGroupArticleFolders(groupIds[i]);
         //folders=[{id, name, tags}, {id, name, tags}]
         console.log(folders);
-        let folderWithTagInfo = folders.map(async (folder) => {
-          let tags = await app.getMemberFolderTags(folder.id);
+        const folderWithTagInfo = folders.map(async (folder) => {
+          const tags = await app.getMemberFolderTags(folder.id);
           folder.tags = tags;
           return folder;
         });
 
-        let group = await Promise.all(folderWithTagInfo).then((folder) => {
+        const group = await Promise.all(folderWithTagInfo).then((folder) => {
           info.articleFolders = folder;
           return info;
         });
         console.log(group);
-        let groupId = groupIds[i];
+        const groupId = groupIds[i];
         groups[groupId] = group;
         console.log(groups);
       }
@@ -211,11 +207,11 @@ export default function GroupFolderTab() {
       dispatch(GROUPINIT(groups));
     }
     async function updateMemberGroup(user, changeId) {
-      let groupIds = await getMemberGroups(user);
-      let groups = {};
+      const groupIds = await getMemberGroups(user);
+      const groups = {};
       console.log(groupIds);
-      for (let i in groupIds) {
-        let info = await getGroupDbInfo(groupIds[i]);
+      for (const i in groupIds) {
+        const info = await getGroupDbInfo(groupIds[i]);
         groups[groupIds[i]] = info;
       }
       console.log(groups);
@@ -224,26 +220,26 @@ export default function GroupFolderTab() {
       //=========!!!!!!!!!!!!!!!!!!!===========
       // dispatch(GROUPINIT(groups));
 
-      for (let i in groupIds) {
-        let info = await getGroupDbInfo(groupIds[i]);
+      for (const i in groupIds) {
+        const info = await getGroupDbInfo(groupIds[i]);
         //info ={  id: "group1",
         //name: front end,
         //articleFolders: [id1, id2, id3],}
-        let folders = await app.getGroupArticleFolders(groupIds[i]);
+        const folders = await app.getGroupArticleFolders(groupIds[i]);
         //folders=[{id, name, tags}, {id, name, tags}]
         console.log(folders);
-        let folderWithTagInfo = folders.map(async (folder) => {
-          let tags = await app.getMemberFolderTags(folder.id);
+        const folderWithTagInfo = folders.map(async (folder) => {
+          const tags = await app.getMemberFolderTags(folder.id);
           folder.tags = tags;
           return folder;
         });
 
-        let group = await Promise.all(folderWithTagInfo).then((folder) => {
+        const group = await Promise.all(folderWithTagInfo).then((folder) => {
           info.articleFolders = folder;
           return info;
         });
         console.log(group);
-        let groupId = groupIds[i];
+        const groupId = groupIds[i];
         groups[groupId] = group;
         console.log(groups);
       }
@@ -308,7 +304,7 @@ export default function GroupFolderTab() {
       });
   }
   function renderGroupTabs(groups) {
-    let groupTabs = [];
+    const groupTabs = [];
     console.log(groups);
     for (const key in groups) {
       console.log(groups[key]);

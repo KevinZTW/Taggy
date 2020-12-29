@@ -1,11 +1,25 @@
+import MobileRSSTab from "../RSS/MobileRSSTab";
+
 import styles from "./MobileFunctionTab.module.css";
 import boardStyles from "../RSS/RSSBoard.module.css";
 import MenuIcon from "@material-ui/icons/Menu";
 import MobileFolderTab from "./MobileFolderTab";
 import { useState } from "react";
 
-export default function MobileBurger() {
+export default function MobileBurger(props) {
+  console.warn(props.position);
   const [showBurger, setShowBurger] = useState(false);
+  let burgerCategory = "";
+  switch (props.position) {
+    case "board":
+      burgerCategory = <MobileFolderTab />;
+      break;
+    case "RSS":
+      burgerCategory = <MobileRSSTab />;
+      break;
+    default:
+  }
+  console.error(burgerCategory);
   return (
     <div class={styles.burgerWrapper}>
       <MenuIcon
@@ -24,7 +38,7 @@ export default function MobileBurger() {
               setShowBurger(false);
             }}
           ></div>
-          <MobileFolderTab />
+          {props.position === "board" ? <MobileFolderTab /> : <MobileRSSTab />}
         </div>
       ) : (
         ""

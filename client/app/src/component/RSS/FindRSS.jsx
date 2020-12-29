@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { local, ec2Url } from "../../config.js";
@@ -6,9 +7,12 @@ import styles from "./FindRSS.module.css";
 import * as RSSParser from "rss-parser";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
+import addRSSImg from "../../img/add_RSS_feed.png";
 import Axios from "axios";
 export default function FindRSS(props) {
-  const [reqUrl, setReqUrl] = useState("");
+  const [reqUrl, setReqUrl] = useState(
+    "https://www.youtube.com/feeds/videos.xml?channel_id=UCUMZ7gohGI9HcU9VNsr2FJQ"
+  );
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -116,39 +120,46 @@ export default function FindRSS(props) {
 
   return (
     <div className={styles.addArticle}>
-      <form
-        className={styles.addForm}
-        action=""
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (user) {
-            requestRSS(reqUrl);
-          }
-        }}
-      >
-        <input
-          type="text"
-          name="input"
-          className={styles.input}
-          value={reqUrl}
-          placeholder=""
-          onChange={(e) => setReqUrl(e.currentTarget.value)}
-        />
-        <button type="submit" className={styles.add}>
-          Search
-        </button>
-      </form>
-      {loading ? <LinearProgress className={styles.progress} /> : ""}
-      <br />
-      <div class={styles.addTitle}>
-        Now supporting general rss link, youtube and medium channel/member's
-        article
+      <label htmlFor="addForm" className={styles.addFolderLabel}>
+        Enter URL link
+      </label>
+      <div className={styles.addFormWrapper}>
+        <form
+          className={styles.addForm}
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (user) {
+              requestRSS(reqUrl);
+            }
+          }}
+        >
+          <input
+            type="text"
+            name="input"
+            className={styles.addInput}
+            value={reqUrl}
+            placeholder=""
+            onChange={(e) => setReqUrl(e.currentTarget.value)}
+          />
+          <button type="submit" className={styles.saveBtn}>
+            Search
+          </button>
+          <Link to="/home">
+            <button onClick={() => {}} className={styles.cancelBtn}>
+              Cancel
+            </button>
+          </Link>
+        </form>
       </div>
-      <div class={styles.addTitle}>e.g.</div>
+      {loading ? <LinearProgress className={styles.progress} /> : ""}
+      <div className={styles.tagsImgWrapper}>
+        <img src={addRSSImg} alt="" />
+      </div>
 
-      <div>https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA</div>
+      {/* <div>https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA</div>
       <div>https://medium.com/appworks-school</div>
-      <div>https://medium.com/@lindingchi</div>
+      <div>https://medium.com/@lindingchi</div> */}
     </div>
   );
 }

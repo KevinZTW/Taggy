@@ -6,9 +6,9 @@
 }
 
 .card {
-  margin-right: 15px;
   margin-bottom: 15px;
   display: flex;
+
   height: 100px;
   flex-direction: row;
 
@@ -20,7 +20,7 @@
 .imgWrapper {
   border-radius: 5px;
   height: 100px;
-  width: 150px;
+  min-width: 150px;
 }
 .color {
   height: 100%;
@@ -54,7 +54,7 @@
 }
 .wordWrapper {
   width: 80%;
-  padding-left: 10px;
+  padding-left: 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

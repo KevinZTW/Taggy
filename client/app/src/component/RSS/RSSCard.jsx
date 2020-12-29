@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 import styles from "./RSSCard.module.css";
 import { db } from "../../firebase.js";
 import Highlighter from "react-highlight-words";
-
+import placeholderImg from "../../img/place_holder_img.png";
 export default function RSSCard(props) {
+  const [image, setImage] = useState(false);
   console.log(props.item);
   function deleteRSS(RSSID) {
     db.collection("RSSItem")
@@ -28,22 +30,36 @@ export default function RSSCard(props) {
     src = props.item.media[0]["media:thumbnail"][0]["$"]["url"];
   }
   let passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
+
   let showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
+  useEffect(() => {
+    console.log(src);
+    let image = new Image();
+    image.src = src;
+    image.onload = () => {
+      setImage(true);
+    };
+  }, []);
+
   return (
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>
         <div className={styles.imgWrapper}>
-          <div
-            className={styles.color}
-            style={{
-              backgroundImage: "url(" + src + ")",
-              backgroundRepeat: "no-repeat",
-              background: "cover",
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-            }}
-          ></div>
+          {image ? (
+            <div
+              className={styles.color}
+              style={{
+                backgroundImage: "url(" + src + ")",
+                backgroundRepeat: "no-repeat",
+                background: "cover",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            ></div>
+          ) : (
+            <img src={placeholderImg} alt="" />
+          )}
           {/* <img src={src} alt="" className={styles.img} /> */}
         </div>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/Card.module.css";
+import placeholderImg from "../img/place_holder_img.png";
 import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -42,18 +43,20 @@ export default function Card(props) {
       <div className={styles.card}>
         <Link to={`/article?id=${props.id}`}>
           <div className={styles.imgWrapper}>
-            <div
-              className={styles.color}
-              style={{
-                backgroundImage: "url(" + src + ")",
-                backgroundRepeat: "no-repeat",
-                background: "cover",
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-              }}
-            >
-              {/* <img src={src} alt="" className={styles.img} /> */}
-            </div>
+            {src ? (
+              <div
+                className={styles.color}
+                style={{
+                  backgroundImage: "url(" + src + ")",
+                  backgroundRepeat: "no-repeat",
+                  background: "cover",
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                }}
+              ></div>
+            ) : (
+              <img src={placeholderImg} alt="" />
+            )}
           </div>
         </Link>
         <div className={styles.wordWrapper}>

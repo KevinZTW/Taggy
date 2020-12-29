@@ -1,13 +1,17 @@
 .boardWrapper {
   width: 100%;
   color: #b2b2b2;
-  padding-left: 20px;
+  padding-left: 40px;
   padding-right: 20px;
 }
-
+.addRSSBoard {
+  background-color: #0e1622;
+  padding-top: 104px;
+  padding-left: 88px;
+}
 .board {
   padding-top: 40px;
-  padding-left: 10px;
+
   border-radius: 10px;
 }
 
@@ -84,7 +88,8 @@
 .switchWrapper {
   display: flex;
   justify-content: flex-start;
-  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #1b1b1b;
   overflow-x: scroll;
 }
 .switchTitle {
@@ -93,9 +98,9 @@
   font-weight: 400;
   color: rgba(255, 255, 255, 0.5);
   line-height: 24px;
-  padding-right: 20px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #1b1b1b;
+
+  margin-right: 15px;
 }
 .switchTitle span {
   font-size: 19px;
@@ -103,20 +108,20 @@
   padding-bottom: 5px;
 }
 .switchTitleFocus {
+  margin-right: 15px;
   cursor: pointer;
   color: rgba(255, 255, 255);
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
-  padding-right: 20px;
   padding-bottom: 5px;
   border-bottom: 1px solid #1b1b1b;
+  border-bottom: solid 3px #2074ec;
 }
 .switchTitleFocus span {
   font-size: 19px;
   font-weight: 500;
   padding-bottom: 5px;
-  border-bottom: solid 3px #2074ec;
 }
 
 .subscribe_btn {
@@ -203,17 +208,36 @@
   cursor: pointer;
 }
 
+.addTitle {
+  color: #e0e0e0;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 32px;
+  letter-spacing: 0.64px;
+  padding-bottom: 16px;
+}
+
+.addSubTitle {
+  font-weight: 600;
+  line-height: 20px;
+  font-size: 18px;
+  padding-bottom: 5px;
+  color: rgba(255, 255, 255, 0.7);
+  padding-bottom: 4rem;
+}
+
 @media (min-device-width: 1440px) {
   .channelDescription {
     width: 80%;
   }
 }
 @media (min-device-width: 800px) {
-  .board {
-    margin-left: 50px;
-  }
 }
 @media (max-width: 632px) {
+  .boardWrapper {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
   .popup {
     z-index: 99;
   }

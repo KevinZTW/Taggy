@@ -3,8 +3,6 @@ import "../css/CardWrapper.css";
 import { useSelector } from "react-redux";
 import { db } from "../firebase.js";
 export default function CardWrapper() {
-  console.log("render once");
-
   const list = useSelector((state) => {
     // function getUserTags(uid) {
     //   let tagListWithName = {};
@@ -16,7 +14,7 @@ export default function CardWrapper() {
     //         .get()
     //         .then((snapShot) => {
     //           snapShot.forEach((doc) => {
-    //             console.log(doc.data());
+
     //             tagListWithName[doc.data().id] = doc.data().name;
     //           });
     //           console.warn("================one batch tag edn");
@@ -32,7 +30,7 @@ export default function CardWrapper() {
     //       .doc(uid)
     //       .get()
     //       .then(async (doc) => {
-    //         console.log(doc.data());
+
     //         if (doc.data()) {
     //           let tagIds = doc.data().tags;
     //           console.log(tagIds);
@@ -48,12 +46,11 @@ export default function CardWrapper() {
     //   getUserTags(state.memberReducer.user.uid);
     // }
 
-    let list = [];
-    let articleList = state.articleReducer.articleList;
-    console.log(state);
+    const list = [];
+    const articleList = state.articleReducer.articleList;
+
     if (state.articleReducer.tagSelected === "all") {
-      for (let i in articleList) {
-        console.log(articleList[i].link);
+      for (const i in articleList) {
         list.push(
           <Card
             title={articleList[i].title}
@@ -67,8 +64,7 @@ export default function CardWrapper() {
         );
       }
     } else if (state.articleReducer.tagSelected) {
-      for (let i in articleList) {
-        console.log(articleList);
+      for (const i in articleList) {
         if (
           articleList[i].tags &&
           articleList[i].tags.includes(state.articleReducer.tagSelected)
