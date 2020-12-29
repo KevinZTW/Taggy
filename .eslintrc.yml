@@ -1,0 +1,21 @@
+env:
+  node: true
+  commonjs: true
+  es6: true
+extends: 'eslint:recommended'
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+    sourceType: "module",
+    allowImportExportEverywhere: true
+  ecmaVersion: 2018
+ignorePatterns: ["*.ejs"]
+rules:
+  no-console: off
+  no-unused-vars: ["error", { "vars": "all", "args": "none"}]
+  linebreak-style: ["error", "unix"]
+  quotes: ["error", "single"]
+  semi: ["error", "always"]
+  no-trailing-spaces: ["error"]
+  prefer-const: ["error", {"destructuring": "any","ignoreReadBeforeAssign": false}]

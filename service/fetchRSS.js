@@ -1,8 +1,6 @@
-import { addRSS } from "../models/rss_model.js";
-import { db } from "../firebase.js";
+import { addRSS } from "../server/models/rss_model.js";
+import { db } from "../server/models/firebase.js";
 import Parser from "rss-parser";
-import { response } from "express";
-import { resolve } from "path";
 
 let getRSSList = function () {
   return db
@@ -23,9 +21,11 @@ let fetchRSS = function (url, RSSId) {
   let parser = new Parser();
 
   (async () => {
-    let feed = await parser
-      .parseURL(encodedUrl)
-      .catch((err) => console.log(err));
+    let feed = await parser.parseURL(encodedUrl).catch(async (err) => {
+      console.log(err);
+
+      return await parser.parseURL(url);
+    });
     if (feed && feed.items) {
       addRSS(feed, RSSId);
     }

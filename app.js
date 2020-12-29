@@ -3,16 +3,16 @@ export const app = express();
 import * as path from "path";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import bodyParser from "body-parser";
+import cors from "cors";
+import { article_router } from "./server/routes/article_route.js";
+import { rss_router } from "./server/routes/rss_route.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT || 3000;
-import bodyParser from "body-parser";
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-import cors from "cors";
-import { article_router } from "./routes/article_route.js";
-import { rss_router } from "./routes/rss_route.js";
-app.use(cors());
 
 app.use("/route", [article_router, rss_router]);
 
