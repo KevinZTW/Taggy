@@ -17,7 +17,5 @@ greenlock
   })
   .serve(app);
 
-let kevin = 222;
-console.log(kevin);
 setInterval(loopAndFetchRSS, 43200000); //half day
 loopAndFetchRSS();
