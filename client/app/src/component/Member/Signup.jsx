@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../img/taggy_logo_1x.png";
+import logo from "../../imgs/taggy_logo_1x.png";
 import "../../css/App.css";
 import styles from "../../css/SignUp.module.css";
 import { Link } from "react-router-dom";
@@ -12,17 +12,17 @@ export default function Signup() {
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
-        console.log(authResult);
-        let newUser = await db
+        //console.log(authResult);
+        const newUser = await db
           .collection("Member")
           .doc(authResult.uid)
           .get()
           .then((doc) => {
             if (doc.data()) {
-              console.log("existing user sign in");
+              //console.log("existing user sign in");
               return false;
             } else {
-              console.log("new user! create it in db");
+              //console.log("new user! create it in db");
               return true;
             }
           });
@@ -36,15 +36,14 @@ export default function Signup() {
               displaynamename: authResult.displayName,
             })
 
-            .then(() => console.log("Add user to db successfully"))
             .then(history.push("home"))
             .catch((error) => {
               var errorCode = error.code;
               var errorMessage = error.message;
-              console.log(errorMessage);
+              //console.log(errorMessage);
             });
         } else {
-          console.log("exiting user signin");
+          //console.log("exiting user signin");
         }
       },
     },
@@ -56,14 +55,13 @@ export default function Signup() {
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
   const history = useHistory();
-  let [name, setName] = useState("");
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   function firebaseSignUp(name, email, password) {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log(user.user);
         db.collection("Member").doc(user.user.uid).set({
           displaynamename: name,
           email: email,
@@ -73,17 +71,15 @@ export default function Signup() {
       })
       .then(() => {
         var user = auth.currentUser;
-        user
-          .updateProfile({
-            displayName: name,
-          })
-          .then(() => console.log("update user name successfully"));
+        user.updateProfile({
+          displayName: name,
+        });
       })
       .then(history.push("/home"))
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorMessage);
+        //console.log(errorMessage);
       });
   }
   return (

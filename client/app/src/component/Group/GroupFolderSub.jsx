@@ -15,11 +15,11 @@ export default function GroupFolderSub(props) {
   });
 
   function showArticleFolders(folders) {
-    console.log(folders);
+    //console.log(folders);
     const articleFolderList = [];
     if (folders.length > 0) {
       for (const i in folders) {
-        console.log(folders[i].tags);
+        //console.log(folders[i].tags);
         articleFolderList.push(
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
@@ -37,7 +37,7 @@ export default function GroupFolderSub(props) {
                   </div>
                 }
                 onClick={() => {
-                  console.log(folders[i].id);
+                  //console.log(folders[i].id);
                   // dispatch(SWITCHARTICLE(folders[i].id));
                 }}
               >

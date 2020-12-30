@@ -95,8 +95,6 @@ export default function Graph() {
           .attr("id", (d) => d.tagId)
           .on("click", (a) => {
             d3.select(this).style("stroke", "yellow");
-            console.log(a);
-            console.log(a.target.id);
             dispatch(SWITCHARTICLE(a.target.id));
           });
 
@@ -118,25 +116,18 @@ export default function Graph() {
     },
     [data]
   );
-  console.log(ref);
   const articleList = useSelector((state) => {
-    console.log(state);
     return state.articleReducer.articleList;
   });
   function getGraphData(uid) {
     return new Promise(async (resolve) => {
-      let memberTags = await app.getMemberTags(uid);
+      const memberTags = await app.getMemberTags(uid);
 
       resolve(memberTags);
     });
   }
-  // {
-  //   id: "1qeqw",
-  //   value: "ee"
-  //   label: "ee"
-  // }
   function createCombinationList(tags) {
-    let combList = [];
+    const combList = [];
     for (let i = 0; i < tags.length - 1; i++) {
       for (let j = i + 1; j < tags.length; j++) {
         combList.push([tags[i], tags[j]]);
@@ -146,8 +137,8 @@ export default function Graph() {
   }
   function countCombinationNumber(articleList, combList) {
     console.error(articleList);
-    let links = [];
-    console.log(combList);
+    const links = [];
+    //console.log(combList);
     for (let i = 0; i < combList.length; i++) {
       let combNumber = 0;
       articleList.forEach((article) => {
@@ -169,7 +160,7 @@ export default function Graph() {
     return links;
   }
   function combInit(tags) {
-    let combList = createCombinationList(tags);
+    const combList = createCombinationList(tags);
     console.warn(articleList);
     return countCombinationNumber(articleList, combList);
   }
@@ -178,15 +169,15 @@ export default function Graph() {
     return new Promise((resolve) => {
       getGraphData(uid)
         .then((memberTags) => {
-          let links = combInit(memberTags);
-          let nodes = [];
+          const links = combInit(memberTags);
+          const nodes = [];
           memberTags.forEach((tag) => {
             nodes.push({
               id: tag.value,
               tagId: tag.id,
             });
           });
-          console.log(links);
+          //console.log(links);
           return [nodes, links];
         })
         .then(([nodes, links]) => {
@@ -199,12 +190,12 @@ export default function Graph() {
   }
   useEffect(() => {
     if (user && articleList[0]) {
-      console.log(articleList);
+      //console.log(articleList);
       // setDataRun(true);
-      console.log(user);
+      //console.log(user);
       initGraphData(user.uid).then((data) => {
-        console.log("lets set dat=============================a");
-        console.log(data);
+        //console.log("lets set dat=============================a");
+        //console.log(data);
         setData(data);
       });
     }

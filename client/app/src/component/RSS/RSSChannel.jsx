@@ -29,16 +29,16 @@ export default function Board(props) {
   });
 
   function batchFetchAllFeeds(channelRSSId, lastVisible) {
-    console.log(channelRSSId);
+    //console.log(channelRSSId);
     if (lastVisible === 0) {
-      console.log("last visible equal zero!");
+      //console.log("last visible equal zero!");
       db.collection("RSSItem")
         .where("RSSId", "==", channelRSSId)
         .orderBy("pubDate", "desc")
         .limit(15)
         .get()
         .then((snapshot) => {
-          console.log("batchfetch start");
+          //console.log("batchfetch start");
           const items = [...allFeeds];
           snapshot.forEach((doc) => {
             items.push(doc.data());
@@ -46,11 +46,11 @@ export default function Board(props) {
           setLastQueryDoc(snapshot.docs[14]);
 
           setAllFeeds(items);
-          console.log("se set items as ", items);
+          //console.log("se set items as ", items);
         });
     } else {
       if (lastQueryDoc) {
-        console.log("else start, the last visible is", lastVisible);
+        //console.log("else start, the last visible is", lastVisible);
 
         db.collection("RSSItem")
           .where("RSSId", "==", channelRSSId)
@@ -98,7 +98,7 @@ export default function Board(props) {
             <div
               className={styles.channelSubscribe_btn}
               onClick={() => {
-                console.log("add", props.channelId);
+                //console.log("add", props.channelId);
                 app.addRSSToMember(user.uid, props.channelId, () => {
                   setIsFollowed(true);
                 });
@@ -136,7 +136,7 @@ export default function Board(props) {
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
       if (winScroll > height - 20) {
-        console.log("reach the bottom!", lastVisible);
+        //console.log("reach the bottom!", lastVisible);
 
         const newLast = lastVisible + 7;
         setLastVisible(newLast);

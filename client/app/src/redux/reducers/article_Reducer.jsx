@@ -6,6 +6,7 @@ const article_Reducer = (
     tagSelected: "all",
     articleList: [],
     articleFolders: [],
+    lastQuery: null,
     // isLoaded: false
   },
   action
@@ -21,11 +22,12 @@ const article_Reducer = (
         articleFolders: action.articleFolders,
         // isLoaded: true
       };
-    case "INITARTICLE":
+    case "FETCHARTICLE":
       return {
         ...state,
 
         articleList: action.articleList,
+        lastQuery: action.lastQuery,
       };
     case "SWITCHARTICLE":
       return {

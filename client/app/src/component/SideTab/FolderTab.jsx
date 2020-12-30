@@ -27,7 +27,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Folder from "./Folder";
-import addTagFolderImg from "../../img/add_new_folder.png";
+import addTagFolderImg from "../../imgs/add_new_folder.png";
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
     color: "white",
@@ -45,16 +45,15 @@ const useStyles = makeStyles({
     marginBottom: "15px",
   },
 });
-
+const itemstyle = makeStyles({
+  root: {
+    paddingLeft: "25px",
+    color: "#B5B5B5",
+    maxWidth: 200,
+    marginBottom: "5px",
+  },
+});
 export default function FolderTab() {
-  const itemstyle = makeStyles({
-    root: {
-      paddingLeft: "25px",
-      color: "#B5B5B5",
-      maxWidth: 200,
-      marginBottom: "5px",
-    },
-  });
   const classes = useStyles();
   const itemStyle = itemstyle();
   const dispatch = useDispatch();
@@ -64,59 +63,52 @@ export default function FolderTab() {
   const [addFolderInput, setAddFolderInput] = useState("");
 
   const articleFolders = useSelector((state) => {
-    console.log(state);
+    //console.log(state);
     return state.articleReducer.articleFolders;
   });
 
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
+
   function onDragEnd(result) {
-    const { destination, source, draggableId } = result;
-    console.log(result);
+    const { destination, source } = result;
 
     if (!destination) {
       return;
     }
-
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      console.log("nothing should happended");
       return;
     }
     if (destination.droppableId === source.droppableId) {
-      console.log("move inside same folder");
+      //console.log("move inside same folder");
       const newArticleFolders = [...articleFolders];
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          console.log("hihi");
+          //console.log("hihi");
           const newTags = [...folder.tags];
           const moveItem = { ...newTags[source.index] };
-          console.log(moveItem);
+          //console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
-          console.log(newTags);
+          //console.log(newTags);
           folder.tags = newTags;
           const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          console.log(firestoreTagArr);
+          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
         }
       });
       dispatch(INITARTICLEFOLDERS(newArticleFolders));
-
-      console.log(destination.index, source.index);
-      console.log(source.droppableId);
-      console.log(destination.droppableId);
     }
     if (destination.droppableId !== source.droppableId) {
-      console.log("move to another folder");
       const newArticleFolders = [...articleFolders];
       let moveItem;
       newArticleFolders.forEach((folder) => {
@@ -129,7 +121,6 @@ export default function FolderTab() {
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          console.log(firestoreTagArr);
           db.collection("articleFolders").doc(source.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -145,7 +136,7 @@ export default function FolderTab() {
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          console.log(firestoreTagArr);
+          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -156,11 +147,11 @@ export default function FolderTab() {
   }
 
   useEffect(() => {
-    console.log(tabChange);
     function getArticleFolders() {
+      console.log("getarticle fodler");
       if (user) {
-        app
-          .getMemberArticleFolders(user.uid)
+        app.article
+          .getMemberTagFoldersDetail(user.uid)
           .then((articleFolders) => {
             dispatch(INITARTICLEFOLDERS(articleFolders));
 
@@ -170,14 +161,14 @@ export default function FolderTab() {
             const tempFolderList = [];
             for (let i = 0; i < articleFolders.length; i++) {
               const tags = await app.getMemberFolderTags(articleFolders[i].id);
-              console.log(tags);
+              //console.log(tags);
               tempFolderList.push({ ...articleFolders[i], tags: tags });
             }
-            console.log(tempFolderList);
+            //console.log(tempFolderList);
             return tempFolderList;
           })
           .then((newFolder) => {
-            console.log(newFolder);
+            //console.log(newFolder);
             dispatch(INITARTICLEFOLDERS(newFolder));
           });
       }
@@ -190,7 +181,7 @@ export default function FolderTab() {
     if (folders.length > 0) {
       for (const i in folders) {
         articleFolderList.push(
-          <Droppable droppableId={folders[i].id}>
+          <Droppable droppableId={folders[i].id} key={folders[i].id}>
             {(provided) => (
               <TreeItem
                 className={itemStyle.root}
@@ -206,10 +197,6 @@ export default function FolderTab() {
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
                 }
-                onClick={() => {
-                  console.log(folders[i].id);
-                  // dispatch(SWITCHARTICLE(folders[i].id));
-                }}
               >
                 <Folder
                   user={user}
@@ -278,7 +265,7 @@ export default function FolderTab() {
             <div
               className={styles.keyTitleWrapper}
               onClick={() => {
-                console.log("all");
+                //console.log("all");
                 dispatch(SWITCHARTICLE("all"));
               }}
             >

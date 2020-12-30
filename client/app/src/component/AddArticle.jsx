@@ -1,10 +1,8 @@
 import styles from "./AddArticle.module.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { localUrl, ec2Url } from "../config.js";
-import { style } from "d3";
 
 export default function AddArticle(props) {
   const [loading, setLoading] = useState(false);
@@ -40,9 +38,6 @@ export default function AddArticle(props) {
     })
       .then(function (response) {
         if (response.status !== 200) {
-          console.log(
-            "Looks like there was a problem. Status Code: " + response.status
-          );
           notify_fail();
           return;
         } else {
@@ -55,7 +50,6 @@ export default function AddArticle(props) {
         }
       })
       .catch(function (err) {
-        console.log("Fetch Error :-S", err);
         notify_fail();
       });
   }
@@ -79,7 +73,7 @@ export default function AddArticle(props) {
         onClick={(e) => {
           if (user) {
             e.preventDefault();
-            postDataToServer(ec2Url, {
+            postDataToServer("https://www.shopcard.site/route/article/import", {
               url: reqUrl,
               uid: user.uid,
             });

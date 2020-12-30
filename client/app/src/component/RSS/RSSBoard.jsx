@@ -20,9 +20,9 @@ export default function Board(props) {
   });
 
   function batchFetchAllFeeds(userRSSList, lastVisible) {
-    console.log(userRSSList);
+    //console.log(userRSSList);
     if (lastVisible === 0 && userRSSList[0]) {
-      console.log("last visible equal zero!");
+      //console.log("last visible equal zero!");
       db.collection("RSSItem")
         .orderBy("pubDate", "desc")
         .where("RSSId", "in", userRSSList.slice(0, 10))
@@ -31,17 +31,17 @@ export default function Board(props) {
         .then((snapshot) => {
           const items = [...allFeeds];
           snapshot.forEach((doc) => {
-            console.log(doc.data());
+            //console.log(doc.data());
 
             items.push(doc.data());
           });
           setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
           setAllFeeds(items);
-          console.log("se set items as ", items);
+          //console.log("se set items as ", items);
         });
     } else {
       if (lastQueryDoc0 && userRSSList[0]) {
-        console.log("else start, the last visible is", lastVisible);
+        //console.log("else start, the last visible is", lastVisible);
 
         db.collection("RSSItem")
           .orderBy("pubDate", "desc")
@@ -95,10 +95,6 @@ export default function Board(props) {
     }
   }
 
-  const user = useSelector((state) => {
-    return state.memberReducer.user;
-  });
-
   function renderFeedPage(feedItem) {
     return (
       <RSSPage
@@ -116,19 +112,9 @@ export default function Board(props) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      if (winScroll > height - 20) {
-        console.log("reach the bottom!", lastVisible);
-
-        const newLast = lastVisible + 7;
-        setLastVisible(newLast);
-      }
+      app.util.handleScroll(lastVisible, setLastVisible);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -136,7 +122,7 @@ export default function Board(props) {
   }, [lastVisible]);
 
   useEffect(() => {
-    console.log(lastVisible);
+    //console.log(lastVisible);
     if (userRSSList) {
       batchFetchAllFeeds(userRSSList, lastVisible);
     }
@@ -148,8 +134,8 @@ export default function Board(props) {
 
   let allFeedsOutome;
   if (ChannelRSSId === "all") {
-    console.log("channel id is all");
-    console.log(allFeeds);
+    //console.log("channel id is all");
+    //console.log(allFeeds);
     allFeedsOutome = renderAllFeeds(allFeeds);
   } else if (ChannelRSSId) {
     allFeedsOutome = renderChannelFeeds();
@@ -159,10 +145,10 @@ export default function Board(props) {
     let items;
     let RSS;
     if (ChannelRSSId) {
-      console.log(ChannelRSSId);
+      //console.log(ChannelRSSId);
       RSS = await app.getRSSInfo(ChannelRSSId);
       items = await app.getChannelFeeds(ChannelRSSId);
-      console.log(RSS, items);
+      //console.log(RSS, items);
       setChannelFeeds({
         RSS: RSS,
         items: items,
@@ -171,17 +157,18 @@ export default function Board(props) {
   }
   function renderChannelFeeds() {
     if (channelFeeds.items) {
-      console.log(channelFeeds);
+      //console.log(channelFeeds);
       const items = channelFeeds.items;
       const RSS = channelFeeds.RSS;
       const feedList = [];
       for (const i in items) {
-        console.log(items[i]);
+        //console.log(items[i]);
         feedList.push(
           <RSSCard
+            key={items[i].id}
             item={items[i]}
             onClick={(e) => {
-              console.log("hihi");
+              //console.log("hihi");
               setShowPage(true);
               setFeedItem(items[i]);
             }}

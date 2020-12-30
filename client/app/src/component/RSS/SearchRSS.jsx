@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import { local, ec2Url } from "../../config.js";
 import styles from "./FindRSS.module.css";
-import * as RSSParser from "rss-parser";
+
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
-import Axios from "axios";
+
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("appworks");
   const [loading, setLoading] = useState(false);
@@ -27,7 +26,7 @@ export default function FindRSS(props) {
   });
   function searchRSS(keyWord) {
     setLoading(true);
-    fetch("https://www.shopcard.site/" + "route/rss/search", {
+    fetch("https://www.shopcard.site/route/rss/search", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
@@ -35,14 +34,11 @@ export default function FindRSS(props) {
       body: JSON.stringify({ keyWord: keyWord }),
     }).then((response) => {
       if (response.status !== 200) {
-        console.log(
-          "Looks like there was a problem. Status Code: " + response.status
-        );
         notify_fail();
         return;
       } else {
         response.json().then(function (data) {
-          console.log(data.feed);
+          //console.log(data.feed);
           dispatch(GETRSSRESPONSE(data.feed, ""));
           setLoading(false);
           props.showChannel();
@@ -52,7 +48,7 @@ export default function FindRSS(props) {
 
     // parser.parseURL(CORS_PROXY + url, function (err, feed) {
     //   if (err) {
-    //     console.log("error, refetch from nbackend");
+    //     //console.log("error, refetch from nbackend");
     //     fetch("https://www.shopcard.site/route/" + "rss/fetch", {
     //       method: "post",
     //       headers: {
@@ -62,7 +58,7 @@ export default function FindRSS(props) {
     //       body: JSON.stringify({ url: url }),
     //     }).then(function (response) {
     //       if (response.status !== 200) {
-    //         console.log("sth goes wrong in backend ");
+    //         //console.log("sth goes wrong in backend ");
     //         notify_fail();
     //       } else {
     //         response.json().then((data) => {
@@ -74,11 +70,11 @@ export default function FindRSS(props) {
     //     });
     //   } else {
     //     props.showChannel();
-    //     console.log(feed.title);
+    //     //console.log(feed.title);
     //     dispatch(GETRSSRESPONSE(feed, url));
     //     setLoading(false);
     //     feed.items.forEach(function (entry) {
-    //       console.log(entry.title + ":" + entry.link);
+    //       //console.log(entry.title + ":" + entry.link);
     //     });
     //   }
     // });

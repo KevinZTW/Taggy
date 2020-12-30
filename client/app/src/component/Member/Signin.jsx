@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import logo from "../../img/taggy_logo_1x.png";
+import logo from "../../imgs/taggy_logo_1x.png";
 import { useHistory } from "react-router-dom";
 import "../../css/App.css";
 import styles from "../../css/SignUp.module.css";
@@ -25,17 +25,17 @@ export default function Signup() {
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
-        console.log(authResult);
-        let newUser = await db
+        //console.log(authResult);
+        const newUser = await db
           .collection("Member")
           .doc(authResult.uid)
           .get()
           .then((doc) => {
             if (doc.data()) {
-              console.log("existing user sign in");
+              //console.log("existing user sign in");
               return false;
             } else {
-              console.log("new user! create it in db");
+              //console.log("new user! create it in db");
               return true;
             }
           });
@@ -49,17 +49,15 @@ export default function Signup() {
               displaynamename: authResult.displayName,
             })
 
-            .then(() => console.log("Add user to db successfully"))
             .then(history.push("home"))
             .catch((error) => {
               var errorCode = error.code;
               var errorMessage = error.message;
-              console.log(errorMessage);
               notify_fail();
             });
         } else {
           history.push("home");
-          console.log("exiting user signin");
+          //console.log("exiting user signin");
         }
       },
     },
@@ -70,22 +68,22 @@ export default function Signup() {
     // We will display Google and Facebook as auth providers.
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let history = useHistory();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const history = useHistory();
   function firebaseSignIn(email, password) {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        console.log("you click sign in and successfully");
+        //console.log("you click sign in and successfully");
         history.push("/home");
         // Signed in
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
+        //console.log(errorCode);
+        //console.log(errorMessage);
         notify_fail();
       });
   }

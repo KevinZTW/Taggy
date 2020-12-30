@@ -1,6 +1,6 @@
 import styles from "./Landing.module.css";
-import logo from "../img/taggy_logo_1x.png";
-import landing from "../img/landing_right.png";
+import logo from "../imgs/taggy_logo_1x.png";
+import landing from "../imgs/landing_right.png";
 import { Link } from "react-router-dom";
 export default function Landing() {
   return (

@@ -35,7 +35,7 @@ import RssFeedIcon from "@material-ui/icons/RssFeed";
 import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
 import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
-import addRSSFolderImg from "../../img/add_RSS_folder.png";
+import addRSSFolderImg from "../../imgs/add_RSS_folder.png";
 const useStyles = makeStyles({
   root: {
     color: "#B5B5B5",
@@ -112,7 +112,7 @@ export default function RSSTab(props) {
         db.collection("Member")
           .doc(user.uid)
           .onSnapshot((doc) => {
-            console.log("sth changed, refetch");
+            //console.log("sth changed, refetch");
             app
               .getMemberRSSFolders(user.uid)
               .then((RSSFolders) => {
@@ -120,29 +120,29 @@ export default function RSSTab(props) {
                 return RSSFolders;
               })
               .then(async (RSSFolders) => {
-                console.log("=================105");
+                //console.log("=================105");
                 for (const folder of RSSFolders) {
-                  console.log("107");
+                  //console.log("107");
                   if (folder.RSSIds) {
-                    console.log("109");
+                    //console.log("109");
                     for (const RSSId of folder.RSSIds) {
-                      console.log("111");
-                      console.log("get info");
-                      let RSS = await app.getRSSInfo(RSSId);
-                      console.log("114");
-                      console.log("push to rss");
+                      //console.log("111");
+                      //console.log("get info");
+                      const RSS = await app.getRSSInfo(RSSId);
+                      //console.log("114");
+                      //console.log("push to rss");
                       folder.RSS.push(RSS);
-                      console.log(folder);
+                      //console.log(folder);
                     }
                   }
-                  console.log(folder);
+                  //console.log(folder);
                   // return folder;
                 }
 
-                for (let i in RSSFolders) {
+                for (const i in RSSFolders) {
                   // setExpanded([...expanded, RSSFolders[i].id]);
                 }
-                console.log("set rssfolders");
+                //console.log("set rssfolders");
                 setRSSFolders(RSSFolders);
               });
           });
@@ -172,13 +172,13 @@ export default function RSSTab(props) {
       });
   }
   function showRSSFolders(folders) {
-    console.log("show rss folders run", folders);
-    let RSSFolderList = [];
+    //console.log("show rss folders run", folders);
+    const RSSFolderList = [];
     if (folders.length > 0) {
-      for (let i in folders) {
-        console.log(i);
-        console.log(folders[i]);
-        console.log(folders[i].RSS);
+      for (const i in folders) {
+        //console.log(i);
+        //console.log(folders[i]);
+        //console.log(folders[i].RSS);
         RSSFolderList.push(
           <Droppable droppableId={folders[i].id}>
             {(provided) => (
@@ -211,11 +211,11 @@ export default function RSSTab(props) {
     }
     return RSSFolderList;
   }
-  console.log(RSSFolders);
+  //console.log(RSSFolders);
   const articleFolderList = showRSSFolders(RSSFolders);
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
-    console.log(result);
+    //console.log(result);
 
     if (!destination) {
       return;
@@ -225,55 +225,55 @@ export default function RSSTab(props) {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      console.log("nothing should happended");
+      //console.log("nothing should happended");
       return;
     }
     if (destination.droppableId === source.droppableId) {
-      console.log("move inside same folder");
-      let newRSSFolders = [...RSSFolders];
+      //console.log("move inside same folder");
+      const newRSSFolders = [...RSSFolders];
       let newRSSIds;
-      console.log(newRSSFolders);
+      //console.log(newRSSFolders);
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          let moveId = folder.RSSIds[source.index];
+          const moveId = folder.RSSIds[source.index];
           newRSSIds = [...folder.RSSIds];
-          console.log(moveId);
-          console.log(newRSSIds);
+          //console.log(moveId);
+          //console.log(newRSSIds);
           newRSSIds.splice(source.index, 1);
-          console.log(newRSSIds);
+          //console.log(newRSSIds);
           newRSSIds.splice(destination.index, 0, moveId);
-          console.log(newRSSIds);
+          //console.log(newRSSIds);
 
-          let moveItem = folder.RSS[source.index];
-          console.log(moveItem);
+          const moveItem = folder.RSS[source.index];
+          //console.log(moveItem);
           folder.RSS.splice(source.index, 1);
           folder.RSS.splice(destination.index, 0, moveItem);
-          console.log();
+          //console.log();
           folder.RSSIds = newRSSIds;
         }
       });
-      console.log(newRSSFolders);
+      //console.log(newRSSFolders);
 
       db.collection("RSSFolders").doc(destination.droppableId).update({
         RSS: newRSSIds,
       });
       setRSSFolders(newRSSFolders);
 
-      console.log(destination.index, source.index);
-      console.log(source.droppableId);
-      console.log(destination.droppableId);
+      //console.log(destination.index, source.index);
+      //console.log(source.droppableId);
+      //console.log(destination.droppableId);
     }
     if (destination.droppableId !== source.droppableId) {
-      console.log("move to another folder");
-      let newRSSFolders = [...RSSFolders];
-      console.log(newRSSFolders);
+      //console.log("move to another folder");
+      const newRSSFolders = [...RSSFolders];
+      //console.log(newRSSFolders);
       let moveId;
       let moveItem;
       let newSourceRSSIds;
       let newDestinationRSSIds;
       newRSSFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
-          console.log(folder);
+          //console.log(folder);
           moveId = folder.RSSIds[source.index];
           moveItem = folder.RSS[source.index];
           newSourceRSSIds = [...folder.RSSIds];
@@ -287,7 +287,7 @@ export default function RSSTab(props) {
       });
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          console.log(folder);
+          //console.log(folder);
           newDestinationRSSIds = [...folder.RSSIds];
           newDestinationRSSIds.splice(destination.index, 0, moveId);
           folder.RSS.splice(destination.index, 0, moveItem);
@@ -300,8 +300,8 @@ export default function RSSTab(props) {
       setRSSFolders(newRSSFolders);
     }
   }
-  console.log(props.focus);
-  console.log("rerender");
+  //console.log(props.focus);
+  //console.log("rerender");
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>

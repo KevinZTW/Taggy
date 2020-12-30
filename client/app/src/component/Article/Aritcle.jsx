@@ -17,10 +17,8 @@ import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import firebase from "firebase/app";
 import "react-quill/dist/quill.snow.css";
 export default function Article() {
-  console.log("rerender");
   const [showNote, setShowNote] = useState(false);
   const [highLightOn, setHighLightOn] = useState(false);
-
   const lightOn = useRef(highLightOn);
   const [articleLoaded, setArticleLoaded] = useState(false);
   const [highLights, setHighLights] = useState([]);
@@ -81,7 +79,6 @@ export default function Article() {
   useEffect(() => {
     if (user) {
       app.initArticleTags(id, user.uid).then((articleTagSelection) => {
-        console.log(articleTagSelection);
         setTags(articleTagSelection);
       });
     }
@@ -89,7 +86,6 @@ export default function Article() {
   function handleChange(newValue, actionMeta) {
     switch (actionMeta.action) {
       case "select-option":
-        console.log("select option!");
         app.inputTag(id, user.uid, actionMeta.option.label);
         setTags({ ...tags, values: newValue });
         break;
@@ -98,29 +94,17 @@ export default function Article() {
         setTags({ ...tags, values: newValue });
         break;
       default:
-        console.group("Value Changed");
-        console.log("newvalueis ", newValue);
-
-        console.dir(`action: ${actionMeta.action}`);
-        console.dir(actionMeta.removedValue);
-        console.groupEnd();
     }
   }
 
   function handleCreate(inputValue) {
-    console.group("Option created");
-
-    console.log(tags);
     app.inputTag(id, user.uid, inputValue);
     setTags({
       options: [...tags.options, { label: inputValue, value: inputValue }],
       values: [...tags.values, { label: inputValue, value: inputValue }],
     });
-    console.log(tags);
-    console.groupEnd();
   }
   useEffect(() => {
-    console.warn("highLight Init");
     if (articleLoaded && article.highLight) {
       initAricleHighLight(article.highLight);
     }
@@ -132,8 +116,6 @@ export default function Article() {
         .doc(id)
         .get()
         .then(function (doc) {
-          console.log("hihi");
-          console.log(doc.data());
           if (doc.data() !== undefined) {
             setArticle({
               title: doc.data().title,
@@ -152,8 +134,6 @@ export default function Article() {
         .doc(id)
         .onSnapshot((doc) => {
           if (doc.data().note) {
-            var source = doc.metadata.hasPendingWrites ? "Local" : "Server";
-            console.log(source, " data: ", doc.data().note);
             if (doc.data().note !== note) {
               setNote(doc.data().note);
             }
@@ -173,9 +153,7 @@ export default function Article() {
       .update({
         note: input,
       })
-      .then(() => {
-        console.log("save!");
-      });
+      .then(() => {});
   }
 
   function findIndexInArticle(
@@ -222,7 +200,6 @@ export default function Article() {
     console.warn(targetText);
     var encodedText = targetText.replace("&", "&amp;");
     const indexStart = tempRenderArticle.indexOf(encodedText);
-    console.log(indexStart);
     const indexEnd = indexStart + targetText.length;
     if (indexStart !== -1 && indexStart !== 0) {
       const temp =
@@ -254,33 +231,14 @@ export default function Article() {
   }
 
   function handleMouseUp() {
-    console.log(lightOn.current);
     if (lightOn.current) {
       var selection = window.getSelection();
       let tempRenderArticle = renderArticle;
       const dom = selection.getRangeAt(0).cloneContents();
       const allTextSlice = [];
       const textSummary = dom.textContent;
-      console.log(dom);
-      console.log(dom.textContent);
-      console.log(dom.children);
-      console.log([...dom.children]);
 
-      [...dom.children].forEach((child) => {
-        console.log(child.children);
-        console.log(child.textContent);
-      });
-
-      // console.dir(selection.anchorNode);
-      // console.dir(selection.anchorNode.nextSibling);
-      // const sibiling = selection.anchorNode.nextSibling;
-      // console.log(sibiling);
-      // console.log(
-      //   selection.anchorOffset,
-      //   selection.focusOffset - 1,
-      //   selection.anchorNode.textContent,
-      //   selection.focusNode.textContent
-      // );
+      [...dom.children].forEach((child) => {});
 
       const { articleStart, articleEnd } = findIndexInArticle(
         renderArticle,
@@ -291,123 +249,70 @@ export default function Article() {
       );
 
       if (articleStart !== articleEnd) {
-        if (
-          selection.anchorNode.textContent ===
-            selection.focusNode.textContent &&
-          false
-        ) {
-          console.log("same node");
-          // console.log(renderArticle.substr(0, articleStart));
-          // console.log(
-          //   renderArticle.substr(articleStart, articleEnd - articleStart)
-          // );
-          // // console.log(renderArticle.substr(articleEnd, renderArticle.length));
-          const tempArticle =
-            renderArticle.substr(0, articleStart) +
-            "<span class=highLighter >" +
-            renderArticle.substr(articleStart, articleEnd - articleStart) +
-            "</span>" +
-            renderArticle.substr(articleEnd, renderArticle.length);
-          // // console.log(tempArticle);
-          setRenderArticle(tempArticle);
-        } else {
-          console.log("cross node==========");
-          const highLightId = user.uid + "_" + Date.now().toString();
-          highLighting(dom, highLightId);
+        const highLightId = user.uid + "_" + Date.now().toString();
+        highLighting(dom, highLightId);
 
-          function highLighting(dom, highLightId) {
-            //整體
-            console.log(highLightId);
-            if ([...dom.children][0]) {
-              //有 child 的情況
-              [...dom.children].forEach((child) => {
-                highLighting(child, highLightId);
-              });
-              //child 以外的部分
-              const father = dom.textContent;
+        function highLighting(dom, highLightId) {
+          //整體
+          if ([...dom.children][0]) {
+            //有 child 的情況
+            [...dom.children].forEach((child) => {
+              highLighting(child, highLightId);
+            });
+            //child 以外的部分
+            const father = dom.textContent;
 
-              const firstChildIndex = father.indexOf(
-                [...dom.children][0].textContent
-              );
-              // father head
-              let fatherHead = father.substr(0, firstChildIndex);
-              // father tail
-              let fatherTail = father.substr(firstChildIndex, father.length);
+            const firstChildIndex = father.indexOf(
+              [...dom.children][0].textContent
+            );
+            // father head
+            let fatherHead = father.substr(0, firstChildIndex);
+            // father tail
+            let fatherTail = father.substr(firstChildIndex, father.length);
 
-              [...dom.children].forEach((child) => {
-                fatherHead = fatherHead.replace(child.textContent, "");
-                fatherTail = fatherTail.replace(child.textContent, "");
-              });
-              console.error("來處理", fatherHead);
-              findTextAddSpan(fatherHead, highLightId);
-              console.log(tempRenderArticle.search("<span"));
-              console.error("來處理", fatherTail);
-              findTextAddSpan(fatherTail, highLightId);
-              console.log(tempRenderArticle.search("<span"));
-            } else {
-              //沒有的情況
-              const father = dom.textContent;
-              console.error("來處理", father);
-              findTextAddSpan(father, highLightId);
-              console.log(tempRenderArticle.search("<span"));
-            }
+            [...dom.children].forEach((child) => {
+              fatherHead = fatherHead.replace(child.textContent, "");
+              fatherTail = fatherTail.replace(child.textContent, "");
+            });
+            console.error("來處理", fatherHead);
+            findTextAddSpan(fatherHead, highLightId);
+            console.error("來處理", fatherTail);
+            findTextAddSpan(fatherTail, highLightId);
+          } else {
+            //沒有的情況
+            const father = dom.textContent;
+            console.error("來處理", father);
+            findTextAddSpan(father, highLightId);
           }
-
-          function findTextAddSpan(targetText, hightLightId) {
-            console.warn(targetText);
-            var encodedText = targetText.replace("&", "&amp;");
-            const indexStart = tempRenderArticle.indexOf(encodedText);
-            console.log(indexStart);
-            const indexEnd = indexStart + targetText.length;
-            if (indexStart !== -1 && indexStart !== 0) {
-              allTextSlice.push(targetText);
-              const temp =
-                tempRenderArticle.substr(0, indexStart) +
-                `<span class=highLighter data-id="${hightLightId}">` +
-                tempRenderArticle.substr(indexStart, targetText.length) +
-                `</span><input z="${hightLightId}">` +
-                tempRenderArticle.substr(indexEnd, renderArticle.length);
-
-              tempRenderArticle = temp;
-            }
-          }
-          const hightLight = {
-            id: highLightId,
-            textSlice: allTextSlice,
-            uid: user.uid,
-            text: textSummary,
-          };
-          setHighLights([...highLights, hightLight]);
-          setRenderArticle(tempRenderArticle);
-          saveHighLightToDB(
-            textSummary,
-            allTextSlice,
-            highLightId,
-            user.uid,
-            id
-          );
-
-          // console.log(renderArticle.substr(0, articleStart));
-          //=======< old code>==========================
-          // let tempArticle =
-          //   renderArticle.substr(0, articleStart) +
-          //   "<span class=highLighter >" +
-          //   renderArticle.substr(articleStart, articleStartTail - articleStart) +
-          //   "</span>" +
-          //   renderArticle.substr(
-          //     articleStartTail,
-          //     articleEndHead - articleStartTail
-          //   ) +
-          //   "<span class=highLighter >" +
-          //   renderArticle.substr(articleEndHead, articleEnd - articleEndHead) +
-          //   "</span>" +
-          //   renderArticle.substr(articleEnd, renderArticle.length);
-          // console.log(tempArticle);
-          // setRenderArticle(tempArticle);
         }
-      }
 
-      // console.log(article.readerHtml);
+        function findTextAddSpan(targetText, hightLightId) {
+          console.warn(targetText);
+          var encodedText = targetText.replace("&", "&amp;");
+          const indexStart = tempRenderArticle.indexOf(encodedText);
+          const indexEnd = indexStart + targetText.length;
+          if (indexStart !== -1 && indexStart !== 0) {
+            allTextSlice.push(targetText);
+            const temp =
+              tempRenderArticle.substr(0, indexStart) +
+              `<span class=highLighter data-id="${hightLightId}">` +
+              tempRenderArticle.substr(indexStart, targetText.length) +
+              `</span><input z="${hightLightId}">` +
+              tempRenderArticle.substr(indexEnd, renderArticle.length);
+
+            tempRenderArticle = temp;
+          }
+        }
+        const hightLight = {
+          id: highLightId,
+          textSlice: allTextSlice,
+          uid: user.uid,
+          text: textSummary,
+        };
+        setHighLights([...highLights, hightLight]);
+        setRenderArticle(tempRenderArticle);
+        saveHighLightToDB(textSummary, allTextSlice, highLightId, user.uid, id);
+      }
     }
   }
 
@@ -421,7 +326,6 @@ export default function Article() {
           <div className={styles.highLightText}>{highLight.text}</div>
           <div
             onClick={() => {
-              console.log(highLight.id);
               deleteHightLight(highLight.id, id);
             }}
           >
@@ -434,10 +338,7 @@ export default function Article() {
   }
 
   function deleteHightLight(id, articleId) {
-    console.log("delete", id);
-    //remove article render hightLight
     let tempArticle = renderArticle;
-    console.log(tempArticle);
 
     tempArticle = tempArticle
       .replaceAll(`<span class=highLighter data-id="${id}">`, "")
@@ -464,7 +365,7 @@ export default function Article() {
       articleMain.removeEventListener("mouseup", handleMouseUp);
     };
   }, [renderArticle]);
-  console.log(highLights);
+  //console.log(highLights);
   const highLightBoxes = renderHightLight(highLights);
   if (renderArticle) {
     console.error(renderArticle.search("<span class=highLighter"));
@@ -500,7 +401,7 @@ export default function Article() {
                 <ChromeReaderModeOutlinedIcon
                   style={{ color: "#FFFCEC" }}
                   onClick={() => {
-                    console.log("hihi");
+                    //console.log("hihi");
                     setShowNote(false);
                   }}
                 />
@@ -512,7 +413,7 @@ export default function Article() {
                 <ChromeReaderModeIcon
                   className={styles.Icon}
                   onClick={() => {
-                    console.log("hihi");
+                    //console.log("hihi");
                     setShowNote(true);
                   }}
                 />
@@ -567,9 +468,9 @@ export default function Article() {
               }}
               value={note}
               onChange={(e, a, source) => {
-                console.log(source);
-                console.log(e);
-                console.log(note);
+                //console.log(source);
+                //console.log(e);
+                //console.log(note);
                 if (source === "user") {
                   uploadNote(e);
                 }

@@ -10,78 +10,57 @@ export const app = {
   db: {},
   article: {},
   member: {},
+  util: {},
 };
 
-app.db.queryDoc = function (collection, docId, callback) {
+app.db.queryDoc = function (collection, docId) {
   return db
     .collection(collection)
     .doc(docId)
     .get()
     .then((doc) => {
       if (doc.data()) {
-        callback(doc);
+        return doc.data();
       } else {
         Promise.reject("No Data");
       }
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
     });
 };
 
 app.article.getMemberTagFoldersDetail = async function (uid) {
-  const memberTagFolderIds = await app.member.getMemberTagFolderIds(uid);
-  const memberTagFoldersDetail = memberTagFolderIds.map((id) => {});
-};
+  const getTagFolderIds = (uid) =>
+    app.db.queryDoc("Member", uid).then((data) => data.articleFolders);
 
-app.member.getMemberTagFolderIds = function (uid) {
-  return app.db.queryDoc("Member", uid, (doc) => {
-    return doc.data().articleFolders;
+  const getTagFolderDetail = (id) => {
+    return app.db.queryDoc("articleFolders", id).then((data) => {
+      const { id, name, tags } = data;
+      return {
+        id: id,
+        name: name,
+        tags: tags,
+      };
+    });
+  };
+  const memberTagFolderIds = await getTagFolderIds(uid);
+  const memberTagFoldersDetail = memberTagFolderIds.map((id) => {
+    return getTagFolderDetail(id);
   });
+  return Promise.all(memberTagFoldersDetail);
 };
 
-const id = app.member.getMemberTagFolderIds("testUser");
-console.error(id);
+(async function getValue() {
+  const value = await app.article.getMemberTagFoldersDetail(
+    "U8fx6rNCYSVxz38gdseSG2KEHfJ2"
+  );
+  console.log(value);
+})();
 
-app.getMemberArticleFolders = function (uid) {
-  return new Promise((resolve, reject) => {
-    app.db
-      .queryDoc("Member", uid)
-      .then(async (doc) => {
-        if (doc.data()) {
-          const articleFolderIds = doc.data().articleFolders;
-          const articleFolders = [];
-          if (articleFolderIds !== "" && articleFolderIds) {
-            await db
-              .collection("articleFolders")
-              .where("id", "in", articleFolderIds)
-              .get()
-              .then((snapShot) => {
-                articleFolderIds.forEach((Id) => {
-                  snapShot.forEach((doc) => {
-                    if (doc.data().id === Id) {
-                      articleFolders.push({
-                        id: doc.data().id,
-                        name: doc.data().name,
-                        tags: doc.data().tags,
-                      });
-                    }
-                  });
-                });
-              });
-          }
-          resolve(articleFolders);
-        } else resolve("dont have this user");
-      })
-      .catch((e) => {
-        console.log(e);
-        console.log("haha failed");
-      });
-  });
-};
 app.getMemberFolderTags = function (folderId) {
   return new Promise((resolve, reject) => {
-    console.log("start to get ");
+    //console.log("start to get ");
     db.collection("articleFolders")
       .doc(folderId)
       .get()
@@ -89,7 +68,7 @@ app.getMemberFolderTags = function (folderId) {
         if (doc.data()) {
           const tagIds = doc.data().tags;
           const folderTags = [];
-          console.log(tagIds);
+          //console.log(tagIds);
           if (tagIds && tagIds[0]) {
             await db
               .collection("Tags")
@@ -130,7 +109,7 @@ app.getArticleTags = function (articleId) {
               .doc(tags[i])
               .get()
               .then((doc) => {
-                console.log(doc.data());
+                //console.log(doc.data());
                 articleTags.push({
                   tagId: tags[i],
                   label: doc.data().name,
@@ -148,16 +127,16 @@ app.getArticleTags = function (articleId) {
 
 app.getMemberTags = function (uid) {
   return new Promise((resolve, reject) => {
-    console.log(uid);
+    //console.log(uid);
     db.collection("Member")
       .doc(uid)
       .get()
       .then(async (doc) => {
-        console.log(doc.data());
+        //console.log(doc.data());
         if (doc.data()) {
           const tagIds = doc.data().tags;
           const memberTags = [];
-          console.log(tagIds);
+          //console.log(tagIds);
           if (tagIds !== "" && tagIds) {
             for (const i in tagIds) {
               await db
@@ -173,7 +152,7 @@ app.getMemberTags = function (uid) {
                 });
             }
           }
-          console.log(memberTags);
+          //console.log(memberTags);
           resolve(memberTags);
         } else resolve("");
       });
@@ -188,7 +167,7 @@ app.initArticleTags = async function (articleId, uid) {
   await app.getMemberTags(uid).then((memberTags) => {
     articleTagSelection.options = memberTags;
   });
-  console.log(articleTagSelection);
+  //console.log(articleTagSelection);
   return articleTagSelection;
 };
 
@@ -198,10 +177,10 @@ app.checkTagUnderUser = function (name, uid) {
       .doc(uid)
       .get()
       .then(async (doc) => {
-        console.log(uid);
+        //console.log(uid);
         if (doc.data()) {
           const tags = doc.data().tags;
-          console.log(tags);
+          //console.log(tags);
           if (tags) {
             for (const i in tags) {
               await db
@@ -210,8 +189,8 @@ app.checkTagUnderUser = function (name, uid) {
                 .get()
                 .then((doc) => {
                   if (doc.data().name === name) {
-                    console.log(doc.data().name);
-                    console.log("resolve the id");
+                    //console.log(doc.data().name);
+                    //console.log("resolve the id");
                     resolve(doc.data().id);
                   }
                 });
@@ -227,9 +206,9 @@ app.checkTagUnderUser = function (name, uid) {
   });
 };
 app.inputTag = function (articleId, uid, tagName) {
-  console.log(uid);
+  //console.log(uid);
   app.checkTagUnderUser(tagName, uid).then((tagId) => {
-    console.log(tagId);
+    //console.log(tagId);
     if (tagId === "noanytag") {
       db.collection("Tags")
         .add({
@@ -237,7 +216,7 @@ app.inputTag = function (articleId, uid, tagName) {
           articles: [articleId],
         })
         .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
+          //console.log("Document written with ID: ", docRef.id);
 
           docRef.update({ id: docRef.id });
           return docRef.id;
@@ -276,14 +255,14 @@ app.inputTag = function (articleId, uid, tagName) {
           console.error("Error adding document: ", error);
         });
     } else if (tagId === "notExist") {
-      console.log("user dont have this tag, CREAT AND ADD to ARTICLE");
+      //console.log("user dont have this tag, CREAT AND ADD to ARTICLE");
       db.collection("Tags")
         .add({
           name: tagName,
           articles: [articleId],
         })
         .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
+          //console.log("Document written with ID: ", docRef.id);
 
           docRef.update({ id: docRef.id });
           return docRef.id;
@@ -301,7 +280,7 @@ app.inputTag = function (articleId, uid, tagName) {
           return tagId;
         })
         .then((tagId) => {
-          console.log("tag add to :", "un" + uid, "value is", tagId);
+          //console.log("tag add to :", "un" + uid, "value is", tagId);
           db.collection("articleFolders")
             .doc("un" + uid)
             .update({ tags: firebase.firestore.FieldValue.arrayUnion(tagId) });
@@ -311,7 +290,7 @@ app.inputTag = function (articleId, uid, tagName) {
           console.error("Error adding document: ", error);
         });
     } else {
-      console.log("user already has this tag, ADD ATICLE");
+      //console.log("user already has this tag, ADD ATICLE");
       db.collection("Tags")
         .doc(tagId)
         .update({
@@ -331,21 +310,21 @@ app.deleteTagFromArticle = function (articleId, uid, tagId) {
 
 app.checkRSSInFetchList = function (url) {
   return new Promise((resolve, reject) => {
-    console.log(url);
+    //console.log(url);
     db.collection("RSSFetchList")
       .where("url", "==", url)
       .get()
       .then((snapshot) => {
         if (snapshot.empty) {
-          console.log("not in fetch list");
+          //console.log("not in fetch list");
           resolve(false);
         } else {
           snapshot.forEach((doc) => {
             if (doc.data()) {
-              console.log("already id fetch list, the id is:");
+              //console.log("already id fetch list, the id is:");
               resolve(doc.data().id);
             } else {
-              console.log("sth pretty weird happened");
+              //console.log("sth pretty weird happened");
             }
           });
         }
@@ -372,7 +351,7 @@ app.addRSSToFetchList = function (feed, url) {
 };
 app.checkUserHasUncaFolder = function (uid) {
   return new Promise((resolve, reject) => {
-    console.log(uid);
+    //console.log(uid);
     db.collection("Member")
       .doc(uid)
       .get()
@@ -406,7 +385,7 @@ const notify_addRSS_success = () =>
 app.addRSSToMember = function (uid, feedId, callback) {
   return new Promise(async (resolve, reject) => {
     if (!(await app.checkUserHasUncaFolder(uid))) {
-      console.log("user dont have unCat folder, create and as RSS to it ");
+      //console.log("user dont have unCat folder, create and as RSS to it ");
       db.collection("RSSFolders")
         .doc("unCa_" + uid)
         .set({
@@ -425,13 +404,13 @@ app.addRSSToMember = function (uid, feedId, callback) {
               ),
             })
             .then(() => {
-              console.log("successfully add to user");
+              //console.log("successfully add to user");
               notify_addRSS_success();
               callback();
             });
         });
     } else {
-      console.log("user already has unCat folder, as RSS to it ");
+      //console.log("user already has unCat folder, as RSS to it ");
       db.collection("RSSFolders")
         .doc("unCa_" + uid)
         .update({
@@ -444,7 +423,7 @@ app.addRSSToMember = function (uid, feedId, callback) {
               subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
             })
             .then(() => {
-              console.log("successfully add to user");
+              //console.log("successfully add to user");
               notify_addRSS_success();
               if (typeof callback === "function") {
                 callback();
@@ -456,18 +435,18 @@ app.addRSSToMember = function (uid, feedId, callback) {
 };
 
 app.subscribeRSS = async function (uid, title, url, feed) {
-  console.log("hihi");
-  console.log("add to ", uid, title, url);
+  //console.log("hihi");
+  //console.log("add to ", uid, title, url);
   app.checkRSSInFetchList(url).then((RSSId) => {
     if (RSSId) {
-      console.log("RSS already in Fetch List");
+      //console.log("RSS already in Fetch List");
       app.addRSSToMember(uid, RSSId);
     } else {
-      console.log("Add RSS to fetch List");
+      //console.log("Add RSS to fetch List");
       app.addRSSToFetchList(feed, url).then((RSSId) => {
-        console.log("add RSS to member");
+        //console.log("add RSS to member");
         app.addRSSToMember(uid, RSSId);
-        console.log("Add feed to RSSItem");
+        //console.log("Add feed to RSSItem");
         app.addRSSItem(feed, RSSId);
       });
     }
@@ -483,22 +462,22 @@ app.checkRSSItem = function (title, item) {
       snapShot.forEach((doc) => {
         titleList.push(doc.data().itemTitle);
       });
-      console.log(titleList);
-      console.log(item.title);
-      console.log(titleList.includes(item.title));
+      //console.log(titleList);
+      //console.log(item.title);
+      //console.log(titleList.includes(item.title));
       if (titleList.includes(item.title)) {
-        console.log("already in db");
+        //console.log("already in db");
         return false;
-      } else console.log("check and not in db ");
-      return true;
+      } //console.log("check and not in db ");
+      else return true;
     });
 };
 app.addRSSItem = function (feed, RSSId) {
   for (const i in feed.items) {
     app.checkRSSItem(feed.title, feed.items[i]).then((evaluate) => {
-      console.log(evaluate);
+      //console.log(evaluate);
       if (evaluate) {
-        console.log("this feed not in db, let's save it ");
+        //console.log("this feed not in db, let's save it ");
         db.collection("RSSItem")
           .add({
             RSSId: RSSId,
@@ -519,9 +498,8 @@ app.addRSSItem = function (feed, RSSId) {
             media: feed.items[i].media || "",
           })
           .then((docRef) => docRef.update({ id: docRef.id }))
-          .then(console.log("store successfully!"));
+          .then();
       } else {
-        console.log("already store this feed, let's skip");
       }
     });
   }
@@ -535,10 +513,10 @@ app.getMemberRSSFolders = function (uid) {
         if (doc.data()) {
           const RSSFolderIds = doc.data().RSSFolders;
           const RSSFolders = [];
-          console.log(RSSFolderIds);
+          //console.log(RSSFolderIds);
           if (RSSFolderIds !== "" && RSSFolderIds) {
             for (const i in RSSFolderIds) {
-              console.log(RSSFolderIds[i]);
+              //console.log(RSSFolderIds[i]);
               await db
                 .collection("RSSFolders")
                 .doc(RSSFolderIds[i])
@@ -633,10 +611,10 @@ app.getGroupArticleFolders = function (uid) {
         if (doc.data()) {
           const articleFolderIds = doc.data().articleFolders;
           const articleFolders = [];
-          console.log(articleFolderIds);
+          //console.log(articleFolderIds);
           if (articleFolderIds !== "" && articleFolderIds) {
             for (const i in articleFolderIds) {
-              console.log(articleFolderIds[i]);
+              //console.log(articleFolderIds[i]);
               await db
                 .collection("articleFolders")
                 .doc(articleFolderIds[i])
@@ -654,4 +632,19 @@ app.getGroupArticleFolders = function (uid) {
         } else resolve("dont have this user");
       });
   });
+};
+
+app.util.handleScroll = (fetchTime, setFetchTime) => {
+  const winScroll =
+    document.body.scrollTop || document.documentElement.scrollTop;
+
+  const height =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  if (winScroll > height - 20) {
+    console.log("reach end");
+    console.log(fetchTime);
+    const newFetchTime = fetchTime + 1;
+    setFetchTime(newFetchTime);
+  }
 };

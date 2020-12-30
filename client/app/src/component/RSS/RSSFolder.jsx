@@ -10,13 +10,13 @@ export default function RSSFolder(props) {
   const dispatch = useDispatch();
 
   function showRSSItem(RSS) {
-    console.log("sho rss item run");
-    console.log(RSS);
+    //console.log("sho rss item run");
+    //console.log(RSS);
     const RSSList = [];
     if (RSS.length > 0) {
       let count = 0;
       for (const i in RSS) {
-        console.log(RSS[i].title);
+        //console.log(RSS[i].title);
         RSSList.push(
           <Draggable draggableId={RSS[i].id} index={count} key={RSS[i].id}>
             {(provided) => (
@@ -42,7 +42,7 @@ export default function RSSFolder(props) {
                       </div>
                     }
                     onClick={() => {
-                      console.log(RSS[i].id);
+                      //console.log(RSS[i].id);
                       dispatch(SWITCHRSS(RSS[i].id));
                       //   dispatch(SWITCHARTICLE(tabs[i].id));
                     }}
@@ -58,6 +58,6 @@ export default function RSSFolder(props) {
     return RSSList;
   }
   const RSSList = showRSSItem(props.folderRSS);
-  console.log("rssfolder rerender");
+  //console.log("rssfolder rerender");
   return <div>{RSSList}</div>;
 }

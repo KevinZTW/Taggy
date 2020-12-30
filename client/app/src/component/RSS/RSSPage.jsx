@@ -1,7 +1,7 @@
 import { Zoom } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
-import { ec2Url } from "../../config.js";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const CustomTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 export default function RSSPage(props) {
-  console.log("page rerender, props is ", props.item);
+  //console.log("page rerender, props is ", props.item);
   const [feedItem, setFeedItem] = useState({});
 
   const notify_success = () =>
@@ -83,19 +83,16 @@ export default function RSSPage(props) {
     })
       .then(function (response) {
         if (response.status !== 200) {
-          console.log(
-            "Looks like there was a problem. Status Code: " + response.status
-          );
           notify_fail();
           return;
         }
         response.json().then(function (data) {
-          console.log(data);
+          //console.log(data);
           notify_success();
         });
       })
       .catch(function (err) {
-        console.log("Fetch Error :-S", err);
+        //console.log("Fetch Error :-S", err);
         notify_fail();
       });
   }
@@ -106,16 +103,16 @@ export default function RSSPage(props) {
     }
   }, [props.item]);
 
-  console.log(feedItem);
+  //console.log(feedItem);
   let youtubeUrl = "";
   if (feedItem.media) {
     youtubeUrl = feedItem.media[0]["media:content"][0]["$"]["url"].replace(
       "https://www.youtube.com/v/",
       ""
     );
-    console.log(feedItem.media[0]);
-    console.log(feedItem.media[0]["media:thumbnail"][0]["$"]["url"]);
-    console.log(feedItem.media[0]["media:content"][0]["$"]["url"]);
+    //console.log(feedItem.media[0]);
+    //console.log(feedItem.media[0]["media:thumbnail"][0]["$"]["url"]);
+    //console.log(feedItem.media[0]["media:content"][0]["$"]["url"]);
   }
 
   return (
@@ -136,10 +133,13 @@ export default function RSSPage(props) {
                   className={styles.Icon}
                   style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
                   onClick={() => {
-                    postDataToServer(ec2Url, {
-                      url: feedItem.link,
-                      uid: user.uid,
-                    });
+                    postDataToServer(
+                      "https://www.shopcard.site/route/article/import",
+                      {
+                        url: feedItem.link,
+                        uid: user.uid,
+                      }
+                    );
                   }}
                 />
               </div>
@@ -175,10 +175,13 @@ export default function RSSPage(props) {
                   className={styles.Icon}
                   style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
                   onClick={() => {
-                    postDataToServer(ec2Url, {
-                      url: feedItem.link,
-                      uid: user.uid,
-                    });
+                    postDataToServer(
+                      "https://www.shopcard.site/route/article/import",
+                      {
+                        url: feedItem.link,
+                        uid: user.uid,
+                      }
+                    );
                   }}
                 />
               </div>

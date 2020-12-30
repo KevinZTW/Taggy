@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 export default function Folder(props) {
-  console.log("rerender la ");
+  //console.log("rerender la ");
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export default function Folder(props) {
                   </div>
                 }
                 onClick={() => {
-                  console.log(tags[i].id);
+                  //console.log(tags[i].id);
                   dispatch(SWITCHARTICLE(tags[i].id));
                 }}
               />

@@ -15,9 +15,9 @@ export default function RSSHeader(props) {
         onClick={() => {
           auth
             .signOut()
-            .then(() => console.log("user successfully sign out"))
+            .then(() => //console.log("user successfully sign out"))
             .catch((err) => {
-              console.log(err);
+              //console.log(err);
             });
         }}
       >

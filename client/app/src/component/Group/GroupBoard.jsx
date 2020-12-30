@@ -4,13 +4,13 @@ import { db } from "../../firebase.js";
 import CardWrapper from "../CardWrapper.jsx";
 import dispatch from "react-redux";
 import styles from "./GroupBoard.module.css";
-import { INITARTICLE } from "../../redux/actions";
+import { FETCHARTICLE } from "../../redux/actions";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EditIcon from "@material-ui/icons/Edit";
 import AddArticle from "../AddArticle";
 import firebase from "firebase/app";
-import teamImg from "../../img/undraw_team.svg";
-import team_img from "../../img/undraw_team.svg";
+import teamImg from "../../imgs/undraw_team.svg";
+import team_img from "../../imgs/undraw_team.svg";
 import { render } from "react-dom";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -53,7 +53,7 @@ export default function Board(props) {
         .orderBy("date", "desc")
         .where("uid", "==", uid)
         .onSnapshot(function (querySnapshot) {
-          let list = [];
+          const list = [];
           querySnapshot.forEach(function (doc) {
             list.push({
               title: doc.data().title,
@@ -64,8 +64,8 @@ export default function Board(props) {
               readerHtml: doc.data().readerHtml,
             });
           });
-          console.log(list);
-          dispatch(INITARTICLE(list));
+          //console.log(list);
+          dispatch(FETCHARTICLE(list));
         });
     }
     if (groupId) {
@@ -77,8 +77,8 @@ export default function Board(props) {
     let unsubscribe;
     function getLatestMemberList() {
       unsubscribe = db.collection("Member").onSnapshot((snapshot) => {
-        let memberList = [];
-        let memberEmailList = [];
+        const memberList = [];
+        const memberEmailList = [];
         snapshot.forEach((doc) => {
           memberList.push({
             displayname: doc.data().displaynamename,
@@ -97,19 +97,19 @@ export default function Board(props) {
 
   function handleChange(input) {
     if (input !== "") {
-      let filteredMemberList = memberList.filter((member) => {
-        console.log(member);
+      const filteredMemberList = memberList.filter((member) => {
+        //console.log(member);
         return member.email.includes(input);
       });
-      console.log(filteredMemberList);
+      //console.log(filteredMemberList);
       setFilteredMemberList(filteredMemberList);
     }
   }
 
   function renderSearchResult(filteredMemberList) {
-    let searchResult = [];
+    const searchResult = [];
     filteredMemberList.forEach((member, index) => {
-      let colorList = [
+      const colorList = [
         "	#007979",
         "#019858",
         "#004B97",
@@ -157,7 +157,7 @@ export default function Board(props) {
           className={styles.memberWrapper}
           id={member.uid}
           onClick={(e) => {
-            console.log(e.currentTarget);
+            //console.log(e.currentTarget);
             addMemberToGroup(e.currentTarget.id, groupId);
           }}
         >
@@ -197,10 +197,10 @@ export default function Board(props) {
   const articleList = useSelector((state) => {
     return state.articleReducer.articleList;
   });
-  console.log(articleList);
-  let searchResult = renderSearchResult(filteredMemberList);
-  console.log(searchResult);
-  console.log(filteredMemberList);
+  //console.log(articleList);
+  const searchResult = renderSearchResult(filteredMemberList);
+  //console.log(searchResult);
+  //console.log(filteredMemberList);
   return (
     <div
       className={styles.boardWrapper}
@@ -218,7 +218,7 @@ export default function Board(props) {
             onClick={(e) => {
               e.stopPropagation();
               setAddMember(true);
-              console.log(addMember);
+              //console.log(addMember);
             }}
           />
           {addMember ? (
@@ -241,11 +241,11 @@ export default function Board(props) {
                 <input
                   type="text"
                   onChange={(e) => {
-                    console.log(e.target.value);
+                    //console.log(e.target.value);
                     if (e.target.value === "") {
                       setFilteredMemberList([]);
                     }
-                    console.log("hihi");
+                    //console.log("hihi");
                     handleChange(e.target.value);
                   }}
                 />

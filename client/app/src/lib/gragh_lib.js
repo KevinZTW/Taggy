@@ -2,8 +2,8 @@ import { resolve } from "path";
 import { app } from "./lib.js";
 app.getGraphData = function (uid) {
   return new Promise(async (resolve) => {
-    let memberTags = await app.getMemberTags(uid);
-    console.log("2");
+    const memberTags = await app.getMemberTags(uid);
+    //console.log("2");
     resolve(memberTags);
   });
 };
@@ -13,8 +13,8 @@ app.initGraphData = function (uid) {
     app
       .getGraphData(uid)
       .then((memberTags) => {
-        console.log(memberTags);
-        let nodes = [];
+        //console.log(memberTags);
+        const nodes = [];
         memberTags.forEach((tag) => {
           nodes.push({
             id: tag.value,

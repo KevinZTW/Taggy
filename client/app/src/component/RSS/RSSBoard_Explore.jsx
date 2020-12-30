@@ -2,14 +2,14 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import frontedWeekly from "../../img/frontendWeekly_box.jpg";
-import medium from "../../img/medium_box.png";
-import dailydev from "../../img/dailydev_box.png";
-import dailyJS from "../../img/dailyJS_box.png";
-import airbnb from "../../img/airbnb_box.jpg";
-import google from "../../img/google_box.png";
-import logrocket from "../../img/logrocket_box.jpg";
-import plain from "../../img/plain_english_box.jpg";
+import frontedWeekly from "../../imgs/frontendWeekly_box.jpg";
+import medium from "../../imgs/medium_box.png";
+import dailydev from "../../imgs/dailydev_box.png";
+import dailyJS from "../../imgs/dailyJS_box.png";
+import airbnb from "../../imgs/airbnb_box.jpg";
+import google from "../../imgs/google_box.png";
+import logrocket from "../../imgs/logrocket_box.jpg";
+import plain from "../../imgs/plain_english_box.jpg";
 
 import styles from "./RSSBoard_Explore.module.css";
 
@@ -20,7 +20,7 @@ export default function RSSBoardExplore(props) {
   const search = location.search;
   const params = new URLSearchParams(search);
   const channelId = params.get("channelId");
-  console.log(channelId);
+  //console.log(channelId);
   return (
     <div className={styles.boardWrapper}>
       {!channelId ? (

@@ -1,6 +1,6 @@
 import styles from "./FunctionTab.module.css";
 import Tooltip from "@material-ui/core/Tooltip";
-import logo from "../../img/taggy_logo_3x.png";
+import logo from "../../imgs/taggy_logo_3x.png";
 import { Link } from "react-router-dom";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InsertChartIcon from "@material-ui/icons/InsertChart";
@@ -109,10 +109,8 @@ export default function FunctionTab(props) {
                   onClick={() => {
                     auth
                       .signOut()
-                      .then(() => console.log("user successfully sign out"))
-                      .catch((err) => {
-                        console.log(err);
-                      });
+
+                      .catch((err) => {});
                   }}
                 />
               </div>

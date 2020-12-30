@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import styles from "./RSSCard.module.css";
 import { db } from "../../firebase.js";
 import Highlighter from "react-highlight-words";
-import placeholderImg from "../../img/place_holder_img.png";
+import placeholderImg from "../../imgs/place_holder_img.png";
 export default function RSSCard(props) {
   const [image, setImage] = useState(false);
-  console.log(props.item);
+  //console.log(props.item);
   function deleteRSS(RSSID) {
     db.collection("RSSItem")
       .where("RSSId", "==", RSSID)
       .get()
       .then((snapShot) => {
         snapShot.forEach((item) => {
-          console.log(item.data());
+          //console.log(item.data());
           item.ref.delete();
         });
       });
@@ -29,13 +29,13 @@ export default function RSSCard(props) {
   } else if (props.item.media) {
     src = props.item.media[0]["media:thumbnail"][0]["$"]["url"];
   }
-  let passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
+  const passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
 
-  let showDay =
+  const showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
   useEffect(() => {
-    console.log(src);
-    let image = new Image();
+    //console.log(src);
+    const image = new Image();
     image.src = src;
     image.onload = () => {
       setImage(true);
@@ -60,7 +60,6 @@ export default function RSSCard(props) {
           ) : (
             <img src={placeholderImg} alt="" />
           )}
-          {/* <img src={src} alt="" className={styles.img} /> */}
         </div>
 
         <div className={styles.wordWrapper}>

@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
-console.log("firebase init");
 var app = firebase.initializeApp({
   apiKey: "AIzaSyA4cFmihlY5pIDTssbGwk9YNfGEjRfEBh4",
   authDomain: "knowledge-base-tw.firebaseapp.com",
@@ -19,16 +18,13 @@ var app = firebase.initializeApp({
 export const auth = app.auth();
 export default app;
 export var db = firebase.firestore();
-
 export const deleteArticle = function (id) {
   console.log(id);
   db.collection("Articles")
     .doc(id)
     .delete()
     .then(console.log("Document successfully deleted!"))
-    .catch(function (error) {
-      console.error("Error delete document: ", error);
-    });
+    .catch(function (error) {});
 };
 
 //============================== Auth ============================================================

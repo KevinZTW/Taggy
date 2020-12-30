@@ -7,7 +7,6 @@ import MobileFolderTab from "./MobileFolderTab";
 import { useState } from "react";
 
 export default function MobileBurger(props) {
-  console.warn(props.position);
   const [showBurger, setShowBurger] = useState(false);
   let burgerCategory = "";
   switch (props.position) {
@@ -19,14 +18,12 @@ export default function MobileBurger(props) {
       break;
     default:
   }
-  console.error(burgerCategory);
   return (
-    <div class={styles.burgerWrapper}>
+    <div className={styles.burgerWrapper}>
       <MenuIcon
         fontSize="large"
         style={{ color: "white" }}
         onClick={() => {
-          console.log("hihi");
           setShowBurger(true);
         }}
       />

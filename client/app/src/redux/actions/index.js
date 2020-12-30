@@ -7,10 +7,11 @@ const SETMEMBER = (uid, displayName, email) => {
   };
 };
 
-const INITARTICLE = (articleList) => {
+const FETCHARTICLE = (articleList, lastQuery) => {
   return {
-    type: "INITARTICLE",
+    type: "FETCHARTICLE",
     articleList: articleList,
+    lastQuery: lastQuery,
   };
 };
 const INITARTICLEFOLDERS = (articleFolders) => {
@@ -42,7 +43,7 @@ const GETRSSRESPONSE = (feed, url) => {
 //   };
 // };
 const SWITCHRSS = (ChannelRSSId) => {
-  console.log("hihi");
+  //console.log("hihi");
   return {
     type: "SWITCHRSS",
     ChannelRSSId: ChannelRSSId,
@@ -93,7 +94,7 @@ const SWITCHGROUPSELECT = (groupId, groupName) => {
 
 export {
   // SWITCHGROUPARTICLE,
-  INITARTICLE,
+  FETCHARTICLE,
   SWITCHRSS,
   SWITCHARTICLE,
   SETMEMBER,

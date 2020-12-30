@@ -1,5 +1,5 @@
 import styles from "./MobileFunctionTab.module.css";
-import logo from "../../img/taggy_logo_3x.png";
+import logo from "../../imgs/taggy_logo_3x.png";
 import { Link } from "react-router-dom";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import InsertChartIcon from "@material-ui/icons/InsertChart";

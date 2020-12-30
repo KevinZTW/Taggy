@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
+import { app } from "../../lib/lib.js";
 import { useSelector } from "react-redux";
 import { RSSChannelList } from "./RSSBoard_Today_RSSList";
 import { db } from "../../firebase.js";
@@ -6,7 +7,7 @@ import RSSCard from "./RSSCard";
 import styles from "./RSSBoard.module.css";
 import RSSPage from "./RSSPage";
 import "./RSSPage.css";
-export default function Board(props) {
+const Board = function (props) {
   const [selectCategory, setSelectCategory] = useState("Front End");
   const [allFeeds, setAllFeeds] = useState([]);
   const [feedFetchTimes, setFeedFetchTimes] = useState(0);
@@ -116,17 +117,9 @@ export default function Board(props) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      if (winScroll > height - 20) {
-        const newLast = feedFetchTimes + 1;
-        setFeedFetchTimes(newLast);
-      }
+      app.util.handleScroll(feedFetchTimes, setFeedFetchTimes);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -223,4 +216,5 @@ export default function Board(props) {
       )}
     </div>
   );
-}
+};
+export default React.memo(Board);
