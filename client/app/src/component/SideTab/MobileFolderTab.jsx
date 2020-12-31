@@ -148,7 +148,7 @@ export default function FolderTab(props) {
     function getArticleFolders() {
       if (user) {
         app
-          .getMemberArticleFolders(user.uid)
+          .getMemberTagFoldersDetail(user.uid)
           .then((articleFolders) => {
             //console.log(articleFolders);
             dispatch(INITARTICLEFOLDERS(articleFolders));

@@ -14,12 +14,14 @@ export default function MyRouter() {
         // setUser(user);
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
         // history.push("/home");
+        console.log(user);
       } else {
         if (location.pathname !== "/" && location.pathname !== "/signin")
-          history.push("/signup");
+          console.log(user);
+        history.push("/signup");
       }
     });
-  }, [dispatch, history]);
+  }, []);
 
   return <div></div>;
 }
