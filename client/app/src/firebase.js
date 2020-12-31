@@ -18,14 +18,6 @@ var app = firebase.initializeApp({
 export const auth = app.auth();
 export default app;
 export var db = firebase.firestore();
-export const deleteArticle = function (id) {
-  console.log(id);
-  db.collection("Articles")
-    .doc(id)
-    .delete()
-    .then(console.log("Document successfully deleted!"))
-    .catch(function (error) {});
-};
 
 //============================== Auth ============================================================
 

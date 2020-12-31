@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 const article_Reducer = (
   state = {
     tagSelected: "all",
+    fetchRequired: true,
     articleList: [],
     articleFolders: [],
     lastQuery: null,
@@ -22,12 +23,25 @@ const article_Reducer = (
         articleFolders: action.articleFolders,
         // isLoaded: true
       };
-    case "FETCHARTICLE":
+    case "ADDFETCHARTICLE":
+      return {
+        ...state,
+        articleList: action.articleList,
+        lastQuery: action.lastQuery,
+        fetchRequired: false,
+      };
+    case "SWITCHARTICLEFETCH":
+      return {
+        ...state,
+        fetchRequired: action.fetchRequired,
+      };
+    case "RESETARTICLEFETCH":
       return {
         ...state,
 
-        articleList: action.articleList,
-        lastQuery: action.lastQuery,
+        articleList: [],
+        lastQuery: null,
+        fetchRequired: true,
       };
     case "SWITCHARTICLE":
       return {

@@ -51,12 +51,49 @@ app.article.getMemberTagFoldersDetail = async function (uid) {
   return Promise.all(memberTagFoldersDetail);
 };
 
+app.article.deleteArticle = function (id, callback) {
+  db.collection("Articles")
+    .doc(id)
+    .delete()
+    .then(() => {
+      callback();
+    })
+    .catch(function (error) {});
+};
+
 (async function getValue() {
   const value = await app.article.getMemberTagFoldersDetail(
     "U8fx6rNCYSVxz38gdseSG2KEHfJ2"
   );
   console.log(value);
 })();
+
+app.util.handleScrollBottom = (callback) => {
+  const winScroll =
+    document.body.scrollTop || document.documentElement.scrollTop;
+
+  const height =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  if (winScroll > height - 20) {
+    callback();
+  }
+};
+
+app.util.handleScroll = (fetchTime, setFetchTime) => {
+  const winScroll =
+    document.body.scrollTop || document.documentElement.scrollTop;
+
+  const height =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  if (winScroll > height - 20) {
+    console.log("reach end");
+    console.log(fetchTime);
+    const newFetchTime = fetchTime + 1;
+    setFetchTime(newFetchTime);
+  }
+};
 
 app.getMemberFolderTags = function (folderId) {
   return new Promise((resolve, reject) => {
@@ -632,19 +669,4 @@ app.getGroupArticleFolders = function (uid) {
         } else resolve("dont have this user");
       });
   });
-};
-
-app.util.handleScroll = (fetchTime, setFetchTime) => {
-  const winScroll =
-    document.body.scrollTop || document.documentElement.scrollTop;
-
-  const height =
-    document.documentElement.scrollHeight -
-    document.documentElement.clientHeight;
-  if (winScroll > height - 20) {
-    console.log("reach end");
-    console.log(fetchTime);
-    const newFetchTime = fetchTime + 1;
-    setFetchTime(newFetchTime);
-  }
 };

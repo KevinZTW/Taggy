@@ -1,35 +1,43 @@
 import { useDispatch, useSelector } from "react-redux";
 import { app } from "../lib/lib.js";
 import { db } from "../firebase.js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CardWrapper from "./CardWrapper.jsx";
-import dispatch from "react-redux";
+
 import styles from "./Board.module.css";
-import { FETCHARTICLE } from "../redux/actions";
+import {
+  ADDFETCHARTICLE,
+  SWITCHARTICLEFETCH,
+  RESETARTICLEFETCH,
+} from "../redux/actions";
 
 export default function Board(props) {
   const dispatch = useDispatch();
   // const [lastQueryDoc, setLastQueryDoc] = useState("");
-  const [articleFetchTimes, setArticleFetchTimes] = useState(0);
   const user = useSelector((state) => state.memberReducer.user);
+  const fetchRequired = useSelector(
+    (state) => state.articleReducer.fetchRequired
+  );
   const articleList = useSelector((state) => state.articleReducer.articleList);
-
+  const lastQuery = useSelector((state) => state.articleReducer.lastQuery);
   useEffect(() => {
     const handleScroll = () => {
-      app.util.handleScroll(articleFetchTimes, setArticleFetchTimes);
+      app.util.handleScrollBottom(() => {
+        dispatch(SWITCHARTICLEFETCH(true));
+      });
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [articleFetchTimes]);
-  const lastQuery = useSelector((state) => state.articleReducer.lastQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (lastQuery) {
   }
   useEffect(() => {
-    function batchFetchUserArticles(userUid, articleFetchTimes) {
-      if (lastQuery === null && userUid) {
+    function batchFetchUserArticles(userUid) {
+      if (lastQuery === null) {
         db.collection("Articles")
           .orderBy("date", "desc")
           .where("uid", "==", userUid)
@@ -41,10 +49,10 @@ export default function Board(props) {
               tempArticleList.push(doc.data());
             });
             const lastQuery = snapshot.docs[snapshot.docs.length - 1];
-            dispatch(FETCHARTICLE(tempArticleList, lastQuery));
+            dispatch(ADDFETCHARTICLE(tempArticleList, lastQuery));
           });
       } else {
-        if (lastQuery && userUid) {
+        if (lastQuery) {
           db.collection("Articles")
             .orderBy("date", "desc")
             .where("uid", "==", userUid)
@@ -57,16 +65,33 @@ export default function Board(props) {
                 tempArticleList.push(doc.data());
               });
               const lastQuery = snapshot.docs[snapshot.docs.length - 1];
-              dispatch(FETCHARTICLE(tempArticleList, lastQuery));
+              dispatch(ADDFETCHARTICLE(tempArticleList, lastQuery));
             });
         }
       }
     }
-    if (user) {
-      batchFetchUserArticles(user.uid, articleFetchTimes);
+    console.log(user, fetchRequired);
+    if (user && fetchRequired) {
+      console.log("fetch start");
+      batchFetchUserArticles(user.uid);
     }
-  }, [articleFetchTimes, user]);
-
+  }, [fetchRequired, user]);
+  useEffect(() => {
+    let unsubscribe;
+    if (user) {
+      unsubscribe = db
+        .collection("Articles")
+        .where("uid", "==", user.uid)
+        .onSnapshot(() => {
+          dispatch(RESETARTICLEFETCH());
+        });
+    }
+    return () => {
+      if (typeof unsubscribe === "function") {
+        unsubscribe();
+      }
+    };
+  }, [user]);
   // useEffect(() => {
   //   function checkArticleUpdate(uid) {
   //     db.collection("Articles")

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase.js";
 import CardWrapper from "../CardWrapper.jsx";
 import styles from "../Board.module.css";
-import { FETCHARTICLE } from "../../redux/actions";
+import { ADDFETCHARTICLE } from "../../redux/actions";
 
 export default function GraphBoard() {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export default function GraphBoard() {
               readerHtml: doc.data().readerHtml,
             });
           });
-          dispatch(FETCHARTICLE(list));
+          dispatch(ADDFETCHARTICLE(list));
         });
     }
     if (user) {

@@ -7,11 +7,22 @@ const SETMEMBER = (uid, displayName, email) => {
   };
 };
 
-const FETCHARTICLE = (articleList, lastQuery) => {
+const ADDFETCHARTICLE = (articleList, lastQuery) => {
   return {
-    type: "FETCHARTICLE",
+    type: "ADDFETCHARTICLE",
     articleList: articleList,
     lastQuery: lastQuery,
+  };
+};
+const SWITCHARTICLEFETCH = (fetchRequired) => {
+  return {
+    type: "SWITCHARTICLEFETCH",
+    fetchRequired: fetchRequired,
+  };
+};
+const RESETARTICLEFETCH = () => {
+  return {
+    type: "RESETARTICLEFETCH",
   };
 };
 const INITARTICLEFOLDERS = (articleFolders) => {
@@ -94,14 +105,15 @@ const SWITCHGROUPSELECT = (groupId, groupName) => {
 
 export {
   // SWITCHGROUPARTICLE,
-  FETCHARTICLE,
+  ADDFETCHARTICLE,
+  SWITCHARTICLEFETCH,
   SWITCHRSS,
   SWITCHARTICLE,
   SETMEMBER,
   GETRSSRESPONSE,
   INITUSERRSSLIST,
   GROUPINIT,
-  // INITGROUPARTICLE,
+  RESETARTICLEFETCH,
   SWITCHGROUPSELECT,
   INITGROUPSELECT,
   INITARTICLEFOLDERS,

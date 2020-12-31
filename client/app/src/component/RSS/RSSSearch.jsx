@@ -76,36 +76,10 @@ export default function Board(props) {
       </div>
     );
   }
-  //   useEffect(() => {
 
-  //     if (searchFeed) {
-  //       checkArticleUpdate(user.uid);
-  //     }
-  //   }, [user]);
   const feedPage = renderFeedPage(feedItem);
   const searchOutcome = renderSearchFeed(searchFeed);
 
-  // useEffect(() => {
-  //   function checkArticleUpdate(uid) {
-  //     db.collection("Articles")
-  //       .where("uid", "==", uid)
-  //       .onSnapshot(function (querySnapshot) {
-  //         const list = [];
-  //         querySnapshot.forEach(function (doc) {
-  //           list.push({
-  //             title: doc.data().title,
-  //             content: doc.data().markDown.slice(0, 100),
-  //             id: doc.data().id,
-  //             tags: doc.data().tags,
-  //           });
-  //         });
-  //         dispatch(FETCHARTICLE(list));
-  //       });
-  //   }
-  //   if (user) {
-  //     checkArticleUpdate(user.uid);
-  //   }
-  // }, [user]);
   return (
     <div className={styles.boardWrapper}>
       <div className={styles.board}>

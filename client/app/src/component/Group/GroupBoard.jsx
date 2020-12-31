@@ -4,7 +4,7 @@ import { db } from "../../firebase.js";
 import CardWrapper from "../CardWrapper.jsx";
 import dispatch from "react-redux";
 import styles from "./GroupBoard.module.css";
-import { FETCHARTICLE } from "../../redux/actions";
+import { ADDFETCHARTICLE } from "../../redux/actions";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EditIcon from "@material-ui/icons/Edit";
 import AddArticle from "../AddArticle";
@@ -65,7 +65,7 @@ export default function Board(props) {
             });
           });
           //console.log(list);
-          dispatch(FETCHARTICLE(list));
+          dispatch(ADDFETCHARTICLE(list));
         });
     }
     if (groupId) {
