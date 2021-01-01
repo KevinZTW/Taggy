@@ -8,6 +8,7 @@ export default function MyRouter() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
+  console.error("===============================");
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {

@@ -2,6 +2,7 @@
   min-width: 250px;
 }
 .mobileFolderTabWrapper {
+  display: none;
 }
 .mobileFolderTab {
   background: #0f1d31;
@@ -288,6 +289,9 @@
 @media (max-device-width: 640px) {
   .folderTabWrapper {
     display: none;
+  }
+  .mobileFolderTabWrapper {
+    display: flex;
   }
   .addFolder {
     padding-top: 48px;

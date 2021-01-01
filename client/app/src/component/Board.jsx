@@ -13,11 +13,12 @@ import {
 
 export default function Board(props) {
   const dispatch = useDispatch();
-  // const [lastQueryDoc, setLastQueryDoc] = useState("");
   const user = useSelector((state) => state.memberReducer.user);
+  console.log(user);
   const fetchRequired = useSelector(
     (state) => state.articleReducer.fetchRequired
   );
+  console.log(fetchRequired);
   const articleList = useSelector((state) => state.articleReducer.articleList);
   const lastQuery = useSelector((state) => state.articleReducer.lastQuery);
   useEffect(() => {
@@ -70,21 +71,27 @@ export default function Board(props) {
         }
       }
     }
-    console.log(user, fetchRequired);
+
     if (user && fetchRequired) {
       console.log("fetch start");
       batchFetchUserArticles(user.uid);
     }
   }, [fetchRequired, user]);
+  let articleSnapshotInit = false;
   useEffect(() => {
+    console.log("her run!", articleSnapshotInit);
     let unsubscribe;
-    if (user) {
+    if (user && !articleSnapshotInit) {
+      articleSnapshotInit = true;
+    } else if (articleSnapshotInit === true) {
       unsubscribe = db
         .collection("Articles")
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
+          console.log("inside called", articleSnapshotInit);
           dispatch(RESETARTICLEFETCH());
         });
+      articleSnapshotInit = true;
     }
     return () => {
       if (typeof unsubscribe === "function") {
