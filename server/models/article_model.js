@@ -1,4 +1,4 @@
-import { db } from "./firebase.js";
+import { db } from "./firebaseconfig.js";
 
 const addArticle = function (
   uid = "not login",

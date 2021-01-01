@@ -1,5 +1,5 @@
 import { addRSS } from "../server/models/rss_model.js";
-import { db } from "../server/models/firebase.js";
+import { db } from "../server/models/firebaseconfig.js";
 import Parser from "rss-parser";
 
 let getRSSList = function () {

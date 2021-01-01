@@ -1,9 +1,22 @@
-import { db } from "./firebase.js";
+import { db } from "./firebaseconfig.js";
 import OpenCC from "opencc";
 import dayjs from "dayjs";
-import { query } from "./mysqlconfig.js";
+import { connection, query } from "./mysqlconfig.js";
 const converter = new OpenCC("s2t.json");
-const checkRSSItem = function (item) {
+const getUserSubscribedFeed = async function (uid, paging) {
+  const sql = `select Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link from Feed join UserSubscription on Feed.RSSId = UserSubscription.RSSId join RSS 
+	on Feed.RSSId = RSS.RSSId where UserSubscription.UserUID = '${uid}' order by Feed.FeedPubDate desc limit ${
+    paging * 10
+  },10;`;
+  return await query(sql, []);
+};
+const searchRSS = async (keyWord) => {
+  const sql = `SELECT * FROM Feed WHERE MATCH (FeedTitle, FeedContent) AGAINST ('${keyWord}' IN NATURAL LANGUAGE MODE);`;
+
+  return await query(sql, []);
+};
+
+const checkRSSItemFirestore = function (item) {
   console.log("let check", item.guid);
   if (item.guid) {
     return db
@@ -48,7 +61,7 @@ async function translation(a, b, c, d, e) {
 const addRSS = function (feed, RSSId) {
   if (feed) {
     for (let i in feed.items) {
-      checkRSSItem(feed.items[i]).then((evaluate) => {
+      checkRSSItemFirestore(feed.items[i]).then((evaluate) => {
         if (evaluate === "save" && feed.items[i].content) {
           console.log("Saved RSSItem ", feed.items[i].title);
           let pubDate = dayjs(feed.items[i].pubDate).valueOf();
@@ -86,17 +99,12 @@ const addRSS = function (feed, RSSId) {
   }
 };
 
-const searchRSS = async (keyWord) => {
-  const sql = `SELECT * FROM Feed WHERE MATCH (FeedTitle, FeedContent) AGAINST ('${keyWord}' IN NATURAL LANGUAGE MODE);`;
-
-  return await query(sql, []);
-};
-
 // searchRSS("應用").then((result) => {
 //   console.log("hihi");
 //   console.log(result);
 // });
 export const RSS = {
   searchRSS: searchRSS,
+  getUserSubscribedFeed: getUserSubscribedFeed,
 };
 export { addRSS, searchRSS };

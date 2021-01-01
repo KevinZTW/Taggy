@@ -19,7 +19,6 @@ export default function RSSCard(props) {
         });
       });
   }
-
   // deleteRSS("TgCy1JeefV4chebgB7JD");
   var elem = document.createElement("div");
   elem.innerHTML = props.item.content;

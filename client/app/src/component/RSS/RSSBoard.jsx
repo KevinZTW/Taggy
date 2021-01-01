@@ -14,11 +14,25 @@ export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
   const [lastQueryDoc0, setLastQueryDoc0] = useState("");
+  const [queryPaging, setQueryPaging] = useState(0);
 
-  const userRSSList = useSelector((state) => {
-    return state.RSSReducer.UserRSSList;
+  const user = useSelector((state) => {
+    return state.memberReducer.user;
   });
-
+  function fetchUserFeeds(userUid, paging) {
+    fetch(
+      `http://localhost:3000/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
+    ).then((res) => {
+      if (res.status !== 200) {
+        console.log("sth wrong..", res);
+      } else {
+        res.json().then((data) => {
+          console.log(data);
+          setAllFeeds([...allFeeds].concat(data.feeds));
+        });
+      }
+    });
+  }
   function batchFetchAllFeeds(userRSSList, lastVisible) {
     //console.log(userRSSList);
     if (lastVisible === 0 && userRSSList[0]) {
@@ -64,6 +78,7 @@ export default function Board(props) {
 
   function renderAllFeeds(feedItems) {
     if (feedItems) {
+      console.log(feedItems);
       const feedList = [];
       for (const i in feedItems) {
         feedList.push(
@@ -112,21 +127,21 @@ export default function Board(props) {
 
   useEffect(() => {
     const handleScroll = () => {
-      app.util.handleScroll(lastVisible, setLastVisible);
+      app.util.handleScroll(queryPaging, setQueryPaging);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastVisible]);
+  }, [queryPaging]);
 
   useEffect(() => {
-    //console.log(lastVisible);
-    if (userRSSList) {
-      batchFetchAllFeeds(userRSSList, lastVisible);
+    console.log(user);
+    if (user) {
+      fetchUserFeeds(user.uid, queryPaging);
     }
-  }, [userRSSList, lastVisible]);
+  }, [user, queryPaging]);
   useEffect(() => {
     fetchChannelFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
