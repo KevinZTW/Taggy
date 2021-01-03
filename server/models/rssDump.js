@@ -200,4 +200,4 @@ function syncArticles() {
 // syncUser();
 // syncUserRSSSubscription();
 // syncRSS();
-// syncFeeds();
+syncFeeds();

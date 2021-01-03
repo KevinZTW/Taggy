@@ -4,12 +4,43 @@ import dayjs from "dayjs";
 import { connection, query } from "./mysqlconfig.js";
 const converter = new OpenCC("s2t.json");
 const getUserSubscribedFeed = async function (uid, paging) {
-  const sql = `select Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link from Feed join UserSubscription on Feed.RSSId = UserSubscription.RSSId join RSS 
+  const sql = `select Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link,Feed.FeedId AS FeedId from Feed join UserSubscription on Feed.RSSId = UserSubscription.RSSId join RSS 
 	on Feed.RSSId = RSS.RSSId where UserSubscription.UserUID = '${uid}' order by Feed.FeedPubDate desc limit ${
     paging * 10
   },10;`;
   return await query(sql, []);
 };
+
+const getFeedTags = async function (feedId) {
+  const sql = `select * from FeedKeyWords 
+    JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
+    JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
+    where Feed.FeedId ='${feedId}'
+  ;`;
+  return query(sql).then(async (result) => {
+    if (result[0]) {
+      const keyWordNameList = result.map((item) => item.KeyWordName);
+      let keyWordId_Map = "";
+      result.forEach((item) => {
+        keyWordId_Map += `'${item.KeyWordId}',`;
+      });
+      console.log(keyWordNameList);
+      keyWordId_Map = keyWordId_Map.slice(0, -1);
+
+      let feeds = await query(`select Feed.FeedId AS FeedId, Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link, KeyWord.KeyWordName
+      from Feed 
+        JOIN FeedKeyWords on FeedKeyWords.FeedId = Feed.FeedId
+        JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
+        join RSS on Feed.RSSId = RSS.RSSId
+        where KeyWord.KeyWordId  IN (${keyWordId_Map}) limit 3;`);
+
+      return { feeds: feeds, tags: keyWordNameList };
+    } else {
+      return {};
+    }
+  });
+};
+getFeedTags("odFA1hV4UM1Vp8qgQhlP");
 const searchRSS = async (keyWord) => {
   const sql = `SELECT * FROM Feed WHERE MATCH (FeedTitle, FeedContent) AGAINST ('${keyWord}' IN NATURAL LANGUAGE MODE);`;
 
@@ -99,12 +130,9 @@ const addRSS = function (feed, RSSId) {
   }
 };
 
-// searchRSS("應用").then((result) => {
-//   console.log("hihi");
-//   console.log(result);
-// });
 export const RSS = {
   searchRSS: searchRSS,
+  getFeedTags: getFeedTags,
   getUserSubscribedFeed: getUserSubscribedFeed,
 };
 export { addRSS, searchRSS };

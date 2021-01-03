@@ -2,6 +2,7 @@ import express from "express";
 import {
   getUserSubscribedFeed,
   searchRSS,
+  getFeedTags,
 } from "../controllers/rss_controller.js";
 
 const rss_router = express.Router();
@@ -16,4 +17,5 @@ rss_router.route("/rss/fetch").post((req, res) => {
 
 rss_router.route("/rss/search").post(searchRSS);
 rss_router.route("/rss/userfeeds").get(getUserSubscribedFeed);
+rss_router.route("/rss/feedtags").get(getFeedTags);
 export { rss_router };

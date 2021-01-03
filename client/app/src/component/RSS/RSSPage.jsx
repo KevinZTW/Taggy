@@ -1,10 +1,10 @@
 import { Zoom } from "react-toastify";
 
 import Tooltip from "@material-ui/core/Tooltip";
-
+import RSSCard from "../RSS/RSSCard";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { Chip } from "@material-ui/core";
 import { toast } from "react-toastify";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
@@ -20,10 +20,44 @@ const CustomTooltip = withStyles((theme) => ({
     fontSize: 14,
   },
 }))(Tooltip);
-export default function RSSPage(props) {
-  //console.log("page rerender, props is ", props.item);
-  const [feedItem, setFeedItem] = useState({});
 
+export default function RSSPage({ item, onClick }) {
+  const [tagRecoms, setTagRecoms] = useState([]);
+
+  console.log("page rerender, props is ", item);
+
+  useEffect(() => {
+    async function getFeedTagsRecommend(feedId) {
+      const response = await fetch(
+        `http://localhost:3000/route/rss/feedtags?feedid=${feedId}`
+      );
+      return response.json();
+    }
+    function setFeedTagRecommend(data) {
+      setTagRecoms(data);
+    }
+    getFeedTagsRecommend(item.id).then(setFeedTagRecommend);
+  }, []);
+
+  function renderFeedTags(tags) {
+    const tagChips = [];
+    if (tags) {
+      tags.forEach((tag) => {
+        console.log(tag);
+        tagChips.push(<Chip label={"#" + tag} />);
+      });
+    }
+    return tagChips;
+  }
+  function renderMoreFeeds(feeds) {
+    const moreFeeds = [];
+    if (feeds) {
+      feeds.forEach((feed) => {
+        moreFeeds.push(<RSSCard item={feed} />);
+      });
+    }
+    return moreFeeds;
+  }
   const notify_success = () =>
     toast.dark(
       <div className="toastBody">
@@ -96,35 +130,26 @@ export default function RSSPage(props) {
         notify_fail();
       });
   }
-  useEffect(() => {
-    if (props.item) {
-      setFeedItem(props.item);
-    } else {
-    }
-  }, [props.item]);
 
-  //console.log(feedItem);
   let youtubeUrl = "";
-  if (feedItem.media) {
-    youtubeUrl = feedItem.media[0]["media:content"][0]["$"]["url"].replace(
+  if (item.media) {
+    youtubeUrl = item.media[0]["media:content"][0]["$"]["url"].replace(
       "https://www.youtube.com/v/",
       ""
     );
-    //console.log(feedItem.media[0]);
-    //console.log(feedItem.media[0]["media:thumbnail"][0]["$"]["url"]);
-    //console.log(feedItem.media[0]["media:content"][0]["$"]["url"]);
   }
-
+  const tagChips = renderFeedTags(tagRecoms.tags);
+  const moreFeeds = renderMoreFeeds(tagRecoms.feeds);
   return (
     <div>
-      {feedItem.media ? (
+      {item.media ? (
         <div className={styles.page}>
           <div className={styles.head}>
             <div className={styles.arrowWrapper}>
               <ArrowBack
                 className={styles.Icon}
                 style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
-                onClick={props.onClick}
+                onClick={onClick}
               />
             </div>
             <CustomTooltip title="save to my board" placement="right" arrow>
@@ -136,7 +161,7 @@ export default function RSSPage(props) {
                     postDataToServer(
                       "https://www.shopcard.site/route/article/import",
                       {
-                        url: feedItem.link,
+                        url: item.link,
                         uid: user.uid,
                       }
                     );
@@ -145,7 +170,8 @@ export default function RSSPage(props) {
               </div>
             </CustomTooltip>
           </div>
-          <div className={styles.title}>{feedItem.title}</div>
+          <div className={styles.title}>{item.title}</div>
+          {tagChips}
           <iframe
             width="640"
             height="390"
@@ -154,7 +180,7 @@ export default function RSSPage(props) {
           ></iframe>
           <div
             dangerouslySetInnerHTML={{
-              __html: feedItem.content || feedItem["content:encoded"],
+              __html: item.content || item["content:encoded"],
             }}
             className={styles.content}
           ></div>
@@ -166,7 +192,7 @@ export default function RSSPage(props) {
               <ArrowBack
                 className={styles.Icon}
                 style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
-                onClick={props.onClick}
+                onClick={onClick}
               />
             </div>
             <CustomTooltip title="save to my board" placement="right" arrow>
@@ -178,7 +204,7 @@ export default function RSSPage(props) {
                     postDataToServer(
                       "https://www.shopcard.site/route/article/import",
                       {
-                        url: feedItem.link,
+                        url: item.link,
                         uid: user.uid,
                       }
                     );
@@ -187,13 +213,17 @@ export default function RSSPage(props) {
               </div>
             </CustomTooltip>
           </div>
-          <div className={styles.title}>{feedItem.title}</div>
+          <div className={styles.title}>{item.title}</div>
+          {tagChips}
           <div
             dangerouslySetInnerHTML={{
-              __html: feedItem.content || feedItem["content:encoded"],
+              __html: item.content || item["content:encoded"],
             }}
             className={styles.content}
           ></div>
+          <div>More from Taggy</div>
+
+          <div>{moreFeeds}</div>
         </div>
       )}
     </div>

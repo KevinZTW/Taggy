@@ -68,3 +68,37 @@ CONSTRAINT `FK_41` FOREIGN KEY `fkIdx_41` (`UserUID`) REFERENCES `User` (`UserUI
 KEY `fkIdx_48` (`RSSId`),
 CONSTRAINT `FK_48` FOREIGN KEY `fkIdx_48` (`RSSId`) REFERENCES `RSS` (`RSSId`)
 );
+CREATE TABLE `KeyWord`
+(
+ `KeyWordId`    int auto_increment NOT NULL ,
+ `KeyWordName` varchar(45) NOT NULL ,
+
+PRIMARY KEY (`KeyWordId`)
+);
+
+CREATE TABLE `Category`
+(
+ `CategoryId`  int auto_increment NOT NULL ,
+ `CategoryName` varchar(45) NOT NULL ,
+
+PRIMARY KEY (`CategoryId`)
+);
+
+
+CREATE TABLE `CategoryKeyWords`
+(
+ `CategoryKeyWordsId` int auto_increment NOT NULL ,
+ `CategoryId`         int  NOT NULL ,
+ `KeyWordId`         int NOT NULL ,
+
+PRIMARY KEY (`CategoryKeyWordsId`, `CategoryId`, `KeyWordId`),
+KEY `fkIdx_75` (`CategoryId`),
+CONSTRAINT `FK_74` FOREIGN KEY `fkIdx_75` (`CategoryId`) REFERENCES `Category` (`CategoryId`),
+KEY `fkIdx_78` (`KeyWordId`),
+CONSTRAINT `FK_77` FOREIGN KEY `fkIdx_78` (`KeyWordId`) REFERENCES `KeyWord` (`KeyWordId`)
+);
+
+
+
+
+

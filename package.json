@@ -20,6 +20,7 @@
     "jsdom": "^16.4.0",
     "mysql": "^2.18.1",
     "node-readability": "^3.0.0",
+    "nodejieba": "^2.5.1",
     "nodemon": "^2.0.6",
     "opencc": "^1.1.1",
     "request": "^2.88.2",

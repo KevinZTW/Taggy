@@ -41,3 +41,9 @@ export async function getUserSubscribedFeed(req, res) {
     feeds,
   });
 }
+
+export async function getFeedTags(req, res) {
+  const feedId = req.query.feedid;
+  let data = await RSS.getFeedTags(feedId);
+  res.status(200).json(data);
+}
