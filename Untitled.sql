@@ -1,17 +1,31 @@
 
 use TAGGY;
 select * from KeyWord;
+select * from KeyWord limit 10;
+select * from FeedKeyWords limit 500;
 select * from RSS;
+select * from FeedKeyWords 
+    JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
+    JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
+    where Feed.FeedId ="wYNumw86RFBOtlUH9uaz";
+select * from Feed where FeedId = "wYNumw86RFBOtlUH9uaz";
+select * from Feed where RSSId = "NOulYNIAsYlMHRLTsoRf" ;
 select * from FeedKeyWords 
 	JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
     JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
-    where Feed.FeedId ='odFA1hV4UM1Vp8qgQhlP'
-    ;
-    select * from FeedKeyWords 
-	JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
-    JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
-    where Feed.FeedId ='odFA1hV4UM1Vp8qgQhlP'
-    ;
+    where Feed.FeedId ='wYNumw86RFBOtlUH9uaz';
+    
+select Feed.FeedId AS FeedId, Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link, KeyWord.KeyWordName
+	from Feed 
+    JOIN FeedKeyWords on FeedKeyWords.FeedId = Feed.FeedId
+    JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
+    join RSS on Feed.RSSId = RSS.RSSId
+		where KeyWord.KeyWordId  IN ('30',"13","4") 
+            order by Feed.FeedPubDate desc
+        limit 5;
+        
+        
+        
     
     
     

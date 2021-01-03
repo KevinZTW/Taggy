@@ -30,11 +30,13 @@ export default function FindRSS(props) {
   function requestRSS(url) {
     setLoading(true);
     if (url.includes("medium.com/@")) {
-      //console.log(url);
-
       //console.log(" medium member");
       url =
         "https://medium.com/feed/@" + url.replace("https://medium.com/@", "");
+    } else if (url.includes(".medium.com")) {
+      url =
+        "https://medium.com/feed/@" +
+        url.replace("https://", "").replace(".medium.com", "");
     } else if (url.includes("medium.com/")) {
       url = "https://medium.com/feed/" + url.replace("https://medium.com/", "");
     } else if (url.includes("youtube.com/channel")) {

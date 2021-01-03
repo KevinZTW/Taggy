@@ -6,107 +6,139 @@ import { query } from "../server/models/mysqlconfig.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 nodejieba.load({
+  userDict: __dirname + "/jiebadict/userdict.utf8",
   stopWordDict: __dirname + "/jiebadict/stop_words.utf8",
+  idfDict: __dirname + "/jiebadict/idf.utf8",
 });
-const sql = `SELECT FeedId, FeedContent,FeedTitle FROM Feed `;
-query(sql).then((result) => {
-  let keyWordObj = {};
-  result.forEach(({ FeedTitle, FeedContent }) => {
-    const keywords = nodejieba.extract(FeedContent, 10);
 
-    console.log(FeedTitle);
-    console.log("rlated words are ", keywords);
+function testCurrentKeyWord() {
+  const sql = `SELECT FeedId, FeedContent,FeedTitle FROM Feed `;
+  query(sql).then((result) => {
+    let keyWordObj = {};
+    result.forEach(({ FeedTitle, FeedContent }) => {
+      const keywords = nodejieba.extract(FeedContent.toLowerCase(), 20);
+
+      console.log(FeedTitle);
+
+      console.log("rlated words are ", keywords);
+    });
+
+    const sortable = Object.entries(keyWordObj)
+      .sort(([, a], [, b]) => a - b)
+      .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+
+    console.log(sortable);
   });
-
-  const sortable = Object.entries(keyWordObj)
-    .sort(([, a], [, b]) => a - b)
-    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
-
-  console.log(sortable);
-});
+}
 
 function setKeyWords() {
-  const arr1 = [
-    "組件",
-    "application",
-    "React",
-    "react",
-    "render",
-    "Promise",
+  let keywordlist = [
+    "paradigm",
+    "asynchronous",
     "frontend",
-    "事件",
-    "renderer",
-    "Javascript",
-    "pm",
-    "專案",
-    "敏捷",
-    "programmer",
-    "jokes",
-    "數據",
-    "資料",
-    "english",
-    "Hooks",
-    "hooks",
-    "js",
-    "javascript",
-    "緩存",
-    "節點",
-    "transform",
-    "keyframes",
-    "Modular",
-    "smarthome",
-    "developers",
-    "API",
-    "deploy",
-    "vue",
-    "優化",
-    "webpack",
-    "面試",
-    "查詢",
-    "principles",
-    "產品",
-    "業務",
-    "Class",
-    "常量",
-    "java",
-    "Native",
-    "iOS",
-    "selector",
-    "系統",
-    "求職",
-    "binary",
-    "SQL",
-    "AWS",
-    "test",
-    "Unit",
-    "request",
-    "fetch",
-
-    "css",
-    "對象",
-    "函數",
-    "state",
-    "設計",
-    "線程",
-    "代理",
-    "瀏覽器",
-    "刷題",
-    "component",
     "cdn",
-    "babel",
-    "內存",
-    "performance",
-    "array",
-    "編譯",
-    "數據庫",
+    "promise",
+    "react",
+    "hooks",
+    "react進階",
+    "redis",
+    "redux",
+    "render",
+    "renderer",
+    "javascript",
+    "deploy",
+    "modular",
+    "api",
+    "principle",
+    "java",
+    "ios",
+    "binary",
+    "sql",
+    "mysql",
+    "unit",
+    "css",
+    "session",
     "eslint",
+    "component",
+    "context",
+    "leetcode",
+    "vue",
+    "webpack",
+    "babel",
+    "native",
+    "aws",
+    "ngnix",
+    "array",
+    "object",
+    "kubernetes",
+    "docker",
+    "pm",
+    "產品經理",
+    "異步",
+    "正則表達式 ",
+    "非同步",
+    "迴圈",
+    "壓縮",
+    "用戶體驗",
+    "最佳工程",
+    "工程化",
+    "敏捷開發",
+    "部署",
+    "二叉樹",
+    "數組",
+    "遍歷",
+    "刷題",
+    "緩存",
+    "內存",
     "服務器",
-    "成長",
-    "規劃",
+    "可視化",
+    "平面設計",
+    "生產力工具",
+    "金融服務",
+    "前端框架",
+    "前端技術",
+    "前端",
+    "前端面試",
+    "瀏覽器",
+    "優化技術",
+    "優化建議",
     "渲染",
+    "渲染性能",
+    "性能優化",
+    "網絡請求",
+    "後端工程師",
+    "全棧",
+    "架構師",
+    "模組化",
+    "組件",
+    "後端",
+    "高可用性",
+    "數據庫",
+    "數據備份",
+    "雲計算",
+    "雲原生",
+    "網絡安全",
+    "超時請求",
+    "數據結構",
+    "資料庫",
+    "算法",
+    "操作系統",
+    "演算法",
+    "節點",
+    "區塊鏈",
+    "技術文章",
+    "技術管理",
+    "面試題",
+    "面試項目",
+    "面試資料",
+    "代碼規範",
+    "個人成長",
+    "思維導圖",
+    "思考結構",
+    "結構化思維",
+    "金字塔結構",
   ];
-
-  arr1.forEach((keyword) => {
+  keywordlist.forEach((keyword) => {
     const sqlCheck = `SELECT * FROM KeyWord WHERE KeyWordName = '${keyword}' ;`;
     const sqlAdd = `INSERT INTO KeyWord (KeyWordName) VALUES ('${keyword}') `;
     query(sqlCheck).then((result) => {
@@ -166,5 +198,5 @@ async function setFeedsKeyWord() {
     console.log("feed with tag ratio", feedwithtag / totatlfeed);
   });
 }
-setKeyWords();
+// setKeyWords();
 setFeedsKeyWord();

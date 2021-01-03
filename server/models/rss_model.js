@@ -32,7 +32,7 @@ const getFeedTags = async function (feedId) {
         JOIN FeedKeyWords on FeedKeyWords.FeedId = Feed.FeedId
         JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
         join RSS on Feed.RSSId = RSS.RSSId
-        where KeyWord.KeyWordId  IN (${keyWordId_Map}) limit 3;`);
+        where KeyWord.KeyWordId  IN (${keyWordId_Map}) order by RAND() limit 5;`);
 
       return { feeds: feeds, tags: keyWordNameList };
     } else {

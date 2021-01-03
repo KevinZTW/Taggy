@@ -23,8 +23,7 @@ const CustomTooltip = withStyles((theme) => ({
 
 export default function RSSPage({ item, onClick }) {
   const [tagRecoms, setTagRecoms] = useState([]);
-
-  console.log("page rerender, props is ", item);
+  const [newItem, setNewItem] = useState([]);
 
   useEffect(() => {
     async function getFeedTagsRecommend(feedId) {
@@ -34,17 +33,29 @@ export default function RSSPage({ item, onClick }) {
       return response.json();
     }
     function setFeedTagRecommend(data) {
+      console.log(data);
       setTagRecoms(data);
     }
-    getFeedTagsRecommend(item.id).then(setFeedTagRecommend);
-  }, []);
+    getFeedTagsRecommend(newItem.FeedId || item.id).then(setFeedTagRecommend);
+  }, [newItem]);
 
   function renderFeedTags(tags) {
     const tagChips = [];
     if (tags) {
       tags.forEach((tag) => {
         console.log(tag);
-        tagChips.push(<Chip label={"#" + tag} />);
+        tagChips.push(
+          <Chip
+            size="small"
+            label={"#" + tag}
+            style={{
+              marginRight: "6px",
+              border: "solid 1px white",
+              color: "white",
+            }}
+            variant="outlined"
+          />
+        );
       });
     }
     return tagChips;
@@ -53,7 +64,19 @@ export default function RSSPage({ item, onClick }) {
     const moreFeeds = [];
     if (feeds) {
       feeds.forEach((feed) => {
-        moreFeeds.push(<RSSCard item={feed} />);
+        console.log(feed);
+        moreFeeds.push(
+          <RSSCard
+            item={feed}
+            onClick={() => {
+              setNewItem(feed);
+              console.log("hihihihi");
+              document
+                .querySelector("#RSSPage")
+                [`scrollTo`]({ top: 0, behavior: `smooth` });
+            }}
+          />
+        );
       });
     }
     return moreFeeds;
@@ -143,7 +166,7 @@ export default function RSSPage({ item, onClick }) {
   return (
     <div>
       {item.media ? (
-        <div className={styles.page}>
+        <div className={styles.page} id="RSSPage">
           <div className={styles.head}>
             <div className={styles.arrowWrapper}>
               <ArrowBack
@@ -161,7 +184,7 @@ export default function RSSPage({ item, onClick }) {
                     postDataToServer(
                       "https://www.shopcard.site/route/article/import",
                       {
-                        url: item.link,
+                        url: newItem.link || item.link,
                         uid: user.uid,
                       }
                     );
@@ -170,7 +193,7 @@ export default function RSSPage({ item, onClick }) {
               </div>
             </CustomTooltip>
           </div>
-          <div className={styles.title}>{item.title}</div>
+          <div className={styles.title}>{newItem.title || item.title}</div>
           {tagChips}
           <iframe
             width="640"
@@ -180,13 +203,14 @@ export default function RSSPage({ item, onClick }) {
           ></iframe>
           <div
             dangerouslySetInnerHTML={{
-              __html: item.content || item["content:encoded"],
+              __html:
+                newItem.content || item.content || item["content:encoded"],
             }}
             className={styles.content}
           ></div>
         </div>
       ) : (
-        <div className={styles.page}>
+        <div className={styles.page} id="RSSPage">
           <div className={styles.head}>
             <div className={styles.arrowWrapper}>
               <ArrowBack
@@ -204,7 +228,7 @@ export default function RSSPage({ item, onClick }) {
                     postDataToServer(
                       "https://www.shopcard.site/route/article/import",
                       {
-                        url: item.link,
+                        url: newItem.link || item.link,
                         uid: user.uid,
                       }
                     );
@@ -213,15 +237,17 @@ export default function RSSPage({ item, onClick }) {
               </div>
             </CustomTooltip>
           </div>
-          <div className={styles.title}>{item.title}</div>
-          {tagChips}
+          <div className={styles.title}>{newItem.title || item.title}</div>
+          <div className={styles.chipsWrapper}>{tagChips}</div>
+
           <div
             dangerouslySetInnerHTML={{
-              __html: item.content || item["content:encoded"],
+              __html:
+                newItem.content || item.content || item["content:encoded"],
             }}
             className={styles.content}
           ></div>
-          <div>More from Taggy</div>
+          <div className={styles.more}>More from Taggy</div>
 
           <div>{moreFeeds}</div>
         </div>

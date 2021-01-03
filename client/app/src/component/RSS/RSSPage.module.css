@@ -1,6 +1,4 @@
 .page {
-  /* animation-name: RSSPageSlide; */
-
   min-width: 80vw;
   background-color: #0e1622;
   padding-left: 40px;
@@ -8,20 +6,7 @@
   overflow: auto;
   z-index: 99999;
 }
-/* @keyframes RSSPageSlide {
-  0% {
-    background-color: red;
-  }
-  25% {
-    background-color: yellow;
-  }
-  50% {
-    background-color: blue;
-  }
-  100% {
-    background-color: green;
-  }
-} */
+
 .title {
   padding-left: 12px;
   font-size: 30px;
@@ -60,11 +45,18 @@
 .saveIcon:hover + .save {
   display: block;
 }
-.save {
-  border: solid 1px #01b468;
-  padding: 0.1rem 0.4rem;
-  color: #01b468;
-  display: none;
+
+.chipsWrapper {
+  padding-left: 12px;
+  padding-bottom: 16px;
+}
+.more {
+  width: 70%;
+  font-size: 24px;
+  font-weight: 900;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: solid 1px white;
 }
 .content {
   padding-left: 12px;
@@ -77,11 +69,13 @@
   padding-bottom: 15px;
   color: #dcdcdc !important;
 }
+.content li {
+  color: #dcdcdc !important;
+}
 .content pre {
-  background: #222222;
-
-  border-left: 20px solid #39382e;
-  color: #ffd306 !important;
+  background: #0b121d;
+  border-radius: 6px;
+  color: #b6c8e2 !important;
   page-break-inside: avoid;
   font-family: monospace;
   font-size: 14px;
@@ -94,7 +88,16 @@
   display: block;
   word-wrap: break-word;
 }
+.content pre > code {
+  background: none !important;
+  color: #b6c8e2 !important;
+}
+.content h1 {
+  color: #dcdcdc !important;
+}
 .content h2 {
+  color: #dcdcdc !important;
+  margin: 0 !important;
   font-size: 1.6rem;
   padding: 20px 0;
 }

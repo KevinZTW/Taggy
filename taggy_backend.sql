@@ -68,6 +68,8 @@ CONSTRAINT `FK_41` FOREIGN KEY `fkIdx_41` (`UserUID`) REFERENCES `User` (`UserUI
 KEY `fkIdx_48` (`RSSId`),
 CONSTRAINT `FK_48` FOREIGN KEY `fkIdx_48` (`RSSId`) REFERENCES `RSS` (`RSSId`)
 );
+
+DROP TABLE IF EXISTS `KeyWord`;
 CREATE TABLE `KeyWord`
 (
  `KeyWordId`    int auto_increment NOT NULL ,
@@ -84,7 +86,7 @@ CREATE TABLE `Category`
 PRIMARY KEY (`CategoryId`)
 );
 
-
+DROP TABLE IF EXISTS `CategoryKeyWords`;
 CREATE TABLE `CategoryKeyWords`
 (
  `CategoryKeyWordsId` int auto_increment NOT NULL ,
@@ -98,7 +100,17 @@ KEY `fkIdx_78` (`KeyWordId`),
 CONSTRAINT `FK_77` FOREIGN KEY `fkIdx_78` (`KeyWordId`) REFERENCES `KeyWord` (`KeyWordId`)
 );
 
+DROP TABLE IF EXISTS `FeedKeyWords`;
+CREATE TABLE `FeedKeyWords`
+(
+ `FeedKeyWordsId` int auto_increment NOT NULL ,
+ `FeedId`         varchar(255) NOT NULL ,
+ `KeyWordId`         int NOT NULL ,
+ `Weight` float NOT NULL,
 
-
+PRIMARY KEY (`FeedKeyWordsId`, `FeedId`, `KeyWordId`),
+FOREIGN KEY (`FeedId`) REFERENCES `Feed` (`FeedId`),
+FOREIGN KEY (`KeyWordId`) REFERENCES `KeyWord` (`KeyWordId`)
+);
 
 

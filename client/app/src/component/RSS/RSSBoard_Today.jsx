@@ -183,7 +183,7 @@ const Board = function (props) {
               setSelectCategory("UI/UX");
             }}
           >
-            <span>UI/UX</span>
+            <span>User Experience</span>
           </div>
           <div
             className={
