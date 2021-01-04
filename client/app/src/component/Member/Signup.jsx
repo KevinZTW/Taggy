@@ -9,6 +9,7 @@ import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { db } from "../../firebase";
 export default function Signup() {
+  console.log(auth.currentUser);
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
@@ -36,7 +37,7 @@ export default function Signup() {
               displaynamename: authResult.displayName,
             })
             .then(() => {
-              fetch("https://www.shopcard.site/route/user/sync");
+              fetch("https://www.shopcard.site/route/user/syncuser");
             })
 
             .then(history.push("home"))
@@ -62,28 +63,31 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function firebaseSignUp(name, email, password) {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        db.collection("Member").doc(user.user.uid).set({
+    auth.createUserWithEmailAndPassword(email, password).then((user) => {
+      console.log("native signup, create user in firesotre");
+      db.collection("Member")
+        .doc(user.user.uid)
+        .set({
           displaynamename: name,
           email: email,
           password: password,
           uid: user.user.uid,
+        })
+        .then(() => {
+          var user = auth.currentUser;
+          console.log(user);
+          user.updateProfile({
+            displayName: name,
+          });
+          fetch("https://www.shopcard.site/route/user/syncuser");
+        })
+        .then(history.push("/home"))
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          //console.log(errorMessage);
         });
-      })
-      .then(() => {
-        var user = auth.currentUser;
-        user.updateProfile({
-          displayName: name,
-        });
-      })
-      .then(history.push("/home"))
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        //console.log(errorMessage);
-      });
+    });
   }
   return (
     <div className={styles.wrapper}>
@@ -97,7 +101,7 @@ export default function Signup() {
           </div>
         </Link>
         <Link to={"/signin"} className={styles.logInWrapper}>
-          <div className={styles.logInBtn}>Log In</div>
+          <div className={styles.logInBtn}>Login</div>
         </Link>
         <Link to={"/signup"}>
           <div className={styles.SignUpBtn}>Sign up</div>
@@ -151,7 +155,7 @@ export default function Signup() {
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
           <div className={styles.login}>
             <span>Already have an account? </span>
-            <Link to={"/Signin"}>Log In</Link>
+            <Link to={"/Signin"}>Login</Link>
           </div>
         </div>
       </div>

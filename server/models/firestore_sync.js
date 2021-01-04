@@ -7,7 +7,7 @@ function syncUser() {
     .then((snapshot) => {
       snapshot.forEach((doc) => {
         const sqlCheck = `SELECT * FROM User WHERE UserUID = "${
-          doc.data().id
+          doc.data().uid
         }";`;
 
         connection.query(sqlCheck, (error, result) => {
@@ -28,6 +28,7 @@ function syncUser() {
       });
     });
 }
+syncUser();
 
 function syncRSS() {
   db.collection("RSSFetchList")

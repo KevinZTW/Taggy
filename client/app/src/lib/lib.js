@@ -419,6 +419,20 @@ const notify_addRSS_success = () =>
       progress: undefined,
     }
   );
+const notify_server_fail = () =>
+  toast.dark(
+    <div>Sorry... something goes wrong in backend..</div>,
+
+    {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    }
+  );
 app.addRSSToMember = function (uid, feedId, callback) {
   return new Promise(async (resolve, reject) => {
     if (!(await app.checkUserHasUncaFolder(uid))) {
@@ -441,9 +455,16 @@ app.addRSSToMember = function (uid, feedId, callback) {
               ),
             })
             .then(() => {
-              //console.log("successfully add to user");
-              notify_addRSS_success();
-              callback();
+              fetch(
+                "https://www.shopcard.site/route/user/syncuserrsssubscription"
+              )
+                .then(() => {
+                  notify_addRSS_success();
+                  callback();
+                })
+                .catch(() => {
+                  notify_server_fail();
+                });
             });
         });
     } else {
@@ -472,8 +493,6 @@ app.addRSSToMember = function (uid, feedId, callback) {
 };
 
 app.subscribeRSS = async function (uid, title, url, feed) {
-  //console.log("hihi");
-  //console.log("add to ", uid, title, url);
   app.checkRSSInFetchList(url).then((RSSId) => {
     if (RSSId) {
       //console.log("RSS already in Fetch List");

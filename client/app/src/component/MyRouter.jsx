@@ -8,14 +8,11 @@ export default function MyRouter() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-  console.error("===============================");
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        // setUser(user);
-        dispatch(SETMEMBER(user.uid, user.displayName, user.email));
-        // history.push("/home");
         console.log(user);
+        dispatch(SETMEMBER(user.uid, user.displayName, user.email));
       } else {
         if (location.pathname !== "/" && location.pathname !== "/signin")
           console.log(user);

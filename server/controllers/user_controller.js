@@ -5,6 +5,12 @@ async function syncUser(req, res) {
   res.status(200).json({ msg: "sync user with firestore" });
 }
 
+async function syncUserRSSSubscription(req, res) {
+  Sync.UserRSSSubscription();
+  res.status(200).json({ msg: "sync user subscription with firestore" });
+}
+
 export const User = {
-  sync: syncUser,
+  syncUser: syncUser,
+  syncUserRSSSubscription: syncUserRSSSubscription,
 };

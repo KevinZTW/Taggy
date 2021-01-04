@@ -76,8 +76,10 @@ export default function RSSTab(props) {
       .doc(uid)
       .get()
       .then((doc) => {
-        if (doc.data().subscribedRSS) {
-          dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
+        if (doc.data()) {
+          if (doc.data().subscribedRSS) {
+            dispatch(INITUSERRSSLIST(doc.data().subscribedRSS));
+          }
         }
       });
   }
