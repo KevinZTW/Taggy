@@ -153,7 +153,7 @@ function setKeyWords() {
   });
 }
 
-async function setFeedsKeyWord() {
+export async function setFeedsKeyWord() {
   let feedwithtag = 0;
   let totatlfeed = 0;
   const sql = `SELECT FeedId, FeedContent,FeedTitle FROM Feed `;
@@ -199,4 +199,4 @@ async function setFeedsKeyWord() {
   });
 }
 // setKeyWords();
-setFeedsKeyWord();
+// setFeedsKeyWord();

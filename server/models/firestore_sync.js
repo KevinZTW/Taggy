@@ -1,6 +1,6 @@
 import { connection } from "./mysqlconfig.js";
 import { db } from "./firebaseconfig.js";
-
+import { setFeedsKeyWord } from "../../service/RSSRecommendation.js";
 function syncUser() {
   db.collection("Member")
     .get()
@@ -28,7 +28,6 @@ function syncUser() {
       });
     });
 }
-syncUser();
 
 function syncRSS() {
   db.collection("RSSFetchList")
@@ -155,6 +154,9 @@ function syncFeeds() {
         }
       });
     });
+  setTimeout(() => {
+    setFeedsKeyWord();
+  }, 30000);
 }
 function syncArticles() {
   db.collection("Articles")

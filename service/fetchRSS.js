@@ -1,7 +1,7 @@
 import { addRSS } from "../server/models/rss_model.js";
 import { db } from "../server/models/firebaseconfig.js";
 import Parser from "rss-parser";
-
+import { Sync } from "../server/models/firestore_sync.js";
 let getRSSList = function () {
   return db
     .collection("RSSFetchList")
@@ -44,7 +44,13 @@ export const loopAndFetchRSS = async function () {
       setTimeout(() => {
         fetchRSS(item.url, item.id);
       }, timer);
-      timer += 10000;
+      timer += 1000;
     });
+
+    setTimeout(() => {
+      Sync.Feeds();
+    }, 40000);
   });
 };
+
+Sync.Feeds();

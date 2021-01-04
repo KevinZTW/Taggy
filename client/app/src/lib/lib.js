@@ -381,6 +381,7 @@ app.addRSSToFetchList = function (feed, url) {
       })
       .then((docRef) => {
         docRef.update({ id: docRef.id });
+        fetch("https://www.shopcard.site/route/rss/syncrss");
         return docRef.id;
       })
       .then((id) => resolve(id));
@@ -458,9 +459,12 @@ app.addRSSToMember = function (uid, feedId, callback) {
               fetch(
                 "https://www.shopcard.site/route/user/syncuserrsssubscription"
               )
-                .then(() => {
-                  notify_addRSS_success();
-                  callback();
+                .then((res) => {
+                  res.json().then((data) => {
+                    console.log(data);
+                    notify_addRSS_success();
+                    callback();
+                  });
                 })
                 .catch(() => {
                   notify_server_fail();
@@ -559,6 +563,9 @@ app.addRSSItem = function (feed, RSSId) {
       }
     });
   }
+  setTimeout(() => {
+    fetch("https://www.shopcard.site/route/rss/syncrss");
+  }, 5000);
 };
 app.getMemberRSSFolders = function (uid) {
   return new Promise((resolve, reject) => {
