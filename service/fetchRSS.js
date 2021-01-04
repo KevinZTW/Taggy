@@ -52,5 +52,3 @@ export const loopAndFetchRSS = async function () {
     }, 40000);
   });
 };
-
-Sync.Feeds();
