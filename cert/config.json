@@ -15,10 +15,8 @@
   },
   "sites": [
     {
-      "subject": "example.com",
-      "altnames": [
-        "example.com"
-      ],
+      "subject": "www.shopcard.site",
+      "altnames": ["www.shopcard.site"],
       "renewAt": 1
     }
   ]
