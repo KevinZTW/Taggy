@@ -27,7 +27,17 @@ app.postDataToServer = function (
       }
       response.json().then(function (data) {
         console.log(data);
-        alert("successfully store in backend");
+        chrome.tabs.query(
+          { active: true, currentWindow: true },
+          function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+              msg: "SAVESUCCESS",
+            });
+          }
+        );
+        chrome.runtime.sendMessage({
+          msg: "SAVESUCCESS",
+        });
       });
     })
     .catch(function (err) {

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@mozilla/readability": "^0.3.0",
-    "firebase-tools": "^8.16.2"
+    "firebase-tools": "^8.16.2",
+    "sweetalert2": "^10.12.7"
   }
 }

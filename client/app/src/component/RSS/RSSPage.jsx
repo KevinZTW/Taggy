@@ -28,7 +28,7 @@ export default function RSSPage({ item, onClick }) {
   useEffect(() => {
     async function getFeedTagsRecommend(feedId) {
       const response = await fetch(
-        `http://localhost:3000/route/rss/feedtags?feedid=${feedId}`
+        `https://www.shopcard.site/route/rss/feedtags?feedid=${feedId}`
       );
       return response.json();
     }

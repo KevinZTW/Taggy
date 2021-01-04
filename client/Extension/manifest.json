@@ -3,7 +3,7 @@
 
   "name": "Taggy",
   "description": "Taggy, the total solution for you to follow latest dev insight, read RSS and save website content",
-  "version": "0.0.1",
+  "version": "0.1.0",
 
   "browser_action": {
     "default_popup": "./pop.html",

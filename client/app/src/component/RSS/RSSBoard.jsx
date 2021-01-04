@@ -21,7 +21,7 @@ export default function Board(props) {
   });
   function fetchUserFeeds(userUid, paging) {
     fetch(
-      `http://localhost:3000/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
+      `https://www.shopcard.site/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
     ).then((res) => {
       if (res.status !== 200) {
         console.log("sth wrong..", res);

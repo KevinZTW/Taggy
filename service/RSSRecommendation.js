@@ -49,6 +49,7 @@ function setKeyWords() {
     "deploy",
     "modular",
     "api",
+    "linux",
     "principle",
     "java",
     "ios",

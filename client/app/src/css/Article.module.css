@@ -226,7 +226,12 @@ a:visited {
 }
 @media (max-width: 632px) {
   .articleWrapper {
-    padding: 1rem 2rem;
+    flex-direction: column;
+    padding: 0;
+    width: 100%;
+  }
+  .actionIconWrapper {
+    display: none;
   }
   .articleBody {
     max-width: 100%;
@@ -241,7 +246,8 @@ a:visited {
     display: none;
   }
   .main {
-    padding-right: 0;
+    padding: 1rem;
+    width: 100%;
   }
 
   .noteWrapper {

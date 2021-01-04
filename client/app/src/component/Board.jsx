@@ -88,7 +88,6 @@ export default function Board(props) {
         .collection("Articles")
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
-          console.log("inside called", articleSnapshotInit);
           dispatch(RESETARTICLEFETCH());
         });
       articleSnapshotInit = true;

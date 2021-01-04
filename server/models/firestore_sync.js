@@ -207,3 +207,4 @@ export const Sync = {
   User: syncUser,
   UserRSSSubscription: syncUserRSSSubscription,
 };
+syncFeeds();
