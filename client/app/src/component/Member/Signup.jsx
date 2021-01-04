@@ -35,6 +35,9 @@ export default function Signup() {
               email: authResult.email,
               displaynamename: authResult.displayName,
             })
+            .then(() => {
+              fetch("https://www.shopcard.site/route/user/sync");
+            })
 
             .then(history.push("home"))
             .catch((error) => {

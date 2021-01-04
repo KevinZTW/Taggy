@@ -12,7 +12,7 @@ function syncUser() {
 
         connection.query(sqlCheck, (error, result) => {
           if (result[0] !== undefined) {
-            console.log(` User ${doc.data().title} exist`);
+            console.log(` User ${doc.data().displaynamename} exist`);
           } else {
             let { displaynamename, uid, email } = doc.data();
             const sql = `INSERT INTO User (UserUID, DisplayName, Email) VALUES ('${uid}','${displaynamename}','${email}');`;
@@ -197,7 +197,10 @@ function syncArticles() {
       });
     });
 }
-// syncUser();
-// syncUserRSSSubscription();
-// syncRSS();
-syncFeeds();
+
+export const Sync = {
+  Feeds: syncFeeds,
+  RSS: syncRSS,
+  User: syncUser,
+  UserRSSSubscription: syncUserRSSSubscription,
+};
