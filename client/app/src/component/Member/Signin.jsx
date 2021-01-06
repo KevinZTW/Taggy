@@ -48,7 +48,9 @@ export default function Signup() {
               email: authResult.email,
               displaynamename: authResult.displayName,
             })
-
+            .then(() => {
+              fetch("https://www.shopcard.site/route/user/syncuser");
+            })
             .then(history.push("home"))
             .catch((error) => {
               var errorCode = error.code;
@@ -107,7 +109,7 @@ export default function Signup() {
       </div>
       <div className={styles.blockWrapper}>
         <div className="block" className={styles.block}>
-          <h2 className={styles.title}>Sign In</h2>
+          <h2 className={styles.title}>Login</h2>
           <form
             className={styles.form}
             onSubmit={(e) => {
@@ -141,7 +143,7 @@ export default function Signup() {
                 }}
               />
             </div>
-            <button>Sign In</button>
+            <button>Login</button>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />
           </form>
         </div>

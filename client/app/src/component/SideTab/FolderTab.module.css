@@ -1,5 +1,6 @@
 .folderTabWrapper {
   min-width: 250px;
+  overflow-y: scroll;
 }
 .mobileFolderTabWrapper {
   display: none;
@@ -293,12 +294,16 @@
   .mobileFolderTabWrapper {
     display: flex;
   }
+  .mobileFolderTab {
+    width: 100px;
+  }
   .addFolder {
     padding-top: 48px;
     padding-left: 24px;
     background-color: #000f24;
     width: 80vw;
   }
+
   .addInput {
     width: 90%;
     margin-bottom: 16px;
@@ -309,7 +314,10 @@
   .cancelBtn {
   }
   .tag {
-    padding-right: 55vw;
+    padding-right: 200px;
+  }
+  .subscription {
+    padding-right: 145px;
   }
   .blur {
     min-width: 20vw;

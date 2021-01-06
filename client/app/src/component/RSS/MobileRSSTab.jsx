@@ -289,7 +289,7 @@ export default function RSSTab(props) {
   //console.log("rerender");
   return (
     <div className={styles.mobileFolderTabWrapper}>
-      <div className={styles.folderTab}>
+      <div className={styles.mobileFolderTab}>
         <div className={styles.sectionTitle}>Taggy</div>
         <Link to={"/rssexplore"}>
           <div className={styles.importWrapper}>

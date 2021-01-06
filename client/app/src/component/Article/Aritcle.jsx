@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import ChromeReaderModeOutlinedIcon from "@material-ui/icons/ChromeReaderModeOutlined";
 import ChromeReaderModeIcon from "@material-ui/icons/ChromeReaderMode";
 import firebase from "firebase/app";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import "react-quill/dist/quill.snow.css";
 export default function Article() {
   const [showNote, setShowNote] = useState(false);
@@ -324,13 +325,11 @@ export default function Article() {
       highLightBoxes.push(
         <div className={styles.highLightBox}>
           <div className={styles.highLightText}>{highLight.text}</div>
-          <div
+          <DeleteOutlineIcon
             onClick={() => {
               deleteHightLight(highLight.id, id);
             }}
-          >
-            Delete
-          </div>
+          />
         </div>
       );
     });

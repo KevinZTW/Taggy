@@ -8,6 +8,7 @@
 .addForm {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 .input {
   width: 70%;
@@ -52,7 +53,7 @@
 }
 .addInput {
   display: inline-block;
-  width: 560px;
+  width: 80%;
   padding-top: 8px;
   padding-bottom: 7px;
   border: none;
@@ -103,4 +104,13 @@
 }
 .tagsImgWrapper img {
   width: 50%;
+}
+
+@media (max-width: 632px) {
+  .tagsImgWrapper {
+    padding-top: 72px;
+  }
+  .tagsImgWrapper img {
+    width: 90%;
+  }
 }

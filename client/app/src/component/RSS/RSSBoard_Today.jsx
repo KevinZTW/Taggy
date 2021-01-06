@@ -147,7 +147,7 @@ const Board = function (props) {
               setSelectCategory("Front End");
             }}
           >
-            <span>Front-End</span>
+            Front-End
           </div>
           <div
             className={
@@ -159,7 +159,7 @@ const Board = function (props) {
               setSelectCategory("Back End");
             }}
           >
-            <span>Back-End</span>
+            Back-End
           </div>
           <div
             className={
@@ -171,7 +171,7 @@ const Board = function (props) {
               setSelectCategory("Product Managment");
             }}
           >
-            <span>Product Managment</span>
+            Product Managment
           </div>
           <div
             className={
@@ -183,7 +183,7 @@ const Board = function (props) {
               setSelectCategory("UI/UX");
             }}
           >
-            <span>User Experience</span>
+            User Experience
           </div>
           <div
             className={
@@ -195,7 +195,7 @@ const Board = function (props) {
               setSelectCategory("Tech News");
             }}
           >
-            <span>Tech News</span>
+            Tech News
           </div>
         </div>
 

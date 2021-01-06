@@ -47,7 +47,7 @@ export default function Signup() {
               //console.log(errorMessage);
             });
         } else {
-          //console.log("exiting user signin");
+          history.push("home");
         }
       },
     },

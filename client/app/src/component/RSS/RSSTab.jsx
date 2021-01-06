@@ -1,4 +1,3 @@
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Tooltip from "@material-ui/core/Tooltip";
 import SearchIcon from "@material-ui/icons/Search";
 import { useEffect, useState } from "react";
@@ -13,28 +12,19 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import { Link } from "react-router-dom";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import CreateNewFolderOutlinedIcon from "@material-ui/icons/CreateNewFolderOutlined";
-import MarkunreadIcon from "@material-ui/icons/Markunread";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { SWITCHRSS } from "../../redux/actions";
 import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
-import ExploreIcon from "@material-ui/icons/Explore";
 import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import { INITUSERRSSLIST } from "../../redux/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import TodayIcon from "@material-ui/icons/Today";
 import RSSFolder from "./RSSFolder";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
-
-import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
-import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
 import addRSSFolderImg from "../../imgs/add_RSS_folder.png";
 const useStyles = makeStyles({
   root: {

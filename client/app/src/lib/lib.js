@@ -44,7 +44,7 @@ app.article.getMemberTagFoldersDetail = async function (uid) {
       };
     });
   };
-  const memberTagFolderIds = await getTagFolderIds(uid);
+  const memberTagFolderIds = (await getTagFolderIds(uid)) || [];
   const memberTagFoldersDetail = memberTagFolderIds.map((id) => {
     return getTagFolderDetail(id);
   });

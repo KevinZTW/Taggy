@@ -56,45 +56,7 @@
 .boxDescription {
   font-size: 14px;
 }
-/* }
-.switchWrapper {
-  display: flex;
-  justify-content: flex-start;
-  padding-bottom: 25px;
-}
-.switchTitle {
-  cursor: pointer;
-  padding-right: 20px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #1b1b1b;
-}
-.switchTitle span {
-  font-size: 19px;
-  font-weight: 500;
-  padding-bottom: 5px;
-}
-.switchTitleFocus {
-  cursor: pointer;
-  padding-right: 20px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #1b1b1b;
-}
-.switchTitleFocus span {
-  font-size: 19px;
-  font-weight: 500;
-  padding-bottom: 5px;
-  border-bottom: solid 3px #2074ec;
-}
 
-.subscribe_btn {
-  padding: 0px 8px;
-  margin: 5px 0;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  background-color: #01b468;
-  cursor: pointer;
-} */
 .popup {
   display: flex;
   position: fixed;
@@ -119,48 +81,3 @@
   background-color: #000f24;
   opacity: 90%;
 }
-/* .categoryTitle {
-  color: #b2b2b2;
-  padding-bottom: 10px;
-}
-.categoryWrapper {
-  display: flex;
-  width: 100%;
-}
-.categoryCard {
-  display: flex;
-  flex-direction: column;
-}
-
-.cardUpper {
-  display: flex;
-}
-.cardTitle {
-  font-size: 20px;
-  font-weight: bold;
-  padding-bottom: 3px;
-}
-.cardDescription {
-  font-size: 17px;
-}
-.cardImg {
-  max-width: 10%;
-  margin-right: 10px;
-}
-.cardImg img {
-  min-width: 100%;
-}
-.cardBtn {
-  padding: 0px 8px;
-  text-align: center;
-  margin: 5px 0;
-  height: 20px;
-  width: 60px;
-  font-size: 13px;
-  color: black;
-  font-weight: bold;
-  border-radius: 5px;
-  border: none;
-  background-color: #01b468;
-  cursor: pointer;
-} */
