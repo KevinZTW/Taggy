@@ -1,6 +1,6 @@
 import styles from "./Landing.module.css";
 import logo from "../imgs/taggy_logo_1x.png";
-import landing from "../imgs/landing_right.png";
+import landing_main from "../imgs/import_article.png";
 import { Link } from "react-router-dom";
 export default function Landing() {
   return (
@@ -14,23 +14,24 @@ export default function Landing() {
             <div className={styles.logoTitle}>Taggy</div>
           </div>
         </Link>
-        <Link to={"/signin"} className={styles.logInWrapper}>
-          <div className={styles.logInBtn}>Log In</div>
-        </Link>
-        <Link to={"/signup"}>
+        <Link to={"/signup"} className={styles.SignUpBtnWrapper}>
           <div className={styles.SignUpBtn}>Sign up</div>
+        </Link>
+        <Link to={"/signin"} className={styles.logInWrapper}>
+          <div className={styles.logInBtn}>Log in</div>
         </Link>
       </div>
       <div className={styles.main}>
         <div className={styles.mainLeft}>
-          <h1 className={styles.title}>Simple way to expand your knowledge</h1>
-          <h3 className={styles.subTitle}>
-            The total solution for you to follow latest dev insight, read RSS
-            and save website content
-          </h3>
+          <h1 className={styles.title}>
+            We make exploring and organizing knowledge easier.
+          </h1>
+          <Link to={"/signin"}>
+            <div className={styles.getStarted}>Get Started</div>
+          </Link>
         </div>
         <div className={styles.mainRight}>
-          <img src={landing} alt="" />
+          <img src={landing_main} alt="" />
         </div>
       </div>
     </div>

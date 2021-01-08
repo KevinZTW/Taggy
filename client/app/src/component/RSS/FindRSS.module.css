@@ -49,11 +49,12 @@
   color: rgba(255, 255, 255, 0.7);
 }
 .addFormWrapper {
+  width: 100%;
   padding-top: 8px;
 }
 .addInput {
   display: inline-block;
-  width: 80%;
+  width: 65%;
   padding-top: 8px;
   padding-bottom: 7px;
   border: none;
@@ -75,7 +76,7 @@
 }
 .saveBtn {
   padding: 16px 24px;
-
+  margin-bottom: 16px;
   margin-left: 24px;
   font-size: 13px;
   font-weight: bold;
@@ -105,8 +106,21 @@
 .tagsImgWrapper img {
   width: 50%;
 }
+@media (max-width: 770px) {
+  .addInput {
+    width: 90%;
+    margin-bottom: 16px;
+  }
+  .saveBtn {
+    margin-left: 0;
+  }
+}
 
 @media (max-width: 632px) {
+  .addArticle {
+    width: 90vw;
+  }
+
   .tagsImgWrapper {
     padding-top: 72px;
   }

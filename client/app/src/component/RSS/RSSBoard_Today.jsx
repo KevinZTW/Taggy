@@ -147,7 +147,7 @@ const Board = function (props) {
               setSelectCategory("Front End");
             }}
           >
-            Front-End
+            Front-End Tech
           </div>
           <div
             className={
@@ -159,7 +159,7 @@ const Board = function (props) {
               setSelectCategory("Back End");
             }}
           >
-            Back-End
+            Back-End Tech
           </div>
           <div
             className={

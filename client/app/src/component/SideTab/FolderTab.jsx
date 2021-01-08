@@ -239,139 +239,137 @@ export default function FolderTab() {
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>
-        <Link to={"/board"}>
-          <div className={styles.sectionTitle}>My Board</div>
+        <div className={styles.sectionTitle}>My Board</div>
 
+        <div
+          className={styles.addArticleWrapper}
+          onClick={() => {
+            setAddArticle(true);
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddOutlinedIcon />}
+          >
+            Import Article
+          </Button>
+        </div>
+        <TreeView
+          className={classes.root}
+          defaultExpanded={[""]}
+          defaultCollapseIcon={<ExpandMoreIcon />}
+          defaultExpandIcon={<ChevronRightIcon />}
+        >
           <div
-            className={styles.addArticleWrapper}
+            className={styles.keyTitleWrapper}
             onClick={() => {
-              setAddArticle(true);
+              //console.log("all");
+              dispatch(SWITCHARTICLE("all"));
             }}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddOutlinedIcon />}
-            >
-              Import Article
-            </Button>
+            <DescriptionOutlinedIcon
+              style={{ fontSize: 20, color: "#2074ec" }}
+            />
+            <div className={styles.keyTitle}>All Articles</div>
           </div>
-          <TreeView
-            className={classes.root}
-            defaultExpanded={[""]}
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-          >
-            <div
-              className={styles.keyTitleWrapper}
-              onClick={() => {
-                //console.log("all");
-                dispatch(SWITCHARTICLE("all"));
-              }}
-            >
-              <DescriptionOutlinedIcon
-                style={{ fontSize: 20, color: "#2074ec" }}
-              />
-              <div className={styles.keyTitle}>All Articles</div>
-            </div>
 
-            <div className={styles.tagWrapper}>
-              <div className={styles.tag}>Tags</div>
-              <CustomTooltip title="add tags folder" arrow>
-                <CreateNewFolderOutlinedIcon
+          <div className={styles.tagWrapper}>
+            <div className={styles.tag}>Tags</div>
+            <CustomTooltip title="add tags folder" arrow>
+              <CreateNewFolderOutlinedIcon
+                onClick={() => {
+                  setEditFolder(true);
+                }}
+                className={styles.setting}
+                fontSize="small"
+                style={{ color: "#b2b2b2" }}
+              />
+            </CustomTooltip>
+          </div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            {articleFolderList}
+          </DragDropContext>
+        </TreeView>
+        {addArticle
+          ? createPortal(
+              <div className={styles.popup}>
+                <div
+                  className={styles.blur}
                   onClick={() => {
-                    setEditFolder(true);
+                    setAddArticle(false);
                   }}
-                  className={styles.setting}
-                  fontSize="small"
-                  style={{ color: "#b2b2b2" }}
+                ></div>
+                <AddArticle
+                  user={user}
+                  close={() => {
+                    setAddArticle(false);
+                  }}
                 />
-              </CustomTooltip>
-            </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-              {articleFolderList}
-            </DragDropContext>
-          </TreeView>
-          {addArticle
-            ? createPortal(
-                <div className={styles.popup}>
-                  <div
-                    className={styles.blur}
-                    onClick={() => {
-                      setAddArticle(false);
-                    }}
-                  ></div>
-                  <AddArticle
-                    user={user}
-                    close={() => {
-                      setAddArticle(false);
-                    }}
-                  />
-                </div>,
-                document.body
-              )
-            : ""}
-          {editFolder
-            ? createPortal(
-                <div className={styles.popup}>
-                  <div
-                    className={styles.blur}
-                    onClick={() => {
-                      setEditFolder(false);
-                    }}
-                  ></div>
-                  <div className={styles.addFolder}>
-                    <div className={styles.addTitle}>Add new folder</div>
-                    <div className={styles.addSubTitle}>
-                      Create folder to organize tags you created
-                    </div>
-                    <label htmlFor="addForm" className={styles.addFolderLabel}>
-                      Enter new folder name
-                    </label>
-                    <div className={styles.addFormWrapper}>
-                      <form id="addForm" action="">
-                        <input
-                          className={styles.addInput}
-                          type="text"
-                          value={addFolderInput}
-                          onChange={(e) => {
-                            setAddFolderInput(e.target.value);
-                          }}
-                        />
-                        <button
-                          type="submit"
-                          className={styles.saveBtn}
-                          form="addForm"
-                          onClick={() => {
-                            if (user) {
-                              addArticleFolder(addFolderInput, user.uid);
-                              setEditFolder(false);
-                            } else {
-                              alert("Please login to add folder!");
-                            }
-                          }}
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={() => {
-                            setEditFolder(false);
-                          }}
-                          className={styles.cancelBtn}
-                        >
-                          Cancel
-                        </button>
-                      </form>
-                    </div>
-                    <div className={styles.tagsImgWrapper}>
-                      <img src={addTagFolderImg} alt="" />
-                    </div>
+              </div>,
+              document.body
+            )
+          : ""}
+        {editFolder
+          ? createPortal(
+              <div className={styles.popup}>
+                <div
+                  className={styles.blur}
+                  onClick={() => {
+                    setEditFolder(false);
+                  }}
+                ></div>
+                <div className={styles.addFolder}>
+                  <div className={styles.addTitle}>Add new folder</div>
+                  <div className={styles.addSubTitle}>
+                    Create folder to organize tags you created
                   </div>
-                </div>,
-                document.body
-              )
-            : ""}
-        </Link>
+                  <label htmlFor="addForm" className={styles.addFolderLabel}>
+                    Enter new folder name
+                  </label>
+                  <div className={styles.addFormWrapper}>
+                    <form id="addForm" action="">
+                      <input
+                        className={styles.addInput}
+                        type="text"
+                        value={addFolderInput}
+                        onChange={(e) => {
+                          setAddFolderInput(e.target.value);
+                        }}
+                      />
+                      <button
+                        type="submit"
+                        className={styles.saveBtn}
+                        form="addForm"
+                        onClick={() => {
+                          if (user) {
+                            addArticleFolder(addFolderInput, user.uid);
+                            setEditFolder(false);
+                          } else {
+                            alert("Please login to add folder!");
+                          }
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditFolder(false);
+                        }}
+                        className={styles.cancelBtn}
+                      >
+                        Cancel
+                      </button>
+                    </form>
+                  </div>
+                  <div className={styles.tagsImgWrapper}>
+                    <img src={addTagFolderImg} alt="" />
+                  </div>
+                </div>
+              </div>,
+              document.body
+            )
+          : ""}
       </div>
     </div>
   );

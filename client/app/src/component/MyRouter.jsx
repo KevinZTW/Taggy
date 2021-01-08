@@ -14,9 +14,10 @@ export default function MyRouter() {
         console.log(user);
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
       } else {
-        if (location.pathname !== "/" && location.pathname !== "/signin")
+        if (location.pathname !== "/" && location.pathname !== "/signin") {
           console.log(user);
-        history.push("/signup");
+          history.push("/signup");
+        }
       }
     });
   }, []);

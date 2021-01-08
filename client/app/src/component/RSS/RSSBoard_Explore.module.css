@@ -8,11 +8,7 @@
   padding-left: 10px;
   border-radius: 10px;
 }
-@media (min-device-width: 640px) {
-  .board {
-    margin-left: 50px;
-  }
-}
+
 .title {
   color: white;
   padding-top: 40px;
@@ -38,7 +34,7 @@
 }
 
 .box {
-  width: 25%;
+  width: 300px;
   padding-right: 40px;
 }
 .boxImg {
@@ -47,7 +43,8 @@
 .boxImg img {
   width: 100%;
 }
-
+.boxWord {
+}
 .boxTitle {
   color: #ffffff;
   font-weight: bold;
@@ -80,4 +77,15 @@
   min-width: 30%;
   background-color: #000f24;
   opacity: 90%;
+}
+@media (max-device-width: 640px) {
+  .box {
+    display: flex;
+  }
+  .board {
+    margin-left: 50px;
+  }
+  .boxWrapper {
+    flex-direction: column;
+  }
 }

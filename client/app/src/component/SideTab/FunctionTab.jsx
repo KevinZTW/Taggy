@@ -8,11 +8,11 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import HomeIcon from "@material-ui/icons/Home";
+
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import RssFeedIcon from "@material-ui/icons/RssFeed";
+
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
-import InboxIcon from "@material-ui/icons/Inbox";
+
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
 import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
@@ -83,7 +83,7 @@ export default function FunctionTab(props) {
               </div>
             </CustomTooltip>
           </Link>
-          <Link to={"/group"}>
+          {/* <Link to={"/group"}>
             <CustomTooltip title="group" placement="right" arrow>
               <div className={styles.icon}>
                 <PeopleAltOutlinedIcon
@@ -97,7 +97,7 @@ export default function FunctionTab(props) {
                 />
               </div>
             </CustomTooltip>
-          </Link>
+          </Link> */}
           <Link to={"/"}>
             <CustomTooltip title="log out" placement="right" arrow>
               <div className={styles.icon}>

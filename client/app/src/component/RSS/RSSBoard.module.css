@@ -94,6 +94,7 @@
   overflow-x: scroll;
 }
 .switchTitle {
+  width: 20%;
   min-width: 90px;
   cursor: pointer;
   display: flex;

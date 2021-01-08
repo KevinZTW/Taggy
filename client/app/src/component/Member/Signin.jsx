@@ -117,15 +117,12 @@ export default function Signup() {
               firebaseSignIn(email, password);
             }}
           >
-            {/* <div className={styles.inputbox}>
-            <label htmlFor="username">User Name</label>
-            <input type="text" name="username" />
-          </div> */}
             <div className={styles.inputbox}>
               <label htmlFor="email">Email</label>
               <input
                 type="text"
                 name="email"
+                placeholder="user@gmail.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.currentTarget.value);
@@ -137,11 +134,20 @@ export default function Signup() {
               <input
                 type="password"
                 name="passowrd"
+                placeholder="123123"
                 value={password}
                 onChange={(e) => {
                   setPassword(e.currentTarget.value);
                 }}
               />
+            </div>
+            <div
+              className={styles.demoBtn}
+              onClick={() => {
+                firebaseSignIn("user@gmail.com", "123123");
+              }}
+            >
+              Try with demo account
             </div>
             <button>Login</button>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />

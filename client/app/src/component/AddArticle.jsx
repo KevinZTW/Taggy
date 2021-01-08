@@ -3,8 +3,10 @@ import { toast } from "react-toastify";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
+import importArticleImg from "../imgs/import_article.png";
+import { useHistory, useLocation } from "react-router-dom";
 export default function AddArticle(props) {
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [reqUrl, setReqUrl] = useState("");
   const user = useSelector((state) => {
@@ -54,41 +56,78 @@ export default function AddArticle(props) {
       });
   }
   return (
-    <div className={styles.addArticle}>
+    <div
+      className={styles.addArticle}
+      onClick={(e) => {
+        // e.preventDefault();
+      }}
+    >
       <div className={styles.title}>Import article </div>
       <div className={styles.description}>
         Enter the url, we would clip and save the website content
       </div>
-      <input
-        placeholder="https://www....."
-        type="text"
-        name="input"
-        className={styles.input}
-        value={reqUrl}
-        onChange={(e) => setReqUrl(e.currentTarget.value)}
-      />
-      <button
-        type="submit"
-        className={styles.add}
-        onClick={(e) => {
-          if (user) {
-            e.preventDefault();
-            postDataToServer("https://www.shopcard.site/route/article/import", {
-              url: reqUrl,
-              uid: user.uid,
-            });
-          }
-        }}
-      >
-        Import
-      </button>
-      {/* <button className={styles.cancel} onClick={props.close}>
-        Cancel
-      </button> */}
+      <label htmlFor="input" className={styles.addFolderLabel}>
+        Enter URL link
+      </label>
+      <div className={styles.addFormWrapper}>
+        <form className={styles.addForm} action="">
+          <input
+            placeholder="https://www....."
+            type="text"
+            name="input"
+            className={styles.addInput}
+            value={reqUrl}
+            onChange={(e) => setReqUrl(e.currentTarget.value)}
+          />
+          <button
+            type="submit"
+            className={styles.saveBtn}
+            onClick={(e) => {
+              if (user) {
+                e.preventDefault();
+                postDataToServer(
+                  "https://www.shopcard.site/route/article/import",
+                  {
+                    url: reqUrl,
+                    uid: user.uid,
+                  }
+                );
+              }
+            }}
+          >
+            Import
+          </button>
+          <button
+            onClick={() => {
+              props.close();
+            }}
+            className={styles.cancelBtn}
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
 
-      <br />
-      <br />
       {loading ? <LinearProgress /> : ""}
+      <div className={styles.importButtom}>
+        <div className={styles.imgWrapper}>
+          <img src={importArticleImg} alt="" />
+        </div>
+        <div className={styles.extension}>
+          <div className={styles.extensionTitle}>
+            Or save wbe content with Taggy Chrome extension in one click!
+          </div>
+          <a
+            href="https://chrome.google.com/webstore/detail/taggy/djgfbkpjhnmnafpmngdfiaoidmfoolcj"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div className={styles.downloadExtBtn}>
+              Download Chrome Extension
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

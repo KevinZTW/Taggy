@@ -82,15 +82,15 @@ export default function Board(props) {
     console.log("her run!", articleSnapshotInit);
     let unsubscribe;
     if (user && !articleSnapshotInit) {
-      articleSnapshotInit = true;
-    } else if (articleSnapshotInit === true) {
       unsubscribe = db
         .collection("Articles")
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
+          console.log("snap shot change");
           dispatch(RESETARTICLEFETCH());
         });
       articleSnapshotInit = true;
+    } else if (articleSnapshotInit === true) {
     }
     return () => {
       if (typeof unsubscribe === "function") {

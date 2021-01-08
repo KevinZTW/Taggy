@@ -24,17 +24,16 @@ import { app } from "../../lib/lib.js";
 import { useDispatch } from "react-redux";
 import { db } from "../../firebase.js";
 import firebase from "firebase/app";
-import ExploreIcon from "@material-ui/icons/Explore";
+
 import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import { INITUSERRSSLIST } from "../../redux/actions";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import TodayIcon from "@material-ui/icons/Today";
+
 import RSSFolder from "./RSSFolder";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 
-import SettingsIcon from "@material-ui/icons/Settings";
 import TrendingUpOutlinedIcon from "@material-ui/icons/TrendingUpOutlined";
-import LocalOfferOutlinedIcon from "@material-ui/icons/LocalOfferOutlined";
+
 import addRSSFolderImg from "../../imgs/add_RSS_folder.png";
 const useStyles = makeStyles({
   root: {

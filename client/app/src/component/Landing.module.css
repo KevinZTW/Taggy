@@ -1,8 +1,11 @@
 .landingWrapper {
-  padding: 2rem;
+  width: 100vw;
 }
 .headWrapper {
-  padding: 0rem 0rem;
+  background-color: #0e1622;
+  height: 96px;
+  padding-left: 2rem;
+  padding-right: 56px;
   display: flex;
   align-items: center;
 }
@@ -18,7 +21,6 @@
   line-height: 3rem;
   color: white;
   font-weight: 600;
-  margin-right: auto;
 }
 .logoWrapper {
   display: flex;
@@ -28,15 +30,21 @@
   width: 100%;
 }
 .logInWrapper {
-  margin-left: auto;
 }
 .logInBtn {
   color: white;
-  font-size: 1.4rem;
+  font-size: 24px;
+  line-height: 24px;
   font-weight: 600;
+  padding: 16px 28px;
+  border-radius: 8px;
+  background-color: #2074ec;
+}
+.SignUpBtnWrapper {
+  margin-left: auto;
 }
 .SignUpBtn {
-  padding-left: 1rem;
+  padding-right: 24px;
   font-size: 1.4rem;
   font-weight: 600;
   color: white;
@@ -44,10 +52,12 @@
 
 .title {
   color: white;
-  padding-top: 10rem;
+  padding-top: 25%;
   padding-bottom: 1rem;
-  font-size: 3rem;
-  font-family: "Josefin Sans", sans-serif;
+  font-size: 40px;
+  line-height: 56px;
+  padding-left: 56px;
+  font-family: "Open Sans", sans-serif;
 }
 .subTitle {
   color: #b2b2b2;
@@ -57,8 +67,73 @@
   padding-top: 6rem;
   display: flex;
 }
+
+.getStarted {
+  width: 200px;
+  color: white;
+  border-radius: 8px;
+  margin-top: 24px;
+  margin-left: 56px;
+  background-color: #2074ec;
+  padding: 16px 28px;
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.mainLeft {
+}
 .mainRight {
   text-align: center;
-  width: 55%;
-  padding-left: 3rem;
+  min-width: 55%;
+  padding-top: 3rem;
+  padding-right: 56px;
+}
+.mainRight > img {
+  width: 100%;
+}
+
+@media (max-width: 632px) {
+  .title {
+    padding-top: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 24px;
+    line-height: 24px;
+    text-align: center;
+  }
+  .headWrapper {
+    height: 56px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .logoWrapper {
+    width: 30px;
+  }
+  .logoTitle {
+    line-height: 24px;
+    font-size: 24px;
+  }
+  .logInBtn {
+    color: white;
+    font-size: 12px;
+    line-height: 12px;
+    padding: 8px 14px;
+  }
+  .SignUpBtn {
+    padding-right: 24px;
+    font-size: 12px;
+  }
+  .main {
+    padding: 0;
+    flex-direction: column-reverse;
+  }
+  .mainRight {
+    padding-left: 24px;
+  }
+  .getStarted {
+    margin-left: 25%;
+  }
+  .mainLeft {
+    justify-content: center;
+  }
 }
