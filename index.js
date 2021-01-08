@@ -17,4 +17,4 @@ import { loopAndFetchRSS } from "./service/fetchRSS.js";
 //   })
 //   .serve(app);
 
-// setInterval(loopAndFetchRSS, 43200000); //half day
+setInterval(loopAndFetchRSS, 43200000); //half day

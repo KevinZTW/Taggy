@@ -24,7 +24,6 @@ const getFeedTags = async function (feedId) {
       result.forEach((item) => {
         keyWordId_Map += `'${item.KeyWordId}',`;
       });
-      console.log(keyWordNameList);
       keyWordId_Map = keyWordId_Map.slice(0, -1);
 
       let feeds = await query(`select Feed.FeedId AS FeedId, Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link, KeyWord.KeyWordName
