@@ -22,7 +22,7 @@ const getFeedTags = async function (feedId) {
   ;`;
   const feedTagsCache = await cache.getFeedTagsCache(feedId);
   if (feedTagsCache) {
-    console.log("get from cache", feedTagsCache);
+    console.log("get Cache");
     return feedTagsCache;
   } else {
     return query(sql).then(async (result) => {
