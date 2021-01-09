@@ -1,11 +1,20 @@
+import RedisCluster from "redis-clustr";
 import redis from "redis";
 import { promisify } from "util";
 
-const client = redis.createClient(
-  "6379",
-  "redis-taggy.vrv55k.clustercfg.apne1.cache.amazonaws.com"
-);
+// const client = redis.createClient(
+//   "6379",
+//   "redis-taggy.vrv55k.clustercfg.apne1.cache.amazonaws.com"
+// );
 
+const client = new RedisCluster({
+  servers: [
+    {
+      host: "localhost",
+      port: 6379,
+    },
+  ],
+});
 client.on("error", function (error) {
   console.error(error);
 });
