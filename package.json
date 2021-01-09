@@ -23,6 +23,7 @@
     "nodejieba": "^2.5.1",
     "nodemon": "^2.0.6",
     "opencc": "^1.1.1",
+    "redis": "^3.0.2",
     "request": "^2.88.2",
     "rss-parser": "^3.10.0",
     "turndown": "^7.0.0"

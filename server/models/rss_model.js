@@ -1,7 +1,10 @@
 import { db } from "./firebaseconfig.js";
+import { cache } from "../util/cache.js";
 import OpenCC from "opencc";
 import dayjs from "dayjs";
+
 import { connection, query } from "./mysqlconfig.js";
+
 const converter = new OpenCC("s2t.json");
 const getUserSubscribedFeed = async function (uid, paging) {
   const sql = `select Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link,Feed.FeedId AS FeedId from Feed join UserSubscription on Feed.RSSId = UserSubscription.RSSId join RSS 
@@ -17,27 +20,34 @@ const getFeedTags = async function (feedId) {
     JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
     where Feed.FeedId ='${feedId}'
   ;`;
-  return query(sql).then(async (result) => {
-    if (result[0]) {
-      const keyWordNameList = result.map((item) => item.KeyWordName);
-      let keyWordId_Map = "";
-      result.forEach((item) => {
-        keyWordId_Map += `'${item.KeyWordId}',`;
-      });
-      keyWordId_Map = keyWordId_Map.slice(0, -1);
+  const feedTagsCache = await cache.getFeedTagsCache(feedId);
+  if (feedTagsCache) {
+    console.log("get from cache", feedTagsCache);
+    return feedTagsCache;
+  } else {
+    return query(sql).then(async (result) => {
+      if (result[0]) {
+        const keyWordNameList = result.map((item) => item.KeyWordName);
+        let keyWordId_Map = "";
+        result.forEach((item) => {
+          keyWordId_Map += `'${item.KeyWordId}',`;
+        });
+        keyWordId_Map = keyWordId_Map.slice(0, -1);
 
-      let feeds = await query(`select Feed.FeedId AS FeedId, Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link, KeyWord.KeyWordName
+        let feeds = await query(`select Feed.FeedId AS FeedId, Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link, KeyWord.KeyWordName
       from Feed 
         JOIN FeedKeyWords on FeedKeyWords.FeedId = Feed.FeedId
         JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
         join RSS on Feed.RSSId = RSS.RSSId
         where KeyWord.KeyWordId  IN (${keyWordId_Map}) order by RAND() limit 5;`);
-
-      return { feeds: feeds, tags: keyWordNameList };
-    } else {
-      return {};
-    }
-  });
+        cache.setFeedTagsCache(feedId, { feeds: feeds, tags: keyWordNameList });
+        return { feeds: feeds, tags: keyWordNameList };
+      } else {
+        console.warn("no match feedtag in DB");
+        return {};
+      }
+    });
+  }
 };
 getFeedTags("odFA1hV4UM1Vp8qgQhlP");
 const searchRSS = async (keyWord) => {
