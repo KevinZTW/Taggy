@@ -42,9 +42,7 @@ export default function RSSFolder(props) {
                       </div>
                     }
                     onClick={() => {
-                      //console.log(RSS[i].id);
                       dispatch(SWITCHRSS(RSS[i].id));
-                      //   dispatch(SWITCHARTICLE(tabs[i].id));
                     }}
                   />
                 </Link>

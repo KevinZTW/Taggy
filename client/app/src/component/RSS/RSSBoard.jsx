@@ -33,48 +33,48 @@ export default function Board(props) {
       }
     });
   }
-  function batchFetchAllFeeds(userRSSList, lastVisible) {
-    //console.log(userRSSList);
-    if (lastVisible === 0 && userRSSList[0]) {
-      //console.log("last visible equal zero!");
-      db.collection("RSSItem")
-        .orderBy("pubDate", "desc")
-        .where("RSSId", "in", userRSSList.slice(0, 10))
-        .limit(7)
-        .get()
-        .then((snapshot) => {
-          const items = [...allFeeds];
-          snapshot.forEach((doc) => {
-            //console.log(doc.data());
+  // function batchFetchAllFeeds(userRSSList, lastVisible) {
+  //   //console.log(userRSSList);
+  //   if (lastVisible === 0 && userRSSList[0]) {
+  //     //console.log("last visible equal zero!");
+  //     db.collection("RSSItem")
+  //       .orderBy("pubDate", "desc")
+  //       .where("RSSId", "in", userRSSList.slice(0, 10))
+  //       .limit(7)
+  //       .get()
+  //       .then((snapshot) => {
+  //         const items = [...allFeeds];
+  //         snapshot.forEach((doc) => {
+  //           //console.log(doc.data());
 
-            items.push(doc.data());
-          });
-          setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
-          setAllFeeds(items);
-          //console.log("se set items as ", items);
-        });
-    } else {
-      if (lastQueryDoc0 && userRSSList[0]) {
-        //console.log("else start, the last visible is", lastVisible);
+  //           items.push(doc.data());
+  //         });
+  //         setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
+  //         setAllFeeds(items);
+  //         //console.log("se set items as ", items);
+  //       });
+  //   } else {
+  //     if (lastQueryDoc0 && userRSSList[0]) {
+  //       //console.log("else start, the last visible is", lastVisible);
 
-        db.collection("RSSItem")
-          .orderBy("pubDate", "desc")
-          .where("RSSId", "in", userRSSList.slice(0, 9))
-          .startAfter(lastQueryDoc0)
-          .limit(7)
-          .get()
-          .then((snapshot) => {
-            const items = [...allFeeds];
-            snapshot.forEach((doc) => {
-              items.push(doc.data());
-            });
+  //       db.collection("RSSItem")
+  //         .orderBy("pubDate", "desc")
+  //         .where("RSSId", "in", userRSSList.slice(0, 9))
+  //         .startAfter(lastQueryDoc0)
+  //         .limit(7)
+  //         .get()
+  //         .then((snapshot) => {
+  //           const items = [...allFeeds];
+  //           snapshot.forEach((doc) => {
+  //             items.push(doc.data());
+  //           });
 
-            setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
-            setAllFeeds(items);
-          });
-      }
-    }
-  }
+  //           setLastQueryDoc0(snapshot.docs[snapshot.docs.length - 1]);
+  //           setAllFeeds(items);
+  //         });
+  //     }
+  //   }
+  // }
 
   function renderAllFeeds(feedItems) {
     if (feedItems) {
@@ -149,8 +149,6 @@ export default function Board(props) {
 
   let allFeedsOutome;
   if (ChannelRSSId === "all") {
-    //console.log("channel id is all");
-    //console.log(allFeeds);
     allFeedsOutome = renderAllFeeds(allFeeds);
   } else if (ChannelRSSId) {
     allFeedsOutome = renderChannelFeeds();
@@ -160,10 +158,9 @@ export default function Board(props) {
     let items;
     let RSS;
     if (ChannelRSSId) {
-      //console.log(ChannelRSSId);
       RSS = await app.getRSSInfo(ChannelRSSId);
       items = await app.getChannelFeeds(ChannelRSSId);
-      //console.log(RSS, items);
+
       setChannelFeeds({
         RSS: RSS,
         items: items,
@@ -172,12 +169,10 @@ export default function Board(props) {
   }
   function renderChannelFeeds() {
     if (channelFeeds.items) {
-      //console.log(channelFeeds);
       const items = channelFeeds.items;
       const RSS = channelFeeds.RSS;
       const feedList = [];
       for (const i in items) {
-        //console.log(items[i]);
         feedList.push(
           <RSSCard
             key={items[i].id}

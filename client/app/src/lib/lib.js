@@ -626,6 +626,7 @@ app.getChannelFeeds = function (RSSId) {
       .then((snapShot) => {
         snapShot.forEach((doc) => {
           items.push({
+            FeedId: doc.data().id,
             RSSId: doc.data().RSSId,
             content: doc.data().content,
             contentSnippet: doc.data().contentSnippet,

@@ -136,21 +136,23 @@ export default function Graph() {
     return combList;
   }
   function countCombinationNumber(articleList, combList) {
-    console.error(articleList);
     const links = [];
-    //console.log(combList);
     for (let i = 0; i < combList.length; i++) {
       let combNumber = 0;
       articleList.forEach((article) => {
+        console.log(article);
         if (article.tags) {
+          console.log(article.tags);
+          console.log(combList[i][1]);
           if (
-            article.tags.includes(combList[i][0].id) &&
-            article.tags.includes(combList[i][1].id)
+            article.tags.includes(combList[i][0].tagId) &&
+            article.tags.includes(combList[i][1].tagId)
           ) {
             combNumber += 1;
           }
         }
       });
+      console.log(combNumber);
       links.push({
         source: combList[i][0].label,
         target: combList[i][1].label,
@@ -161,7 +163,6 @@ export default function Graph() {
   }
   function combInit(tags) {
     const combList = createCombinationList(tags);
-    console.warn(articleList);
     return countCombinationNumber(articleList, combList);
   }
 
@@ -177,7 +178,6 @@ export default function Graph() {
               tagId: tag.id,
             });
           });
-          //console.log(links);
           return [nodes, links];
         })
         .then(([nodes, links]) => {
@@ -190,12 +190,7 @@ export default function Graph() {
   }
   useEffect(() => {
     if (user && articleList[0]) {
-      //console.log(articleList);
-      // setDataRun(true);
-      //console.log(user);
       initGraphData(user.uid).then((data) => {
-        //console.log("lets set dat=============================a");
-        //console.log(data);
         setData(data);
       });
     }
@@ -203,9 +198,7 @@ export default function Graph() {
   return (
     <div className={styles.graphWrapper}>
       <div className={styles.graphContainer}>
-        <div className={styles.titleWrapper}>
-          {/* <div className={styles.title}>Tags Graph</div> */}
-        </div>
+        <div className={styles.titleWrapper}></div>
         <div className={styles.graph}>
           <svg
             ref={ref}

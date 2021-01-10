@@ -36,8 +36,15 @@ export default function RSSPage({ item, onClick }) {
       console.log(data);
       setTagRecoms(data);
     }
-    getFeedTagsRecommend(newItem.FeedId || item.id).then(setFeedTagRecommend);
-  }, [newItem]);
+    console.log(item, newItem);
+    if (item || newItem) {
+      console.log("send request");
+      console.log();
+      getFeedTagsRecommend(newItem.FeedId || item.id || item.FeedId).then(
+        setFeedTagRecommend
+      );
+    }
+  }, [item, newItem]);
 
   function renderFeedTags(tags) {
     const tagChips = [];
