@@ -49,7 +49,13 @@ Password: 123123
 - Authentication : Firebase Authentication
 - Design Pattern : MVC
 
+
+## Architecture
 ![image](https://user-images.githubusercontent.com/38662781/104088757-fea05780-52a3-11eb-9cc2-ae7eedba8820.jpg)
+
+## Database Schema (RDS)
+<img width="946" alt="Screen Shot 2021-01-10 at 12 28 11 PM" src="https://user-images.githubusercontent.com/38662781/104114431-58a22b00-533f-11eb-960e-0a55eca7393e.png">
+
 
 ## Features
 ### RSS Function
@@ -95,6 +101,14 @@ User could see all tags in *Tag Graph*, tag that show in same article would be a
 
 
 
-## Contact
+## Author
+Software Development by Kevin Zhang
 
-Email: [kevin.zhang.tw@gmail.com](mailto:kevin.zhang.tw@gmail.com)
+Email : [kevin.zhang.tw@gmail.com](mailto:kevin.zhang.tw@gmail.com)
+
+
+UI / Interaction Deisgn by Kelly Huang
+
+Email : [tw.kelly.huang@gmail.com](mailto:tw.kelly.huang@gmail.com)
+
+
