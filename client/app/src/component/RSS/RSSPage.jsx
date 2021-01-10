@@ -176,19 +176,21 @@ export default function RSSPage({ item, onClick }) {
               />
             </div>
             <CustomTooltip title="save to my board" placement="right" arrow>
-              <div className={styles.arrowWrapper}>
+              <div
+                className={styles.arrowWrapper}
+                onClick={() => {
+                  postDataToServer(
+                    "https://www.shopcard.site/route/article/import",
+                    {
+                      url: newItem.link || item.link,
+                      uid: user.uid,
+                    }
+                  );
+                }}
+              >
                 <BookmarkBorderIcon
                   className={styles.Icon}
                   style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
-                  onClick={() => {
-                    postDataToServer(
-                      "https://www.shopcard.site/route/article/import",
-                      {
-                        url: newItem.link || item.link,
-                        uid: user.uid,
-                      }
-                    );
-                  }}
                 />
               </div>
             </CustomTooltip>
@@ -220,19 +222,21 @@ export default function RSSPage({ item, onClick }) {
               />
             </div>
             <CustomTooltip title="save to my board" placement="right" arrow>
-              <div className={styles.arrowWrapper}>
+              <div
+                className={styles.arrowWrapper}
+                onClick={() => {
+                  postDataToServer(
+                    "https://www.shopcard.site/route/article/import",
+                    {
+                      url: newItem.link || item.link,
+                      uid: user.uid,
+                    }
+                  );
+                }}
+              >
                 <BookmarkBorderIcon
                   className={styles.Icon}
                   style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
-                  onClick={() => {
-                    postDataToServer(
-                      "https://www.shopcard.site/route/article/import",
-                      {
-                        url: newItem.link || item.link,
-                        uid: user.uid,
-                      }
-                    );
-                  }}
                 />
               </div>
             </CustomTooltip>

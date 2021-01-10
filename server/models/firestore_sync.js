@@ -155,6 +155,7 @@ function syncFeeds() {
       });
     });
   setTimeout(() => {
+    console.log("start to set keywords...");
     setFeedsKeyWord();
   }, 30000);
 }

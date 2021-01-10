@@ -85,6 +85,8 @@ export default function Article() {
     }
   }, [id, user]);
   function handleChange(newValue, actionMeta) {
+    console.log(newValue);
+    console.log(actionMeta.removedValue);
     switch (actionMeta.action) {
       case "select-option":
         app.inputTag(id, user.uid, actionMeta.option.label);
@@ -101,8 +103,14 @@ export default function Article() {
   function handleCreate(inputValue) {
     app.inputTag(id, user.uid, inputValue);
     setTags({
-      options: [...tags.options, { label: inputValue, value: inputValue }],
-      values: [...tags.values, { label: inputValue, value: inputValue }],
+      options: [
+        ...tags.options,
+        { label: inputValue, value: inputValue, tagId: id },
+      ],
+      values: [
+        ...tags.values,
+        { label: inputValue, value: inputValue, tagId: id },
+      ],
     });
   }
   useEffect(() => {
@@ -364,11 +372,9 @@ export default function Article() {
       articleMain.removeEventListener("mouseup", handleMouseUp);
     };
   }, [renderArticle]);
-  //console.log(highLights);
+
   const highLightBoxes = renderHightLight(highLights);
-  if (renderArticle) {
-    console.error(renderArticle.search("<span class=highLighter"));
-  }
+
   return (
     <div className={styles.articleWrapper}>
       <div className={showNote ? styles.mainWithNote : styles.main}>

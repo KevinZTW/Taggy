@@ -182,7 +182,7 @@ app.getMemberTags = function (uid) {
                 .get()
                 .then((doc) => {
                   memberTags.push({
-                    id: tagIds[i],
+                    tagId: tagIds[i],
                     value: doc.data().name,
                     label: doc.data().name,
                   });
@@ -485,7 +485,11 @@ app.addRSSToMember = function (uid, feedId, callback) {
               subscribedRSS: firebase.firestore.FieldValue.arrayUnion(feedId),
             })
             .then(() => {
-              //console.log("successfully add to user");
+              fetch(
+                "https://www.shopcard.site/route/user/syncuserrsssubscription"
+              );
+            })
+            .then(() => {
               notify_addRSS_success();
               if (typeof callback === "function") {
                 callback();
@@ -499,14 +503,11 @@ app.addRSSToMember = function (uid, feedId, callback) {
 app.subscribeRSS = async function (uid, title, url, feed) {
   app.checkRSSInFetchList(url).then((RSSId) => {
     if (RSSId) {
-      //console.log("RSS already in Fetch List");
       app.addRSSToMember(uid, RSSId);
     } else {
-      //console.log("Add RSS to fetch List");
       app.addRSSToFetchList(feed, url).then((RSSId) => {
-        //console.log("add RSS to member");
         app.addRSSToMember(uid, RSSId);
-        //console.log("Add feed to RSSItem");
+
         app.addRSSItem(feed, RSSId);
       });
     }
@@ -564,7 +565,7 @@ app.addRSSItem = function (feed, RSSId) {
     });
   }
   setTimeout(() => {
-    fetch("https://www.shopcard.site/route/rss/syncrss");
+    fetch("https://www.shopcard.site/route/rss/syncfeed");
   }, 5000);
 };
 app.getMemberRSSFolders = function (uid) {

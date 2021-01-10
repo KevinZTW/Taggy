@@ -16,8 +16,8 @@ rss_router.route("/rss/fetch").post((req, res) => {
     res.status(200).json({ rss: feed });
   });
 });
-rss_router.route("/rss/syncfeed").post(syncFeeds);
-rss_router.route("/rss/syncrss").post(syncRSS);
+rss_router.route("/rss/syncfeed").get(syncFeeds);
+rss_router.route("/rss/syncrss").get(syncRSS);
 rss_router.route("/rss/search").post(searchRSS);
 rss_router.route("/rss/userfeeds").get(getUserSubscribedFeed);
 rss_router.route("/rss/feedtags").get(getFeedTags);

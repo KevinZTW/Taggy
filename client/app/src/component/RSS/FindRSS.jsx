@@ -8,9 +8,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
 import addRSSImg from "../../imgs/add_RSS_feed.png";
 export default function FindRSS(props) {
-  const [reqUrl, setReqUrl] = useState(
-    "https://www.youtube.com/feeds/videos.xml?channel_id=UCUMZ7gohGI9HcU9VNsr2FJQ"
-  );
+  const [reqUrl, setReqUrl] = useState("https://medium.com/better-programming");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 

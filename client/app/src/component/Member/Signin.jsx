@@ -70,8 +70,8 @@ export default function Signup() {
     // We will display Google and Facebook as auth providers.
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("123123");
   const history = useHistory();
   function firebaseSignIn(email, password) {
     auth
@@ -122,7 +122,6 @@ export default function Signup() {
               <input
                 type="text"
                 name="email"
-                placeholder="user@gmail.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.currentTarget.value);

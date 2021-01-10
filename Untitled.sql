@@ -1,9 +1,12 @@
 
 use TAGGY;
+select * from User;
+select * from UserSubscription where UserUID = 'Y8WsSi5lonXgSlE7DbmnMiEpbwJ3';
+SELECT * FROM User WHERE UserUID = "wIw37MBgbSWUy8kuPrrkddpiM6M2";
 select * from KeyWord;
 select * from KeyWord limit 10;
 select * from FeedKeyWords limit 500;
-select * from RSS;
+select * from RSS where RSSId ="oT0mRYnYSGnqrWPq3I1C";
 select * from FeedKeyWords 
     JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
     JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId

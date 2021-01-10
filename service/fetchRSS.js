@@ -48,6 +48,7 @@ export const loopAndFetchRSS = async function () {
     });
 
     setTimeout(() => {
+      console.log("start to sync feeds...");
       Sync.Feeds();
     }, 40000);
   });
