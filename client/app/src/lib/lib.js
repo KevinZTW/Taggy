@@ -566,7 +566,7 @@ app.addRSSItem = function (feed, RSSId) {
   }
   setTimeout(() => {
     fetch("https://www.shopcard.site/route/rss/syncfeed");
-  }, 5000);
+  }, 3000);
 };
 app.getMemberRSSFolders = function (uid) {
   return new Promise((resolve, reject) => {

@@ -1,13 +1,14 @@
 import Parser from "rss-parser";
 import { RSS } from "../models/rss_model.js";
+import { Sync } from "../models/firestore_sync.js";
 let parser = new Parser();
 
-export async function syncFeeds(url) {
-  RSS.syncFeeds();
+export async function syncFeeds(req, res) {
+  Sync.Feeds();
   res.status(200).json({ msg: "sync RDS Feeds with firestore" });
 }
-export async function syncRSS(url) {
-  RSS.syncRSS();
+export async function syncRSS(req, res) {
+  Sync.RSS();
   res.status(200).json({ msg: "sync RDS RSS with firestore" });
 }
 export async function fetchRSS(url) {
