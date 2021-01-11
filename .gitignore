@@ -1,4 +1,3 @@
 node_modules
-**/build
-client/app/build
+build
 client/app/.eslintcache
