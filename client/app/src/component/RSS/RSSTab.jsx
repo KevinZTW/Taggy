@@ -73,24 +73,7 @@ export default function RSSTab(props) {
         }
       });
   }
-  function addNewGroup(uid, name) {
-    db.collection("GroupBoard")
-      .add({
-        name: name,
-        member: [uid],
-      })
-      .then((docRef) => {
-        docRef.update({ id: docRef.id });
-        return docRef.id;
-      })
-      .then((id) => {
-        db.collection("Member")
-          .doc(uid)
-          .update({
-            board: firebase.firestore.FieldValue.arrayUnion(id),
-          });
-      });
-  }
+
   const user = useSelector((state) => {
     return state.memberReducer.user;
   });
@@ -155,7 +138,7 @@ export default function RSSTab(props) {
     if (folders.length > 0) {
       for (const i in folders) {
         RSSFolderList.push(
-          <Droppable droppableId={folders[i].id}>
+          <Droppable droppableId={folders[i].id} key={folders[i].id}>
             {(provided) => (
               <TreeItem
                 ref={provided.innerRef}
@@ -185,11 +168,10 @@ export default function RSSTab(props) {
     }
     return RSSFolderList;
   }
-  //console.log(RSSFolders);
+
   const articleFolderList = showRSSFolders(RSSFolders);
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
-    //console.log(result);
 
     if (!destination) {
       return;
@@ -199,55 +181,38 @@ export default function RSSTab(props) {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      //console.log("nothing should happended");
       return;
     }
     if (destination.droppableId === source.droppableId) {
-      //console.log("move inside same folder");
       const newRSSFolders = [...RSSFolders];
       let newRSSIds;
-      //console.log(newRSSFolders);
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
           const moveId = folder.RSSIds[source.index];
           newRSSIds = [...folder.RSSIds];
-          //console.log(moveId);
-          //console.log(newRSSIds);
           newRSSIds.splice(source.index, 1);
-          //console.log(newRSSIds);
           newRSSIds.splice(destination.index, 0, moveId);
-          //console.log(newRSSIds);
-
           const moveItem = folder.RSS[source.index];
-          //console.log(moveItem);
           folder.RSS.splice(source.index, 1);
           folder.RSS.splice(destination.index, 0, moveItem);
-          //console.log();
           folder.RSSIds = newRSSIds;
         }
       });
-      //console.log(newRSSFolders);
 
       db.collection("RSSFolders").doc(destination.droppableId).update({
         RSS: newRSSIds,
       });
       setRSSFolders(newRSSFolders);
-
-      //console.log(destination.index, source.index);
-      //console.log(source.droppableId);
-      //console.log(destination.droppableId);
     }
     if (destination.droppableId !== source.droppableId) {
-      //console.log("move to another folder");
       const newRSSFolders = [...RSSFolders];
-      //console.log(newRSSFolders);
+
       let moveId;
       let moveItem;
       let newSourceRSSIds;
       let newDestinationRSSIds;
       newRSSFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
-          //console.log(folder);
           moveId = folder.RSSIds[source.index];
           moveItem = folder.RSS[source.index];
           newSourceRSSIds = [...folder.RSSIds];
@@ -261,7 +226,6 @@ export default function RSSTab(props) {
       });
       newRSSFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          //console.log(folder);
           newDestinationRSSIds = [...folder.RSSIds];
           newDestinationRSSIds.splice(destination.index, 0, moveId);
           folder.RSS.splice(destination.index, 0, moveItem);
@@ -274,8 +238,6 @@ export default function RSSTab(props) {
       setRSSFolders(newRSSFolders);
     }
   }
-  //console.log(props.focus);
-  //console.log("rerender");
   return (
     <div className={styles.folderTabWrapper}>
       <div className={styles.folderTab}>

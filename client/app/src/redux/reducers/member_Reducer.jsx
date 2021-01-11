@@ -1,6 +1,3 @@
-//reducer
-import { nanoid } from "nanoid";
-
 const member_Reducer = (state = {}, action) => {
   switch (action.type) {
     case "SETMEMBER":

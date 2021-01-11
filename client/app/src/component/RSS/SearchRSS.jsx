@@ -38,46 +38,12 @@ export default function FindRSS(props) {
         return;
       } else {
         response.json().then(function (data) {
-          //console.log(data.feed);
           dispatch(GETRSSRESPONSE(data.feed, ""));
           setLoading(false);
           props.showChannel();
         });
       }
     });
-
-    // parser.parseURL(CORS_PROXY + url, function (err, feed) {
-    //   if (err) {
-    //     //console.log("error, refetch from nbackend");
-    //     fetch("https://www.shopcard.site/route/" + "rss/fetch", {
-    //       method: "post",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         // 'Content-Type': 'application/x-www-form-urlencoded',
-    //       },
-    //       body: JSON.stringify({ url: url }),
-    //     }).then(function (response) {
-    //       if (response.status !== 200) {
-    //         //console.log("sth goes wrong in backend ");
-    //         notify_fail();
-    //       } else {
-    //         response.json().then((data) => {
-    //           dispatch(GETRSSRESPONSE(data.rss, url));
-    //           setLoading(false);
-    //           props.showChannel();
-    //         });
-    //       }
-    //     });
-    //   } else {
-    //     props.showChannel();
-    //     //console.log(feed.title);
-    //     dispatch(GETRSSRESPONSE(feed, url));
-    //     setLoading(false);
-    //     feed.items.forEach(function (entry) {
-    //       //console.log(entry.title + ":" + entry.link);
-    //     });
-    //   }
-    // });
   }
 
   return (
@@ -105,7 +71,7 @@ export default function FindRSS(props) {
       </form>
       {loading ? <LinearProgress className={styles.progress} /> : ""}
       <br />
-      <div class={styles.addTitle}>
+      <div className={styles.addTitle}>
         Try tech keyword in Mandarin / English here!
       </div>
     </div>

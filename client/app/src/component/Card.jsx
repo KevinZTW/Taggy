@@ -18,8 +18,7 @@ export default function Card(props) {
   if (elem.querySelector("img") && props.link) {
     if (props.link.includes("segmentfault")) {
       src = elem.querySelector("img")
-        ? // ? "https://segmentfault.com" +
-          elem.querySelector("img").getAttribute("data-src")
+        ? elem.querySelector("img").getAttribute("data-src")
         : null;
     } else if (
       props.link.includes("codertw") ||

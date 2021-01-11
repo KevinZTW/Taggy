@@ -25,17 +25,14 @@ export default function Signup() {
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
-        //console.log(authResult);
         const newUser = await db
           .collection("Member")
           .doc(authResult.uid)
           .get()
           .then((doc) => {
             if (doc.data()) {
-              //console.log("existing user sign in");
               return false;
             } else {
-              //console.log("new user! create it in db");
               return true;
             }
           });
@@ -59,15 +56,12 @@ export default function Signup() {
             });
         } else {
           history.push("home");
-          //console.log("exiting user signin");
         }
       },
     },
-    // Popup signin flow rather than redirect flow.
-    signInFlow: "popup",
-    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
 
-    // We will display Google and Facebook as auth providers.
+    signInFlow: "popup",
+
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
   const [email, setEmail] = useState("user@gmail.com");
@@ -77,15 +71,11 @@ export default function Signup() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((user) => {
-        //console.log("you click sign in and successfully");
         history.push("/home");
-        // Signed in
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        //console.log(errorCode);
-        //console.log(errorMessage);
         notify_fail();
       });
   }

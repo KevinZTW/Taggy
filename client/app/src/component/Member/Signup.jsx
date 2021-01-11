@@ -9,21 +9,17 @@ import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { db } from "../../firebase";
 export default function Signup() {
-  console.log(auth.currentUser);
   const uiConfig = {
     callbacks: {
       signInSuccess: async function (authResult, redirectUrl) {
-        //console.log(authResult);
         const newUser = await db
           .collection("Member")
           .doc(authResult.uid)
           .get()
           .then((doc) => {
             if (doc.data()) {
-              //console.log("existing user sign in");
               return false;
             } else {
-              //console.log("new user! create it in db");
               return true;
             }
           });
@@ -40,22 +36,15 @@ export default function Signup() {
               fetch("https://www.shopcard.site/route/user/syncuser");
             })
 
-            .then(history.push("home"))
-            .catch((error) => {
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              //console.log(errorMessage);
-            });
+            .then(history.push("home"));
         } else {
           history.push("home");
         }
       },
     },
-    // Popup signin flow rather than redirect flow.
-    signInFlow: "popup",
-    // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
 
-    // We will display Google and Facebook as auth providers.
+    signInFlow: "popup",
+
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   };
   const history = useHistory();
@@ -64,7 +53,6 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   function firebaseSignUp(name, email, password) {
     auth.createUserWithEmailAndPassword(email, password).then((user) => {
-      console.log("native signup, create user in firesotre");
       db.collection("Member")
         .doc(user.user.uid)
         .set({
@@ -75,18 +63,13 @@ export default function Signup() {
         })
         .then(() => {
           var user = auth.currentUser;
-          console.log(user);
+
           user.updateProfile({
             displayName: name,
           });
           fetch("https://www.shopcard.site/route/user/syncuser");
         })
-        .then(history.push("/home"))
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          //console.log(errorMessage);
-        });
+        .then(history.push("/home"));
     });
   }
   return (

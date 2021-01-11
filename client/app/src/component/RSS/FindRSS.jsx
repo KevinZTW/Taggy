@@ -28,7 +28,6 @@ export default function FindRSS(props) {
   function requestRSS(url) {
     setLoading(true);
     if (url.includes("medium.com/@")) {
-      //console.log(" medium member");
       url =
         "https://medium.com/feed/@" + url.replace("https://medium.com/@", "");
     } else if (url.includes(".medium.com")) {
@@ -48,11 +47,10 @@ export default function FindRSS(props) {
         item: [["media:group", "media", { keepArray: true }]],
       },
     });
-    //console.log("start to send the requett");
+
     const starttime = Date.now();
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
-        //console.log("error, refetch from nbackend");
         fetch("https://www.shopcard.site/route/rss/fetch", {
           method: "post",
           headers: {
@@ -62,7 +60,6 @@ export default function FindRSS(props) {
           body: JSON.stringify({ url: url }),
         }).then(function (response) {
           if (response.status !== 200) {
-            //console.log("sth goes wrong in backend ");
             notify_fail();
           } else {
             response.json().then((data) => {
@@ -120,10 +117,6 @@ export default function FindRSS(props) {
       <div className={styles.tagsImgWrapper}>
         <img src={addRSSImg} alt="" />
       </div>
-
-      {/* <div>https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA</div>
-      <div>https://medium.com/appworks-school</div>
-      <div>https://medium.com/@lindingchi</div> */}
     </div>
   );
 }

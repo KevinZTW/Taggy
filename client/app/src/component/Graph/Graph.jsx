@@ -140,10 +140,7 @@ export default function Graph() {
     for (let i = 0; i < combList.length; i++) {
       let combNumber = 0;
       articleList.forEach((article) => {
-        console.log(article);
         if (article.tags) {
-          console.log(article.tags);
-          console.log(combList[i][1]);
           if (
             article.tags.includes(combList[i][0].tagId) &&
             article.tags.includes(combList[i][1].tagId)
@@ -152,7 +149,6 @@ export default function Graph() {
           }
         }
       });
-      console.log(combNumber);
       links.push({
         source: combList[i][0].label,
         target: combList[i][1].label,

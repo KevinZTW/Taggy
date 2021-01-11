@@ -14,11 +14,9 @@ import {
 export default function Board(props) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.memberReducer.user);
-  console.log(user);
   const fetchRequired = useSelector(
     (state) => state.articleReducer.fetchRequired
   );
-  console.log(fetchRequired);
   const articleList = useSelector((state) => state.articleReducer.articleList);
   const lastQuery = useSelector((state) => state.articleReducer.lastQuery);
   useEffect(() => {
@@ -42,7 +40,7 @@ export default function Board(props) {
         db.collection("Articles")
           .orderBy("date", "desc")
           .where("uid", "==", userUid)
-          .limit(8)
+          .limit(30)
           .get()
           .then((snapshot) => {
             const tempArticleList = [...articleList];
@@ -73,24 +71,23 @@ export default function Board(props) {
     }
 
     if (user && fetchRequired) {
-      console.log("fetch start");
       batchFetchUserArticles(user.uid);
     }
   }, [fetchRequired, user]);
   let articleSnapshotInit = false;
   useEffect(() => {
-    console.log("her run!", articleSnapshotInit);
     let unsubscribe;
-    if (user && !articleSnapshotInit) {
+    if (user) {
       unsubscribe = db
         .collection("Articles")
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
-          console.log("snap shot change");
-          dispatch(RESETARTICLEFETCH());
+          if (articleSnapshotInit) {
+            dispatch(RESETARTICLEFETCH());
+          }
         });
+
       articleSnapshotInit = true;
-    } else if (articleSnapshotInit === true) {
     }
     return () => {
       if (typeof unsubscribe === "function") {
@@ -98,31 +95,6 @@ export default function Board(props) {
       }
     };
   }, [user]);
-  // useEffect(() => {
-  //   function checkArticleUpdate(uid) {
-  //     db.collection("Articles")
-  //       .orderBy("date", "desc")
-  //       .where("uid", "==", uid)
-  //       .onSnapshot(function (querySnapshot) {
-  //         const list = [];
-
-  //         querySnapshot.forEach(function (doc) {
-  //           list.push({
-  //             title: doc.data().title,
-  //             content: doc.data().markDown.slice(100, 200),
-  //             id: doc.data().id,
-  //             tags: doc.data().tags,
-  //             link: doc.data().link,
-  //             readerHtml: doc.data().readerHtml,
-  //           });
-  //         });
-  //         dispatch(INITARTICLE(list));
-  //       });
-  //   }
-  //   if (user) {
-  //     checkArticleUpdate(user.uid);
-  //   }
-  // }, [user]);
 
   return (
     <div className={styles.boardWrapper}>

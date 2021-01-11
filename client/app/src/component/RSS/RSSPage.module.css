@@ -2,6 +2,7 @@
   min-width: 80vw;
   background-color: #0e1622;
   padding-left: 40px;
+  padding-bottom: 50px;
   height: calc(100%);
   overflow: auto;
   z-index: 99999;

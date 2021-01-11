@@ -11,11 +11,9 @@ export default function MyRouter() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
       } else {
         if (location.pathname !== "/" && location.pathname !== "/signin") {
-          console.log(user);
           history.push("/signup");
         }
       }

@@ -22,17 +22,6 @@ const group_Reducer = (
         groupId: action.groupId,
         groupName: action.groupName,
       };
-    // case "INITGROUPARTICLE":
-    //   return {
-    //     ...state,
-
-    //     articleList: action.articleList,
-    //   };
-    // case "SWITCHGROUPARTICLE":
-    //   return {
-    //     ...state,
-    //     tagSelected: action.tagSelected,
-    //   };
 
     default:
       return state;

@@ -3,6 +3,7 @@
   color: #b2b2b2;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 100px;
 }
 .board {
   padding-left: 10px;
@@ -80,10 +81,19 @@
 }
 @media (max-device-width: 640px) {
   .box {
-    display: flex;
+    justify-content: center;
+
+    padding-right: 0px;
+    padding-bottom: 16px;
   }
+  .boxImg {
+    min-width: 120px;
+  }
+  .boxImg > img {
+    width: 100%;
+  }
+
   .board {
-    margin-left: 50px;
   }
   .boxWrapper {
     flex-direction: column;

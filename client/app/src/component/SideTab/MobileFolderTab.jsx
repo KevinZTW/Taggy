@@ -52,7 +52,6 @@ export default function FolderTab(props) {
   const [addFolderInput, setAddFolderInput] = useState("");
 
   const articleFolders = useSelector((state) => {
-    //console.log(state);
     return state.articleReducer.articleFolders;
   });
 
@@ -61,7 +60,6 @@ export default function FolderTab(props) {
   });
   function onDragEnd(result) {
     const { destination, source } = result;
-    //console.log(result);
 
     if (!destination) {
       return;
@@ -71,40 +69,29 @@ export default function FolderTab(props) {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
-      //console.log("nothing should happended");
       return;
     }
     if (destination.droppableId === source.droppableId) {
-      //console.log("move inside same folder");
       const newArticleFolders = [...articleFolders];
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          //console.log("hihi");
           const newTags = [...folder.tags];
           const moveItem = { ...newTags[source.index] };
-          //console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
-          //console.log(newTags);
           folder.tags = newTags;
           const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
         }
       });
       dispatch(INITARTICLEFOLDERS(newArticleFolders));
-
-      //console.log(destination.index, source.index);
-      //console.log(source.droppableId);
-      //console.log(destination.droppableId);
     }
     if (destination.droppableId !== source.droppableId) {
-      //console.log("move to another folder");
       const newArticleFolders = [...articleFolders];
       let moveItem;
       newArticleFolders.forEach((folder) => {
@@ -117,7 +104,6 @@ export default function FolderTab(props) {
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(source.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -133,7 +119,6 @@ export default function FolderTab(props) {
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -144,13 +129,11 @@ export default function FolderTab(props) {
   }
 
   useEffect(() => {
-    //console.log(tabChange);
     function getArticleFolders() {
       if (user) {
         app.article
           .getMemberTagFoldersDetail(user.uid)
           .then((articleFolders) => {
-            //console.log(articleFolders);
             dispatch(INITARTICLEFOLDERS(articleFolders));
 
             return articleFolders;
@@ -159,14 +142,11 @@ export default function FolderTab(props) {
             const tempFolderList = [];
             for (let i = 0; i < articleFolders.length; i++) {
               const tags = await app.getMemberFolderTags(articleFolders[i].id);
-              //console.log(tags);
               tempFolderList.push({ ...articleFolders[i], tags: tags });
             }
-            //console.log(tempFolderList);
             return tempFolderList;
           })
           .then((newFolder) => {
-            //console.log(newFolder);
             dispatch(INITARTICLEFOLDERS(newFolder));
           });
       }
@@ -195,10 +175,6 @@ export default function FolderTab(props) {
                     <div className={styles.labelTitle}>{folders[i].name}</div>
                   </div>
                 }
-                onClick={() => {
-                  //console.log(folders[i].id);
-                  // dispatch(SWITCHARTICLE(folders[i].id));
-                }}
               >
                 <Folder
                   user={user}
@@ -236,7 +212,6 @@ export default function FolderTab(props) {
       });
   }
   const articleFolderList = showArticleFolders(articleFolders);
-  // const allTabList = showTabTreeList(tabs);
 
   return (
     <div className={styles.mobileFolderTabWrapper}>
@@ -266,7 +241,6 @@ export default function FolderTab(props) {
             <div
               className={styles.keyTitleWrapper}
               onClick={() => {
-                //console.log("all");
                 dispatch(SWITCHARTICLE("all"));
               }}
             >

@@ -1,25 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
 import styles from "./RSSCard.module.css";
-import { db } from "../../firebase.js";
 import Highlighter from "react-highlight-words";
 import placeholderImg from "../../imgs/place_holder_img.png";
 export default function RSSCard(props) {
   const [image, setImage] = useState(false);
-  //console.log(props.item);
-  function deleteRSS(RSSID) {
-    db.collection("RSSItem")
-      .where("RSSId", "==", RSSID)
-      .get()
-      .then((snapShot) => {
-        snapShot.forEach((item) => {
-          //console.log(item.data());
-          item.ref.delete();
-        });
-      });
-  }
-  // deleteRSS("TgCy1JeefV4chebgB7JD");
+
   var elem = document.createElement("div");
   elem.innerHTML = props.item.content;
   let src;
@@ -33,7 +19,6 @@ export default function RSSCard(props) {
   const showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
   useEffect(() => {
-    //console.log(src);
     const image = new Image();
     image.src = src;
     image.onload = () => {

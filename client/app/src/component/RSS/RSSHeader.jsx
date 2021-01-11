@@ -13,12 +13,7 @@ export default function RSSHeader(props) {
       <button
         class={styles.signOut}
         onClick={() => {
-          auth
-            .signOut()
-            .then(() => //console.log("user successfully sign out"))
-            .catch((err) => {
-              //console.log(err);
-            });
+          auth.signOut();
         }}
       >
         Sign out

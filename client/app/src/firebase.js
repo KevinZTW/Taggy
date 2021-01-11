@@ -1,8 +1,6 @@
 import firebase from "firebase/app";
-// If you enabled Analytics in your project, add the Firebase SDK for Analytics
 import "firebase/analytics";
 import { useHistory } from "react-router-dom";
-// Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
 var app = firebase.initializeApp({
@@ -25,7 +23,6 @@ export function CheckFirebaseUserStatus(direct, getUserData) {
   const history = useHistory();
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(user);
       if (getUserData) {
         getUserData({
           uid: user.uid,
@@ -35,7 +32,6 @@ export function CheckFirebaseUserStatus(direct, getUserData) {
         });
       }
     } else {
-      console.log("no user, redirect to sign up");
       history.push(direct);
     }
   });

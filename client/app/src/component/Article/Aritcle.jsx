@@ -85,8 +85,6 @@ export default function Article() {
     }
   }, [id, user]);
   function handleChange(newValue, actionMeta) {
-    console.log(newValue);
-    console.log(actionMeta.removedValue);
     switch (actionMeta.action) {
       case "select-option":
         app.inputTag(id, user.uid, actionMeta.option.label);
@@ -206,7 +204,6 @@ export default function Article() {
       });
   }
   function findTextAddSpan(targetText, hightLightId, tempRenderArticle) {
-    console.warn(targetText);
     var encodedText = targetText.replace("&", "&amp;");
     const indexStart = tempRenderArticle.indexOf(encodedText);
     const indexEnd = indexStart + targetText.length;
@@ -233,7 +230,6 @@ export default function Article() {
         );
       });
     });
-    console.error(renderArticle.search("<span class=highLighter"));
 
     setHighLights(highLight);
     setRenderArticle(tempRenderArticle);
@@ -262,41 +258,33 @@ export default function Article() {
         highLighting(dom, highLightId);
 
         function highLighting(dom, highLightId) {
-          //整體
           if ([...dom.children][0]) {
-            //有 child 的情況
             [...dom.children].forEach((child) => {
               highLighting(child, highLightId);
             });
-            //child 以外的部分
+
             const father = dom.textContent;
 
             const firstChildIndex = father.indexOf(
               [...dom.children][0].textContent
             );
-            // father head
             let fatherHead = father.substr(0, firstChildIndex);
-            // father tail
+
             let fatherTail = father.substr(firstChildIndex, father.length);
 
             [...dom.children].forEach((child) => {
               fatherHead = fatherHead.replace(child.textContent, "");
               fatherTail = fatherTail.replace(child.textContent, "");
             });
-            console.error("來處理", fatherHead);
             findTextAddSpan(fatherHead, highLightId);
-            console.error("來處理", fatherTail);
             findTextAddSpan(fatherTail, highLightId);
           } else {
-            //沒有的情況
             const father = dom.textContent;
-            console.error("來處理", father);
             findTextAddSpan(father, highLightId);
           }
         }
 
         function findTextAddSpan(targetText, hightLightId) {
-          console.warn(targetText);
           var encodedText = targetText.replace("&", "&amp;");
           const indexStart = tempRenderArticle.indexOf(encodedText);
           const indexEnd = indexStart + targetText.length;
@@ -351,12 +339,10 @@ export default function Article() {
       .replaceAll(`<span class=highLighter data-id="${id}">`, "")
       .replaceAll(`</span><input z="${id}">`, "");
 
-    //remove highLight state
     const tempHighLight = highLights.filter((item) => {
       return item.id !== id;
     });
 
-    //remove hightLight from db
     db.collection("Articles").doc(articleId).update({
       highLight: tempHighLight,
     });
@@ -406,7 +392,6 @@ export default function Article() {
                 <ChromeReaderModeOutlinedIcon
                   style={{ color: "#FFFCEC" }}
                   onClick={() => {
-                    //console.log("hihi");
                     setShowNote(false);
                   }}
                 />
@@ -418,7 +403,6 @@ export default function Article() {
                 <ChromeReaderModeIcon
                   className={styles.Icon}
                   onClick={() => {
-                    //console.log("hihi");
                     setShowNote(true);
                   }}
                 />
@@ -473,9 +457,6 @@ export default function Article() {
               }}
               value={note}
               onChange={(e, a, source) => {
-                //console.log(source);
-                //console.log(e);
-                //console.log(note);
                 if (source === "user") {
                   uploadNote(e);
                 }

@@ -31,22 +31,7 @@ export default function Board(props) {
   const groupName = useSelector((state) => {
     return state.groupReducer.groupName;
   });
-  // const memebrList = getMembers();
-  // function getMembers() {
-  //   let memberList = [];
-  //   return db
-  //     .collection("Member")
-  //     .get()
-  //     .then((snapShot) => {
-  //       sn;
-  //       memberList.push({
-  //         email: doc.data().emil,
-  //         uid: doc.data().uid,
-  //         password: doc.data().password,
-  //       });
-  //       return memberList;
-  //     });
-  // }
+
   useEffect(() => {
     function checkArticleUpdate(uid) {
       db.collection("Articles")
@@ -64,7 +49,6 @@ export default function Board(props) {
               readerHtml: doc.data().readerHtml,
             });
           });
-          //console.log(list);
           dispatch(ADDFETCHARTICLE(list));
         });
     }
@@ -98,10 +82,8 @@ export default function Board(props) {
   function handleChange(input) {
     if (input !== "") {
       const filteredMemberList = memberList.filter((member) => {
-        //console.log(member);
         return member.email.includes(input);
       });
-      //console.log(filteredMemberList);
       setFilteredMemberList(filteredMemberList);
     }
   }
@@ -157,7 +139,6 @@ export default function Board(props) {
           className={styles.memberWrapper}
           id={member.uid}
           onClick={(e) => {
-            //console.log(e.currentTarget);
             addMemberToGroup(e.currentTarget.id, groupId);
           }}
         >
@@ -197,10 +178,8 @@ export default function Board(props) {
   const articleList = useSelector((state) => {
     return state.articleReducer.articleList;
   });
-  //console.log(articleList);
   const searchResult = renderSearchResult(filteredMemberList);
-  //console.log(searchResult);
-  //console.log(filteredMemberList);
+
   return (
     <div
       className={styles.boardWrapper}
@@ -218,7 +197,6 @@ export default function Board(props) {
             onClick={(e) => {
               e.stopPropagation();
               setAddMember(true);
-              //console.log(addMember);
             }}
           />
           {addMember ? (
@@ -241,11 +219,10 @@ export default function Board(props) {
                 <input
                   type="text"
                   onChange={(e) => {
-                    //console.log(e.target.value);
                     if (e.target.value === "") {
                       setFilteredMemberList([]);
                     }
-                    //console.log("hihi");
+
                     handleChange(e.target.value);
                   }}
                 />

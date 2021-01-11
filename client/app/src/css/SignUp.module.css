@@ -30,7 +30,8 @@
   width: 3rem;
 }
 .logoWrapper img {
-  width: 100%;
+  width: 3rem;
+  height: 3rem;
 }
 .logInWrapper {
   margin-left: auto;
@@ -126,4 +127,13 @@
   border: none;
   border-radius: 5px;
   margin-bottom: 1rem;
+}
+@media (max-width: 632px) {
+  .wrapper {
+    padding: 1rem;
+  }
+  .block {
+    width: 100%;
+    margin: 0;
+  }
 }

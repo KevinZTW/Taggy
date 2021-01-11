@@ -47,14 +47,7 @@ const GETRSSRESPONSE = (feed, url) => {
   };
 };
 
-// const INITRSS = (articleList) => {
-//   return {
-//     type: "INITRSS",
-//     articleList: articleList,
-//   };
-// };
 const SWITCHRSS = (ChannelRSSId) => {
-  //console.log("hihi");
   return {
     type: "SWITCHRSS",
     ChannelRSSId: ChannelRSSId,
@@ -90,21 +83,7 @@ const SWITCHGROUPSELECT = (groupId, groupName) => {
   };
 };
 
-// const INITGROUPARTICLE = (articleList) => {
-//   return {
-//     type: "INITGROUPARTICLE",
-//     articleList: articleList,
-//   };
-// };
-// const SWITCHGROUPARTICLE = (tag) => {
-//   return {
-//     type: "SWITCHGROUPARTICLE",
-//     tagSelected: tag,
-//   };
-// };
-
 export {
-  // SWITCHGROUPARTICLE,
   ADDFETCHARTICLE,
   SWITCHARTICLEFETCH,
   SWITCHRSS,

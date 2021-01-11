@@ -1,6 +1,3 @@
-//reducer
-import { nanoid } from "nanoid";
-
 const RSS_Reducer = (state = { feed: {}, ChannelRSSId: "all" }, action) => {
   switch (action.type) {
     case "GETRSSRESPONSE":

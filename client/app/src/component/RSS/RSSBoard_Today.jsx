@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { app } from "../../lib/lib.js";
-import { useSelector } from "react-redux";
 import { RSSChannelList } from "./RSSBoard_Today_RSSList";
 import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
@@ -91,6 +90,7 @@ const Board = function (props) {
       for (const i in feedItems) {
         feedList.push(
           <RSSCard
+            key={feedItems[i].id}
             item={feedItems[i]}
             onClick={(e) => {
               setShowPage(true);

@@ -34,7 +34,6 @@ export default function AddArticle(props) {
       method: "post",
       headers: {
         "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(data),
     })
@@ -56,12 +55,7 @@ export default function AddArticle(props) {
       });
   }
   return (
-    <div
-      className={styles.addArticle}
-      onClick={(e) => {
-        // e.preventDefault();
-      }}
-    >
+    <div className={styles.addArticle}>
       <div className={styles.title}>Import article </div>
       <div className={styles.description}>
         Enter the url, we would clip and save the website content

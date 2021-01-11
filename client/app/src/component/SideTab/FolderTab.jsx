@@ -9,13 +9,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useSelector } from "react-redux";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
-import { Link } from "react-router-dom";
 import CreateNewFolderOutlinedIcon from "@material-ui/icons/CreateNewFolderOutlined";
-import MarkunreadIcon from "@material-ui/icons/Markunread";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
-import SettingsIcon from "@material-ui/icons/Settings";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
 import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import { app } from "../../lib/lib.js";
 import AddArticle from "../AddArticle";
@@ -25,7 +20,6 @@ import { db } from "../../firebase.js";
 import firebase from "firebase/app";
 import Tooltip from "@material-ui/core/Tooltip";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import DescriptionIcon from "@material-ui/icons/Description";
 import Folder from "./Folder";
 import addTagFolderImg from "../../imgs/add_new_folder.png";
 const CustomTooltip = withStyles((theme) => ({
@@ -63,7 +57,6 @@ export default function FolderTab() {
   const [addFolderInput, setAddFolderInput] = useState("");
 
   const articleFolders = useSelector((state) => {
-    //console.log(state);
     return state.articleReducer.articleFolders;
   });
 
@@ -84,23 +77,18 @@ export default function FolderTab() {
       return;
     }
     if (destination.droppableId === source.droppableId) {
-      //console.log("move inside same folder");
       const newArticleFolders = [...articleFolders];
       newArticleFolders.forEach((folder) => {
         if (folder.id === destination.droppableId) {
-          //console.log("hihi");
           const newTags = [...folder.tags];
           const moveItem = { ...newTags[source.index] };
-          //console.log(moveItem);
           newTags.splice(source.index, 1);
           newTags.splice(destination.index, 0, moveItem);
-          //console.log(newTags);
           folder.tags = newTags;
           const firestoreTagArr = [];
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          //console.log(firestoreTagArr);
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -136,7 +124,7 @@ export default function FolderTab() {
           newTags.forEach((tag) => {
             firestoreTagArr.push(tag.id);
           });
-          //console.log(firestoreTagArr);
+
           db.collection("articleFolders").doc(destination.droppableId).update({
             tags: firestoreTagArr,
           });
@@ -148,7 +136,6 @@ export default function FolderTab() {
 
   useEffect(() => {
     function getArticleFolders() {
-      console.log("getarticle fodler");
       if (user) {
         app.article
           .getMemberTagFoldersDetail(user.uid)
@@ -161,14 +148,13 @@ export default function FolderTab() {
             const tempFolderList = [];
             for (let i = 0; i < articleFolders.length; i++) {
               const tags = await app.getMemberFolderTags(articleFolders[i].id);
-              //console.log(tags);
+
               tempFolderList.push({ ...articleFolders[i], tags: tags });
             }
-            //console.log(tempFolderList);
+
             return tempFolderList;
           })
           .then((newFolder) => {
-            //console.log(newFolder);
             dispatch(INITARTICLEFOLDERS(newFolder));
           });
       }
@@ -234,7 +220,6 @@ export default function FolderTab() {
       });
   }
   const articleFolderList = showArticleFolders(articleFolders);
-  // const allTabList = showTabTreeList(tabs);
 
   return (
     <div className={styles.folderTabWrapper}>
@@ -264,7 +249,6 @@ export default function FolderTab() {
           <div
             className={styles.keyTitleWrapper}
             onClick={() => {
-              //console.log("all");
               dispatch(SWITCHARTICLE("all"));
             }}
           >

@@ -21,8 +21,6 @@ import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 import MobileFunctionTab from "./SideTab/MobileFunctionTab";
 import MobileBurger from "./SideTab/Mobile_Burger";
-//React.Memo
-//state prop dispatch history
 function App() {
   return (
     <Router>

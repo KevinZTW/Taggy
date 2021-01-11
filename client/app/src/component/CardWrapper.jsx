@@ -5,11 +5,9 @@ export default function CardWrapper() {
   const tagSelected = useSelector((state) => {
     return state.articleReducer.tagSelected;
   });
-  console.log(tagSelected);
   const articleList = useSelector((state) => {
     return state.articleReducer.articleList;
   });
-  console.log(articleList);
   const list = [];
   if (tagSelected === "all") {
     for (const i in articleList) {

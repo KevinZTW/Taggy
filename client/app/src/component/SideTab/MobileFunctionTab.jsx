@@ -14,7 +14,6 @@ export default function FunctionTab(props) {
         <div className={styles.mobileIconWrapper}>
           <Link to={"/home"}>
             <TrendingUpOutlinedIcon
-              fontSize="medium"
               style={
                 props.focus === "home"
                   ? { color: "#FFFFFF" }
@@ -25,7 +24,6 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/home/channels"}>
             <ExploreOutlinedIcon
-              fontSize="medium"
               style={
                 props.focus === "channels"
                   ? { color: "#FFFFFF" }
@@ -36,7 +34,6 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/home/myfeeds"}>
             <RssFeedIcon
-              fontSize="medium"
               onClick={() => {
                 dispatch(SWITCHRSS("all"));
               }}
@@ -50,7 +47,6 @@ export default function FunctionTab(props) {
           </Link>
           <Link to={"/board"}>
             <BookmarkBorderIcon
-              fontSize="medium"
               style={
                 props.focus === "board"
                   ? { color: "#FFFFFF" }

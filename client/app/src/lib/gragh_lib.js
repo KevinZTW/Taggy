@@ -3,7 +3,7 @@ import { app } from "./lib.js";
 app.getGraphData = function (uid) {
   return new Promise(async (resolve) => {
     const memberTags = await app.getMemberTags(uid);
-    //console.log("2");
+
     resolve(memberTags);
   });
 };
@@ -13,7 +13,6 @@ app.initGraphData = function (uid) {
     app
       .getGraphData(uid)
       .then((memberTags) => {
-        //console.log(memberTags);
         const nodes = [];
         memberTags.forEach((tag) => {
           nodes.push({

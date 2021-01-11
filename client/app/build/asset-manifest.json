@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.7fd64ddb.chunk.css",
-    "main.js": "/static/js/main.99ffd74c.chunk.js",
-    "main.js.map": "/static/js/main.99ffd74c.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.3c2aebff.js",
-    "runtime-main.js.map": "/static/js/runtime-main.3c2aebff.js.map",
+    "main.css": "/static/css/main.679e5c96.chunk.css",
+    "main.js": "/static/js/main.9a36620a.chunk.js",
+    "main.js.map": "/static/js/main.9a36620a.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.f839d069.js",
+    "runtime-main.js.map": "/static/js/runtime-main.f839d069.js.map",
     "static/css/2.2655ce4e.chunk.css": "/static/css/2.2655ce4e.chunk.css",
-    "static/js/2.5732fb51.chunk.js": "/static/js/2.5732fb51.chunk.js",
-    "static/js/2.5732fb51.chunk.js.map": "/static/js/2.5732fb51.chunk.js.map",
-    "static/js/3.99ce87d0.chunk.js": "/static/js/3.99ce87d0.chunk.js",
-    "static/js/3.99ce87d0.chunk.js.map": "/static/js/3.99ce87d0.chunk.js.map",
+    "static/js/2.274287ab.chunk.js": "/static/js/2.274287ab.chunk.js",
+    "static/js/2.274287ab.chunk.js.map": "/static/js/2.274287ab.chunk.js.map",
+    "static/js/3.0fc05ecc.chunk.js": "/static/js/3.0fc05ecc.chunk.js",
+    "static/js/3.0fc05ecc.chunk.js.map": "/static/js/3.0fc05ecc.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.2655ce4e.chunk.css.map": "/static/css/2.2655ce4e.chunk.css.map",
-    "static/css/main.7fd64ddb.chunk.css.map": "/static/css/main.7fd64ddb.chunk.css.map",
-    "static/js/2.5732fb51.chunk.js.LICENSE.txt": "/static/js/2.5732fb51.chunk.js.LICENSE.txt",
+    "static/css/main.679e5c96.chunk.css.map": "/static/css/main.679e5c96.chunk.css.map",
+    "static/js/2.274287ab.chunk.js.LICENSE.txt": "/static/js/2.274287ab.chunk.js.LICENSE.txt",
     "static/media/add_RSS_feed.d8624271.png": "/static/media/add_RSS_feed.d8624271.png",
     "static/media/add_RSS_folder.cd8ea9e4.png": "/static/media/add_RSS_folder.cd8ea9e4.png",
     "static/media/add_new_folder.ee2346c2.png": "/static/media/add_new_folder.ee2346c2.png",
@@ -25,10 +25,10 @@
     "static/media/undraw_team.3cf994a5.svg": "/static/media/undraw_team.3cf994a5.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.3c2aebff.js",
+    "static/js/runtime-main.f839d069.js",
     "static/css/2.2655ce4e.chunk.css",
-    "static/js/2.5732fb51.chunk.js",
-    "static/css/main.7fd64ddb.chunk.css",
-    "static/js/main.99ffd74c.chunk.js"
+    "static/js/2.274287ab.chunk.js",
+    "static/css/main.679e5c96.chunk.css",
+    "static/js/main.9a36620a.chunk.js"
   ]
 }

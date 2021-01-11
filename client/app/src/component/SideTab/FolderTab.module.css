@@ -50,6 +50,7 @@
   font-weight: 700;
   letter-spacing: 0.28px;
   line-height: 32px;
+  cursor: pointer;
 }
 .titleWrapper {
   font-size: 14px;

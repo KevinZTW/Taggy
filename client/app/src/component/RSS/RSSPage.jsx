@@ -33,13 +33,9 @@ export default function RSSPage({ item, onClick }) {
       return response.json();
     }
     function setFeedTagRecommend(data) {
-      console.log(data);
       setTagRecoms(data);
     }
-    console.log(item, newItem);
     if (item || newItem) {
-      console.log("send request");
-      console.log();
       getFeedTagsRecommend(newItem.FeedId || item.id || item.FeedId).then(
         setFeedTagRecommend
       );
@@ -50,7 +46,6 @@ export default function RSSPage({ item, onClick }) {
     const tagChips = [];
     if (tags) {
       tags.forEach((tag) => {
-        console.log(tag);
         tagChips.push(
           <Chip
             size="small"
@@ -71,13 +66,11 @@ export default function RSSPage({ item, onClick }) {
     const moreFeeds = [];
     if (feeds) {
       feeds.forEach((feed) => {
-        console.log(feed);
         moreFeeds.push(
           <RSSCard
             item={feed}
             onClick={() => {
               setNewItem(feed);
-              console.log("hihihihi");
               document
                 .querySelector("#RSSPage")
                 [`scrollTo`]({ top: 0, behavior: `smooth` });
@@ -151,12 +144,10 @@ export default function RSSPage({ item, onClick }) {
           return;
         }
         response.json().then(function (data) {
-          //console.log(data);
           notify_success();
         });
       })
       .catch(function (err) {
-        //console.log("Fetch Error :-S", err);
         notify_fail();
       });
   }

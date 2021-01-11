@@ -1,10 +1,9 @@
 import SearchIcon from "@material-ui/icons/Search";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import SearchRSS from "./SearchRSS";
-import { db } from "../../firebase.js";
+
 import RSSCard from "./RSSCard";
-// import { INITARTICLE } from "../../redux/actions";
 import styles from "./RSSBoard.module.css";
 
 import RSSPage from "./RSSPage";
@@ -13,15 +12,8 @@ export default function Board(props) {
   const [showPage, setShowPage] = useState(false);
   const [showChannelPage, setShowChannelPage] = useState(false);
   const [feedItem, setFeedItem] = useState("");
-  const dispatch = useDispatch();
-  //console.log("rerender");
-  const user = useSelector((state) => {
-    return state.memberReducer.user;
-  });
 
   function renderFeedPage(feedItem) {
-    //console.log("redner run again");
-    //console.log(feedItem);
     return (
       <RSSPage
         highLight={searchFeed.title}
@@ -33,14 +25,7 @@ export default function Board(props) {
     );
   }
 
-  const ChannelRSSId = useSelector((state) => {
-    //console.log("hihi");
-    return state.RSSReducer.ChannelRSSId;
-  });
-  //console.log("rerender channelid is ", ChannelRSSId);
-
   const searchFeed = useSelector((state) => {
-    //console.log(state.RSSReducer.feed);
     return state.RSSReducer.feed;
   });
 
@@ -52,7 +37,6 @@ export default function Board(props) {
           highLight={feed.title}
           item={feed.items[i]}
           onClick={(e) => {
-            //console.log("hihi");
             setShowPage(true);
             setFeedItem(feed.items[i]);
           }}
@@ -70,7 +54,6 @@ export default function Board(props) {
           />
           <h1 className={styles.title}>{feed.title}</h1>
         </div>
-        {/* <div dangerouslySetInnerHTML={{ __html: feed.description }}></div> */}
 
         {feedList}
       </div>

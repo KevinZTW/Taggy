@@ -20,7 +20,7 @@ export default function RSSBoardExplore(props) {
   const search = location.search;
   const params = new URLSearchParams(search);
   const channelId = params.get("channelId");
-  //console.log(channelId);
+
   return (
     <div className={styles.boardWrapper}>
       {!channelId ? (

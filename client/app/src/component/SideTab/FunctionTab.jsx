@@ -2,8 +2,7 @@ import styles from "./FunctionTab.module.css";
 import Tooltip from "@material-ui/core/Tooltip";
 import logo from "../../imgs/taggy_logo_3x.png";
 import { Link } from "react-router-dom";
-import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import InsertChartIcon from "@material-ui/icons/InsertChart";
+
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
 import { auth } from "../../firebase.js";
@@ -11,11 +10,9 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
-import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
-
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { SWITCHARTICLE, INITARTICLEFOLDERS } from "../../redux/actions";
+import { SWITCHARTICLE } from "../../redux/actions";
 export default function FunctionTab(props) {
   const dispatch = useDispatch();
   const CustomTooltip = withStyles((theme) => ({
