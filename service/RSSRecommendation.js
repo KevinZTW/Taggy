@@ -199,5 +199,3 @@ export async function setFeedsKeyWord() {
     console.log("feed with tag ratio", feedwithtag / totatlfeed);
   });
 }
-// setKeyWords();
-// setFeedsKeyWord();

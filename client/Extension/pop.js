@@ -8,33 +8,6 @@ app.Init = () => {
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
       app.user.uid = user.uid;
-      // app.user.boards = await app.getMemberGroup(user.uid);
-      // let boards = app.user.boards;
-      // let selectOption = document.querySelector(".selectOption");
-
-      // function createMyBoard() {
-      //   let item = document.createElement("div");
-      //   item.textContent = "My Board";
-      //   item.setAttribute("id", user.uid);
-      //   item.setAttribute("class", "option");
-      //   item.addEventListener("click", () => {
-      //     app.addSelect(user.uid, "My Board");
-      //     app.target.push(user.uid);
-      //   });
-      //   selectOption.appendChild(item);
-      // }
-      // createMyBoard();
-      // boards.forEach((board) => {
-      //   let item = document.createElement("div");
-      //   item.textContent = board.name;
-      //   item.setAttribute("id", board.id);
-      //   item.setAttribute("class", "option");
-      //   item.addEventListener("click", () => {
-      //     app.addSelect(board.id, board.name);
-      //     app.target.push(board.id);
-      //   });
-      //   selectOption.appendChild(item);
-      // });
     } else {
       window.location.replace("./signIn.html");
     }
@@ -44,7 +17,6 @@ document.querySelector(".signout").addEventListener("click", () => {
   firebase.auth().signOut();
 });
 let save = document.querySelector(".save");
-// let fullPageContent = document.querySelector("html");
 
 save.addEventListener("click", () => {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {

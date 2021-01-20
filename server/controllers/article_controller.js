@@ -31,16 +31,6 @@ const getArticle = function (uid, url) {
         console.log("converted 內容", converted[0], converted[1], converted[2]);
         addArticle(uid, converted[0], converted[1], converted[2], url);
       });
-
-      // fs.writeFile(
-      //   __dirname + "/../articles/after.html",
-      //   article.content,
-      //   function (err) {
-      //     if (err) {
-      //       return console.log(err);
-      //     }
-      //   }
-      // );
     })
     .catch((error) => {
       console.log(error);

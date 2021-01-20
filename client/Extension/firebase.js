@@ -27,15 +27,4 @@ chrome.tabs.onActivated.addListener((tab) =>
 
 chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
   console.log("back get the message");
-  // db.collection("Pages")
-  //   .add({
-  //     title: title,
-  //     content: request.message,
-  //   })
-  //   .then(function () {
-  //     console.log("Document successfully written!");
-  //   })
-  //   .catch(function (error) {
-  //     console.error("Error writing document: ", error);
-  //   });
 });

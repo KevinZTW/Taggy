@@ -2,11 +2,6 @@ import RedisCluster from "redis-clustr";
 import redis from "redis";
 import { promisify } from "util";
 
-// const client = redis.createClient(
-//   "6379",
-//   "redis-taggy.vrv55k.clustercfg.apne1.cache.amazonaws.com"
-// );
-
 const client = new RedisCluster({
   servers: [
     {
@@ -26,7 +21,7 @@ const setFeedTagsCache = (feedId, feedTags) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(reply); // 新增成功會回傳 ok
+      console.log(reply);
     }
   });
 };
@@ -39,8 +34,6 @@ const getFeedTagsCache = (feedId) => {
     })
     .catch(console.error);
 };
-
-// setFeedTagsCache("111", { kaevin: "werwe", www: "erwer" });
 
 export const cache = {
   setFeedTagsCache: setFeedTagsCache,
