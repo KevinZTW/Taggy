@@ -225,6 +225,7 @@ export default function GroupFolderTab() {
     } else if (user) {
       memberGroupInit(user).then((groups) => {});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, tabChange]);
 
   function addArticleFolder(name, uid) {

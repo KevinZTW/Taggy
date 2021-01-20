@@ -10,6 +10,7 @@ export default function MyRouter() {
   const history = useHistory();
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
+      console.log("auth state changer");
       if (user) {
         dispatch(SETMEMBER(user.uid, user.displayName, user.email));
       } else {

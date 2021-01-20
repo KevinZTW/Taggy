@@ -26,13 +26,14 @@ export default function GraphBoard() {
     if (user) {
       checkArticleUpdate(user.uid);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
   return (
     <div className={styles.graphBoardWrapper}>
       <div className={styles.boardWrapper}>
         <div className={styles.title}>Graph View</div>
         <div className={styles.description}>
-          Review your knowledge by clicking the tag dot!{" "}
+          Review your knowledge by clicking the tag dot!
         </div>
 
         <CardWrapper />

@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import importArticleImg from "../imgs/import_article.png";
-import { useHistory, useLocation } from "react-router-dom";
+
 export default function AddArticle(props) {
-  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [reqUrl, setReqUrl] = useState("");
   const user = useSelector((state) => {

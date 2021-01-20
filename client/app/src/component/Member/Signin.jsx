@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import logo from "../../imgs/taggy_logo_1x.png";
 import { useHistory } from "react-router-dom";
 import "../../css/App.css";
@@ -50,8 +50,6 @@ export default function Signup() {
             })
             .then(history.push("home"))
             .catch((error) => {
-              var errorCode = error.code;
-              var errorMessage = error.message;
               notify_fail();
             });
         } else {
@@ -73,9 +71,7 @@ export default function Signup() {
       .then((user) => {
         history.push("/home");
       })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
+      .catch(() => {
         notify_fail();
       });
   }
@@ -98,7 +94,7 @@ export default function Signup() {
         </Link>
       </div>
       <div className={styles.blockWrapper}>
-        <div className="block" className={styles.block}>
+        <div className="block">
           <h2 className={styles.title}>Login</h2>
           <form
             className={styles.form}

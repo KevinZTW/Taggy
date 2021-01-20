@@ -14,10 +14,6 @@ export default function Graph() {
   });
 
   const [data, setData] = useState({});
-  function color() {
-    const scale = d3.scaleOrdinal(d3.schemeCategory10);
-    return (d) => scale(d.group);
-  }
   function drag(simulation) {
     function dragstarted(event) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -45,7 +41,6 @@ export default function Graph() {
 
   const ref = useD3(
     (svg) => {
-      let id;
       const height = 800;
       const width = 1000;
       svg.selectAll("*").remove();
@@ -92,6 +87,7 @@ export default function Graph() {
           .attr("stroke-width", 0.2)
           .attr("stroke", "white")
           .attr("fill", "white")
+          .style("cursor", "pointer")
           .attr("id", (d) => d.tagId)
           .on("click", (a) => {
             d3.select(this).style("stroke", "yellow");
@@ -168,10 +164,11 @@ export default function Graph() {
         .then((memberTags) => {
           const links = combInit(memberTags);
           const nodes = [];
+
           memberTags.forEach((tag) => {
             nodes.push({
               id: tag.value,
-              tagId: tag.id,
+              tagId: tag.tagId,
             });
           });
           return [nodes, links];
@@ -190,6 +187,7 @@ export default function Graph() {
         setData(data);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, articleList]);
   return (
     <div className={styles.graphWrapper}>

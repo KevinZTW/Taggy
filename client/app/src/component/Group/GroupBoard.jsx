@@ -2,29 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../firebase.js";
 import CardWrapper from "../CardWrapper.jsx";
-import dispatch from "react-redux";
 import styles from "./GroupBoard.module.css";
 import { ADDFETCHARTICLE } from "../../redux/actions";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EditIcon from "@material-ui/icons/Edit";
-import AddArticle from "../AddArticle";
 import firebase from "firebase/app";
-import teamImg from "../../imgs/undraw_team.svg";
 import team_img from "../../imgs/undraw_team.svg";
-import { render } from "react-dom";
 import CloseIcon from "@material-ui/icons/Close";
 
 export default function Board(props) {
   const dispatch = useDispatch();
   const [memberList, setMemberList] = useState([]);
   const [filteredMemberList, setFilteredMemberList] = useState([]);
-  const [memberEmailList, setMemberEmailList] = useState([]);
 
   const [addMember, setAddMember] = useState(false);
 
-  const user = useSelector((state) => {
-    return state.memberReducer.user;
-  });
   const groupId = useSelector((state) => {
     return state.groupReducer.groupId;
   });
@@ -55,6 +47,7 @@ export default function Board(props) {
     if (groupId) {
       checkArticleUpdate(groupId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
 
   useEffect(() => {
@@ -62,7 +55,7 @@ export default function Board(props) {
     function getLatestMemberList() {
       unsubscribe = db.collection("Member").onSnapshot((snapshot) => {
         const memberList = [];
-        const memberEmailList = [];
+
         snapshot.forEach((doc) => {
           memberList.push({
             displayname: doc.data().displaynamename,

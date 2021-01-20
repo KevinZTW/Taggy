@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useLocation } from "react-router-dom";
 import BorderColorOutlinedIcon from "@material-ui/icons/BorderColorOutlined";
 import Tooltip from "@material-ui/core/Tooltip";

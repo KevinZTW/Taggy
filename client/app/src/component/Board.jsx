@@ -40,7 +40,7 @@ export default function Board(props) {
         db.collection("Articles")
           .orderBy("date", "desc")
           .where("uid", "==", userUid)
-          .limit(30)
+          .limit(10)
           .get()
           .then((snapshot) => {
             const tempArticleList = [...articleList];
@@ -73,21 +73,23 @@ export default function Board(props) {
     if (user && fetchRequired) {
       batchFetchUserArticles(user.uid);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchRequired, user]);
-  let articleSnapshotInit = false;
   useEffect(() => {
     let unsubscribe;
+    let articleSnapshotInit = false;
+
     if (user) {
       unsubscribe = db
         .collection("Articles")
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
           if (articleSnapshotInit) {
+            console.log("hihi11");
             dispatch(RESETARTICLEFETCH());
           }
+          articleSnapshotInit = true;
         });
-
-      articleSnapshotInit = true;
     }
     return () => {
       if (typeof unsubscribe === "function") {

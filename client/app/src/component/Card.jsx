@@ -7,7 +7,7 @@ import DeleteOutlineOutlinedIcon from "@material-ui/icons/DeleteOutlineOutlined"
 import { app } from "../lib/lib.js";
 import { RESETARTICLEFETCH } from "../redux/actions";
 import Tooltip from "@material-ui/core/Tooltip";
-import { withStyles } from "@material-ui/core/styles";
+
 export default function Card(props) {
   const dispatch = useDispatch();
   var elem = document.createElement("div");
@@ -31,13 +31,7 @@ export default function Card(props) {
       src = elem.querySelector("img") ? elem.querySelector("img").src : null;
     }
   }
-  const CustomTooltip = withStyles((theme) => ({
-    tooltip: {
-      color: "white",
-      fontFamily: "Open Sans",
-      fontSize: 14,
-    },
-  }))(Tooltip);
+
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -70,9 +64,11 @@ export default function Card(props) {
                   style={{ fontSize: 20, color: "#5B5B5B" }}
                   className={styles.delete}
                   onClick={() => {
-                    app.article.deleteArticle(props.id, () => {
-                      dispatch(RESETARTICLEFETCH());
-                    });
+                    app.article.deleteArticle(
+                      props.id
+                      // () => {
+                      // dispatch(RESETARTICLEFETCH());}
+                    );
                   }}
                 />
               </Tooltip>
