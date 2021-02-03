@@ -2,10 +2,10 @@ import mysql from "mysql";
 import { promisify } from "util";
 
 export const connection = mysql.createConnection({
-  host: "taggy.cgz6ycgxcj9j.ap-northeast-1.rds.amazonaws.com",
-  user: "admin",
-  password: "kai7717805",
-  database: "TAGGY",
+  host: process.env.RDS_HOST,
+  user: process.env.RDS_USER,
+  password: process.env.RDS_PASSWORD,
+  database: process.env.RDS_DATABASE,
 });
 connection.connect((err) => {
   if (err) {

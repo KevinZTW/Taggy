@@ -1,3 +1,5 @@
+import "./config.js";
+import "./server/models/firebaseconfig.js";
 import express from "express";
 export const app = express();
 import * as path from "path";
@@ -8,6 +10,7 @@ import cors from "cors";
 import { article_router } from "./server/routes/article_route.js";
 import { rss_router } from "./server/routes/rss_route.js";
 import { user_router } from "./server/routes/user_route.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT || 3000;
 app.use(cors());

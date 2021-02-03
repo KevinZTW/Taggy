@@ -32,6 +32,7 @@ const Board = function (props) {
   useEffect(() => {
     switch (selectCategory) {
       case "Front End":
+        console.log(feedFetchTimes);
         batchFetchAllFeeds(FrontEndRSSList, feedFetchTimes);
         break;
       case "Back End":
@@ -93,8 +94,8 @@ const Board = function (props) {
             key={feedItems[i].id}
             item={feedItems[i]}
             onClick={(e) => {
-              setShowPage(true);
               setFeedItem(feedItems[i]);
+              setShowPage(true);
             }}
           />
         );

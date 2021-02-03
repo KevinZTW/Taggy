@@ -85,7 +85,6 @@ export default function Board(props) {
         .where("uid", "==", user.uid)
         .onSnapshot(() => {
           if (articleSnapshotInit) {
-            console.log("hihi11");
             dispatch(RESETARTICLEFETCH());
           }
           articleSnapshotInit = true;

@@ -14,6 +14,7 @@ export default function RSSCard(props) {
   } else if (props.item.media) {
     src = props.item.media[0]["media:thumbnail"][0]["$"]["url"];
   }
+  console.log(src);
   const passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
 
   const showDay =
@@ -21,11 +22,13 @@ export default function RSSCard(props) {
   useEffect(() => {
     const image = new Image();
     image.src = src;
+    console.log("hihi");
     image.onload = () => {
       setImage(true);
     };
   }, []);
 
+  console.log(image);
   return (
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>
@@ -36,7 +39,6 @@ export default function RSSCard(props) {
               style={{
                 backgroundImage: "url(" + src + ")",
                 backgroundRepeat: "no-repeat",
-                background: "cover",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }}

@@ -95,30 +95,26 @@ export default function Board(props) {
     }
   }, [user, queryPaging]);
   useEffect(() => {
+    async function fetchChannelFeed() {
+      let items;
+      let RSS;
+      if (ChannelRSSId) {
+        RSS = await app.getRSSInfo(ChannelRSSId);
+        items = await app.getChannelFeeds(ChannelRSSId);
+
+        setChannelFeeds({
+          RSS: RSS,
+          items: items,
+        });
+      }
+    }
     fetchChannelFeed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ChannelRSSId]);
 
-  let allFeedsOutome;
-  if (ChannelRSSId === "all") {
-    allFeedsOutome = renderAllFeeds(allFeeds);
-  } else if (ChannelRSSId) {
-    allFeedsOutome = renderChannelFeeds();
-  }
+  const allFeedsOutome =
+    ChannelRSSId === "all" ? renderAllFeeds(allFeeds) : renderChannelFeeds();
 
-  async function fetchChannelFeed() {
-    let items;
-    let RSS;
-    if (ChannelRSSId) {
-      RSS = await app.getRSSInfo(ChannelRSSId);
-      items = await app.getChannelFeeds(ChannelRSSId);
-
-      setChannelFeeds({
-        RSS: RSS,
-        items: items,
-      });
-    }
-  }
   function renderChannelFeeds() {
     if (channelFeeds.items) {
       const items = channelFeeds.items;
