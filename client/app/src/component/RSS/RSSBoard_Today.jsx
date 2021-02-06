@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { app } from "../../lib/lib.js";
-import { RSSChannelList } from "./RSSBoard_Today_RSSList";
 import { db } from "../../firebase.js";
 import RSSCard from "./RSSCard";
 import styles from "./RSSBoard.module.css";
@@ -14,10 +13,7 @@ const Board = function (props) {
   const [feedItem, setFeedItem] = useState("");
   const [lastQueryDoc, setLastQueryDoc] = useState("");
 
-  const FrontEndRSSList = [
-    RSSChannelList.juejinFrontEndWeekHot.id,
-    RSSChannelList.segmentfaultFrontEnd.id,
-  ];
+  const FrontEndRSSList = ["M6rvLDZkAAHN3WbgGZMi", "NOulYNIAsYlMHRLTsoRf"];
   const BackEndRSSList = ["o8y1c7B2TYtaNa2CHwLg"];
   const PMRSSList = ["cFG4OEd9QhF1DWOKDBRO", "uVlnTAMZMxQm7z1AYl3r"];
   const UIUXRSSList = ["EjzdgsJU72BvdxI1AY22"];
@@ -32,7 +28,6 @@ const Board = function (props) {
   useEffect(() => {
     switch (selectCategory) {
       case "Front End":
-        console.log(feedFetchTimes);
         batchFetchAllFeeds(FrontEndRSSList, feedFetchTimes);
         break;
       case "Back End":
@@ -218,4 +213,4 @@ const Board = function (props) {
     </div>
   );
 };
-export default React.memo(Board);
+export default Board;

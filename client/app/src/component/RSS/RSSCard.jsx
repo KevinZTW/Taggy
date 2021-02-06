@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import styles from "./RSSCard.module.css";
 import Highlighter from "react-highlight-words";
 import placeholderImg from "../../imgs/place_holder_img.png";
 export default function RSSCard(props) {
   const [image, setImage] = useState(false);
+  const backgroundSrc = useRef();
 
-  var elem = document.createElement("div");
-  elem.innerHTML = props.item.content;
-  let src;
-  if (elem.querySelector("img")) {
-    src = elem.querySelector("img").src;
-  } else if (props.item.media) {
-    src = props.item.media[0]["media:thumbnail"][0]["$"]["url"];
-  }
-  console.log(src);
-  const passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
-
-  const showDay =
-    passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
   useEffect(() => {
+    var elem = document.createElement("div");
+    elem.innerHTML = props.item.content;
+    const imgSrc = elem.querySelector("img");
+    if (imgSrc) {
+      backgroundSrc.current = imgSrc.src;
+      console.log(backgroundSrc.current);
+    } else if (props.item.media) {
+      backgroundSrc.current =
+        props.item.media[0]["media:thumbnail"][0]["$"]["url"];
+    }
     const image = new Image();
-    image.src = src;
-    console.log("hihi");
+    image.src = backgroundSrc.current;
     image.onload = () => {
       setImage(true);
     };
   }, []);
 
-  console.log(image);
+  const passDay = (Date.now() - props.item.pubDate) / (1000 * 60 * 60 * 24);
+
+  const showDay =
+    passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
+
   return (
     <div className={styles.container} onClick={props.onClick}>
       <div className={styles.card}>
@@ -37,7 +38,7 @@ export default function RSSCard(props) {
             <div
               className={styles.color}
               style={{
-                backgroundImage: "url(" + src + ")",
+                backgroundImage: "url(" + backgroundSrc.current + ")",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 backgroundSize: "cover",

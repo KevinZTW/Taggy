@@ -19,14 +19,18 @@ export default function Board(props) {
   function fetchUserFeeds(userUid, paging) {
     fetch(
       `https://www.shopcard.site/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
-    ).then((res) => {
-      if (res.status !== 200) {
-      } else {
-        res.json().then((data) => {
-          setAllFeeds([...allFeeds].concat(data.feeds));
-        });
-      }
-    });
+    )
+      .then((res) => {
+        if (res.status !== 200) {
+        } else {
+          res.json().then((data) => {
+            setAllFeeds([...allFeeds].concat(data.feeds));
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function renderAllFeeds(feedItems) {

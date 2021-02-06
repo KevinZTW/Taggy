@@ -5,8 +5,8 @@ import { promisify } from "util";
 const client = new RedisCluster({
   servers: [
     {
-      host: "redis-taggy.vrv55k.clustercfg.apne1.cache.amazonaws.com",
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
     },
   ],
 });
