@@ -1,9 +1,8 @@
 import { db } from "./firebaseconfig.js";
-import { cache } from "../util/cache.js";
+import { client, cache } from "../util/cache.js";
 import OpenCC from "opencc";
 import dayjs from "dayjs";
-
-import { connection, query } from "./mysqlconfig.js";
+import { query } from "./mysqlconfig.js";
 
 const converter = new OpenCC("s2t.json");
 
@@ -21,12 +20,18 @@ const getUserSubscribedFeed = async function (uid, paging) {
 };
 
 const getFeedTags = async function (feedId) {
+  let redisReady = client.ready;
+  let feedTagsCache;
   const sql = `select * from FeedKeyWords 
     JOIN KeyWord on FeedKeyWords.KeyWordId = KeyWord.KeyWordId
     JOIN Feed on Feed.FeedId = FeedKeyWords.FeedId
     where Feed.FeedId ='${feedId}'
   ;`;
-  const feedTagsCache = await cache.getFeedTagsCache(feedId);
+  console.log("--------------------");
+  console.log(redisReady);
+  if (redisReady) {
+    feedTagsCache = await cache.getFeedTagsCache(feedId);
+  }
   if (feedTagsCache) {
     console.log("get Cache");
     return feedTagsCache;
@@ -55,7 +60,7 @@ const getFeedTags = async function (feedId) {
     });
   }
 };
-getFeedTags("odFA1hV4UM1Vp8qgQhlP");
+// getFeedTags("odFA1hV4UM1Vp8qgQhlP");
 const searchRSS = async (keyWord) => {
   const sql = `SELECT * FROM Feed WHERE MATCH (FeedTitle, FeedContent) AGAINST ('${keyWord}' IN NATURAL LANGUAGE MODE);`;
 

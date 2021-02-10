@@ -1,8 +1,8 @@
 import RedisCluster from "redis-clustr";
-import redis from "redis";
+
 import { promisify } from "util";
 
-const client = new RedisCluster({
+export const client = new RedisCluster({
   servers: [
     {
       host: process.env.REDIS_HOST,
@@ -10,6 +10,7 @@ const client = new RedisCluster({
     },
   ],
 });
+
 client.on("error", function (error) {
   console.error(error);
 });
