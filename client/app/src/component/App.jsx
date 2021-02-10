@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import AdminBoard from "./Admin/AdminBoard";
 import Landing from "./Landing";
 import Article from "./Article/Aritcle";
 import Signup from "./Member/Signup";
@@ -21,6 +22,7 @@ import RSSExplore from "./RSS/RSSExplore";
 import FunctionTab from "./SideTab/FunctionTab";
 import MobileFunctionTab from "./SideTab/MobileFunctionTab";
 import MobileBurger from "./SideTab/Mobile_Burger";
+
 function App() {
   return (
     <Router>
@@ -100,8 +102,10 @@ function App() {
               <RSSExplore />
             </div>
           </Route>
+          <Route path="/admin" component={AdminBoard}></Route>
           <Route path="/signup" component={Signup}></Route>
           <Route path="/signin" component={Signin}></Route>
+
           <Route path="/" component={Landing}></Route>
         </Switch>
       </div>

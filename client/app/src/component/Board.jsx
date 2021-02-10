@@ -32,8 +32,6 @@ export default function Board(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (lastQuery) {
-  }
   useEffect(() => {
     function batchFetchUserArticles(userUid) {
       if (lastQuery === null) {
@@ -95,6 +93,7 @@ export default function Board(props) {
         unsubscribe();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

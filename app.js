@@ -20,17 +20,17 @@ app.use(bodyParser.json());
 app.use("/route", [article_router, rss_router, user_router]);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "client", "app", "build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/app/build", "index.html"));
-});
+// app.use(express.static(path.join(__dirname, "client", "app", "build")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client/app/build", "index.html"));
+// });
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 // Page not found
 app.use(function (req, res, next) {
-  res.status(404).sendFile(__dirname + "/public/404.html");
+  res.status(404).send("404 This is not the web page you are looking for");
 });
 
 // Error handling

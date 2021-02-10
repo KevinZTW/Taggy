@@ -7,7 +7,7 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import AssessmentOutlinedIcon from "@material-ui/icons/AssessmentOutlined";
 import { auth } from "../../firebase.js";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-
+import SettingsIcon from "@material-ui/icons/Settings";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -95,6 +95,16 @@ export default function FunctionTab(props) {
               </div>
             </CustomTooltip>
           </Link> */}
+          <Link to="/admin">
+            <div className={styles.icon}>
+              <SettingsIcon
+                className={styles.Icon}
+                calssname={styles.exit}
+                fontSize="small"
+                style={{ color: "#747474" }}
+              />
+            </div>
+          </Link>
           <Link to={"/"}>
             <CustomTooltip title="log out" placement="right" arrow>
               <div className={styles.icon}>

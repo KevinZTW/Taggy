@@ -26,6 +26,7 @@
     "react-toastify": "^6.2.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
     "rss-parser": "^3.9.0",
     "showdown": "^1.9.1",
     "web-vitals": "^0.2.4"

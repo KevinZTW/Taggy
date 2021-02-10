@@ -6,6 +6,12 @@ import dayjs from "dayjs";
 import { connection, query } from "./mysqlconfig.js";
 
 const converter = new OpenCC("s2t.json");
+
+export const getAllRSS = async function () {
+  const sql = `SELECT * FROM RSS`;
+  return await query(sql, []);
+};
+
 const getUserSubscribedFeed = async function (uid, paging) {
   const sql = `select Feed.FeedTitle AS title, RSS.RSSName AS RSS,Feed.FeedPubDate AS pubDate, Feed.FeedContentSnippet AS contentSnippet,Feed.FeedContent AS content, Feed.FeedLink AS link,Feed.FeedId AS FeedId from Feed join UserSubscription on Feed.RSSId = UserSubscription.RSSId join RSS 
 	on Feed.RSSId = RSS.RSSId where UserSubscription.UserUID = '${uid}' order by Feed.FeedPubDate desc limit ${
@@ -140,6 +146,7 @@ const addRSS = function (feed, RSSId) {
 };
 
 export const RSS = {
+  getAllRSS: getAllRSS,
   searchRSS: searchRSS,
   getFeedTags: getFeedTags,
   getUserSubscribedFeed: getUserSubscribedFeed,

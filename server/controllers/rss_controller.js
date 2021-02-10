@@ -56,3 +56,7 @@ export async function getFeedTags(req, res) {
   let data = await RSS.getFeedTags(feedId);
   res.status(200).json(data);
 }
+export async function getAllRSS(req, res) {
+  let data = await RSS.getAllRSS();
+  res.status(200).json(data);
+}
