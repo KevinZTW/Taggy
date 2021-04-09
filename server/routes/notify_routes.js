@@ -9,6 +9,7 @@ notify_router.route("/notify").post(function (req, res) {
   db.collection("aliNotifyTest").add({
     method: "post",
     url: req.url,
+    req: req.body,
   });
 });
 
