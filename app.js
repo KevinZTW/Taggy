@@ -10,7 +10,7 @@ import cors from "cors";
 import { article_router } from "./server/routes/article_route.js";
 import { rss_router } from "./server/routes/rss_route.js";
 import { user_router } from "./server/routes/user_route.js";
-import { notify_router } from "./server/routes/notify_routes.js";
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT || 3000;
@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/route", [notify_router, article_router, rss_router, user_router]);
+app.use("/route", [article_router, rss_router, user_router]);
 
 // Serve static files
 // app.use(express.static(path.join(__dirname, "client", "app", "build")));
