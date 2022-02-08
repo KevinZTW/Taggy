@@ -8,6 +8,7 @@ import { auth } from "../../firebase.js";
 import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";
 import { db } from "../../firebase";
+import {host} from "../../config"
 export default function Signup() {
   const uiConfig = {
     callbacks: {
@@ -33,7 +34,7 @@ export default function Signup() {
               displaynamename: authResult.displayName,
             })
             .then(() => {
-              fetch("https://www.shopcard.site/route/user/syncuser");
+              fetch(host + "/route/user/syncuser");
             })
 
             .then(history.push("home"));
@@ -67,7 +68,7 @@ export default function Signup() {
           user.updateProfile({
             displayName: name,
           });
-          fetch("https://www.shopcard.site/route/user/syncuser");
+          fetch( host +"/route/user/syncuser");
         })
         .then(history.push("/home"));
     });

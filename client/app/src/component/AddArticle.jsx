@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import importArticleImg from "../imgs/import_article.png";
+import {host} from "../config"
 
 export default function AddArticle(props) {
   const [loading, setLoading] = useState(false);
@@ -79,7 +80,7 @@ export default function AddArticle(props) {
               if (user) {
                 e.preventDefault();
                 postDataToServer(
-                  "https://www.shopcard.site/route/article/import",
+                  host +"/route/article/import",
                   {
                     url: reqUrl,
                     uid: user.uid,

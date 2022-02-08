@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import firebase from "firebase/app";
 import { db } from "../firebase.js";
+import {host} from "../config"
+
 import dayjs from "dayjs";
 
 export const app = {
@@ -341,7 +343,7 @@ app.addRSSToFetchList = function (feed, url) {
       })
       .then((docRef) => {
         docRef.update({ id: docRef.id });
-        fetch("https://www.shopcard.site/route/rss/syncrss");
+        fetch(host +"/route/rss/syncrss");
         return docRef.id;
       })
       .then((id) => resolve(id));
@@ -415,7 +417,7 @@ app.addRSSToMember = function (uid, feedId, callback) {
             })
             .then(() => {
               fetch(
-                "https://www.shopcard.site/route/user/syncuserrsssubscription"
+                host +"/route/user/syncuserrsssubscription"
               )
                 .then((res) => {
                   res.json().then((data) => {
@@ -442,7 +444,7 @@ app.addRSSToMember = function (uid, feedId, callback) {
             })
             .then(() => {
               fetch(
-                "https://www.shopcard.site/route/user/syncuserrsssubscription"
+                host + "/route/user/syncuserrsssubscription"
               );
             })
             .then(() => {
@@ -515,7 +517,7 @@ app.addRSSItem = function (feed, RSSId) {
     });
   }
   setTimeout(() => {
-    fetch("https://www.shopcard.site/route/rss/syncfeed");
+    fetch(host + "/route/rss/syncfeed");
   }, 3000);
 };
 app.getMemberRSSFolders = function (uid) {

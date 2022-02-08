@@ -1,3 +1,5 @@
+import {host} from "../config"
+
 let user_signed_in = false;
 let uid;
 let articleApiUrl = "https://www.shopcard.site/route/article/import";

@@ -5,7 +5,7 @@ import styles from "./FindRSS.module.css";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
-
+import {host} from "../../config"
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("appworks");
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function FindRSS(props) {
   });
   function searchRSS(keyWord) {
     setLoading(true);
-    fetch("https://www.shopcard.site/route/rss/search", {
+    fetch(host+"/route/rss/search", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

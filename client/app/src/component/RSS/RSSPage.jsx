@@ -13,6 +13,7 @@ import styles from "./RSSPage.module.css";
 import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
+import {host} from "../../config"
 const CustomTooltip = withStyles((theme) => ({
   tooltip: {
     color: "white",
@@ -28,7 +29,7 @@ export default function RSSPage({ item, onClick }) {
   useEffect(() => {
     async function getFeedTagsRecommend(feedId) {
       const response = await fetch(
-        `https://www.shopcard.site/route/rss/feedtags?feedid=${feedId}`
+        host + `/route/rss/feedtags?feedid=${feedId}`
       );
       return response.json();
     }
@@ -178,7 +179,7 @@ export default function RSSPage({ item, onClick }) {
                 className={styles.arrowWrapper}
                 onClick={() => {
                   postDataToServer(
-                    "https://www.shopcard.site/route/article/import",
+                    host + "/route/article/import",
                     {
                       url: newItem.link || item.link,
                       uid: user.uid,
@@ -224,7 +225,7 @@ export default function RSSPage({ item, onClick }) {
                 className={styles.arrowWrapper}
                 onClick={() => {
                   postDataToServer(
-                    "https://www.shopcard.site/route/article/import",
+                    host + "/route/article/import",
                     {
                       url: newItem.link || item.link,
                       uid: user.uid,

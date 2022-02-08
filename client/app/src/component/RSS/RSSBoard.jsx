@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import RSSCard from "./RSSCard";
 import styles from "./RSSBoard.module.css";
 import { app } from "../../lib/lib.js";
+import {host} from "../../config"
 import RSSPage from "./RSSPage";
 import "./RSSPage.css";
 export default function Board(props) {
@@ -18,7 +19,7 @@ export default function Board(props) {
   });
   function fetchUserFeeds(userUid, paging) {
     fetch(
-      `https://www.shopcard.site/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
+      host +`/route/rss/userfeeds?uid=${userUid}&paging=${paging}`
     )
       .then((res) => {
         if (res.status !== 200) {

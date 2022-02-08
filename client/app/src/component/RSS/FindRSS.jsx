@@ -7,6 +7,7 @@ import * as RSSParser from "rss-parser";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { GETRSSRESPONSE } from "../../redux/actions";
 import addRSSImg from "../../imgs/add_RSS_feed.png";
+import {host} from "../../config"
 export default function FindRSS(props) {
   const [reqUrl, setReqUrl] = useState("https://medium.com/better-programming");
   const [loading, setLoading] = useState(false);
@@ -51,7 +52,7 @@ export default function FindRSS(props) {
     const starttime = Date.now();
     parser.parseURL(CORS_PROXY + url, function (err, feed) {
       if (err) {
-        fetch("https://www.shopcard.site/route/rss/fetch", {
+        fetch(host + "/route/rss/fetch", {
           method: "post",
           headers: {
             "Content-Type": "application/json",

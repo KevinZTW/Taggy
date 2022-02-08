@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { db, auth } from "../../firebase.js";
 import firebase from "firebase/app";
+import {host} from "../../config"
 export default function Signup() {
   const notify_fail = () =>
     toast.warn(
@@ -46,7 +47,7 @@ export default function Signup() {
               displaynamename: authResult.displayName,
             })
             .then(() => {
-              fetch("https://www.shopcard.site/route/user/syncuser");
+              fetch(host + "/route/user/syncuser");
             })
             .then(history.push("home"))
             .catch((error) => {
