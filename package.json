@@ -22,7 +22,6 @@
     "node-readability": "^3.0.0",
     "nodejieba": "^2.5.1",
     "nodemon": "^2.0.6",
-    "opencc": "^1.1.1",
     "redis": "^3.0.2",
     "redis-clustr": "^1.7.0",
     "request": "^2.88.2",
