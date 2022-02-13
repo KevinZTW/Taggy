@@ -1,6 +1,7 @@
 import Parser from "rss-parser";
 import { RSS } from "../models/rss_model.js";
 import { Sync } from "../models/firestore_sync.js";
+import {setKeyWords, setFeedsKeyWord} from "../../service/RSSRecommendation.js"
 let parser = new Parser();
 
 export async function syncFeeds(req, res) {
@@ -59,4 +60,10 @@ export async function getFeedTags(req, res) {
 export async function getAllRSS(req, res) {
   let data = await RSS.getAllRSS();
   res.status(200).json(data);
+}
+
+export function setFeedRecommnedation(req, res){
+  setKeyWords();
+  setFeedsKeyWord();
+  res.status(200).json({msg:"set feed recommnedation"})
 }

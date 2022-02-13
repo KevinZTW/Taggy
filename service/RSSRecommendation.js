@@ -154,7 +154,7 @@ function setKeyWords() {
   });
 }
 
-export async function setFeedsKeyWord() {
+async function setFeedsKeyWord() {
   let feedwithtag = 0;
   let totatlfeed = 0;
   const sql = `SELECT FeedId, FeedContent,FeedTitle FROM Feed `;
@@ -199,3 +199,6 @@ export async function setFeedsKeyWord() {
     console.log("feed with tag ratio", feedwithtag / totatlfeed);
   });
 }
+
+
+export {setKeyWords, setFeedsKeyWord}

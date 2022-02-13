@@ -19,12 +19,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/route", [article_router, rss_router, user_router]);
+//admin
+
 
 // Serve static files
 // app.use(express.static(path.join(__dirname, "client", "app", "build")));
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "client/app/build", "index.html"));
 // });
+
+
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

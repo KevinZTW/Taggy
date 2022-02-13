@@ -6,6 +6,7 @@ import {
   getFeedTags,
   syncRSS,
   syncFeeds,
+  setFeedRecommnedation,
 } from "../controllers/rss_controller.js";
 
 const rss_router = express.Router();
@@ -23,4 +24,5 @@ rss_router.route("/rss/syncrss").get(syncRSS);
 rss_router.route("/rss/search").post(searchRSS);
 rss_router.route("/rss/userfeeds").get(getUserSubscribedFeed);
 rss_router.route("/rss/feedtags").get(getFeedTags);
+rss_router.route("/rss/setrecom").get(setFeedRecommnedation);
 export { rss_router };
