@@ -1,3 +1,3 @@
-const host = "http://13.113.23.126:3000"
+const host = "https://www.taggy.site"
 
 export {host}
