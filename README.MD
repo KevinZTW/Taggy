@@ -2,7 +2,7 @@
 
 A RSS reader and web clipper helping users to explore and manage software articles on the internet
 
-[Home Page](https://www.twtaggy.site)  
+[Home Page](https://knowledge-base-tw.web.app/home)  
 [Chrome Extension ](http://extension.twtaggy.site)
 
 ## Test User
