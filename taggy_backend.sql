@@ -1,118 +1,74 @@
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+Create DATABASE taggy_development;
+\c taggy_development;
 
-
-Create DATABASE Taggy;
-Use Taggy;
-
-DROP TABLE IF EXISTS `RSS`;
-CREATE TABLE `RSS`
+CREATE TABLE IF NOT EXISTS rss_sources
 (
- `RSSId`         varchar(255) NOT NULL ,
- `RSSName`        varchar(255) NOT NULL ,
- `RSSDescription` varchar(255) NULL ,
- `RSSUrl`         varchar(255) NOT NULL ,
- `RSSLastUpdate`  bigint NULL ,
- `RSSImg`         varchar(255) NULL ,
-FULLTEXT `fulltext_index` (`RSSName`, `RSSDescription`),
-PRIMARY KEY (`RSSId`)
+ id         SERIAL NOT NULL PRIMARY KEY,
+ name        TEXT NOT NULL ,
+ description TEXT NULL ,
+ url         TEXT NOT NULL ,
+ last_update  TIMESTAMPTZ NULL ,
+ img_url         TEXT NULL
 );
 
-DROP TABLE IF EXISTS `User`;
-CREATE TABLE `User`
-(
- `UserUID`      varchar(255) NOT NULL ,
- `DisplayName` varchar(255) NULL ,
- `Email`       varchar(255) NOT NULL ,
 
-PRIMARY KEY (`UserUID`)
+CREATE TABLE IF NOT EXISTS users
+(
+  uid        TEXT NOT NULL PRIMARY KEY,
+  display_name TEXT NULL ,
+  email       TEXT NOT NULL
 );
 
 
 
-DROP TABLE IF EXISTS `Feed`;
-CREATE TABLE `Feed`
+CREATE TABLE IF NOT EXISTS rss_feeds
 (
- `FeedId`             varchar(255)  NOT NULL ,
- `RSSId`              varchar(255) NOT NULL ,
- `FeedTitle`          varchar(255) NOT NULL ,
- `FeedContent`        varchar(65535) NOT NULL ,
- `FeedContentSnippet` varchar(65535) NOT NULL ,
- `FeedGuid`           varchar(255) NULL ,
- `FeedPubDate`        bigint NULL ,
- `FeedLink`           varchar(255) NULL ,
-
-FULLTEXT `fulltext_index` (`FeedTitle`, `FeedContent`),
-PRIMARY KEY (`FeedId`, `RSSId`),
-KEY `fkIdx_28` (`RSSId`),
-CONSTRAINT `FK_28` FOREIGN KEY `fkIdx_28` (`RSSId`) REFERENCES `RSS` (`RSSId`)
+ id         SERIAL NOT NULL PRIMARY KEY,
+ rss_source_id INTEGER NOT NULL REFERENCES rss_sources(id),
+ title          TEXT NOT NULL ,
+ content        TEXT NULL ,
+ content_snippet TEXT NULL ,
+ guid           TEXT NULL ,
+ pub_date        TIMESTAMPTZ NULL ,
+ url           TEXT NULL
 );
 
-DROP TABLE IF EXISTS `UserSubscription`;
-CREATE TABLE `UserSubscription`
+CREATE TABLE IF NOT EXISTS user_rss_subscriptions
 (
- `SubscriptionId`  int auto_increment NOT NULL ,
- `UserUID`         varchar(255) NOT NULL ,
- `RSSId`          varchar(255) NOT NULL ,
-
-PRIMARY KEY (`SubscriptionId`, `UserUID`, `RSSId`),
-KEY `fkIdx_41` (`UserUID`),
-CONSTRAINT `FK_41` FOREIGN KEY `fkIdx_41` (`UserUID`) REFERENCES `User` (`UserUID`),
-KEY `fkIdx_48` (`RSSId`),
-CONSTRAINT `FK_48` FOREIGN KEY `fkIdx_48` (`RSSId`) REFERENCES `RSS` (`RSSId`)
+  id  SERIAL NOT NULL PRIMARY KEY,
+  user_uid         TEXT REFERENCES users(uid),
+  rss_source_id      INTEGER REFERENCES rss_sources(id)
 );
 
-DROP TABLE IF EXISTS `KeyWord`;
-CREATE TABLE `KeyWord`
-(
- `KeyWordId`    int auto_increment NOT NULL ,
- `KeyWordName` varchar(45) NOT NULL ,
 
-PRIMARY KEY (`KeyWordId`)
+CREATE TABLE IF NOT EXISTS key_words
+(
+  id    SERIAL NOT NULL PRIMARY KEY,
+  data TEXT NOT NULL
 );
 
-CREATE TABLE `Category`
-(
- `CategoryId`  int auto_increment NOT NULL ,
- `CategoryName` varchar(45) NOT NULL ,
 
-PRIMARY KEY (`CategoryId`)
+CREATE TABLE IF NOT EXISTS categories
+(
+ id    SERIAL NOT NULL PRIMARY KEY,
+ name TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS `CategoryKeyWords`;
-CREATE TABLE `CategoryKeyWords`
+CREATE TABLE IF NOT EXISTS category_key_words
 (
- `CategoryKeyWordsId` int auto_increment NOT NULL ,
- `CategoryId`         int  NOT NULL ,
- `KeyWordId`         int NOT NULL ,
-
-PRIMARY KEY (`CategoryKeyWordsId`, `CategoryId`, `KeyWordId`),
-KEY `fkIdx_75` (`CategoryId`),
-CONSTRAINT `FK_74` FOREIGN KEY `fkIdx_75` (`CategoryId`) REFERENCES `Category` (`CategoryId`),
-KEY `fkIdx_78` (`KeyWordId`),
-CONSTRAINT `FK_77` FOREIGN KEY `fkIdx_78` (`KeyWordId`) REFERENCES `KeyWord` (`KeyWordId`)
+  id    SERIAL NOT NULL PRIMARY KEY,
+ category_id         INTEGER REFERENCES categories(id),
+ key_word_id         INTEGER REFERENCES key_words(id)
 );
 
-DROP TABLE IF EXISTS `FeedKeyWords`;
-CREATE TABLE `FeedKeyWords`
-(
- `FeedKeyWordsId` int auto_increment NOT NULL ,
- `FeedId`         varchar(255) NOT NULL ,
- `KeyWordId`         int NOT NULL ,
- `Weight` float NOT NULL,
 
-PRIMARY KEY (`FeedKeyWordsId`, `FeedId`, `KeyWordId`),
-FOREIGN KEY (`FeedId`) REFERENCES `Feed` (`FeedId`),
-FOREIGN KEY (`KeyWordId`) REFERENCES `KeyWord` (`KeyWordId`)
+CREATE TABLE IF NOT EXISTS feed_key_words
+(
+  id    SERIAL NOT NULL PRIMARY KEY,
+ feed_id         INTEGER REFERENCES rss_feeds(id),
+ key_word_id         INTEGER REFERENCES key_words(id),
+  weight         FLOAT NOT NULL
 );
 
 
