@@ -1,7 +1,13 @@
 node_modules
 build
 
-.eslintcache
-.env
 *.firebase
 *.cache
+*.yaml
+*.env
+*.idea
+*.json
+
+.eslintcache
+.env
+.DS_Store
