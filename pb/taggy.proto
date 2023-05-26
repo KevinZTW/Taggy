@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package taggy;
+
+option go_package = "genproto/taggy";
+
+service FetchService {
+  rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply) {}
+}
+
+message FetchAllRSSRequest {
+}
+
+message FetchAllRSSReply {
+  string message = 1;
+}
