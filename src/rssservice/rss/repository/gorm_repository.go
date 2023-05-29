@@ -1,10 +1,10 @@
-package adapter
+package repository
 
 import (
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"taggy-content-service/internal/pkg/domain/rss"
+	"rssservice/domain/rss"
 )
 
 type FeedModel struct {

@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	pb "fetchservice/genproto/taggy"
 	"fmt"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"net"
 	"os"
+	pb "rssservice/genproto/taggy"
+	"rssservice/util"
 	"time"
 )
 
@@ -28,36 +29,27 @@ func init() {
 	log.Out = os.Stdout
 }
 
-func mustMapEnv(target *string, envKey string) {
-	v := os.Getenv(envKey)
-	if v == "" {
-		panic(fmt.Sprintf("environment variable %q not set", envKey))
-	}
-	*target = v
-}
-
 type fetchServiceServer struct {
-	pb.UnimplementedFetchServiceServer
+	pb.UnimplementedRSSServiceServer
 }
 
 func (s *fetchServiceServer) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
 	reply := &pb.FetchAllRSSReply{
 		Message: "TODO: FetchAllRSS",
 	}
-
 	return reply, nil
 }
 
 func main() {
 	var port string
-	mustMapEnv(&port, "FETCH_SERVICE_PORT")
+	util.MustMapEnv(&port, "RSS_SERVICE_PORT")
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
 		log.Fatal(err)
 	}
 	var opts []grpc.ServerOption
 	var srv = grpc.NewServer(opts...)
-	pb.RegisterFetchServiceServer(srv, &fetchServiceServer{})
+	pb.RegisterRSSServiceServer(srv, &fetchServiceServer{})
 
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
 	err = srv.Serve(lis)

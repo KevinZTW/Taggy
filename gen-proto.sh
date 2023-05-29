@@ -23,4 +23,4 @@ gen_proto_python() {
   cd "$base_dir" || return
 }
 
-gen_proto_go fetchservice
+gen_proto_go rssservice

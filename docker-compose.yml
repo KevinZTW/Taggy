@@ -1,0 +1,46 @@
+version: '3.9'
+
+networks:
+  default:
+    name: taggy
+    driver: bridge
+
+services:
+  # ******************
+  # Core Demo Services
+  # ******************
+  rssservice:
+    image: ${IMAGE_NAME}:${IMAGE_VERSION}-rssservice
+    container_name: rss-service
+    build:
+      context: ./
+      dockerfile: ./src/rssservice/Dockerfile
+      cache_from:
+        - ${IMAGE_NAME}:${IMAGE_VERSION}-rssservice
+    deploy:
+      resources:
+        limits:
+          memory: 20M
+    ports:
+      - ${RSS_SERVICE_PORT}:${RSS_SERVICE_PORT}
+    restart: unless-stopped
+    environment:
+      - RSS_SERVICE_PORT
+      - RSS_SERVICE_MONGODB_PORT
+      - RSS_SERVICE_MONGODB_ADDR
+      - RSS_SERVICE_MONGODB_NAME
+    depends_on:
+      rss-mongodb:
+        condition: service_started
+
+  # ******************
+  # Dependent Services
+  # ******************
+  # mongodb used by rssservice
+  rss-mongodb:
+    image: mongo:4.4
+    restart: unless-stopped
+    volumes:
+      - ./volumes/rss-mongodb-data:/data/db
+    ports:
+      - 27018:27017

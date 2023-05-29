@@ -8,6 +8,7 @@ import (
 // Repository Data access interface
 // TODO: should I separate source repo and feed repo?
 type Repository interface {
+	AddSource(source *Source) error
 	AddFeed(feed *Feed) error
 	GetAllSourceFeeds(source *Source) ([]*Feed, error)
 	GetFeedByGUID(guid string) (*Feed, error)
@@ -38,7 +39,7 @@ func (s *Source) GetFeedByGUID(repository Repository, guid string) (*Feed, error
 }
 
 func (s *Source) SyncLatestFeeds(repository Repository) {
-	
+
 }
 
 type Feed struct {
