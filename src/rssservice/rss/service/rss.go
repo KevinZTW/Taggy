@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"rssservice/domain/rss"
 	"rssservice/rss/repository"
+	"time"
 )
 
 type RSSService struct {
@@ -20,6 +21,10 @@ func (r *RSSService) GetLatestFeeds(source *rss.Source) {
 	fmt.Printf("fetching rss from the web\n")
 }
 
-func (r *RSSService) AddSource(source *rss.Source) {
+func (r *RSSService) AddSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Source, error) {
+	return r.repository.CreateSource(name, description, url, imgUrl, lastUpdatedAt)
+}
 
+func (r *RSSService) ListSources() ([]*rss.Source, error) {
+	return r.repository.ListSources()
 }
