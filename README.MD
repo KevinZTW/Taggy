@@ -13,6 +13,9 @@ Some function might be influenced from time to time since refactoring is on goin
 - Password: 123123
 - For extension usage, please refresh webpage after installing the extension
 
+## Note
+This project is now under refactoring, several features might be down during the process
+
 ## Technologies :
 
 ### Back-End
@@ -52,11 +55,30 @@ Some function might be influenced from time to time since refactoring is on goin
 
 ![image](https://user-images.githubusercontent.com/38662781/104088757-fea05780-52a3-11eb-9cc2-ae7eedba8820.jpg)
 
-## Leacy Database Schema (RDS)
+## Legacy Database Schema (RDS)
 
 (Refactoring ongoing)
 
 <img width="946" alt="Screen Shot 2021-01-10 at 12 28 11 PM" src="https://user-images.githubusercontent.com/38662781/104114431-58a22b00-533f-11eb-960e-0a55eca7393e.png">
+
+
+## Usage
+```shell
+# For backend services
+docker-compose up
+```
+
+## Development
+- copy the env
+- install protoc and go plugins, reference from grpc [quick start](https://grpc.io/docs/languages/go/quickstart/) 
+```shell
+$ apt install -y protobuf-compiler
+
+$ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+$ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+$ export PATH="$PATH:$(go env GOPATH)/bin"
+```
+- `./gen-proto.sh`
 
 ## Features
 

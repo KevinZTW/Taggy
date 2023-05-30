@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"rssservice/domain/rss"
 	"rssservice/mongodb"
@@ -43,7 +44,7 @@ func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, la
 
 func (m *MongoRepository) ListSources() ([]*rss.Source, error) {
 	var sources []*rss.Source
-	if cur, err := m.sourceCollection.Find(nil, nil); err != nil {
+	if cur, err := m.sourceCollection.Find(nil, bson.D{}); err != nil {
 		return nil, err
 	} else if err = cur.All(nil, &sources); err != nil {
 		return nil, err

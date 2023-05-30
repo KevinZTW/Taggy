@@ -22,8 +22,8 @@ type Source struct {
 	Name              string
 	Description       string
 	URL               string
-	LastFeedUpdatedAt time.Time
 	ImgURL            string
+	LastFeedUpdatedAt time.Time
 }
 
 func (s *Source) GetAllFeeds(repository Repository) {

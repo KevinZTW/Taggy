@@ -21,7 +21,7 @@ services:
       resources:
         limits:
           memory: 20M
-    ports:cc
+    ports:
       - ${RSS_SERVICE_PORT}:${RSS_SERVICE_PORT}
     restart: unless-stopped
     environment:

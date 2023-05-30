@@ -49,11 +49,11 @@ func (s *rssServiceServer) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRe
 	return reply, nil
 }
 
-func (s *rssServiceServer) AddRSSSource(ctx context.Context, in *pb.AddRSSSourceRequest) (*pb.AddRSSSourceReply, error) {
-	req := in.GetSource()
-	reply := &pb.AddRSSSourceReply{}
-
-	if source, err := s.RssService.AddSource(req.Name, req.Description, "tmpurl", "tmpimg", time.Now()); err != nil {
+func (s *rssServiceServer) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
+	fmt.Println("name: ", in.Name)
+	fmt.Println("name: ", in.GetName())
+	reply := &pb.CreateRSSSourceReply{}
+	if source, err := s.RssService.AddSource(in.GetName(), in.GetDescription(), "tmpurl", "tmpimg", in.GetLastUpdatedAt().AsTime()); err != nil {
 		log.Errorf("failed to add source: %q", err)
 
 		// TODO: when to return err and when to add err msg to reply?
@@ -67,7 +67,7 @@ func (s *rssServiceServer) AddRSSSource(ctx context.Context, in *pb.AddRSSSource
 func (s *rssServiceServer) ListRSSSources(ctx context.Context, in *pb.ListRSSSourcesRequest) (*pb.ListRSSSourcesReply, error) {
 	reply := &pb.ListRSSSourcesReply{}
 	if sources, err := s.RssService.ListSources(); err != nil {
-		log.Errorf("failed to list sources: %q", err)
+		log.Errorf("failed to list rss sources: %q", err)
 		return nil, err
 	} else {
 		reply.RssSources = make([]*pb.RSSSource, len(sources))

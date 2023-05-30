@@ -7,26 +7,27 @@ import "google/protobuf/timestamp.proto";
 option go_package = "genproto/taggy";
 
 service RSSService {
+  rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
+  rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply) {}
 }
 message RSSSource {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string url = 4;
+  string img_url = 5;
+  google.protobuf.Timestamp last_updated_at = 6;
+}
+
+message CreateRSSSourceRequest {
   string name = 1;
   string description = 2;
-  google.protobuf.Timestamp last_updated_at = 3;
+  string url = 3;
+  google.protobuf.Timestamp last_updated_at = 4;
 }
 
-message FetchAllRSSRequest {
-}
-
-message FetchAllRSSReply {
-  string message = 1;
-}
-
-message AddRSSSourceRequest {
-  RSSSource source = 1;
-}
-
-message AddRSSSourceReply {
+message CreateRSSSourceReply {
   string message = 1;
 }
 
@@ -35,4 +36,11 @@ message ListRSSSourcesRequest {
 
 message ListRSSSourcesReply {
   repeated RSSSource rss_sources = 1;
+}
+
+message FetchAllRSSRequest {
+}
+
+message FetchAllRSSReply {
+  string message = 1;
 }
