@@ -35,6 +35,7 @@ services:
       - RSS_SERVICE_MONGODB_PORT
       - RSS_SERVICE_MONGODB_ADDR
       - RSS_SERVICE_MONGODB_NAME
+      - KAFKA_SERVICE_ADDR
     depends_on:
       rss-mongodb:
         condition: service_started
