@@ -50,16 +50,20 @@ func (s *rssServiceServer) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRe
 }
 
 func (s *rssServiceServer) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
-	fmt.Println("name: ", in.Name)
-	fmt.Println("name: ", in.GetName())
-	reply := &pb.CreateRSSSourceReply{}
-	if source, err := s.RssService.AddSource(in.GetName(), in.GetDescription(), "tmpurl", "tmpimg", in.GetLastUpdatedAt().AsTime()); err != nil {
+	if source, err := s.RssService.CreateSource(in.GetUrl()); err != nil {
 		log.Errorf("failed to add source: %q", err)
-
-		// TODO: when to return err and when to add err msg to reply?
+		// TODO: implement the idea error handling ref: https://jbrandhorst.com/post/grpc-errors/
 		return nil, err
 	} else {
-		reply.Message = fmt.Sprintf("added source: %q", source)
+		reply := &pb.CreateRSSSourceReply{}
+		reply.Source = &pb.RSSSource{
+			Id:            source.ID,
+			Name:          source.Name,
+			Description:   source.Description,
+			Url:           source.URL,
+			ImgUrl:        source.ImgURL,
+			LastUpdatedAt: timestamppb.New(source.LastFeedUpdatedAt),
+		}
 		return reply, nil
 	}
 }

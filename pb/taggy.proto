@@ -21,14 +21,11 @@ message RSSSource {
 }
 
 message CreateRSSSourceRequest {
-  string name = 1;
-  string description = 2;
-  string url = 3;
-  google.protobuf.Timestamp last_updated_at = 4;
+  string url = 1;
 }
 
 message CreateRSSSourceReply {
-  string message = 1;
+  RSSSource source = 1;
 }
 
 message ListRSSSourcesRequest {

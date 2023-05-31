@@ -10,6 +10,8 @@ import (
 type Repository interface {
 	CreateSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*Source, error)
 	ListSources() ([]*Source, error)
+	GetSourceByURL(url string) (*Source, error)
+
 	CreateFeed(feed *Feed) (*Feed, error)
 
 	GetAllSourceFeeds(source *Source) ([]*Feed, error)

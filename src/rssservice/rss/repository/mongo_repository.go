@@ -1,12 +1,13 @@
 package repository
 
 import (
-	"github.com/google/uuid"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"rssservice/domain/rss"
 	"rssservice/mongodb"
 	"time"
+
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type MongoRepository struct {
@@ -21,8 +22,6 @@ func NewMongo() *MongoRepository {
 		sourceCollection: db.Collection(sourceCollection),
 	}
 }
-
-// implement interface
 
 func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Source, error) {
 	source := rss.Source{
@@ -40,6 +39,15 @@ func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, la
 	}
 
 	return &source, nil
+}
+
+func (m *MongoRepository) GetSourceByURL(url string) (*rss.Source, error) {
+	var source rss.Source
+	if err := m.sourceCollection.FindOne(nil, bson.D{{"url", url}}).Decode(&source); err != nil {
+		return nil, err
+	} else {
+		return &source, nil
+	}
 }
 
 func (m *MongoRepository) ListSources() ([]*rss.Source, error) {
