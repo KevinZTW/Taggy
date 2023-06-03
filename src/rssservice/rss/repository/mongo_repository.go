@@ -76,8 +76,8 @@ func (m *MongoRepository) ListSources() ([]*rss.Source, error) {
 }
 
 // implement UpdateSourceLastFeedSyncedAt
-func (m *MongoRepository) UpdateSourceLastFeedSyncedAt(source *rss.Source) error {
-	if _, err := m.sourceCollection.UpdateOne(nil, bson.D{{"id", source.ID}}, bson.D{{"$set", bson.D{{"last_feed_synced_at", source.LastFeedSyncedAt}}}}); err != nil {
+func (m *MongoRepository) UpdateSourceLastFeedSyncedAt(source *rss.Source, lastFeedSyncedAt time.Time) error {
+	if _, err := m.sourceCollection.UpdateOne(nil, bson.D{{"id", source.ID}}, bson.D{{"$set", bson.D{{"last_feed_synced_at", lastFeedSyncedAt}}}}); err != nil {
 		return err
 	} else {
 		return nil

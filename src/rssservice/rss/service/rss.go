@@ -2,18 +2,20 @@ package service
 
 import (
 	"context"
-	"github.com/Shopify/sarama"
-	"github.com/mmcdole/gofeed"
-	log "github.com/sirupsen/logrus"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
-	"go.opentelemetry.io/otel"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
 	"rssservice/kafka"
 	"rssservice/util"
 	"time"
+
+	"rssservice/log"
+
+	"github.com/Shopify/sarama"
+	"github.com/mmcdole/gofeed"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
+	"go.opentelemetry.io/otel"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type RSSService struct {
@@ -28,7 +30,8 @@ func NewRSSService(repository rss.Repository) *RSSService {
 		repository: repository,
 	}
 	util.MustMapEnv(&service.kafkaBrokerSvcAddr, "KAFKA_SERVICE_ADDR")
-	service.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{service.kafkaBrokerSvcAddr}, log)
+	service.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{service.kafkaBrokerSvcAddr}, log.Logger)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -62,17 +65,16 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 			}
 		}
 
-		source.LastFeedSyncedAt = lastUpdatedAt
-		r.repository.UpdateSourceLastFeedSyncedAt(source)
+		r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt)
 		return nil
 	}
 }
 
 func (r *RSSService) CreateSource(url string) (*rss.Source, error) {
-	if source, _ := r.getSourceByURL(url); source != nil {
-		return source, nil
-	} else if source, err := r.parseURL(url); err != nil {
+	if source, err := r.parseURL(url); err != nil {
 		return nil, err
+	} else if existedSource, _ := r.getSourceByURL(source.URL); existedSource != nil {
+		return existedSource, nil
 	} else if source, err := r.createSourceFromEntity(source); err != nil {
 		return nil, err
 	} else {

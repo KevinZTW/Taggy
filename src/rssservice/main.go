@@ -4,34 +4,16 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"os"
 	pb "rssservice/genproto/taggy"
+	"rssservice/log"
 	"rssservice/rss/repository"
 	"rssservice/rss/service"
 	"rssservice/util"
-	"time"
 
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-var log *logrus.Logger
-
-func init() {
-	log = logrus.New()
-	log.Level = logrus.DebugLevel
-	log.Formatter = &logrus.JSONFormatter{
-		FieldMap: logrus.FieldMap{
-			logrus.FieldKeyTime:  "timestamp",
-			logrus.FieldKeyLevel: "severity",
-			logrus.FieldKeyMsg:   "message",
-		},
-		TimestampFormat: time.RFC3339Nano,
-	}
-	log.Out = os.Stdout
-}
 
 type rssServiceServer struct {
 	RssService *service.RSSService

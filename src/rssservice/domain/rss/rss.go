@@ -15,7 +15,7 @@ type Repository interface {
 	ListSources() ([]*Source, error)
 	GetSourceByURL(url string) (*Source, error)
 	GetSourceById(id string) (*Source, error)
-	UpdateSourceLastFeedSyncedAt(source *Source) error
+	UpdateSourceLastFeedSyncedAt(source *Source, lastFeedSyncedAt time.Time) error
 
 	CreateFeedFromEntity(feed *Feed) (*Feed, error)
 	GetAllSourceFeeds(source *Source) ([]*Feed, error)
@@ -58,8 +58,7 @@ func (s *Source) UpdateFromOrigin(repository Repository) error {
 		}
 	}
 
-	s.LastFeedSyncedAt = lastUpdatedAt
-	s.UpdateLastFeedSyncedAt(repository)
+	s.UpdateLastFeedSyncedAt(repository, lastUpdatedAt)
 	return nil
 }
 
@@ -86,8 +85,8 @@ func (s *Source) GetOriginFeeds() ([]*Feed, error) {
 
 // CURD methods
 
-func (s *Source) UpdateLastFeedSyncedAt(repository Repository) error {
-	return repository.UpdateSourceLastFeedSyncedAt(s)
+func (s *Source) UpdateLastFeedSyncedAt(repository Repository, lastFeedSyncedAt time.Time) error {
+	return repository.UpdateSourceLastFeedSyncedAt(s, lastFeedSyncedAt)
 }
 
 func (s *Source) GetAllFeeds(repository Repository) {
