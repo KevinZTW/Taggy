@@ -6,18 +6,14 @@ import (
 	"net"
 	"os"
 	pb "rssservice/genproto/taggy"
-	"rssservice/kafka"
+	"rssservice/rss/repository"
 	"rssservice/rss/service"
 	"rssservice/util"
 	"time"
 
-	"github.com/Shopify/sarama"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/sirupsen/logrus"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
-	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -38,27 +34,26 @@ func init() {
 }
 
 type rssServiceServer struct {
-	RssService         *service.RSSService
-	kafkaBrokerSvcAddr string
+	RssService *service.RSSService
 	pb.UnimplementedRSSServiceServer
-	KafkaProducerClient sarama.AsyncProducer
 }
 
 func NewRSSServiceServer() *rssServiceServer {
+	repo := repository.NewMongo()
 	return &rssServiceServer{
-		RssService: service.NewRSSService(),
+		RssService: service.NewRSSService(repo),
 	}
 }
 
-func (s *rssServiceServer) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
+func (r *rssServiceServer) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
 	reply := &pb.FetchAllRSSReply{
 		Message: "TODO: FetchAllRSS",
 	}
 	return reply, nil
 }
 
-func (s *rssServiceServer) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
-	if source, err := s.RssService.CreateSource(in.GetUrl()); err != nil {
+func (r *rssServiceServer) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
+	if source, err := r.RssService.CreateSource(in.GetUrl()); err != nil {
 		log.Errorf("failed to add source: %q", err)
 		// TODO: implement the idea error handling ref: https://jbrandhorst.com/post/grpc-errors/
 		return nil, err
@@ -72,14 +67,13 @@ func (s *rssServiceServer) CreateRSSSource(ctx context.Context, in *pb.CreateRSS
 			ImgUrl:        source.ImgURL,
 			LastUpdatedAt: timestamppb.New(source.LastFeedUpdatedAt),
 		}
-		s.sendToPostProcessor(context.TODO(), reply.Source)
 		return reply, nil
 	}
 }
 
-func (s *rssServiceServer) ListRSSSources(ctx context.Context, in *pb.ListRSSSourcesRequest) (*pb.ListRSSSourcesReply, error) {
+func (r *rssServiceServer) ListRSSSources(ctx context.Context, in *pb.ListRSSSourcesRequest) (*pb.ListRSSSourcesReply, error) {
 	reply := &pb.ListRSSSourcesReply{}
-	if sources, err := s.RssService.ListSources(); err != nil {
+	if sources, err := r.RssService.ListSources(); err != nil {
 		log.Errorf("failed to list rss sources: %q", err)
 		return nil, err
 	} else {
@@ -95,37 +89,13 @@ func (s *rssServiceServer) ListRSSSources(ctx context.Context, in *pb.ListRSSSou
 	}
 }
 
-func (cs *rssServiceServer) sendToPostProcessor(ctx context.Context, source *pb.RSSSource) {
-	message, err := proto.Marshal(source)
-	if err != nil {
-		log.Errorf("Failed to marshal message to protobuf: %+v", err)
-		return
-	}
-
-	// Inject tracing info into message
-	msg := sarama.ProducerMessage{
-		Topic: kafka.Topic,
-		Value: sarama.ByteEncoder(message),
-	}
-
-	otel.GetTextMapPropagator().Inject(ctx, otelsarama.NewProducerMessageCarrier(&msg))
-
-	cs.KafkaProducerClient.Input() <- &msg
-	successMsg := <-cs.KafkaProducerClient.Successes()
-	log.Infof("Successful to write message. offset: %v", successMsg.Offset)
-}
-
 func main() {
 	server := NewRSSServiceServer()
 	var port string
 	var err error
 	util.MustMapEnv(&port, "RSS_SERVICE_PORT")
-	util.MustMapEnv(&server.kafkaBrokerSvcAddr, "KAFKA_SERVICE_ADDR")
 
-	server.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{server.kafkaBrokerSvcAddr}, log)
-	if err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println("port: ", port)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
 	if err != nil {
@@ -134,6 +104,8 @@ func main() {
 	var opts []grpc.ServerOption
 	var srv = grpc.NewServer(opts...)
 	pb.RegisterRSSServiceServer(srv, server)
+
+	server.RssService.UpdateSourceFromOrigin("92ae0555-7f60-4821-8fe9-e30b6a5b1797")
 
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
 	err = srv.Serve(lis)
