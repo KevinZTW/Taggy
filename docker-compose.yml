@@ -50,7 +50,7 @@ services:
     volumes:
       - ./volumes/rss-mongodb-data:/data/db
     ports:
-      - 27018:27017
+      - 27018:27017 # for local dev
   kafka:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-kafka
     container_name: kafka
@@ -77,6 +77,8 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+    ports:
+    - 9092:9092 # for local dev
     logging: *logging
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
