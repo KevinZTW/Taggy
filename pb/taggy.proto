@@ -20,6 +20,16 @@ message RSSSource {
   google.protobuf.Timestamp last_updated_at = 6;
 }
 
+message  RSSFeed {
+  string id = 1;
+  string source_id = 2;
+  string title = 3;
+  string content = 4;
+  string description = 5;
+  string url = 6;
+  google.protobuf.Timestamp published_at = 7;
+}
+
 message CreateRSSSourceRequest {
   string url = 1;
 }

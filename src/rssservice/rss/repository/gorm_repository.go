@@ -2,9 +2,10 @@ package repository
 
 import (
 	"fmt"
+	"rssservice/domain/rss"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"rssservice/domain/rss"
 )
 
 type FeedModel struct {
@@ -42,7 +43,7 @@ func (r *RSSRepository) GetAllSourceFeeds(source *rss.Source) ([]*rss.Feed, erro
 	panic("implement me")
 }
 
-func (r *RSSRepository) AddFeed(feed rss.Feed) error {
+func (r *RSSRepository) CreateFeed(feed rss.Feed) error {
 	r.db.Create(&FeedModel{Feed: feed})
 	return nil
 }
