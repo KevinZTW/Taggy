@@ -65,7 +65,9 @@ services:
           memory: 500M
     restart: unless-stopped
     environment:
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      # Add external for local dev
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL_SAME_HOST://localhost:29092
+      # - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
       - OTEL_RESOURCE_ATTRIBUTES
@@ -78,7 +80,10 @@ services:
       timeout: 10s
       retries: 10
     ports:
-    - 9092:9092 # for local dev
+    # for local dev
+    - 29092:29092
+    - 9092:9092
+    - 9093:9093
     logging: *logging
   kafka-ui:
     image: provectuslabs/kafka-ui:latest

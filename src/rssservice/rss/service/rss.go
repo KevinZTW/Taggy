@@ -30,6 +30,7 @@ func NewRSSService(repository rss.Repository) *RSSService {
 		repository: repository,
 	}
 	util.MustMapEnv(&service.kafkaBrokerSvcAddr, "KAFKA_SERVICE_ADDR")
+	log.Infof("kafkaBrokerSvcAddr: %s", service.kafkaBrokerSvcAddr)
 	service.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{service.kafkaBrokerSvcAddr}, log.Logger)
 
 	if err != nil {
@@ -62,10 +63,14 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 				log.Errorf("Failed to create feed: %v", err)
 			} else {
 				log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
+				r.sendNewFeedEvent(context.TODO(), feed)
 			}
 		}
 
-		r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt)
+		if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
+			log.Errorf(err.Error())
+		}
+
 		return nil
 	}
 }
@@ -120,7 +125,7 @@ func (r *RSSService) sendNewFeedEvent(ctx context.Context, feed *rss.Feed) {
 
 	// Inject tracing info into message
 	msg := sarama.ProducerMessage{
-		Topic: kafka.Topic,
+		Topic: kafka.NewRSSFeedTopic,
 		Value: sarama.ByteEncoder(message),
 	}
 
