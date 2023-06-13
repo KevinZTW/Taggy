@@ -1,5 +1,5 @@
 package server
 
 type Server interface {
-	Serve() error
+	Run() error
 }

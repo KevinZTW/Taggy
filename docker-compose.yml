@@ -36,10 +36,17 @@ services:
       - RSS_SERVICE_MONGODB_ADDR
       - RSS_SERVICE_MONGODB_NAME
       - KAFKA_SERVICE_ADDR
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=rssservice
     depends_on:
       rss-mongodb:
         condition: service_started
-
+      otelcol:
+        condition: service_started
+      kafka:
+        condition: service_healthy
   # ******************
   # Dependent Services
   # ******************
@@ -85,14 +92,78 @@ services:
     - 9092:9092
     - 9093:9093
     logging: *logging
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    depends_on:
-      - kafka
-    environment:
-      - DYNAMIC_CONFIG_ENABLED=true
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   depends_on:
+  #     - kafka
+  #   environment:
+  #     - DYNAMIC_CONFIG_ENABLED=true
+  #     - KAFKA_CLUSTERS_0_NAME=local
+  #     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+  #   ports:
+  #   - 8085:8080
+  # OpenTelemetry Collector
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.76.1
+    container_name: otel-col
+    deploy:
+      resources:
+        limits:
+          memory: 125M
+    restart: unless-stopped
+    command: [ "--config=/etc/otelcol-config.yml"]
+    volumes:
+      - ./src/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
     ports:
-    - 8085:8080
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP over HTTP receiver
+      - 9464:9464 # Prometheus exporter
+      - 8888:8888 # Prometheus metrics exposed by the collector
+      - 8889:8889 # Prometheus exporter metrics
+    depends_on:
+      - zipkin
+    logging: *logging
+  # Grafana
+  grafana:
+    image: grafana/grafana:9.4.7
+    container_name: grafana
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    volumes:
+      - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./src/grafana/provisioning/:/etc/grafana/provisioning/
+    ports:
+      - "${GRAFANA_SERVICE_PORT}:${GRAFANA_SERVICE_PORT}"
+    logging: *logging
+
+  # Prometheus
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.43.0
+    container_name: prometheus
+    command:
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --storage.tsdb.retention.time=1h
+      - --config.file=/etc/prometheus/prometheus-config.yaml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.route-prefix=/
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+    ports:
+      - "${PROMETHEUS_SERVICE_PORT}:${PROMETHEUS_SERVICE_PORT}"
+    logging: *logging
+  # Zipkin
+  zipkin:
+    image: openzipkin/zipkin:latest
+    restart: always
+    ports:
+      - 9411:9411

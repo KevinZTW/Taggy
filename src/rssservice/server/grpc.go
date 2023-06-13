@@ -23,7 +23,7 @@ func NewGRPCServer() *GRPCServer {
 	return &GRPCServer{}
 }
 
-func (g *GRPCServer) Serve() error {
+func (g *GRPCServer) Run() error {
 	RSSService := newgrpcRSSService()
 	var port string
 	var err error

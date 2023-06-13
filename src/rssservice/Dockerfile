@@ -1,4 +1,4 @@
-FROM golang:1.19.2-alpine AS builder
+FROM golang:1.20-alpine AS builder
 RUN apk add build-base protobuf-dev protoc
 WORKDIR /usr/src/app/
 

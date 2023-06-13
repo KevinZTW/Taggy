@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
 	"rssservice/kafka"
+	telemetry "rssservice/telementry"
 	"rssservice/util"
 	"time"
 
@@ -14,6 +16,7 @@ import (
 	"github.com/mmcdole/gofeed"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -40,39 +43,50 @@ func NewRSSService(repository rss.Repository) *RSSService {
 }
 
 func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
-	if source, err := r.repository.GetSourceById(sourceId); err != nil {
+	var source *rss.Source
+	var err error
+	_, span := telemetry.NewTracer().Start(context.TODO(), "UpdateSourceFromOrigin")
+	defer span.End()
+	if source, err = r.repository.GetSourceById(sourceId); err != nil {
 		return err
-	} else {
-		feeds, err := source.GetOriginFeeds()
-		if err != nil {
-			return err
+	}
+	feeds, err := source.GetOriginFeeds()
+
+	if err != nil {
+		return err
+	}
+
+	lastUpdatedAt := feeds[0].PublishedAt
+	feedCount := 0
+	for _, feed := range feeds {
+		if feed.PublishedAt.Before(source.LastFeedSyncedAt) || feed.PublishedAt.Equal(source.LastFeedSyncedAt) {
+			log.Infof("Skip feed: %s %s", feed.Title, feed.PublishedAt)
+			continue
 		}
-		lastUpdatedAt := feeds[0].PublishedAt
 
-		for _, feed := range feeds {
-			if feed.PublishedAt.Before(source.LastFeedSyncedAt) || feed.PublishedAt.Equal(source.LastFeedSyncedAt) {
-				log.Infof("Skip feed: %s %s", feed.Title, feed.PublishedAt)
-				continue
-			}
-
+		if feed, err := r.repository.CreateFeedFromEntity(feed); err != nil {
+			log.Errorf("Failed to create feed: %v", err)
+		} else {
+			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
+			r.sendNewFeedEvent(context.TODO(), feed)
+			feedCount++
 			if feed.PublishedAt.After(lastUpdatedAt) {
 				lastUpdatedAt = feed.PublishedAt
 			}
-
-			if feed, err := r.repository.CreateFeedFromEntity(feed); err != nil {
-				log.Errorf("Failed to create feed: %v", err)
-			} else {
-				log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
-				r.sendNewFeedEvent(context.TODO(), feed)
-			}
 		}
-
-		if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
-			log.Errorf(err.Error())
-		}
-
-		return nil
 	}
+
+	if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
+		log.Errorf(err.Error())
+	}
+	// POC tracing
+	msg := fmt.Sprintf("Updated %d feeds for source %s", feedCount, sourceId)
+	span.AddEvent(msg)
+	span.SetAttributes(
+		attribute.Int("app.rss.feeds.count", feedCount),
+	)
+
+	return nil
 }
 
 func (r *RSSService) CreateSource(url string) (*rss.Source, error) {

@@ -40,3 +40,7 @@ func Debugf(format string, args ...interface{}) {
 func Fatal(args ...interface{}) {
 	Logger.Fatal(args...)
 }
+
+func Fatalf(format string, args ...interface{}) {
+	Logger.Fatalf(format, args...)
+}
