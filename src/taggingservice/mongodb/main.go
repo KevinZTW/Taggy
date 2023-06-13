@@ -18,8 +18,8 @@ var (
 func New() *mongo.Database {
 	once.Do(func() {
 		var url, name string
-		util.MustMapEnv(&url, "RSS_SERVICE_MONGODB_ADDR")
-		util.MustMapEnv(&name, "RSS_SERVICE_MONGODB_NAME")
+		util.MustMapEnv(&url, "TAGGING_SERVICE_MONGODB_ADDR")
+		util.MustMapEnv(&name, "TAGGING_SERVICE_MONGODB_NAME")
 
 		if cli, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(url)); err != nil {
 			log.Fatal(err)
