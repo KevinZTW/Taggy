@@ -24,3 +24,4 @@ gen_proto_python() {
 }
 
 gen_proto_go rssservice
+gen_proto_go taggingservice

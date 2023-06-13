@@ -20,7 +20,7 @@ message RSSSource {
   google.protobuf.Timestamp last_updated_at = 6;
 }
 
-message  RSSFeed {
+message RSSFeed {
   string id = 1;
   string source_id = 2;
   string title = 3;
@@ -50,4 +50,21 @@ message FetchAllRSSRequest {
 
 message FetchAllRSSReply {
   string message = 1;
+}
+
+service TaggingService {
+  rpc GetRSSFeedTags (GetRSSFeedTagsRequest) returns (GetRSSFeedTagsReply) {}
+}
+
+message Tag {
+  string id = 1;
+  string name = 2;
+}
+
+message GetRSSFeedTagsRequest {
+  string id = 1;
+}
+
+message GetRSSFeedTagsReply {
+  repeated Tag tags = 1;
 }
