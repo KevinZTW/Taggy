@@ -2,8 +2,9 @@
 
 A RSS reader and web clipper helping users to explore and manage software articles on the internet
 
-[Home Page](https://knowledge-base-tw.web.app/signin)  
-[Chrome Extension ](https://chrome.google.com/webstore/detail/taggy/djgfbkpjhnmnafpmngdfiaoidmfoolcj?hl=zh-TW)
+🚧 This project is now under refactoring, several features might be down during the process 🚧
+- [Home Page](https://knowledge-base-tw.web.app/signin) (Limited feature)
+- [Chrome Extension](https://chrome.google.com/webstore/detail/taggy/djgfbkpjhnmnafpmngdfiaoidmfoolcj?hl=zh-TW) (Service down)
 
 ## Test User
 
@@ -13,43 +14,27 @@ Some function might be influenced from time to time since refactoring is on goin
 - Password: 123123
 - For extension usage, please refresh webpage after installing the extension
 
-## Note
-This project is now under refactoring, several features might be down during the process
-
 ## Technologies :
 
-### Back-End
-
-- Golang + gin / Node.js + Express.js
+## Back-End
+- Golang, Node.js
 - RESTful API, grpc
-- Micro service
-
-### Database
-
-- MySQL
-- Redis
-- CloudFirestore
-
-### AWS Cloud Service
-
-- EC2, ALB
-- RDS
-- Certificate Manager
+- Micro Service Architecture
+- Kafka, Redis, MongoDB, MySQL, CloudFirestore
+- Grafana, Zipkin, Prometheus, OpenTelemetry
+- Docker
+- EC2, RDS
 
 ### Front-End
 
 - Framework : React / React-Router
-- State Managment : Redux
+- State Management : Redux
 - Others : Chrome Extension Development
 - HTML / CSS Modules / JavaScript (ES6)
 
 ## Architecture
 
-### Current Plan
-
-(Refactoring ongoing)
-
-![image](https://user-images.githubusercontent.com/38662781/154060512-da58da1a-4a98-4bce-9168-db693a503a66.png)
+> (Refactoring ongoing)
 
 ### Previous Version
 
