@@ -5,7 +5,6 @@ volumes
 
 *.firebase
 *.cache
-*.yaml
 *.env
 *.idea
 *.json

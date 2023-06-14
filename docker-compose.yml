@@ -80,6 +80,34 @@ services:
         condition: service_started
       kafka:
         condition: service_healthy
+  # Envoy
+  envoy:
+    image: ${IMAGE_NAME}:${IMAGE_VERSION}-envoy
+    container_name: envoy
+    build:
+      context: ./
+      dockerfile: src/envoy/Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+    ports:
+      - "${ENVOY_PORT}:${ENVOY_PORT}"
+      - 10000:10000
+    environment:
+      - RSS_SERVICE_PORT
+      - ZIPKIN_SERVICE_PORT
+      - ZIPKIN_SERVICE_HOST
+      - GRAFANA_SERVICE_PORT
+      - GRAFANA_SERVICE_HOST
+      - OTEL_COLLECTOR_HOST
+      - OTEL_COLLECTOR_PORT
+      - ENVOY_PORT
+      - PROMETHEUS_SERVICE_PORT
+    depends_on:
+      - grafana
+      - zipkin
+      - prometheus
   # ******************
   # Dependent Services
   # ******************
@@ -199,4 +227,6 @@ services:
     image: openzipkin/zipkin:latest
     restart: always
     ports:
-      - 9411:9411
+      - "${ZIPKIN_SERVICE_PORT}:${ZIPKIN_SERVICE_PORT}"
+    logging: *logging
+
