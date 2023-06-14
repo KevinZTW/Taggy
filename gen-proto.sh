@@ -23,5 +23,15 @@ gen_proto_python() {
   cd "$base_dir" || return
 }
 
+gen_proto_ts() {
+  echo "Generating Typescript protobuf files for $1"
+  cd "$base_dir"/src/"$1" || return
+  cp -r "$base_dir"/pb .
+  mkdir -p ./protos
+  protoc -I ./pb  --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=esModuleInterop=true --ts_proto_out=./protos --ts_proto_opt=outputServices=grpc-js taggy.proto
+  cd "$base_dir" || return
+}
+
 gen_proto_go rssservice
 gen_proto_go taggingservice
+gen_proto_ts frontend/v2

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package taggy;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "genproto/taggy";
+
+service RSSService {
+  rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
+  rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
+  rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply) {}
+}
+message RSSSource {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string url = 4;
+  string img_url = 5;
+  google.protobuf.Timestamp last_updated_at = 6;
+}
+
+message RSSFeed {
+  string id = 1;
+  string source_id = 2;
+  string title = 3;
+  string content = 4;
+  string description = 5;
+  string url = 6;
+  google.protobuf.Timestamp published_at = 7;
+}
+
+message CreateRSSSourceRequest {
+  string url = 1;
+}
+
+message CreateRSSSourceReply {
+  RSSSource source = 1;
+}
+
+message ListRSSSourcesRequest {
+}
+
+message ListRSSSourcesReply {
+  repeated RSSSource rss_sources = 1;
+}
+
+message FetchAllRSSRequest {
+}
+
+message FetchAllRSSReply {
+  string message = 1;
+}
+
+service TaggingService {
+  rpc GetRSSFeedTags (GetRSSFeedTagsRequest) returns (GetRSSFeedTagsReply) {}
+}
+
+message Tag {
+  string id = 1;
+  string name = 2;
+}
+
+message GetRSSFeedTagsRequest {
+  string id = 1;
+}
+
+message GetRSSFeedTagsReply {
+  repeated Tag tags = 1;
+}
