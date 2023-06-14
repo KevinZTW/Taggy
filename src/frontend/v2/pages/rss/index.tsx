@@ -1,5 +1,5 @@
 
-import {useState, useEffect } from 'react';
+import {useState, useRef, useEffect } from 'react';
 import FeedCard from '@/components/FeedCard';
 import SourceCard from '@/components/SourceCard/SourceCard';
 import Button from '@mui/material/Button';
@@ -11,13 +11,27 @@ import TextField from '@mui/material/TextField';
 
 const Wrapper = styled.div`
     display: flex;
-    padding: 10px;
-    flex-direction: column;
-    `
+    padding: 20px;
+    flex-direction: column;`
+const SourceCardWrapper = styled.div`
+    display: flex;
+    gap: 10px;
+`
+
+function addRSSSource(url: string){
+    fetch('/api/rss', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            url: url
+        })
+    })
+}
 export default function RSS(){
     const [sources, setSources] = useState(Array<RSSSource>)
-
-
+    const searchInputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
         fetch('/api/rss')
             .then(res => res.json())
@@ -33,16 +47,16 @@ export default function RSS(){
         
         <Typography variant="h4" >RSS Sources</Typography>
         
-        <TextField id="search-box" label="enter url" variant="filled" />
-        <Button>Add</Button>
-
+        <TextField id="search-box" label="enter url" variant="filled"   inputRef={searchInputRef} />
+        <Button onClick={()=>{
+            const url = searchInputRef.current.value;
+            alert(url);
+            addRSSSource(url)}}>Add</Button>
+        <SourceCardWrapper>
         {sources.map((source) => {
-            return (
-                <>
-                <SourceCard source={source}/>
-                </>
-            )
+            return (<SourceCard source={source}/>)
         })}
+        </SourceCardWrapper> 
         </Wrapper>   
     )
 }

@@ -32,7 +32,7 @@ export default function SourceCard({source}: IProps) {
             component="img"
             height="120"
             image={`${source.imgUrl}`}
-            alt="Paella dish"
+            // alt="Paella dish"
         />
         <CardContent>
             <Typography variant="h5" component="div">

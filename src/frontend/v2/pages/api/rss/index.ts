@@ -8,16 +8,16 @@ type TResponse = RSSSource[];
 const handler = async ({ method, body }: NextApiRequest, res) => {
   switch (method) {
     case 'GET': {
-      const { rssSources = [] } = await RSSGateway.listRssSources();
+      const { rssSources = [] } = await RSSGateway.listRSSSources();
       return res.status(200).json(rssSources);
     }
 
     case 'POST': {
         const { url } = body as CreateRSSSourceRequest;
-        const rssSource = await RSSGateway.addRssSource(url);
+        const rssSource = await RSSGateway.addRSSSource(url);
         return res.status(200).json(rssSource);
     }
-    
+
     default: {
       return res.status(405);
     }
