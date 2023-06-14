@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"net"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
@@ -11,9 +13,6 @@ import (
 	"rssservice/rss/service"
 	"rssservice/util"
 	"sync"
-
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type GRPCServer struct {
@@ -56,28 +55,6 @@ func newgrpcRSSService() *grpcRSSService {
 	}
 }
 
-func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
-	reply := &pb.FetchAllRSSReply{}
-	if sources, err := r.RSSService.ListSources(); err != nil {
-		reply.Message = err.Error()
-		return reply, err
-	} else {
-
-		wg := sync.WaitGroup{}
-		for _, source := range sources {
-			wg.Add(1)
-			go func(source *rss.Source) {
-				defer wg.Done()
-				if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
-					log.Errorf("failed to update source: %q", err)
-				}
-			}(source)
-		}
-		reply.Message = "success"
-		return reply, err
-	}
-}
-
 func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
 	if source, err := r.RSSService.CreateSource(in.GetUrl()); err != nil {
 		log.Errorf("failed to add source: %q", err)
@@ -106,11 +83,38 @@ func (r *grpcRSSService) ListRSSSources(ctx context.Context, in *pb.ListRSSSourc
 		reply.RssSources = make([]*pb.RSSSource, len(sources))
 		for i, source := range sources {
 			reply.RssSources[i] = &pb.RSSSource{
+				Id:            source.ID,
+				ImgUrl:        source.ImgURL,
+				Url:           source.URL,
 				Name:          source.Name,
 				Description:   source.Description,
 				LastUpdatedAt: timestamppb.New(source.LastFeedUpdatedAt),
 			}
 		}
 		return reply, nil
+	}
+}
+
+// TODO: find a better naming
+
+func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
+	reply := &pb.FetchAllRSSReply{}
+	if sources, err := r.RSSService.ListSources(); err != nil {
+		reply.Message = err.Error()
+		return reply, err
+	} else {
+
+		wg := sync.WaitGroup{}
+		for _, source := range sources {
+			wg.Add(1)
+			go func(source *rss.Source) {
+				defer wg.Done()
+				if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
+					log.Errorf("failed to update source: %q", err)
+				}
+			}(source)
+		}
+		reply.Message = "success"
+		return reply, err
 	}
 }

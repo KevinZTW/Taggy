@@ -117,6 +117,7 @@ func (r *RSSService) parseURL(url string) (*rss.Source, error) {
 		s.URL = feed.FeedLink
 		s.Description = feed.Description
 		s.LastFeedUpdatedAt = *feed.UpdatedParsed
+		s.ImgURL = feed.Image.URL
 		return s, nil
 	}
 }

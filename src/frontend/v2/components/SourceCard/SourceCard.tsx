@@ -40,6 +40,7 @@ export default function SourceCard({source}: IProps) {
             </Typography>
             <div>id: {source.id}</div>
             <div>url: {source.url}</div>
+            <div>last update: {source.lastUpdatedAt?.toString()}</div>
             <Typography variant="body2" color="text.secondary">
                 {source.description}
             </Typography>
