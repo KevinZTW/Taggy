@@ -12,6 +12,7 @@ import (
 	"rssservice/log"
 	"rssservice/rss/repository"
 	"rssservice/rss/service"
+	"rssservice/telementry"
 	"rssservice/util"
 	"sync"
 )
@@ -35,6 +36,8 @@ func (g *GRPCServer) Run() error {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	telementry.Init()
 	var srv = grpc.NewServer(
 		grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
 		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
@@ -43,7 +46,6 @@ func (g *GRPCServer) Run() error {
 
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
 	return srv.Serve(lis)
-
 }
 
 type grpcRSSService struct {
@@ -59,6 +61,8 @@ func newgrpcRSSService() *grpcRSSService {
 }
 
 func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
+
+	log.Infof("create rss source url: %s", in.GetUrl())
 	if source, err := r.RSSService.CreateSource(in.GetUrl()); err != nil {
 		log.Errorf("failed to add source: %q", err)
 		// TODO: implement the idea error handling ref: https://jbrandhorst.com/post/grpc-errors/

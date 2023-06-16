@@ -40,7 +40,9 @@ func NewTracer() trace.Tracer {
 func initTracerProvider() *sdktrace.TracerProvider {
 	ctx := context.Background()
 
-	exporter, err := otlptracegrpc.New(ctx)
+	// add the otlptracegrpc.WithInsecure() option so app outside docker network could make TLS connection, need to deep dive later
+	exporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithInsecure())
+
 	if err != nil {
 		log.Fatalf("new otlp trace grpc exporter failed: %v", err)
 	}

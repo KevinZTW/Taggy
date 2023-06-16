@@ -83,11 +83,17 @@ func (r *RSSService) parseURL(url string) (*rss.Source, error) {
 		return nil, err
 	} else {
 		// TODO: store more info to the RSS Source
+
+		imgURL := ""
+		if feed.Image != nil {
+			imgURL = feed.Image.URL
+		}
+
 		s.Name = feed.Title
 		s.URL = feed.FeedLink
 		s.Description = feed.Description
 		s.LastFeedUpdatedAt = *feed.UpdatedParsed
-		s.ImgURL = feed.Image.URL
+		s.ImgURL = imgURL
 		return s, nil
 	}
 }
