@@ -11,62 +11,45 @@ import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
+import ApiGateway from '@/gateways/Api.gateway';
 
 const Wrapper = styled.div`
     display: flex;
     padding: 20px;
     flex-direction: column;`
 
-const SourceCardWrapper = styled.div`
-    display: flex;
-    gap: 10px;
-`
-
-function addRSSSource(url: string){
-    fetch('/api/rss', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            url: url
-        })
-    })
-}
-
-function getSourceID(){
-    const router = useRouter()
-    return router.query.sourceId as string;
-}
-
 export default function RSS(){
-    const [sources, setSources] = useState(Array<RSSSource>)
-    const searchInputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => {
-        fetch('/api/rss')
-            .then(res => res.json())
-            .then(data => {
-                setSources(data)
-            })
-    }, [])
-
-    const sourceId : string = getSourceID();
+    const [source, setSource] = useState(Array<RSSSource>)
+    const [feeds, setFeeds] = useState(Array<RSSSource>)
     
+    const sourceId : string = useRouter().query.sourceId as string;
+
+    useEffect(() => {
+        if (!sourceId) return;
+
+        console.log(sourceId)
+        ApiGateway.listRSSSourceFeeds(sourceId).then(data => {
+                setFeeds(data)
+            })
+            
+    }, [sourceId])
+
+    
+    const feedCards = feeds.map((feed)=>{
+        return (<>
+        <div>{feed.name}</div>
+        <div>{feed.description}</div>
+        </>)
+    })
+
     return (
         <Wrapper>
         <div>{sourceId}</div>
-        <Typography variant="h4" >XYZ Feeds</Typography>
+        <Typography variant="h4" >Feeds</Typography>
         
-        <TextField id="search-box" label="enter url" variant="filled" inputRef={searchInputRef} />
-        <Button onClick={()=>{
-            const url = searchInputRef?.current?.value as string;
-            alert("Add RSS source with url:" + url);
-            addRSSSource(url)}}>Add</Button>
-        <SourceCardWrapper>
-        {sources.map((source) => {
-            return (<SourceCard source={source}/>)
-        })}
-        </SourceCardWrapper> 
+
+        {feedCards}
+        
         </Wrapper>   
     )
 }

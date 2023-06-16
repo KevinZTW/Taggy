@@ -15,8 +15,7 @@ exporters:
   #  https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/prometheusexporter
   
   prometheus:
-#    endpoint: "otelcol:9464"  # the address on which metrics will be exposed
-    endpoint: "localhost:9464"
+    endpoint: "otelcol:9464"  # the address on which metrics will be exposed
     resource_to_telemetry_conversion:
       enabled: true
     enable_open_metrics: true

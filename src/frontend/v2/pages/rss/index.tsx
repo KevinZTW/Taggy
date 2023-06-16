@@ -9,6 +9,7 @@ import { RSSSource } from '@/protos/taggy';
 import TextField from '@mui/material/TextField';
 import ApiGateway from '@/gateways/Api.gateway';
 
+import Link from 'next/link'
 const Wrapper = styled.div`
     display: flex;
     padding: 20px;
@@ -20,16 +21,8 @@ const SourceCardWrapper = styled.div`
 
 function addRSSSource(url: string){
     ApiGateway.addRSSSource(url)
-    // fetch('/api/rss', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         url: url
-    //     })
-    // })
 }
+
 export default function RSS(){
     const [sources, setSources] = useState(Array<RSSSource>)
     const searchInputRef = useRef<HTMLInputElement>(null);
@@ -53,7 +46,7 @@ export default function RSS(){
             addRSSSource(url)}}>Add</Button>
         <SourceCardWrapper>
         {sources.map((source) => {
-            return (<SourceCard source={source}/>)
+            return (<Link href={`/rss/${source.id}`}><SourceCard source={source}/></Link>)
         })}
         </SourceCardWrapper> 
         </Wrapper>   

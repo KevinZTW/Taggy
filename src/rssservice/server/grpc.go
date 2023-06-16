@@ -61,8 +61,6 @@ func newgrpcRSSService() *grpcRSSService {
 }
 
 func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
-
-	log.Infof("create rss source url: %s", in.GetUrl())
 	if source, err := r.RSSService.CreateSource(in.GetUrl()); err != nil {
 		log.Errorf("failed to add source: %q", err)
 		// TODO: implement the idea error handling ref: https://jbrandhorst.com/post/grpc-errors/
