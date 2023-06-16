@@ -6,10 +6,17 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "genproto/taggy";
 
+message Tag {
+  string id = 1;
+  string name = 2;
+}
+
 service RSSService {
   rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
   rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply) {}
+  rpc ListRSSSourceFeeds (ListRSSSourceFeedsRequest) returns (ListRSSSourceFeedsReply) {}
+
 }
 message RSSSource {
   string id = 1;
@@ -45,6 +52,14 @@ message ListRSSSourcesReply {
   repeated RSSSource rss_sources = 1;
 }
 
+message ListRSSSourceFeedsRequest {
+  string sourceId = 1;
+}
+
+message ListRSSSourceFeedsReply {
+  repeated RSSFeed feeds = 1;
+}
+
 message FetchAllRSSRequest {
 }
 
@@ -54,11 +69,6 @@ message FetchAllRSSReply {
 
 service TaggingService {
   rpc GetRSSFeedTags (GetRSSFeedTagsRequest) returns (GetRSSFeedTagsReply) {}
-}
-
-message Tag {
-  string id = 1;
-  string name = 2;
 }
 
 message GetRSSFeedTagsRequest {

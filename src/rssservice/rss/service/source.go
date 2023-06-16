@@ -4,43 +4,13 @@ import (
 	"context"
 	"fmt"
 	"rssservice/domain/rss"
-	pb "rssservice/genproto/taggy"
-	"rssservice/kafka"
+	"rssservice/log"
 	telemetry "rssservice/telementry"
-	"rssservice/util"
 	"time"
 
-	"rssservice/log"
-
-	"github.com/Shopify/sarama"
 	"github.com/mmcdole/gofeed"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-type RSSService struct {
-	repository          rss.Repository
-	kafkaBrokerSvcAddr  string
-	KafkaProducerClient sarama.AsyncProducer
-}
-
-func NewRSSService(repository rss.Repository) *RSSService {
-	var err error
-	service := &RSSService{
-		repository: repository,
-	}
-	util.MustMapEnv(&service.kafkaBrokerSvcAddr, "KAFKA_SERVICE_ADDR")
-	log.Infof("kafkaBrokerSvcAddr: %s", service.kafkaBrokerSvcAddr)
-	service.KafkaProducerClient, err = kafka.CreateKafkaProducer([]string{service.kafkaBrokerSvcAddr}, log.Logger)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-	return service
-}
 
 func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 	var source *rss.Source
@@ -120,35 +90,6 @@ func (r *RSSService) parseURL(url string) (*rss.Source, error) {
 		s.ImgURL = feed.Image.URL
 		return s, nil
 	}
-}
-
-func (r *RSSService) sendNewFeedEvent(ctx context.Context, feed *rss.Feed) {
-	pbFeed := &pb.RSSFeed{
-		Id:          feed.ID,
-		SourceId:    feed.SourceId,
-		Title:       feed.Title,
-		Content:     feed.Content,
-		Description: feed.Description,
-		Url:         feed.URL,
-		PublishedAt: timestamppb.New(feed.PublishedAt),
-	}
-	message, err := proto.Marshal(pbFeed)
-	if err != nil {
-		log.Errorf("Failed to marshal message to protobuf: %+v", err)
-		return
-	}
-
-	// Inject tracing info into message
-	msg := sarama.ProducerMessage{
-		Topic: kafka.NewRSSFeedTopic,
-		Value: sarama.ByteEncoder(message),
-	}
-
-	otel.GetTextMapPropagator().Inject(ctx, otelsarama.NewProducerMessageCarrier(&msg))
-
-	r.KafkaProducerClient.Input() <- &msg
-	successMsg := <-r.KafkaProducerClient.Successes()
-	log.Infof("Successful to write message. offset: %v", successMsg.Offset)
 }
 
 func (r *RSSService) createSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Source, error) {

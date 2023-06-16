@@ -39,7 +39,7 @@ func NewRSSRepository() *RSSRepository {
 	return &RSSRepository{db: db}
 }
 
-func (r *RSSRepository) GetAllSourceFeeds(source *rss.Source) ([]*rss.Feed, error) {
+func (r *RSSRepository) ListSourceFeeds(source *rss.Source) ([]*rss.Feed, error) {
 	panic("implement me")
 }
 

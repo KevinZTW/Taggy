@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"net"
@@ -34,8 +35,10 @@ func (g *GRPCServer) Run() error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var opts []grpc.ServerOption
-	var srv = grpc.NewServer(opts...)
+	var srv = grpc.NewServer(
+		grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+		grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
+	)
 	pb.RegisterRSSServiceServer(srv, RSSService)
 
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
@@ -90,6 +93,27 @@ func (r *grpcRSSService) ListRSSSources(ctx context.Context, in *pb.ListRSSSourc
 				Description:   source.Description,
 				LastUpdatedAt: timestamppb.New(source.LastFeedUpdatedAt),
 			}
+		}
+		return reply, nil
+	}
+}
+
+func (r *grpcRSSService) ListRSSSourceFeeds(ctx context.Context, in *pb.ListRSSSourceFeedsRequest) (*pb.ListRSSSourceFeedsReply, error) {
+	reply := &pb.ListRSSSourceFeedsReply{}
+	if feeds, err := r.RSSService.ListSourceFeeds(in.GetSourceId()); err != nil {
+		return reply, err
+	} else {
+		for _, feed := range feeds {
+			f := &pb.RSSFeed{
+				Id:          feed.ID,
+				SourceId:    feed.SourceId,
+				Title:       feed.Title,
+				Content:     feed.Content,
+				Description: feed.Description,
+				Url:         feed.URL,
+				PublishedAt: timestamppb.New(feed.PublishedAt),
+			}
+			reply.Feeds = append(reply.Feeds, f)
 		}
 		return reply, nil
 	}

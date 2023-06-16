@@ -16,7 +16,7 @@ type RSSRepository interface {
 	UpdateSourceLastFeedSyncedAt(source *Source, lastFeedSyncedAt time.Time) error
 
 	CreateFeedFromEntity(feed *Feed) (*Feed, error)
-	GetAllSourceFeeds(source *Source) ([]*Feed, error)
+	ListSourceFeeds(source *Source) ([]*Feed, error)
 	GetFeedByGUID(guid string) (*Feed, error)
 	GetFeedsBySourceId(sourceId int) ([]*Feed, error)
 }
@@ -88,7 +88,7 @@ func (s *Source) UpdateLastFeedSyncedAt(repository RSSRepository, lastFeedSynced
 }
 
 func (s *Source) GetAllFeeds(repository RSSRepository) {
-	feeds, _ := repository.GetAllSourceFeeds(s)
+	feeds, _ := repository.ListSourceFeeds(s)
 	fmt.Println(feeds)
 }
 

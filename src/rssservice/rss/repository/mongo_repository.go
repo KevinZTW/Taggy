@@ -84,8 +84,15 @@ func (m *MongoRepository) UpdateSourceLastFeedSyncedAt(source *rss.Source, lastF
 	}
 }
 
-func (m *MongoRepository) GetAllSourceFeeds(source *rss.Source) ([]*rss.Feed, error) {
-	panic("implement me")
+func (m *MongoRepository) ListSourceFeeds(source *rss.Source) ([]*rss.Feed, error) {
+	feeds := []*rss.Feed{}
+	if cur, err := m.feedCollection.Find(nil, bson.D{{"source_id", source.ID}}); err != nil {
+		return nil, err
+	} else if err = cur.All(nil, &feeds); err != nil {
+		return nil, err
+	} else {
+		return feeds, nil
+	}
 }
 
 func (m *MongoRepository) CreateFeedFromEntity(feed *rss.Feed) (*rss.Feed, error) {
