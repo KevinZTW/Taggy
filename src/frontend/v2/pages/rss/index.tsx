@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import { RSSSource } from '@/protos/taggy';
 import TextField from '@mui/material/TextField';
-
+import ApiGateway from '@/gateways/Api.gateway';
 
 const Wrapper = styled.div`
     display: flex;
@@ -19,23 +19,22 @@ const SourceCardWrapper = styled.div`
 `
 
 function addRSSSource(url: string){
-    fetch('/api/rss', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            url: url
-        })
-    })
+    ApiGateway.addRSSSource(url)
+    // fetch('/api/rss', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //         url: url
+    //     })
+    // })
 }
 export default function RSS(){
     const [sources, setSources] = useState(Array<RSSSource>)
     const searchInputRef = useRef<HTMLInputElement>(null);
     useEffect(() => {
-        fetch('/api/rss')
-            .then(res => res.json())
-            .then(data => {
+        ApiGateway.listRSSSources().then(data => {
                 setSources(data)
             })
     }, [])

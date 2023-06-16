@@ -1,0 +1,130 @@
+.addArticle {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 70vw;
+}
+
+.addForm {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.input {
+  width: 70%;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-radius: 5px;
+  height: 30px;
+  background-color: black;
+  color: #6c6c6c;
+  padding-left: 20px;
+  font-size: 17px;
+  border: solid 1px white;
+}
+
+.add {
+  padding: 0 8px;
+  width: 4.5rem;
+  text-align: center;
+  font-weight: 500;
+  margin-left: 10px;
+  font-size: 17px;
+  height: 2rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #01b468;
+  cursor: pointer;
+}
+.progress {
+  width: 560px;
+}
+
+.addFolderLabel {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 20px;
+  font-family: "Open Sans" !important;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+.addFormWrapper {
+  width: 100%;
+  padding-top: 8px;
+}
+.addInput {
+  display: inline-block;
+  width: 65%;
+  padding-top: 8px;
+  padding-bottom: 7px;
+  border: none;
+  height: 48px;
+  border-radius: 4px;
+  background-color: rgba(32, 116, 236, 0.13);
+  color: white;
+  padding-left: 20px;
+  font-size: 17px;
+
+  border-bottom: none;
+}
+
+.addInput:focus {
+  border-bottom: solid 1px #49b7f1;
+  transition: border-bottom 2s ease-out;
+
+  transform-origin: left;
+}
+.saveBtn {
+  padding: 16px 24px;
+  margin-bottom: 16px;
+  margin-left: 24px;
+  font-size: 13px;
+  font-weight: bold;
+
+  border-radius: 5px;
+  border: none;
+  color: #e0e0e0;
+  background: #2074ec;
+
+  cursor: pointer;
+}
+.cancelBtn {
+  padding: 16px 24px;
+
+  margin-left: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #0e1622 !important;
+  border-radius: 5px;
+  border: solid 1px #2074ec;
+  color: #2074ec;
+  cursor: pointer;
+}
+.tagsImgWrapper {
+  padding-top: 72px;
+}
+.tagsImgWrapper img {
+  width: 50%;
+}
+@media (max-width: 770px) {
+  .addInput {
+    width: 90%;
+    margin-bottom: 16px;
+  }
+  .saveBtn {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 632px) {
+  .addArticle {
+    width: 90vw;
+  }
+
+  .tagsImgWrapper {
+    padding-top: 72px;
+  }
+  .tagsImgWrapper img {
+    width: 90%;
+  }
+}
