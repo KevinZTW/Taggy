@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { RSSSource } from '@/protos/taggy';
 
+import SourcePage from '@/components/SourcePage';
 import FeedCard from '@/components/FeedCard';
 import SourceCard from '@/components/SourceCard/SourceCard';
 import Button from '@mui/material/Button';
@@ -18,37 +19,35 @@ const Wrapper = styled.div`
     padding: 20px;
     flex-direction: column;`
 
-export default function RSS(){
-    const [source, setSource] = useState(Array<RSSSource>)
-    const [feeds, setFeeds] = useState(Array<RSSSource>)
+export default function RSSSourcePage(){
+    const [source, setSource] = useState<RSSSource>()
     
     const sourceId : string = useRouter().query.sourceId as string;
-
-    useEffect(() => {
+    
+    useEffect(()=>{
         if (!sourceId) return;
-
-        console.log(sourceId)
-        ApiGateway.listRSSSourceFeeds(sourceId).then(data => {
-                setFeeds(data)
-            })
-            
+        ApiGateway.getRSSSource(sourceId).then(data => {
+            setSource(data)
+        })
     }, [sourceId])
+    
 
     
-    const feedCards = feeds.map((feed)=>{
-        return (<>
-        <div>{feed.name}</div>
-        <div>{feed.description}</div>
-        </>)
-    })
+    // const feedCards = feeds.map((feed)=>{
+    //     return (<>
+    //     <div>{feed.name}</div>
+    //     <div>{feed.description}</div>
+    //     </>)
+    // })
 
     return (
         <Wrapper>
-        <div>{sourceId}</div>
-        <Typography variant="h4" >Feeds</Typography>
         
+        {/* <div>{sourceId}</div> */}
+        {/* <Typography variant="h4" >Feeds</Typography> */}
+        <SourcePage source={source}></SourcePage>
 
-        {feedCards}
+
         
         </Wrapper>   
     )

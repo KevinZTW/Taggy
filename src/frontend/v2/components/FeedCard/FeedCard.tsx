@@ -1,7 +1,11 @@
-export default function FeedCard(){
+import { RSSFeed } from "@/protos/taggy";
+
+export default function FeedCard({feed}:{feed:RSSFeed}){
   return (
     <>
-    <div>A simple card</div>
+    <div>{feed.title}</div>
+    <div>{feed.description}</div>
+    <div>{feed.content}</div>
     </>
   )
 }

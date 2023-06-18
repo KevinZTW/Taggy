@@ -4,7 +4,7 @@ import RSSSearch from "@/components/RSSSearch/index";
 import FeedCard from "@/components/FeedCard";
 import styles from "./index.module.css";
 
-// import RSSPage from "./RSSPage";
+// import FeedPage from "./FeedPage";
 
 import { popoverClasses } from "@mui/material";
 
@@ -19,7 +19,7 @@ export default function Search(props : React.PropsWithChildren<any>) {
 
 //   function renderFeedPage(feedItem) {
 //     return (
-//       <RSSPage
+//       <FeedPage
 //         item={feedItem}
 //         onClick={() => {
 //           setShowPage(false);

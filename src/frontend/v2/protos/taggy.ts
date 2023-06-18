@@ -48,11 +48,27 @@ export interface CreateRSSSourceReply {
   source: RSSSource | undefined;
 }
 
+export interface GetRSSSourceRequest {
+  sourceId: string;
+}
+
+export interface GetRSSSourceReply {
+  source: RSSSource | undefined;
+}
+
 export interface ListRSSSourcesRequest {
 }
 
 export interface ListRSSSourcesReply {
   rssSources: RSSSource[];
+}
+
+export interface GetRSSFeedRequest {
+  feedId: string;
+}
+
+export interface GetRSSFeedReply {
+  feed: RSSFeed | undefined;
 }
 
 export interface ListRSSSourceFeedsRequest {
@@ -519,6 +535,120 @@ export const CreateRSSSourceReply = {
   },
 };
 
+function createBaseGetRSSSourceRequest(): GetRSSSourceRequest {
+  return { sourceId: "" };
+}
+
+export const GetRSSSourceRequest = {
+  encode(message: GetRSSSourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sourceId !== "") {
+      writer.uint32(10).string(message.sourceId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSSourceRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRSSSourceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.sourceId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRSSSourceRequest {
+    return { sourceId: isSet(object.sourceId) ? String(object.sourceId) : "" };
+  },
+
+  toJSON(message: GetRSSSourceRequest): unknown {
+    const obj: any = {};
+    message.sourceId !== undefined && (obj.sourceId = message.sourceId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRSSSourceRequest>, I>>(base?: I): GetRSSSourceRequest {
+    return GetRSSSourceRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetRSSSourceRequest>, I>>(object: I): GetRSSSourceRequest {
+    const message = createBaseGetRSSSourceRequest();
+    message.sourceId = object.sourceId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetRSSSourceReply(): GetRSSSourceReply {
+  return { source: undefined };
+}
+
+export const GetRSSSourceReply = {
+  encode(message: GetRSSSourceReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.source !== undefined) {
+      RSSSource.encode(message.source, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSSourceReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRSSSourceReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.source = RSSSource.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRSSSourceReply {
+    return { source: isSet(object.source) ? RSSSource.fromJSON(object.source) : undefined };
+  },
+
+  toJSON(message: GetRSSSourceReply): unknown {
+    const obj: any = {};
+    message.source !== undefined && (obj.source = message.source ? RSSSource.toJSON(message.source) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRSSSourceReply>, I>>(base?: I): GetRSSSourceReply {
+    return GetRSSSourceReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetRSSSourceReply>, I>>(object: I): GetRSSSourceReply {
+    const message = createBaseGetRSSSourceReply();
+    message.source = (object.source !== undefined && object.source !== null)
+      ? RSSSource.fromPartial(object.source)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseListRSSSourcesRequest(): ListRSSSourcesRequest {
   return {};
 }
@@ -621,6 +751,118 @@ export const ListRSSSourcesReply = {
   fromPartial<I extends Exact<DeepPartial<ListRSSSourcesReply>, I>>(object: I): ListRSSSourcesReply {
     const message = createBaseListRSSSourcesReply();
     message.rssSources = object.rssSources?.map((e) => RSSSource.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetRSSFeedRequest(): GetRSSFeedRequest {
+  return { feedId: "" };
+}
+
+export const GetRSSFeedRequest = {
+  encode(message: GetRSSFeedRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feedId !== "") {
+      writer.uint32(10).string(message.feedId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSFeedRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRSSFeedRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.feedId = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRSSFeedRequest {
+    return { feedId: isSet(object.feedId) ? String(object.feedId) : "" };
+  },
+
+  toJSON(message: GetRSSFeedRequest): unknown {
+    const obj: any = {};
+    message.feedId !== undefined && (obj.feedId = message.feedId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRSSFeedRequest>, I>>(base?: I): GetRSSFeedRequest {
+    return GetRSSFeedRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetRSSFeedRequest>, I>>(object: I): GetRSSFeedRequest {
+    const message = createBaseGetRSSFeedRequest();
+    message.feedId = object.feedId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetRSSFeedReply(): GetRSSFeedReply {
+  return { feed: undefined };
+}
+
+export const GetRSSFeedReply = {
+  encode(message: GetRSSFeedReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feed !== undefined) {
+      RSSFeed.encode(message.feed, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSFeedReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRSSFeedReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.feed = RSSFeed.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRSSFeedReply {
+    return { feed: isSet(object.feed) ? RSSFeed.fromJSON(object.feed) : undefined };
+  },
+
+  toJSON(message: GetRSSFeedReply): unknown {
+    const obj: any = {};
+    message.feed !== undefined && (obj.feed = message.feed ? RSSFeed.toJSON(message.feed) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetRSSFeedReply>, I>>(base?: I): GetRSSFeedReply {
+    return GetRSSFeedReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetRSSFeedReply>, I>>(object: I): GetRSSFeedReply {
+    const message = createBaseGetRSSFeedReply();
+    message.feed = (object.feed !== undefined && object.feed !== null) ? RSSFeed.fromPartial(object.feed) : undefined;
     return message;
   },
 };
@@ -968,6 +1210,15 @@ export const RSSServiceService = {
     responseSerialize: (value: CreateRSSSourceReply) => Buffer.from(CreateRSSSourceReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => CreateRSSSourceReply.decode(value),
   },
+  getRssSource: {
+    path: "/taggy.RSSService/GetRSSSource",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetRSSSourceRequest) => Buffer.from(GetRSSSourceRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetRSSSourceRequest.decode(value),
+    responseSerialize: (value: GetRSSSourceReply) => Buffer.from(GetRSSSourceReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetRSSSourceReply.decode(value),
+  },
   listRssSources: {
     path: "/taggy.RSSService/ListRSSSources",
     requestStream: false,
@@ -977,14 +1228,14 @@ export const RSSServiceService = {
     responseSerialize: (value: ListRSSSourcesReply) => Buffer.from(ListRSSSourcesReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListRSSSourcesReply.decode(value),
   },
-  fetchAllRss: {
-    path: "/taggy.RSSService/FetchAllRSS",
+  getRssFeed: {
+    path: "/taggy.RSSService/GetRSSFeed",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: FetchAllRSSRequest) => Buffer.from(FetchAllRSSRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => FetchAllRSSRequest.decode(value),
-    responseSerialize: (value: FetchAllRSSReply) => Buffer.from(FetchAllRSSReply.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => FetchAllRSSReply.decode(value),
+    requestSerialize: (value: GetRSSFeedRequest) => Buffer.from(GetRSSFeedRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetRSSFeedRequest.decode(value),
+    responseSerialize: (value: GetRSSFeedReply) => Buffer.from(GetRSSFeedReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetRSSFeedReply.decode(value),
   },
   listRssSourceFeeds: {
     path: "/taggy.RSSService/ListRSSSourceFeeds",
@@ -996,13 +1247,24 @@ export const RSSServiceService = {
     responseSerialize: (value: ListRSSSourceFeedsReply) => Buffer.from(ListRSSSourceFeedsReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => ListRSSSourceFeedsReply.decode(value),
   },
+  fetchAllRss: {
+    path: "/taggy.RSSService/FetchAllRSS",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: FetchAllRSSRequest) => Buffer.from(FetchAllRSSRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => FetchAllRSSRequest.decode(value),
+    responseSerialize: (value: FetchAllRSSReply) => Buffer.from(FetchAllRSSReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => FetchAllRSSReply.decode(value),
+  },
 } as const;
 
 export interface RSSServiceServer extends UntypedServiceImplementation {
   createRssSource: handleUnaryCall<CreateRSSSourceRequest, CreateRSSSourceReply>;
+  getRssSource: handleUnaryCall<GetRSSSourceRequest, GetRSSSourceReply>;
   listRssSources: handleUnaryCall<ListRSSSourcesRequest, ListRSSSourcesReply>;
-  fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
+  getRssFeed: handleUnaryCall<GetRSSFeedRequest, GetRSSFeedReply>;
   listRssSourceFeeds: handleUnaryCall<ListRSSSourceFeedsRequest, ListRSSSourceFeedsReply>;
+  fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
 }
 
 export interface RSSServiceClient extends Client {
@@ -1021,6 +1283,21 @@ export interface RSSServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: CreateRSSSourceReply) => void,
   ): ClientUnaryCall;
+  getRssSource(
+    request: GetRSSSourceRequest,
+    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
+  ): ClientUnaryCall;
+  getRssSource(
+    request: GetRSSSourceRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
+  ): ClientUnaryCall;
+  getRssSource(
+    request: GetRSSSourceRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
+  ): ClientUnaryCall;
   listRssSources(
     request: ListRSSSourcesRequest,
     callback: (error: ServiceError | null, response: ListRSSSourcesReply) => void,
@@ -1036,6 +1313,36 @@ export interface RSSServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: ListRSSSourcesReply) => void,
   ): ClientUnaryCall;
+  getRssFeed(
+    request: GetRSSFeedRequest,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
+  ): ClientUnaryCall;
+  getRssFeed(
+    request: GetRSSFeedRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
+  ): ClientUnaryCall;
+  getRssFeed(
+    request: GetRSSFeedRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
+  ): ClientUnaryCall;
+  listRssSourceFeeds(
+    request: ListRSSSourceFeedsRequest,
+    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
+  ): ClientUnaryCall;
+  listRssSourceFeeds(
+    request: ListRSSSourceFeedsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
+  ): ClientUnaryCall;
+  listRssSourceFeeds(
+    request: ListRSSSourceFeedsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
+  ): ClientUnaryCall;
   fetchAllRss(
     request: FetchAllRSSRequest,
     callback: (error: ServiceError | null, response: FetchAllRSSReply) => void,
@@ -1050,21 +1357,6 @@ export interface RSSServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: FetchAllRSSReply) => void,
-  ): ClientUnaryCall;
-  listRssSourceFeeds(
-    request: ListRSSSourceFeedsRequest,
-    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
-  ): ClientUnaryCall;
-  listRssSourceFeeds(
-    request: ListRSSSourceFeedsRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
-  ): ClientUnaryCall;
-  listRssSourceFeeds(
-    request: ListRSSSourceFeedsRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: ListRSSSourceFeedsReply) => void,
   ): ClientUnaryCall;
 }
 
