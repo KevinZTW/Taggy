@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+	"fmt"
 	"rssservice/domain/rss"
 	"rssservice/mongodb"
 	"time"
@@ -49,6 +51,9 @@ func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, la
 func (m *MongoRepository) GetSourceById(id string) (*rss.Source, error) {
 	var source rss.Source
 	if err := m.sourceCollection.FindOne(nil, bson.D{{"id", id}}).Decode(&source); err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, errors.Join(fmt.Errorf("[repo] RSS Source with id %s not found", id), err)
+		}
 		return nil, err
 	} else {
 		return &source, nil

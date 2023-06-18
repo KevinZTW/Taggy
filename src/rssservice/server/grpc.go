@@ -3,9 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
-	"google.golang.org/grpc"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"net"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
@@ -15,6 +12,10 @@ import (
 	"rssservice/telementry"
 	"rssservice/util"
 	"sync"
+
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type GRPCServer struct {
@@ -67,6 +68,24 @@ func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSo
 		return nil, err
 	} else {
 		reply := &pb.CreateRSSSourceReply{}
+		reply.Source = &pb.RSSSource{
+			Id:            source.ID,
+			Name:          source.Name,
+			Description:   source.Description,
+			Url:           source.URL,
+			ImgUrl:        source.ImgURL,
+			LastUpdatedAt: timestamppb.New(source.LastFeedUpdatedAt),
+		}
+		return reply, nil
+	}
+}
+
+func (r *grpcRSSService) GetRSSSource(ctx context.Context, in *pb.GetRSSSourceRequest) (*pb.GetRSSSourceReply, error) {
+	if source, err := r.RSSService.GetSourceById(in.GetSourceId()); err != nil {
+		log.Errorf("failed to get source: %q", err)
+		return nil, err
+	} else {
+		reply := &pb.GetRSSSourceReply{}
 		reply.Source = &pb.RSSSource{
 			Id:            source.ID,
 			Name:          source.Name,

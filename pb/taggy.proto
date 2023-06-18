@@ -13,10 +13,11 @@ message Tag {
 
 service RSSService {
   rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
+  rpc GetRSSSource(GetRSSSourceRequest) returns (GetRSSSourceReply){}
   rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
-  rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply) {}
+  rpc GetRSSFeed(GetRSSFeedRequest) returns (GetRSSFeedReply){}
   rpc ListRSSSourceFeeds (ListRSSSourceFeedsRequest) returns (ListRSSSourceFeedsReply) {}
-
+  rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply){}
 }
 message RSSSource {
   string id = 1;
@@ -45,11 +46,27 @@ message CreateRSSSourceReply {
   RSSSource source = 1;
 }
 
+message GetRSSSourceRequest {
+  string sourceId = 1;
+}
+
+message GetRSSSourceReply {
+  RSSSource source = 1; 
+}
+
 message ListRSSSourcesRequest {
 }
 
 message ListRSSSourcesReply {
   repeated RSSSource rss_sources = 1;
+}
+
+message GetRSSFeedRequest {
+  string feedId = 1;
+}
+
+message GetRSSFeedReply {
+  RSSFeed feed = 1;
 }
 
 message ListRSSSourceFeedsRequest {

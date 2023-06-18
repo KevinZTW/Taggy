@@ -71,6 +71,10 @@ func (r *RSSService) CreateSource(url string) (*rss.Source, error) {
 	}
 }
 
+func (r *RSSService) GetSourceById(id string) (*rss.Source, error) {
+	return r.repository.GetSourceById(id)
+}
+
 func (r *RSSService) ListSources() ([]*rss.Source, error) {
 	return r.repository.ListSources()
 }
