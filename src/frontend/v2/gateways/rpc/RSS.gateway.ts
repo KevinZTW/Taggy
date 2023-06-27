@@ -1,7 +1,8 @@
 import { ChannelCredentials } from '@grpc/grpc-js';
-import { GetRSSSourceReply, CreateRSSSourceReply, ListRSSSourceFeedsReply, ListRSSSourcesReply, RSSServiceClient } from '../../protos/taggy';
+import { GetRSSSourceReply, CreateRSSSourceReply, ListRSSSourceFeedsReply, ListRSSSourcesReply, RSSServiceClient, GetRSSFeedReply } from '../../protos/taggy';
 
 const { RSS_SERVICE_ADDR = 'localhost:7070' } = process.env;
+const { TAGGING_SERVICE_ADDR = 'localhost:7071' } = process.env;
 
 const client = new RSSServiceClient(RSS_SERVICE_ADDR, ChannelCredentials.createInsecure());
 
@@ -21,10 +22,12 @@ const RSSGateway = () => ({
       client.getRssSource({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
+  getRSSFeed(feedId : string) {
+    return new Promise<GetRSSFeedReply>((resolve, reject) =>
+      client.getRssFeed({feedId: feedId}, (error, response) => (error ? reject(error) : resolve(response)))
+    );
+  },
   listRSSSourceFeeds(sourceId: string){
-
-    console.log("sourceId: " + sourceId)
-
     return new Promise<ListRSSSourceFeedsReply>((resolve, reject) =>
       client.listRssSourceFeeds({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
     );

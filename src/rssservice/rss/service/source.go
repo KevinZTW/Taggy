@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"rssservice/domain/rss"
 	"rssservice/log"
@@ -61,11 +62,11 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 
 func (r *RSSService) CreateSource(url string) (*rss.Source, error) {
 	if source, err := r.parseURL(url); err != nil {
-		return nil, err
+		return nil, errors.Join(ErrSourceNotFound, err)
 	} else if existedSource, _ := r.getSourceByURL(source.URL); existedSource != nil {
 		return existedSource, nil
 	} else if source, err := r.createSourceFromEntity(source); err != nil {
-		return nil, err
+		return nil, errors.Join(ErrRepository, err)
 	} else {
 		return source, nil
 	}

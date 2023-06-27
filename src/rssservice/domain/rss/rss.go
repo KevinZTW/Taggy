@@ -19,7 +19,7 @@ type Repository interface {
 
 	CreateFeedFromEntity(feed *Feed) (*Feed, error)
 	ListSourceFeeds(source *Source) ([]*Feed, error)
-	GetFeedByGUID(guid string) (*Feed, error)
+	GetFeedByID(id string) (*Feed, error)
 	GetFeedsBySourceId(sourceId int) ([]*Feed, error)
 }
 
@@ -97,10 +97,6 @@ func (s *Source) GetAllFeeds(repository Repository) {
 func (s *Source) CreateFeed(repository Repository, feed *Feed) {
 	feed.SourceId = s.ID
 	repository.CreateFeedFromEntity(feed)
-}
-
-func (s *Source) GetFeedByGUID(repository Repository, guid string) (*Feed, error) {
-	return repository.GetFeedByGUID(guid)
 }
 
 func (s *Source) SyncLatestFeeds(repository Repository) {

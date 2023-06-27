@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-
 import styles from "./RSSCard.module.css";
 import Highlighter from "react-highlight-words";
 import placeholderImg from "../../imgs/place_holder_img.png";

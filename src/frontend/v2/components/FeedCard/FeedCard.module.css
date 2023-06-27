@@ -1,0 +1,84 @@
+.container {
+  position: relative;
+  padding-bottom: 20px;
+  width: 70%;
+  cursor: pointer;
+}
+
+.card {
+  margin-bottom: 15px;
+  display: flex;
+
+  height: 100px;
+  flex-direction: row;
+
+  align-items: flex-start;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.imgWrapper {
+  border-radius: 5px;
+  height: 100px;
+  min-width: 150px;
+}
+.color {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.img {
+  border-radius: 5px;
+  width: 100%;
+}
+.title {
+  font-weight: bold;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  color: #e0e0e0;
+}
+
+.content {
+  font-size: 0.8rem;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  font-weight: 500;
+  line-height: 1rem;
+  color: #818181;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+.wordWrapper {
+  width: 80%;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.creator {
+  padding-top: 5px;
+  color: #818181;
+  font-size: 0.8rem;
+}
+.delete {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #bebebe;
+  background: none !important;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: none;
+}
+@media (max-width: 800px) {
+  .container {
+    width: 100%;
+  }
+}

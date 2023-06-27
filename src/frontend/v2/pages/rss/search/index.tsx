@@ -1,115 +1,43 @@
 import React, { useState } from "react";
 import RSSSearch from "@/components/RSSSearch/index";
-
-import FeedCard from "@/components/FeedCard";
+import { RSSSource } from "@/protos/taggy";
+import SourcePage from '@/components/SourcePage/SourcePage';
 import styles from "./index.module.css";
 
-// import FeedPage from "./FeedPage";
-
-import { popoverClasses } from "@mui/material";
-
 export default function Search(props : React.PropsWithChildren<any>) {
-  const [showPage, setShowPage] = useState(false);
-  const [showChannelPage, setShowChannelPage] = useState(false);
-  const [feedItem, setFeedItem] = useState("");
+  
+  const [RSSSource, setRSSSource] = useState<RSSSource>(); 
+  
   
   const user = {
     uid:123
   }; "TODO: get user"
-
-//   function renderFeedPage(feedItem) {
-//     return (
-//       <FeedPage
-//         item={feedItem}
-//         onClick={() => {
-//           setShowPage(false);
-//         }}
-//       />
-//     );
-//   }
-
-  const searchFeed = {} //TODO:
-  const searchFeedUrl = "" //TODO:
-
-  function renderSearchFeed(feed) {
-    const feedList = [];
-    for (const i in feed.items) {
-      feedList.push(
-        <FeedCard
-          item={feed.items[i]}
-          onClick={(e) => {
-            setShowPage(true);
-            setFeedItem(feed.items[i]);
-          }}
-        />
-      );
-    }
-
-    return (
-      <div className={styles.channelPopUpboard}>
-        <h1 className={styles.title}>{feed.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: feed.description }}></div>
-        {feed.title ? (
-          <button
-            className={styles.channelSubscribe_btn}
-            onClick={() => {
-            //   subscribeRSS(user.uid, feed.title, searchFeedUrl, feed);
-                alert("implement this")
-            }}
-          >
-            Follow
-          </button>
-        ) : (
-          ""
-        )}
-        {feedList}
-      </div>
-    );
-  }
-
-//   const feedPage = renderFeedPage(feedItem);
-  const searchOutcome = renderSearchFeed(searchFeed);
 
   return (
     <div className={styles.addRSSBoard}>
       <h1 className={styles.addTitle}>Add RSS source to subscribe</h1>
 
       <div className={styles.addSubTitle}>
-        We support RSS link & Youtube channel/Medium profile page link
+        We support RSS link only
+        {/* TODO: Support "Youtube channel/Medium profile page link "*/}
       </div>
-      <RSSSearch
-        user={props.user}
-        showChannel={() => {
-          setShowChannelPage(true);
-        }}
-      />
+      <RSSSearch setRSSSource={setRSSSource}/>
 
-      {showChannelPage ? (
+      {RSSSource ? (
         <div className={styles.popup}>
           <div
             className={styles.blur}
             onClick={() => {
-              setShowChannelPage(false);
+              setRSSSource(undefined);
             }}
           ></div>
-          {searchOutcome}
+          <div className={styles.channelPopUpboard}>
+          <SourcePage source={RSSSource}></SourcePage>
+          </div>
         </div>
       ) : (
         ""
       )}
-      {/* {showPage ? (
-        <div className={styles.popup}>
-          <div
-            className={styles.blur}
-            onClick={() => {
-              setShowPage(false);
-            }}
-          ></div>
-          {feedPage}
-        </div>
-      ) : (
-        ""
-      )} */}
     </div>
   );
 }

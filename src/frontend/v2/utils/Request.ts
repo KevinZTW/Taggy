@@ -25,9 +25,10 @@ const request = async <T>({
   });
 
   const responseText = await response.text();
-  console.log(responseText)
-
-  if (!!responseText) return JSON.parse(responseText);
+  const payload = JSON.parse(responseText);
+  if (!response.ok) throw new Error(response.statusText + " " + payload.error.details);
+  
+  if (!!responseText) return payload;
 
   return undefined as unknown as T;
 };

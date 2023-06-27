@@ -19,7 +19,7 @@ import RssFeedIcon from "@mui/icons-material/FolderOpen";
 import SearchIcon from "@mui/icons-material/FolderOpen";
 import Tooltip from "@mui/material/Tooltip";
 
-import addRSSFolderImg from "@/pages/imgs/add_RSS_folder.png";
+import addRSSFolderImg from "@/public/imgs/add_RSS_folder.png";
 
 import Link from 'next/link'
 
@@ -247,7 +247,7 @@ export default function FolderTab(props) {
                     : styles.folderIcon
                 }
               />
-              <div className={styles.keyTitle}>Today</div>
+              <div className={styles.keyTitle}>Timeline</div>
             </div>
           </Link>
           <Link href={"/rss"}>
@@ -395,7 +395,7 @@ export default function FolderTab(props) {
                     </div>
   
                     <div className={styles.imgWrapper}>
-                      <img src={addRSSFolderImg} alt="" />
+                      <img src={addRSSFolderImg.src} alt="" />
                     </div>
                   </div>
                 </div>,

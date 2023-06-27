@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
 	"rssservice/domain/rss"
@@ -15,6 +16,8 @@ import (
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -63,9 +66,14 @@ func newgrpcRSSService() *grpcRSSService {
 
 func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
 	if source, err := r.RSSService.CreateSource(in.GetUrl()); err != nil {
-		log.Errorf("failed to add source: %q", err)
-		// TODO: implement the idea error handling ref: https://jbrandhorst.com/post/grpc-errors/
-		return nil, err
+		msg := fmt.Sprintf("failed to add source for url:%s err: %q", in.GetUrl(), err)
+		log.Errorf(msg)
+		if errors.Is(service.ErrSourceNotFound, err) {
+			return nil, status.Errorf(codes.NotFound, msg)
+		} else {
+			return nil, status.Errorf(codes.Internal, msg)
+		}
+
 	} else {
 		reply := &pb.CreateRSSSourceReply{}
 		reply.Source = &pb.RSSSource{
@@ -96,6 +104,34 @@ func (r *grpcRSSService) GetRSSSource(ctx context.Context, in *pb.GetRSSSourceRe
 		}
 		return reply, nil
 	}
+}
+
+func (r *grpcRSSService) GetRSSFeed(ctx context.Context, in *pb.GetRSSFeedRequest) (*pb.GetRSSFeedReply, error) {
+	if feed, err := r.RSSService.GetFeedById(in.GetFeedId()); err != nil {
+		msg := fmt.Sprintf("GetRSSFeed failed with id: %s, err: %s", in.GetFeedId(), err.Error())
+		log.Errorf(msg)
+		if errors.Is(service.ErrSourceNotFound, err) {
+			return nil, status.Errorf(codes.NotFound, msg)
+		} else {
+			return nil, status.Errorf(codes.Internal, msg)
+		}
+
+	} else {
+		log.Infof("GetRSSFeed succeeded with id: %s")
+		reply := &pb.GetRSSFeedReply{}
+		f := &pb.RSSFeed{
+			Id:          feed.ID,
+			SourceId:    feed.SourceId,
+			Title:       feed.Title,
+			Content:     feed.Content,
+			Description: feed.Description,
+			Url:         feed.URL,
+			PublishedAt: timestamppb.New(feed.PublishedAt),
+		}
+		reply.Feed = f
+		return reply, nil
+	}
+
 }
 
 func (r *grpcRSSService) ListRSSSources(ctx context.Context, in *pb.ListRSSSourcesRequest) (*pb.ListRSSSourcesReply, error) {

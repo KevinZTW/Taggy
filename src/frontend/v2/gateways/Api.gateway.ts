@@ -24,6 +24,11 @@ const ApiGateway = () => ({
             queryParams: {sourceId: sourceId},
         })
     },
+    getRSSFeed(feedId: string){
+        return request<RSSFeed>({
+            url: `${basePath}/rss/feeds/${feedId}`,
+        })
+    },
     listRSSSourceFeeds(sourceId: string){
         return request<RSSFeed[]>({
             url: `${basePath}/rss/feeds`,

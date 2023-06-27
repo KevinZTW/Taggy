@@ -13,26 +13,24 @@ import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlin
 import styles from "./FeedPage.module.css";
 
 
-export default function FeedPage({ item, onClick }) {
-  const [tagRecoms, setTagRecoms] = useState([]);
-  const [newItem, setNewItem] = useState([]);
+export default function FeedPage({ item, goBack }) {
+  console.log("item", item)
+  const [tags, setTags] = useState([]);
 
-  // useEffect(() => {
-  //   async function getFeedTagsRecommend(feedId) {
-  //     const response = await fetch(
-  //       host + `/route/rss/feedtags?feedid=${feedId}`
-  //     );
-  //     return response.json();
-  //   }
-  //   function setFeedTagRecommend(data) {
-  //     setTagRecoms(data);
-  //   }
-  //   if (item || newItem) {
-  //     getFeedTagsRecommend(newItem.FeedId || item.id || item.FeedId).then(
-  //       setFeedTagRecommend
-  //     );
-  //   }
-  // }, [item, newItem]);
+  useEffect(() => {
+    async function getFeedTags(feedId) {
+      const response = await fetch(
+        `/api/tags/?feedId=${feedId}`
+      );
+      return response.json();
+    }
+    
+    if (item) {
+      getFeedTags(item.id).then(
+        data => {setTags(data)}
+      );
+    }
+  }, [item]);
 
   function renderFeedTags(tags) {
     const tagChips = [];
@@ -41,7 +39,7 @@ export default function FeedPage({ item, onClick }) {
         tagChips.push(
           <Chip
             size="small"
-            label={"#" + tag}
+            label={"#" + tag.name}
             style={{
               marginRight: "6px",
               border: "solid 1px white",
@@ -61,12 +59,12 @@ export default function FeedPage({ item, onClick }) {
         moreFeeds.push(
           <FeedCard
             item={feed}
-            onClick={() => {
-              setNewItem(feed);
-              document
-                .querySelector("#FeedPage")
-                [`scrollTo`]({ top: 0, behavior: `smooth` });
-            }}
+            // onClick={() => {
+            //   setNewItem(feed);
+            //   document
+            //     .querySelector("#FeedPage")
+            //     [`scrollTo`]({ top: 0, behavior: `smooth` });
+            // }}
           />
         );
       });
@@ -77,17 +75,17 @@ export default function FeedPage({ item, onClick }) {
     uid: 123,
   }
 
-  const tagChips = renderFeedTags(tagRecoms.tags);
-  const moreFeeds = renderMoreFeeds(tagRecoms.feeds);
+  const tagChips = renderFeedTags(tags);
+  // const moreFeeds = renderMoreFeeds(tags.feeds);
   return (
+    item ? (
     <div>
         <div className={styles.page} id="FeedPage">
           <div className={styles.head}>
-            <div className={styles.arrowWrapper}>
+            <div className={styles.arrowWrapper} onClick={goBack}>
               <ArrowBack
                 className={styles.Icon}
                 style={{ color: "rgba(255,255,255, 0.6)", cursor: "pointer" }}
-                onClick={onClick}
               />
             </div>
             <Tooltip title="save to my board" placement="right" arrow sx={{color: "white",
@@ -105,20 +103,20 @@ export default function FeedPage({ item, onClick }) {
               </div>
             </Tooltip>
           </div>
-          <div className={styles.title}>{newItem.title || item.title}</div>
+          <div className={styles.title}>{item?.title}</div>
           <div className={styles.chipsWrapper}>{tagChips}</div>
 
           <div
             dangerouslySetInnerHTML={{
               __html:
-                newItem.content || item.content || item["content:encoded"],
+                 item.content || item["content:encoded"],
             }}
             className={styles.content}
           ></div>
           <div className={styles.more}>More from Taggy</div>
 
-          <div>{moreFeeds}</div>
+          {/* <div>{moreFeeds}</div> */}
         </div>
     </div>
-  );
+  ): (<div>loading...</div>));
 }

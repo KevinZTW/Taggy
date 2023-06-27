@@ -24,6 +24,7 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   const [feedItem, setFeedItem] = useState<RSSFeed>();
   const [feeds, setFeeds] = useState<Array<RSSSource>>()
 
+  console.log(source)
   const channelTitle = source?.name
   const channelDescription = source?.description
   const sourceId = source?.id

@@ -5,16 +5,17 @@ import styles from "./RSSSearch.module.css";
 
 import LinearProgress from "@mui/material/LinearProgress";
 
-import addRSSImg from '@/pages/imgs/add_RSS_feed.png';
+import addRSSImg from '@/public/imgs/add_RSS_feed.png';
 
+import ApiGateway from "@/gateways/Api.gateway";
 
-export default function RSSSearch(props) {
+export default function RSSSearch({setRSSSource}) {
   const [reqUrl, setReqUrl] = useState("https://medium.com/better-programming");
   const [loading, setLoading] = useState(false);
 
 
-  const notify_fail = () =>
-    toast.warn(<div>Sorry....sth goes wrong, please try again later</div>, {
+  const notify_fail = () => {
+    toast.warn("sorry, we can't find RSS with provided url", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: true,
@@ -23,11 +24,12 @@ export default function RSSSearch(props) {
       draggable: true,
       progress: undefined,
     });
-  const user = {
-    uid: "123",
   }
+  
   function requestRSS(url) {
     setLoading(true);
+
+    // TODO: this part logic should be moved to backend
     if (url.includes("medium.com/@")) {
       url =
         "https://medium.com/feed/@" + url.replace("https://medium.com/@", "");
@@ -44,39 +46,19 @@ export default function RSSSearch(props) {
     }
     
 
-
-    parser.parseURL(CORS_PROXY + url, function (err, feed) {
-      if (err) {
-        fetch( "/route/rss/fetch", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({ url: url }),
-        }).then(function (response) {
-          if (response.status !== 200) {
-            notify_fail();
-          } else {
-            response.json().then((data) => {
-              dispatch(GETRSSRESPONSE(data.rss, url));
-              setLoading(false);
-              props.showChannel();
-            });
-          }
-        });
-      } else {
-        props.showChannel();
-        setLoading(false);
-        feed.items.forEach(function (entry) {});
-      }
+    ApiGateway.addRSSSource(url).then((source) => {
+      setLoading(false);
+      setRSSSource(source);
+    }).catch((err) => {
+      setLoading(false);
+      notify_fail();
     });
   }
 
   return (
     <div className={styles.addArticle}>
       <label htmlFor="addForm" className={styles.addFolderLabel}>
-        Enter URL link
+        Enter RSS URL
       </label>
       <div className={styles.addFormWrapper}>
         <form
@@ -84,9 +66,7 @@ export default function RSSSearch(props) {
           action=""
           onSubmit={(e) => {
             e.preventDefault();
-            if (user) {
-              requestRSS(reqUrl);
-            }
+            requestRSS(reqUrl);
           }}
         >
           <input
@@ -109,7 +89,7 @@ export default function RSSSearch(props) {
       </div>
       {loading ? <LinearProgress className={styles.progress} /> : ""}
       <div className={styles.tagsImgWrapper}>
-        <img src={addRSSImg} alt="" />
+        <img src={addRSSImg.src} alt="" />
       </div>
     </div>
   );

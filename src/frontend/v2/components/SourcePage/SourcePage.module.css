@@ -1,0 +1,264 @@
+.boardWrapper {
+    width: 100%;
+    color: #b2b2b2;
+    padding-left: 40px;
+    padding-right: 20px;
+  }
+  .addRSSBoard {
+    background-color: #0e1622;
+    padding-top: 104px;
+    padding-left: 88px;
+    height: 100vh;
+  }
+  .board {
+    padding-top: 40px;
+  
+    border-radius: 10px;
+  }
+  
+  .channelPopUpboard {
+    overflow-y: scroll;
+    width: 80vw;
+    padding-top: 40px;
+    padding-left: 3rem;
+    border-radius: 10px;
+    background: #000f24;
+  }
+  
+  .arrowBack {
+  }
+  .titleWrapper {
+    align-items: center;
+    display: flex;
+  }
+  .title {
+    position: relative;
+    color: white;
+    padding-bottom: 16px;
+  }
+  
+  .description {
+    font-size: 20px;
+    padding-bottom: 40px;
+    margin: 0px 0;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .channelDescription {
+    font-size: 20px;
+    padding-bottom: 8px;
+    margin: 0px 0;
+    color: #b2b2b2;
+  }
+  
+  .channelSubscribed {
+    padding: 6px 8px;
+  
+    line-height: 30px;
+    font-weight: 500;
+    width: 120px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+  
+    text-align: center;
+  
+    border-radius: 5px;
+  
+    background-color: #2074ec;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .channelSubscribe_btn {
+    padding: 6px 8px;
+  
+    line-height: 30px;
+    font-weight: 500;
+    width: 120px;
+  
+    margin: 10px 0;
+    text-align: center;
+  
+    border-radius: 5px;
+    border: solid 1px #2074ec;
+    background-color: #000f24;
+    color: #2074ec;
+    cursor: pointer;
+  }
+  .switchWrapper {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #1b1b1b;
+    overflow-x: scroll;
+  }
+  .switchTitle {
+    width: 20%;
+    min-width: 90px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 24px;
+    border-bottom: solid 3px #020a17;
+    margin-right: 16px;
+  }
+  .switchTitle span {
+    font-size: 19px;
+    font-weight: 500;
+    padding-bottom: 5px;
+  }
+  .switchTitleFocus {
+    min-width: 90px;
+    margin-right: 15px;
+    display: flex;
+    align-items: flex-end;
+    width: 20%;
+    cursor: pointer;
+    color: rgba(255, 255, 255);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  
+    border-bottom: 1px solid #1b1b1b;
+    border-bottom: solid 3px #2074ec;
+  }
+  .switchTitleFocus span {
+    font-size: 19px;
+    font-weight: 500;
+    padding-bottom: 5px;
+  }
+  
+  .subscribe_btn {
+    padding: 0px 8px;
+    width: 10rem;
+    margin: 5px 0;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    background-color: #01b468;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .popup {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: #e2e2e2e2;
+  
+    animation: popUpSlide 0.35s ease-in-out;
+    height: 100vh;
+    width: 100%;
+  }
+  @keyframes popUpSlide {
+    0% {
+      left: 200px;
+      opacity: 0.7;
+    }
+    100% {
+      left: 0;
+      opacity: 1;
+    }
+  }
+  .blur {
+    min-width: 315px;
+    background-color: #0e1622;
+    opacity: 0.85;
+  }
+  .categoryTitle {
+    color: #b2b2b2;
+    padding-bottom: 10px;
+  }
+  .categoryWrapper {
+    display: flex;
+    width: 100%;
+  }
+  .categoryCard {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .cardUpper {
+    display: flex;
+  }
+  .cardTitle {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 3px;
+  }
+  .cardDescription {
+    font-size: 17px;
+  }
+  .cardImg {
+    max-width: 10%;
+    margin-right: 10px;
+  }
+  .cardImg img {
+    min-width: 100%;
+  }
+  .cardBtn {
+    padding: 0px 8px;
+    text-align: center;
+    margin: 5px 0;
+    height: 20px;
+    width: 60px;
+    font-size: 13px;
+    color: black;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    background-color: #01b468;
+    cursor: pointer;
+  }
+  
+  .addTitle {
+    color: #e0e0e0;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 32px;
+    letter-spacing: 0.64px;
+    padding-bottom: 16px;
+  }
+  
+  .addSubTitle {
+    font-weight: 600;
+    line-height: 20px;
+    font-size: 18px;
+    padding-bottom: 5px;
+    color: rgba(255, 255, 255, 0.7);
+    padding-bottom: 4rem;
+  }
+  
+  @media (min-device-width: 1440px) {
+    .channelDescription {
+      width: 80%;
+    }
+  }
+  @media (min-device-width: 1024px) {
+  }
+  
+  @media (min-device-width: 800px) {
+  }
+  @media (max-width: 632px) {
+    .addRSSBoard {
+      padding-top: 64px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    .boardWrapper {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    .popup {
+      z-index: 99;
+    }
+    .blur {
+      min-width: 0;
+      width: 20vw;
+    }
+  }
+  

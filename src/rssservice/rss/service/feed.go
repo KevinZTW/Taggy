@@ -9,6 +9,8 @@ import (
 	"rssservice/kafka"
 	"rssservice/log"
 
+	"go.mongodb.org/mongo-driver/mongo"
+
 	"github.com/Shopify/sarama"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
 	"go.opentelemetry.io/otel"
@@ -25,6 +27,18 @@ func (r *RSSService) ListSourceFeeds(sourceId string) ([]*rss.Feed, error) {
 		return nil, err
 	} else {
 		return feeds, nil
+	}
+}
+
+func (r *RSSService) GetFeedById(id string) (*rss.Feed, error) {
+	if feed, err := r.repository.GetFeedByID(id); err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, ErrFeedNotFound
+		} else {
+			return nil, errors.Join(ErrRepository, err)
+		}
+	} else {
+		return feed, nil
 	}
 }
 

@@ -1,6 +1,6 @@
 import styles from './NavigationTab.module.css';
 import Tooltip from '@mui/material/Tooltip';
-import logo from '@/pages/imgs/taggy_logo_3x.png';
+import logo from '@/public/imgs/taggy_logo_3x.png';
 
 import Link from 'next/link'
 
@@ -20,14 +20,14 @@ export default function NavigationTab(props) {
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
         <div className={styles.logoWrapper}>
-          <Link href={"/home"}>
+          <Link href={"/"}>
             <Tooltip title="home" placement="right" arrow>
-              <img src={logo} alt="" width="40px" />
+              <img src={logo.src} alt="" width="40px" />
             </Tooltip>
           </Link>
         </div>
         <div className={styles.iconWrapper}>
-          <Link href={"/home"}>
+          <Link href={"/"}>
             <Tooltip title="home" placement="right" arrow>
               <div className={styles.icon}>
                 <HomeOutlinedIcon
@@ -41,7 +41,7 @@ export default function NavigationTab(props) {
               </div>
             </Tooltip>
           </Link>
-          <Link href={"/board"}>
+          <Link href={"/"}>
             <Tooltip title="board" placement="right" arrow>
               <div className={styles.icon}>
                 <BookmarkBorderIcon
@@ -59,7 +59,7 @@ export default function NavigationTab(props) {
               </div>
             </Tooltip>
           </Link>
-          <Link href={"/graph"}>
+          <Link href={"/"}>
             <Tooltip title="graph" placement="right" arrow>
               <div className={styles.icon}>
                 <AssessmentOutlinedIcon
@@ -89,7 +89,7 @@ export default function NavigationTab(props) {
               </div>
             </Tooltip>
           </Link> */}
-          <Link href="/admin">
+          <Link href="/">
             <div className={styles.icon}>
               <SettingsIcon
                 className={styles.Icon}

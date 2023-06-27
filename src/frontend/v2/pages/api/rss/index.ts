@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { useRouter } from 'next/router';
 import { CreateRSSSourceRequest, RSSFeed, RSSSource } from '../../../protos/taggy';
 import RSSGateway from '../../../gateways/rpc/RSS.gateway';
 
@@ -19,9 +18,15 @@ const handler = async ({ method, body, query }: NextApiRequest, res) => {
     }
 
     case 'POST': {
-        const { url } = body as CreateRSSSourceRequest;
-        const rssSource = await RSSGateway.addRSSSource(url);
-        return res.status(200).json(rssSource);
+      const { url } = body as CreateRSSSourceRequest;
+
+      try {
+        const { source = {}} = await RSSGateway.addRSSSource(url);
+        return res.status(200).json(source);
+      }catch(err) {
+        console.log(err);
+        return res.status(404).json({error: err});
+      }   
     }
 
     default: {

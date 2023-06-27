@@ -1,9 +1,11 @@
 package repository
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"rssservice/domain/rss"
+	"rssservice/log"
 	"rssservice/mongodb"
 	"time"
 
@@ -109,8 +111,14 @@ func (m *MongoRepository) CreateFeedFromEntity(feed *rss.Feed) (*rss.Feed, error
 	}
 }
 
-func (m *MongoRepository) GetFeedByGUID(guid string) (*rss.Feed, error) {
-	panic("implement me")
+func (m *MongoRepository) GetFeedByID(id string) (*rss.Feed, error) {
+	feed := &rss.Feed{}
+	if err := m.feedCollection.FindOne(context.TODO(), bson.D{{"id", id}}).Decode(feed); err != nil {
+		log.Errorf(err.Error())
+		return nil, err
+	} else {
+		return feed, nil
+	}
 }
 
 func (m *MongoRepository) GetFeedsBySourceId(sourceId int) ([]*rss.Feed, error) {
