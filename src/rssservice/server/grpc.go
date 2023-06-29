@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/golang/protobuf/ptypes/empty"
 	"net"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
@@ -14,6 +15,7 @@ import (
 	"rssservice/util"
 	"sync"
 
+	_ "github.com/golang/protobuf/ptypes/empty"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -176,7 +178,7 @@ func (r *grpcRSSService) ListRSSSourceFeeds(ctx context.Context, in *pb.ListRSSS
 	}
 }
 
-// TODO: find a better naming
+// TODO: refactor to a better naming, it's mechanism is to crawl origin RSS Source and create related entity in db
 
 func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
 	reply := &pb.FetchAllRSSReply{}
@@ -196,6 +198,29 @@ func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequ
 			}(source)
 		}
 		reply.Message = "success"
+		return reply, err
+	}
+}
+
+func (r *grpcRSSService) ForceFetchOriginFeeds(ctx context.Context, in *empty.Empty) (*empty.Empty, error) {
+	reply := &empty.Empty{}
+	if sources, err := r.RSSService.ListSources(); err != nil {
+		msg := "Failed to get RSS Sources" + err.Error()
+		log.Errorf(msg)
+		return reply, status.Error(codes.Internal, msg)
+	} else {
+
+		wg := sync.WaitGroup{}
+		for _, source := range sources {
+			wg.Add(1)
+			go func(source *rss.Source) {
+				defer wg.Done()
+				if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
+					msg := fmt.Sprint("Failed to update source: %q", err)
+					log.Errorf(msg)
+				}
+			}(source)
+		}
 		return reply, err
 	}
 }

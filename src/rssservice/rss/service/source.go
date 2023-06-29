@@ -13,6 +13,49 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
+// ForceUpdateFromOrigin This is to support local dev only, which would fetch origin feed and create it without checking the existence
+func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
+	var source *rss.Source
+	var err error
+	_, span := telemetry.NewTracer().Start(context.TODO(), "UpdateSourceFromOrigin")
+	defer span.End()
+	if source, err = r.repository.GetSourceById(sourceId); err != nil {
+		return err
+	}
+	feeds, err := source.GetOriginFeeds()
+
+	if err != nil {
+		return err
+	}
+
+	lastUpdatedAt := feeds[0].PublishedAt
+	feedCount := 0
+	for _, feed := range feeds {
+		if feed, err := r.repository.CreateFeedFromEntity(feed); err != nil {
+			log.Errorf("Failed to create feed: %v", err)
+		} else {
+			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
+			r.sendNewFeedEvent(context.TODO(), feed)
+			feedCount++
+			if feed.PublishedAt.After(lastUpdatedAt) {
+				lastUpdatedAt = feed.PublishedAt
+			}
+		}
+	}
+
+	if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
+		log.Errorf(err.Error())
+	}
+	// POC tracing
+	msg := fmt.Sprintf("Updated %d feeds for source %s", feedCount, sourceId)
+	span.AddEvent(msg)
+	span.SetAttributes(
+		attribute.Int("app.rss.feeds.count", feedCount),
+	)
+
+	return nil
+}
+
 func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 	var source *rss.Source
 	var err error

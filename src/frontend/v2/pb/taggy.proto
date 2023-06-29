@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package taggy;
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "genproto/taggy";
@@ -18,6 +19,9 @@ service RSSService {
   rpc GetRSSFeed(GetRSSFeedRequest) returns (GetRSSFeedReply){}
   rpc ListRSSSourceFeeds (ListRSSSourceFeedsRequest) returns (ListRSSSourceFeedsReply) {}
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply){}
+
+  // To support local test only
+  rpc ForceFetchOriginFeeds(google.protobuf.Empty) returns (google.protobuf.Empty){}
 }
 message RSSSource {
   string id = 1;
@@ -83,6 +87,7 @@ message FetchAllRSSRequest {
 message FetchAllRSSReply {
   string message = 1;
 }
+
 
 service TaggingService {
   rpc GetRSSFeedTags (GetRSSFeedTagsRequest) returns (GetRSSFeedTagsReply) {}

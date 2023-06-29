@@ -12,6 +12,7 @@ import {
   UntypedServiceImplementation,
 } from "@grpc/grpc-js";
 import _m0 from "protobufjs/minimal";
+import { Empty } from "./google/protobuf/empty";
 import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "taggy";
@@ -1256,6 +1257,16 @@ export const RSSServiceService = {
     responseSerialize: (value: FetchAllRSSReply) => Buffer.from(FetchAllRSSReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => FetchAllRSSReply.decode(value),
   },
+  /** To support local test only */
+  forceFetchOriginFeeds: {
+    path: "/taggy.RSSService/ForceFetchOriginFeeds",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => Empty.decode(value),
+    responseSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => Empty.decode(value),
+  },
 } as const;
 
 export interface RSSServiceServer extends UntypedServiceImplementation {
@@ -1265,6 +1276,8 @@ export interface RSSServiceServer extends UntypedServiceImplementation {
   getRssFeed: handleUnaryCall<GetRSSFeedRequest, GetRSSFeedReply>;
   listRssSourceFeeds: handleUnaryCall<ListRSSSourceFeedsRequest, ListRSSSourceFeedsReply>;
   fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
+  /** To support local test only */
+  forceFetchOriginFeeds: handleUnaryCall<Empty, Empty>;
 }
 
 export interface RSSServiceClient extends Client {
@@ -1357,6 +1370,22 @@ export interface RSSServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: FetchAllRSSReply) => void,
+  ): ClientUnaryCall;
+  /** To support local test only */
+  forceFetchOriginFeeds(
+    request: Empty,
+    callback: (error: ServiceError | null, response: Empty) => void,
+  ): ClientUnaryCall;
+  forceFetchOriginFeeds(
+    request: Empty,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: Empty) => void,
+  ): ClientUnaryCall;
+  forceFetchOriginFeeds(
+    request: Empty,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
 }
 
