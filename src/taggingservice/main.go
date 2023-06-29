@@ -1,13 +1,17 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
+	"taggingservice/kafka"
 	"taggingservice/log"
 	"taggingservice/server"
 	"taggingservice/telementry"
+	"taggingservice/util"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -22,8 +26,25 @@ func main() {
 		log.Fatal(err)
 	}()
 
+	// -- kafak POC --
+	var brokers string
+	util.MustMapEnv(&brokers, "KAFKA_SERVICE_ADDR")
+
+	log.Infof("Kafka addr: %s", brokers)
+
+	brokerList := strings.Split(brokers, ",")
+	log.Infof("Kafka brokers: %s", strings.Join(brokerList, ", "))
+
+	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer cancel()
+	if err := kafka.StartConsumerGroup(ctx, brokerList, log.Logger); err != nil {
+		log.Fatalf("StartConsumerGroup failed err: %s", err.Error())
+	}
+	// ---------------
+
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	<-ch
 	fmt.Println("Graceful Shutdown start")
+	<-ctx.Done()
 	telementry.Shutdown()
 }
