@@ -1,5 +1,5 @@
 import { ChannelCredentials } from '@grpc/grpc-js';
-import { GetRSSSourceReply, CreateRSSSourceReply, ListRSSSourceFeedsReply, ListRSSSourcesReply, RSSServiceClient, GetRSSFeedReply } from '../../protos/taggy';
+import { GetRSSSourceReply, CreateRSSSourceReply, ListRSSSourceItemsReply, ListRSSSourcesReply, RSSServiceClient, GetRSSItemReply } from '../../protos/taggy';
 
 const { RSS_SERVICE_ADDR = 'localhost:7070' } = process.env;
 const { TAGGING_SERVICE_ADDR = 'localhost:7071' } = process.env;
@@ -22,14 +22,14 @@ const RSSGateway = () => ({
       client.getRssSource({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
-  getRSSFeed(feedId : string) {
-    return new Promise<GetRSSFeedReply>((resolve, reject) =>
-      client.getRssFeed({feedId: feedId}, (error, response) => (error ? reject(error) : resolve(response)))
+  getRSSItem(feedId : string) {
+    return new Promise<GetRSSItemReply>((resolve, reject) =>
+      client.getRssItem({feedId: feedId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
-  listRSSSourceFeeds(sourceId: string){
-    return new Promise<ListRSSSourceFeedsReply>((resolve, reject) =>
-      client.listRssSourceFeeds({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
+  listRSSSourceItems(sourceId: string){
+    return new Promise<ListRSSSourceItemsReply>((resolve, reject) =>
+      client.listRssSourceItems({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   }
 });

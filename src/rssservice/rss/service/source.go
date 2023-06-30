@@ -35,7 +35,7 @@ func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
 			log.Errorf("Failed to create feed: %v", err)
 		} else {
 			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
-			r.sendNewFeedEvent(context.TODO(), feed)
+			r.sendNewRSSItemEvent(context.TODO(), feed)
 			feedCount++
 			if feed.PublishedAt.After(lastUpdatedAt) {
 				lastUpdatedAt = feed.PublishedAt
@@ -82,7 +82,7 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 			log.Errorf("Failed to create feed: %v", err)
 		} else {
 			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
-			r.sendNewFeedEvent(context.TODO(), feed)
+			r.sendNewRSSItemEvent(context.TODO(), feed)
 			feedCount++
 			if feed.PublishedAt.After(lastUpdatedAt) {
 				lastUpdatedAt = feed.PublishedAt

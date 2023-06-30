@@ -21,7 +21,7 @@ type MongoRepository struct {
 
 const (
 	sourceCollection = "RSSSourceCollection"
-	feedCollection   = "RSSFeedCollection"
+	feedCollection   = "RSSItemCollection"
 )
 
 func NewMongo() *MongoRepository {

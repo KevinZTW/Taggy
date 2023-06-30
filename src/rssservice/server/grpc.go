@@ -108,9 +108,9 @@ func (r *grpcRSSService) GetRSSSource(ctx context.Context, in *pb.GetRSSSourceRe
 	}
 }
 
-func (r *grpcRSSService) GetRSSFeed(ctx context.Context, in *pb.GetRSSFeedRequest) (*pb.GetRSSFeedReply, error) {
+func (r *grpcRSSService) GetRSSItem(ctx context.Context, in *pb.GetRSSItemRequest) (*pb.GetRSSItemReply, error) {
 	if feed, err := r.RSSService.GetFeedById(in.GetFeedId()); err != nil {
-		msg := fmt.Sprintf("GetRSSFeed failed with id: %s, err: %s", in.GetFeedId(), err.Error())
+		msg := fmt.Sprintf("GetRSSItem failed with id: %s, err: %s", in.GetFeedId(), err.Error())
 		log.Errorf(msg)
 		if errors.Is(service.ErrSourceNotFound, err) {
 			return nil, status.Errorf(codes.NotFound, msg)
@@ -119,9 +119,9 @@ func (r *grpcRSSService) GetRSSFeed(ctx context.Context, in *pb.GetRSSFeedReques
 		}
 
 	} else {
-		log.Infof("GetRSSFeed succeeded with id: %s")
-		reply := &pb.GetRSSFeedReply{}
-		f := &pb.RSSFeed{
+		log.Infof("GetRSSItem succeeded with id: %s")
+		reply := &pb.GetRSSItemReply{}
+		f := &pb.RSSItem{
 			Id:          feed.ID,
 			SourceId:    feed.SourceId,
 			Title:       feed.Title,
@@ -157,13 +157,13 @@ func (r *grpcRSSService) ListRSSSources(ctx context.Context, in *pb.ListRSSSourc
 	}
 }
 
-func (r *grpcRSSService) ListRSSSourceFeeds(ctx context.Context, in *pb.ListRSSSourceFeedsRequest) (*pb.ListRSSSourceFeedsReply, error) {
-	reply := &pb.ListRSSSourceFeedsReply{}
+func (r *grpcRSSService) ListRSSSourceItems(ctx context.Context, in *pb.ListRSSSourceItemsRequest) (*pb.ListRSSSourceItemsReply, error) {
+	reply := &pb.ListRSSSourceItemsReply{}
 	if feeds, err := r.RSSService.ListSourceFeeds(in.GetSourceId()); err != nil {
 		return reply, err
 	} else {
 		for _, feed := range feeds {
-			f := &pb.RSSFeed{
+			f := &pb.RSSItem{
 				Id:          feed.ID,
 				SourceId:    feed.SourceId,
 				Title:       feed.Title,

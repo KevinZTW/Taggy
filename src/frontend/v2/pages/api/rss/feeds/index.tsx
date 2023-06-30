@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { CreateRSSSourceRequest, RSSFeed, RSSSource } from '@/protos/taggy';
+import { CreateRSSSourceRequest, RSSItem, RSSSource } from '@/protos/taggy';
 import RSSGateway from '@/gateways/rpc/RSS.gateway';
 
 type TResponse = RSSSource[];
@@ -9,7 +9,7 @@ const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResp
   switch (method) {
     case 'GET': {
       const { sourceId = '' } = query;
-      const { feeds = [] } = await RSSGateway.listRSSSourceFeeds(sourceId as string);
+      const { feeds = [] } = await RSSGateway.listRSSSourceItems(sourceId as string);
       return res.status(200).json(feeds);
     }
 

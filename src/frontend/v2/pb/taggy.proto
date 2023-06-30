@@ -16,8 +16,8 @@ service RSSService {
   rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
   rpc GetRSSSource(GetRSSSourceRequest) returns (GetRSSSourceReply){}
   rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
-  rpc GetRSSFeed(GetRSSFeedRequest) returns (GetRSSFeedReply){}
-  rpc ListRSSSourceFeeds (ListRSSSourceFeedsRequest) returns (ListRSSSourceFeedsReply) {}
+  rpc GetRSSItem(GetRSSItemRequest) returns (GetRSSItemReply){}
+  rpc ListRSSSourceItems (ListRSSSourceItemsRequest) returns (ListRSSSourceItemsReply) {}
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply){}
 
   // To support local test only
@@ -32,7 +32,7 @@ message RSSSource {
   google.protobuf.Timestamp last_updated_at = 6;
 }
 
-message RSSFeed {
+message RSSItem {
   string id = 1;
   string source_id = 2;
   string title = 3;
@@ -65,20 +65,20 @@ message ListRSSSourcesReply {
   repeated RSSSource rss_sources = 1;
 }
 
-message GetRSSFeedRequest {
+message GetRSSItemRequest {
   string feedId = 1;
 }
 
-message GetRSSFeedReply {
-  RSSFeed feed = 1;
+message GetRSSItemReply {
+  RSSItem feed = 1;
 }
 
-message ListRSSSourceFeedsRequest {
+message ListRSSSourceItemsRequest {
   string sourceId = 1;
 }
 
-message ListRSSSourceFeedsReply {
-  repeated RSSFeed feeds = 1;
+message ListRSSSourceItemsReply {
+  repeated RSSItem feeds = 1;
 }
 
 message FetchAllRSSRequest {
@@ -90,13 +90,13 @@ message FetchAllRSSReply {
 
 
 service TaggingService {
-  rpc GetRSSFeedTags (GetRSSFeedTagsRequest) returns (GetRSSFeedTagsReply) {}
+  rpc GetRSSItemTags (GetRSSItemTagsRequest) returns (GetRSSItemTagsReply) {}
 }
 
-message GetRSSFeedTagsRequest {
+message GetRSSItemTagsRequest {
   string id = 1;
 }
 
-message GetRSSFeedTagsReply {
+message GetRSSItemTagsReply {
   repeated Tag tags = 1;
 }

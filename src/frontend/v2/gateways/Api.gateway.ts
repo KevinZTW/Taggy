@@ -1,4 +1,4 @@
-import {RSSSource, RSSFeed} from '../protos/taggy';
+import {RSSSource, RSSItem} from '../protos/taggy';
 import request from '../utils/Request';
 
 
@@ -24,13 +24,13 @@ const ApiGateway = () => ({
             queryParams: {sourceId: sourceId},
         })
     },
-    getRSSFeed(feedId: string){
-        return request<RSSFeed>({
+    getRSSItem(feedId: string){
+        return request<RSSItem>({
             url: `${basePath}/rss/feeds/${feedId}`,
         })
     },
-    listRSSSourceFeeds(sourceId: string){
-        return request<RSSFeed[]>({
+    listRSSSourceItems(sourceId: string){
+        return request<RSSItem[]>({
             url: `${basePath}/rss/feeds`,
             queryParams: {sourceId: sourceId},
         })

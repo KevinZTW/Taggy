@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { GetRSSFeedTagsRequest, GetRSSFeedTagsReply } from '../../../protos/taggy';
+import { GetRSSItemTagsRequest, GetRSSItemTagsReply } from '../../../protos/taggy';
 import TaggingGateway from '../../../gateways/rpc/Tagging.gateway';
 
 

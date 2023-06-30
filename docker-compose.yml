@@ -102,6 +102,8 @@ services:
       - GRAFANA_SERVICE_HOST
       - OTEL_COLLECTOR_HOST
       - OTEL_COLLECTOR_PORT
+      - KAFKA_UI_SERVICE_PORT
+      - KAFKA_UI_SERVICE_HOST
       - ENVOY_PORT
       - PROMETHEUS_SERVICE_PORT
     depends_on:
@@ -153,17 +155,18 @@ services:
     - 9092:9092
     - 9093:9093
     logging: *logging
-  # kafka-ui:
-  #   image: provectuslabs/kafka-ui:latest
-  #   container_name: kafka-ui
-  #   depends_on:
-  #     - kafka
-  #   environment:
-  #     - DYNAMIC_CONFIG_ENABLED=true
-  #     - KAFKA_CLUSTERS_0_NAME=local
-  #     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
-  #   ports:
-  #   - 8085:8080
+  kafka-ui:
+     image: provectuslabs/kafka-ui:latest
+     container_name: kafka-ui
+     depends_on:
+       kafka:
+         condition: service_healthy
+     environment:
+       - DYNAMIC_CONFIG_ENABLED=true
+       - KAFKA_CLUSTERS_0_NAME=local
+       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+     ports:
+     - "8085:${KAFKA_UI_SERVICE_PORT}"
   # OpenTelemetry Collector
   otelcol:
     image: otel/opentelemetry-collector-contrib:0.76.1

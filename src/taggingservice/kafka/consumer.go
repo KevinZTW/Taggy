@@ -31,7 +31,7 @@ func StartConsumerGroup(ctx context.Context, brokers []string, log *logrus.Logge
 	}
 	wrappedHandler := otelsarama.WrapConsumerGroupHandler(&handler)
 
-	err = consumerGroup.Consume(ctx, []string{NewRSSFeedTopic}, wrappedHandler)
+	err = consumerGroup.Consume(ctx, []string{NewRSSItemTopic}, wrappedHandler)
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 	for {
 		select {
 		case message := <-claim.Messages():
-			feed := taggy.RSSFeed{}
+			feed := taggy.RSSItem{}
 			err := proto.Unmarshal(message.Value, &feed)
 			if err != nil {
 				return err

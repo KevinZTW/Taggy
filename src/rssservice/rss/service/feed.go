@@ -42,8 +42,8 @@ func (r *RSSService) GetFeedById(id string) (*rss.Feed, error) {
 	}
 }
 
-func (r *RSSService) sendNewFeedEvent(ctx context.Context, feed *rss.Feed) {
-	pbFeed := &pb.RSSFeed{
+func (r *RSSService) sendNewRSSItemEvent(ctx context.Context, feed *rss.Feed) {
+	pbFeed := &pb.RSSItem{
 		Id:          feed.ID,
 		SourceId:    feed.SourceId,
 		Title:       feed.Title,
@@ -60,7 +60,7 @@ func (r *RSSService) sendNewFeedEvent(ctx context.Context, feed *rss.Feed) {
 
 	// Inject tracing info into message
 	msg := sarama.ProducerMessage{
-		Topic: kafka.NewRSSFeedTopic,
+		Topic: kafka.NewRSSItemTopic,
 		Value: sarama.ByteEncoder(message),
 	}
 

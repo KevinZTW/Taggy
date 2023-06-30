@@ -1,11 +1,11 @@
-import { RSSFeed } from "@/protos/taggy";
+import { RSSItem } from "@/protos/taggy";
 import Highlighter from "react-highlight-words";
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./FeedCard.module.css";
 import placeholderImg from "@/public/imgs/place_holder_img.png";
 import Link from "next/link";
 
-export default function FeedCard({feed, highLight}:{feed:RSSFeed}){
+export default function FeedCard({feed, highLight}:{feed:RSSItem}){
   // return (
   //   <>
   //   <div>{feed.title}</div>

@@ -2,7 +2,7 @@
 import {useState, useRef, useEffect } from 'react';
 import { Router, useRouter } from 'next/router'
 
-import { RSSFeed, RSSSource } from '@/protos/taggy';
+import { RSSItem, RSSSource } from '@/protos/taggy';
 
 import SourcePage from '@/components/SourcePage';
 import FeedCard from '@/components/FeedCard';
@@ -17,14 +17,14 @@ import FeedPage from '@/components/FeedPage/FeedPage';
 
 
 
-export default function RSSFeedPage(){
-    const [feed, setFeed] = useState<RSSFeed>()
+export default function RSSItemPage(){
+    const [feed, setFeed] = useState<RSSItem>()
     const router = useRouter()
     const feedId : string = useRouter().query.feedId as string;
     
     useEffect(()=>{
         if (!feedId) return;
-        ApiGateway.getRSSFeed(feedId).then(data => {
+        ApiGateway.getRSSItem(feedId).then(data => {
             setFeed(data)
         })
     }, [feedId])

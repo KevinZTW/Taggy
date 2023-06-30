@@ -8,7 +8,7 @@ import FeedCard from "@/components/FeedCard";
 import styles from "./SourcePage.module.css";
 import FeedPage from "@/components/FeedPage";
 
-import { RSSFeed, RSSSource } from '@/protos/taggy';
+import { RSSItem, RSSSource } from '@/protos/taggy';
 
 import ApiGateway from '@/gateways/Api.gateway';
 // [Warning!] This part directly migrate from the old code, need to be refactored
@@ -17,11 +17,11 @@ import ApiGateway from '@/gateways/Api.gateway';
 
 export default function SourcePage({ source } : {source: RSSSource}) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const [allFeeds, setAllFeeds] = useState<Array<RSSFeed>>();
+  const [allFeeds, setAllFeeds] = useState<Array<RSSItem>>();
 
   const [lastVisible, setLastVisible] = useState(0);
   const [showPage, setShowPage] = useState(false);
-  const [feedItem, setFeedItem] = useState<RSSFeed>();
+  const [feedItem, setFeedItem] = useState<RSSItem>();
   const [feeds, setFeeds] = useState<Array<RSSSource>>()
 
   console.log(source)
@@ -32,7 +32,7 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   useEffect(() => {
     if (!sourceId) return;
     console.log(sourceId)
-    ApiGateway.listRSSSourceFeeds(sourceId).then(data => {setAllFeeds(data)})      
+    ApiGateway.listRSSSourceItems(sourceId).then(data => {setAllFeeds(data)})
   }, [sourceId])
 
   const user = { uid: "123" }
@@ -40,7 +40,7 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   const userSubSourceList = []
 
 
-  function renderAllFeeds(feeds : RSSFeed[]) {
+  function renderAllFeeds(feeds : RSSItem[]) {
     if (feeds) {
       const feedList = [];
       for (const i in feeds) {

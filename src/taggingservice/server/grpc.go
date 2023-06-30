@@ -53,8 +53,8 @@ func newgrpcTaggingService() *grpcTaggingService {
 
 }
 
-func (r *grpcTaggingService) GetRSSFeedTags(ctx context.Context, in *pb.GetRSSFeedTagsRequest) (*pb.GetRSSFeedTagsReply, error) {
-	reply := &pb.GetRSSFeedTagsReply{}
+func (r *grpcTaggingService) GetRSSItemTags(ctx context.Context, in *pb.GetRSSItemTagsRequest) (*pb.GetRSSItemTagsReply, error) {
+	reply := &pb.GetRSSItemTagsReply{}
 	feedId := in.GetId()
 	log.Infof("Receive request to get tags for feed %s", feedId)
 	reply.Tags = append(reply.Tags, &pb.Tag{Id: "0", Name: "backend"})

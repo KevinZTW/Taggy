@@ -28,6 +28,8 @@ static_resources:
                       domains:
                         - "*"
                       routes:
+                        - match: { prefix: "/kafka-ui" }
+                          route: { cluster: kafka-ui }
                         - match: { prefix: "/zipkin" }
                           route: { cluster: zipkin }
                         - match: { prefix: "/grafana" }
@@ -86,7 +88,6 @@ static_resources:
                     socket_address:
                       address: ${GRAFANA_SERVICE_HOST}
                       port_value: ${GRAFANA_SERVICE_PORT}
-
     - name: zipkin
       type: STRICT_DNS
       lb_policy: ROUND_ROBIN
@@ -99,6 +100,18 @@ static_resources:
                     socket_address:
                       address: ${ZIPKIN_SERVICE_HOST}
                       port_value: ${ZIPKIN_SERVICE_PORT}
+    - name: kafka-ui
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: kafka-ui
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: ${KAFKA_UI_SERVICE_HOST}
+                      port_value: ${KAFKA_UI_SERVICE_PORT}
     - name: rssservice
       connect_timeout: 0.25s
       type: logical_dns

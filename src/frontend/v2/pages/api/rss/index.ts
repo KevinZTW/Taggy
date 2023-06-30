@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { CreateRSSSourceRequest, RSSFeed, RSSSource } from '../../../protos/taggy';
+import { CreateRSSSourceRequest, RSSItem, RSSSource } from '../../../protos/taggy';
 import RSSGateway from '../../../gateways/rpc/RSS.gateway';
 
 type TResponse = RSSSource[];
