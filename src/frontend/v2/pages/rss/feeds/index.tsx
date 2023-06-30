@@ -1,6 +1,6 @@
 
 import {useState, useRef, useEffect } from 'react';
-import FeedCard from '@/components/FeedCard';
+import ItemCard from '../../../components/ItemCard';
 import SourceCard from '@/components/SourceCard/SourceCard';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
@@ -40,7 +40,7 @@ export default function RSS(){
     
         <SourceCardWrapper>
         {sources.map((source) => {
-            return (<Link href={`/rss/${source.id}`}><SourceCard source={source}/></Link>)
+            return (<Link href={`/rss/feeds/${source.id}`}><SourceCard source={source}/></Link>)
         })}
         </SourceCardWrapper> 
         </>

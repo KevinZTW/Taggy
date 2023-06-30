@@ -21,7 +21,7 @@ service RSSService {
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply){}
 
   // To support local test only
-  rpc ForceFetchOriginFeeds(google.protobuf.Empty) returns (google.protobuf.Empty){}
+  rpc ForceFetchOriginItems(google.protobuf.Empty) returns (google.protobuf.Empty){}
 }
 message RSSSource {
   string id = 1;
@@ -66,11 +66,11 @@ message ListRSSSourcesReply {
 }
 
 message GetRSSItemRequest {
-  string feedId = 1;
+  string itemId = 1;
 }
 
 message GetRSSItemReply {
-  RSSItem feed = 1;
+  RSSItem item = 1;
 }
 
 message ListRSSSourceItemsRequest {
@@ -78,7 +78,7 @@ message ListRSSSourceItemsRequest {
 }
 
 message ListRSSSourceItemsReply {
-  repeated RSSItem feeds = 1;
+  repeated RSSItem items = 1;
 }
 
 message FetchAllRSSRequest {

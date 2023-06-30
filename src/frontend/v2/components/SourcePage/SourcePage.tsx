@@ -3,10 +3,10 @@ import Link from 'next/link'
 
 import ArrowBack from "@mui/icons-material/ArrowBack";
 
-import FeedCard from "@/components/FeedCard";
+import ItemCard from "@/components/ItemCard";
 
 import styles from "./SourcePage.module.css";
-import FeedPage from "@/components/FeedPage";
+import ItemPage from "@/components/ItemPage";
 
 import { RSSItem, RSSSource } from '@/protos/taggy';
 
@@ -17,12 +17,12 @@ import ApiGateway from '@/gateways/Api.gateway';
 
 export default function SourcePage({ source } : {source: RSSSource}) {
   const [isFollowed, setIsFollowed] = useState(false);
-  const [allFeeds, setAllFeeds] = useState<Array<RSSItem>>();
+  const [allItems, setAllItems] = useState<Array<RSSItem>>();
 
   const [lastVisible, setLastVisible] = useState(0);
   const [showPage, setShowPage] = useState(false);
-  const [feedItem, setFeedItem] = useState<RSSItem>();
-  const [feeds, setFeeds] = useState<Array<RSSSource>>()
+  const [itemItem, setItemItem] = useState<RSSItem>();
+
 
   console.log(source)
   const channelTitle = source?.name
@@ -32,7 +32,7 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   useEffect(() => {
     if (!sourceId) return;
     console.log(sourceId)
-    ApiGateway.listRSSSourceItems(sourceId).then(data => {setAllFeeds(data)})
+    ApiGateway.listRSSSourceItems(sourceId).then(data => {setAllItems(data)})
   }, [sourceId])
 
   const user = { uid: "123" }
@@ -40,16 +40,16 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   const userSubSourceList = []
 
 
-  function renderAllFeeds(feeds : RSSItem[]) {
-    if (feeds) {
-      const feedList = [];
-      for (const i in feeds) {
-        feedList.push(
-          <FeedCard
-            feed={feeds[i]}
+  function renderAllItems(items : RSSItem[]) {
+    if (items) {
+      const itemList = [];
+      for (const i in items) {
+        itemList.push(
+          <ItemCard
+            item={items[i]}
             onClick={(e) => {
               setShowPage(true);
-              setFeedItem(feeds[i]);
+              setItemItem(items[i]);
             }}
           />
         );
@@ -73,16 +73,16 @@ export default function SourcePage({ source } : {source: RSSSource}) {
               Follow
             </div>
           )}
-          {feedList}
+          {itemList}
         </div>
       );
     }
   }
 
-  function renderFeedPage(feedItem) {
+  function renderItemPage(item : RSSItem) {
     return (
-      <FeedPage
-        item={feedItem}
+      <ItemPage
+        item={item}
         onClick={() => {
           setShowPage(false);
         }}
@@ -120,11 +120,11 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   // }, [userSubSourceList]);
   
 
-  const feedPage = renderFeedPage(feedItem);
-  const allFeedsOutome = renderAllFeeds(allFeeds);
+  const itemPage = renderItemPage(itemItem);
+  const allItemsOutome = renderAllItems(allItems);
   return (
     <div>
-      {allFeedsOutome}
+      {allItemsOutome}
       {showPage ? (
         <div className={styles.popup}>
           <div
@@ -133,7 +133,7 @@ export default function SourcePage({ source } : {source: RSSSource}) {
               setShowPage(false);
             }}
           ></div>
-          {feedPage}
+          {itemPage}
         </div>
       ) : (
         ""

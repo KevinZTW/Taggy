@@ -6,10 +6,9 @@ import TaggingGateway from '../../../gateways/rpc/Tagging.gateway';
 const handler = async ({ method, body, query }: NextApiRequest, res) => {
   switch (method) {
     case 'GET': {
-      const feedId : string = query.feedId as string;
-      if (feedId) {
-        console.log("we got feedId!")
-        const { tags = [] } = await TaggingGateway.listFeedTags(feedId);
+      const itemId : string = query.itemId as string;
+      if (itemId) {
+        const { tags = [] } = await TaggingGateway.listItemTags(itemId);
         return res.status(200).json(tags);
       }
     }

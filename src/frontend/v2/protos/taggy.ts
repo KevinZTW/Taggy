@@ -65,11 +65,11 @@ export interface ListRSSSourcesReply {
 }
 
 export interface GetRSSItemRequest {
-  feedId: string;
+  itemId: string;
 }
 
 export interface GetRSSItemReply {
-  feed: RSSItem | undefined;
+  item: RSSItem | undefined;
 }
 
 export interface ListRSSSourceItemsRequest {
@@ -77,7 +77,7 @@ export interface ListRSSSourceItemsRequest {
 }
 
 export interface ListRSSSourceItemsReply {
-  feeds: RSSItem[];
+  items: RSSItem[];
 }
 
 export interface FetchAllRSSRequest {
@@ -757,13 +757,13 @@ export const ListRSSSourcesReply = {
 };
 
 function createBaseGetRSSItemRequest(): GetRSSItemRequest {
-  return { feedId: "" };
+  return { itemId: "" };
 }
 
 export const GetRSSItemRequest = {
   encode(message: GetRSSItemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.feedId !== "") {
-      writer.uint32(10).string(message.feedId);
+    if (message.itemId !== "") {
+      writer.uint32(10).string(message.itemId);
     }
     return writer;
   },
@@ -780,7 +780,7 @@ export const GetRSSItemRequest = {
             break;
           }
 
-          message.feedId = reader.string();
+          message.itemId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -792,12 +792,12 @@ export const GetRSSItemRequest = {
   },
 
   fromJSON(object: any): GetRSSItemRequest {
-    return { feedId: isSet(object.feedId) ? String(object.feedId) : "" };
+    return { itemId: isSet(object.itemId) ? String(object.itemId) : "" };
   },
 
   toJSON(message: GetRSSItemRequest): unknown {
     const obj: any = {};
-    message.feedId !== undefined && (obj.feedId = message.feedId);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
     return obj;
   },
 
@@ -807,19 +807,19 @@ export const GetRSSItemRequest = {
 
   fromPartial<I extends Exact<DeepPartial<GetRSSItemRequest>, I>>(object: I): GetRSSItemRequest {
     const message = createBaseGetRSSItemRequest();
-    message.feedId = object.feedId ?? "";
+    message.itemId = object.itemId ?? "";
     return message;
   },
 };
 
 function createBaseGetRSSItemReply(): GetRSSItemReply {
-  return { feed: undefined };
+  return { item: undefined };
 }
 
 export const GetRSSItemReply = {
   encode(message: GetRSSItemReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.feed !== undefined) {
-      RSSItem.encode(message.feed, writer.uint32(10).fork()).ldelim();
+    if (message.item !== undefined) {
+      RSSItem.encode(message.item, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -836,7 +836,7 @@ export const GetRSSItemReply = {
             break;
           }
 
-          message.feed = RSSItem.decode(reader, reader.uint32());
+          message.item = RSSItem.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -848,12 +848,12 @@ export const GetRSSItemReply = {
   },
 
   fromJSON(object: any): GetRSSItemReply {
-    return { feed: isSet(object.feed) ? RSSItem.fromJSON(object.feed) : undefined };
+    return { item: isSet(object.item) ? RSSItem.fromJSON(object.item) : undefined };
   },
 
   toJSON(message: GetRSSItemReply): unknown {
     const obj: any = {};
-    message.feed !== undefined && (obj.feed = message.feed ? RSSItem.toJSON(message.feed) : undefined);
+    message.item !== undefined && (obj.item = message.item ? RSSItem.toJSON(message.item) : undefined);
     return obj;
   },
 
@@ -863,7 +863,7 @@ export const GetRSSItemReply = {
 
   fromPartial<I extends Exact<DeepPartial<GetRSSItemReply>, I>>(object: I): GetRSSItemReply {
     const message = createBaseGetRSSItemReply();
-    message.feed = (object.feed !== undefined && object.feed !== null) ? RSSItem.fromPartial(object.feed) : undefined;
+    message.item = (object.item !== undefined && object.item !== null) ? RSSItem.fromPartial(object.item) : undefined;
     return message;
   },
 };
@@ -925,12 +925,12 @@ export const ListRSSSourceItemsRequest = {
 };
 
 function createBaseListRSSSourceItemsReply(): ListRSSSourceItemsReply {
-  return { feeds: [] };
+  return { items: [] };
 }
 
 export const ListRSSSourceItemsReply = {
   encode(message: ListRSSSourceItemsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.feeds) {
+    for (const v of message.items) {
       RSSItem.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
@@ -948,7 +948,7 @@ export const ListRSSSourceItemsReply = {
             break;
           }
 
-          message.feeds.push(RSSItem.decode(reader, reader.uint32()));
+          message.items.push(RSSItem.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -960,15 +960,15 @@ export const ListRSSSourceItemsReply = {
   },
 
   fromJSON(object: any): ListRSSSourceItemsReply {
-    return { feeds: Array.isArray(object?.feeds) ? object.feeds.map((e: any) => RSSItem.fromJSON(e)) : [] };
+    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => RSSItem.fromJSON(e)) : [] };
   },
 
   toJSON(message: ListRSSSourceItemsReply): unknown {
     const obj: any = {};
-    if (message.feeds) {
-      obj.feeds = message.feeds.map((e) => e ? RSSItem.toJSON(e) : undefined);
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? RSSItem.toJSON(e) : undefined);
     } else {
-      obj.feeds = [];
+      obj.items = [];
     }
     return obj;
   },
@@ -979,7 +979,7 @@ export const ListRSSSourceItemsReply = {
 
   fromPartial<I extends Exact<DeepPartial<ListRSSSourceItemsReply>, I>>(object: I): ListRSSSourceItemsReply {
     const message = createBaseListRSSSourceItemsReply();
-    message.feeds = object.feeds?.map((e) => RSSItem.fromPartial(e)) || [];
+    message.items = object.items?.map((e) => RSSItem.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1258,8 +1258,8 @@ export const RSSServiceService = {
     responseDeserialize: (value: Buffer) => FetchAllRSSReply.decode(value),
   },
   /** To support local test only */
-  forceFetchOriginFeeds: {
-    path: "/taggy.RSSService/ForceFetchOriginFeeds",
+  forceFetchOriginItems: {
+    path: "/taggy.RSSService/ForceFetchOriginItems",
     requestStream: false,
     responseStream: false,
     requestSerialize: (value: Empty) => Buffer.from(Empty.encode(value).finish()),
@@ -1277,7 +1277,7 @@ export interface RSSServiceServer extends UntypedServiceImplementation {
   listRssSourceItems: handleUnaryCall<ListRSSSourceItemsRequest, ListRSSSourceItemsReply>;
   fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
   /** To support local test only */
-  forceFetchOriginFeeds: handleUnaryCall<Empty, Empty>;
+  forceFetchOriginItems: handleUnaryCall<Empty, Empty>;
 }
 
 export interface RSSServiceClient extends Client {
@@ -1372,16 +1372,16 @@ export interface RSSServiceClient extends Client {
     callback: (error: ServiceError | null, response: FetchAllRSSReply) => void,
   ): ClientUnaryCall;
   /** To support local test only */
-  forceFetchOriginFeeds(
+  forceFetchOriginItems(
     request: Empty,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
-  forceFetchOriginFeeds(
+  forceFetchOriginItems(
     request: Empty,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: Empty) => void,
   ): ClientUnaryCall;
-  forceFetchOriginFeeds(
+  forceFetchOriginItems(
     request: Empty,
     metadata: Metadata,
     options: Partial<CallOptions>,

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { RSSSource } from '@/protos/taggy';
 
 import SourcePage from '@/components/SourcePage';
-import FeedCard from '@/components/FeedCard';
+import ItemCard from '@/components/ItemCard';
 import SourceCard from '@/components/SourceCard/SourceCard';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
@@ -32,19 +32,10 @@ export default function RSSSourcePage(){
     }, [sourceId])
     
 
-    
-    // const feedCards = feeds.map((feed)=>{
-    //     return (<>
-    //     <div>{feed.name}</div>
-    //     <div>{feed.description}</div>
-    //     </>)
-    // })
 
     return (
         <Wrapper>
-        
-        {/* <div>{sourceId}</div> */}
-        {/* <Typography variant="h4" >Feeds</Typography> */}
+    
         <SourcePage source={source}></SourcePage>
 
 

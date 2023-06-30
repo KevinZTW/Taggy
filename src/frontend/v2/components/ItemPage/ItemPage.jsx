@@ -1,6 +1,6 @@
 import { Zoom } from "react-toastify";
 
-import FeedCard from "@/components/FeedCard";
+import ItemCard from "@/components/ItemCard";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Chip } from "@mui/material";
@@ -10,29 +10,29 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Tooltip from "@mui/material/Tooltip";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 
-import styles from "./FeedPage.module.css";
+import styles from "./ItemPage.module.css";
 
 
-export default function FeedPage({ item, goBack }) {
+export default function ItemPage({ item, goBack }) {
   console.log("item", item)
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    async function getFeedTags(feedId) {
+    async function getItemTags(itemId) {
       const response = await fetch(
-        `/api/tags/?feedId=${feedId}`
+        `/api/tags/?itemId=${itemId}`
       );
       return response.json();
     }
     
     if (item) {
-      getFeedTags(item.id).then(
+      getItemTags(item.id).then(
         data => {setTags(data)}
       );
     }
   }, [item]);
 
-  function renderFeedTags(tags) {
+  function renderItemTags(tags) {
     const tagChips = [];
     if (tags) {
       tags.forEach((tag) => {
@@ -52,35 +52,35 @@ export default function FeedPage({ item, goBack }) {
     }
     return tagChips;
   }
-  function renderMoreFeeds(feeds) {
-    const moreFeeds = [];
-    if (feeds) {
-      feeds.forEach((feed) => {
-        moreFeeds.push(
-          <FeedCard
-            item={feed}
+  function renderMoreItems(items) {
+    const moreItems = [];
+    if (items) {
+      items.forEach((item) => {
+        moreItems.push(
+          <ItemCard
+            item={item}
             // onClick={() => {
-            //   setNewItem(feed);
+            //   setNewItem(item);
             //   document
-            //     .querySelector("#FeedPage")
+            //     .querySelector("#ItemPage")
             //     [`scrollTo`]({ top: 0, behavior: `smooth` });
             // }}
           />
         );
       });
     }
-    return moreFeeds;
+    return moreItems;
   }
   const user = {
     uid: 123,
   }
 
-  const tagChips = renderFeedTags(tags);
-  // const moreFeeds = renderMoreFeeds(tags.feeds);
+  const tagChips = renderItemTags(tags);
+  // const moreItems = renderMoreItems(tags.items);
   return (
     item ? (
     <div>
-        <div className={styles.page} id="FeedPage">
+        <div className={styles.page} id="ItemPage">
           <div className={styles.head}>
             <div className={styles.arrowWrapper} onClick={goBack}>
               <ArrowBack
@@ -114,8 +114,6 @@ export default function FeedPage({ item, goBack }) {
             className={styles.content}
           ></div>
           <div className={styles.more}>More from Taggy</div>
-
-          {/* <div>{moreFeeds}</div> */}
         </div>
     </div>
   ): (<div>loading...</div>));

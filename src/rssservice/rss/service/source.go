@@ -13,7 +13,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
-// ForceUpdateFromOrigin This is to support local dev only, which would fetch origin feed and create it without checking the existence
+// ForceUpdateFromOrigin This is to support local dev only, which would fetch origin item and create it without checking the existence
 func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
 	var source *rss.Source
 	var err error
@@ -22,35 +22,35 @@ func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
 	if source, err = r.repository.GetSourceById(sourceId); err != nil {
 		return err
 	}
-	feeds, err := source.GetOriginFeeds()
+	items, err := source.GetOriginFeedItems()
 
 	if err != nil {
 		return err
 	}
 
-	lastUpdatedAt := feeds[0].PublishedAt
-	feedCount := 0
-	for _, feed := range feeds {
-		if feed, err := r.repository.CreateFeedFromEntity(feed); err != nil {
-			log.Errorf("Failed to create feed: %v", err)
+	lastUpdatedAt := items[0].PublishedAt
+	itemCount := 0
+	for _, item := range items {
+		if item, err := r.repository.CreateItemFromEntity(item); err != nil {
+			log.Errorf("Failed to create item: %v", err)
 		} else {
-			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
-			r.sendNewRSSItemEvent(context.TODO(), feed)
-			feedCount++
-			if feed.PublishedAt.After(lastUpdatedAt) {
-				lastUpdatedAt = feed.PublishedAt
+			log.Infof("Created item: %s %s", item.Title, item.PublishedAt)
+			r.sendNewRSSItemEvent(context.TODO(), item)
+			itemCount++
+			if item.PublishedAt.After(lastUpdatedAt) {
+				lastUpdatedAt = item.PublishedAt
 			}
 		}
 	}
 
-	if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
+	if err := r.repository.UpdateSourceLastItemSyncedAt(source, lastUpdatedAt); err != nil {
 		log.Errorf(err.Error())
 	}
 	// POC tracing
-	msg := fmt.Sprintf("Updated %d feeds for source %s", feedCount, sourceId)
+	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, sourceId)
 	span.AddEvent(msg)
 	span.SetAttributes(
-		attribute.Int("app.rss.feeds.count", feedCount),
+		attribute.Int("app.rss.items.count", itemCount),
 	)
 
 	return nil
@@ -64,40 +64,40 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
 	if source, err = r.repository.GetSourceById(sourceId); err != nil {
 		return err
 	}
-	feeds, err := source.GetOriginFeeds()
+	items, err := source.GetOriginFeedItems()
 
 	if err != nil {
 		return err
 	}
 
-	lastUpdatedAt := feeds[0].PublishedAt
-	feedCount := 0
-	for _, feed := range feeds {
-		if feed.PublishedAt.Before(source.LastFeedSyncedAt) || feed.PublishedAt.Equal(source.LastFeedSyncedAt) {
-			log.Infof("Skip feed: %s %s", feed.Title, feed.PublishedAt)
+	lastUpdatedAt := items[0].PublishedAt
+	itemCount := 0
+	for _, item := range items {
+		if item.PublishedAt.Before(source.LastItemSyncedAt) || item.PublishedAt.Equal(source.LastItemSyncedAt) {
+			log.Infof("Skip item: %s %s", item.Title, item.PublishedAt)
 			continue
 		}
 
-		if feed, err := r.repository.CreateFeedFromEntity(feed); err != nil {
-			log.Errorf("Failed to create feed: %v", err)
+		if item, err := r.repository.CreateItemFromEntity(item); err != nil {
+			log.Errorf("Failed to create item: %v", err)
 		} else {
-			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
-			r.sendNewRSSItemEvent(context.TODO(), feed)
-			feedCount++
-			if feed.PublishedAt.After(lastUpdatedAt) {
-				lastUpdatedAt = feed.PublishedAt
+			log.Infof("Created item: %s %s", item.Title, item.PublishedAt)
+			r.sendNewRSSItemEvent(context.TODO(), item)
+			itemCount++
+			if item.PublishedAt.After(lastUpdatedAt) {
+				lastUpdatedAt = item.PublishedAt
 			}
 		}
 	}
 
-	if err := r.repository.UpdateSourceLastFeedSyncedAt(source, lastUpdatedAt); err != nil {
+	if err := r.repository.UpdateSourceLastItemSyncedAt(source, lastUpdatedAt); err != nil {
 		log.Errorf(err.Error())
 	}
 	// POC tracing
-	msg := fmt.Sprintf("Updated %d feeds for source %s", feedCount, sourceId)
+	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, sourceId)
 	span.AddEvent(msg)
 	span.SetAttributes(
-		attribute.Int("app.rss.feeds.count", feedCount),
+		attribute.Int("app.rss.items.count", itemCount),
 	)
 
 	return nil
@@ -140,7 +140,7 @@ func (r *RSSService) parseURL(url string) (*rss.Source, error) {
 		s.Name = feed.Title
 		s.URL = feed.FeedLink
 		s.Description = feed.Description
-		s.LastFeedUpdatedAt = *feed.UpdatedParsed
+		s.LastItemUpdatedAt = *feed.UpdatedParsed
 		s.ImgURL = imgURL
 		return s, nil
 	}
@@ -151,7 +151,7 @@ func (r *RSSService) createSource(name, description, url, imgUrl string, lastUpd
 }
 
 func (r *RSSService) createSourceFromEntity(source *rss.Source) (*rss.Source, error) {
-	return r.createSource(source.Name, source.Description, source.URL, source.ImgURL, source.LastFeedUpdatedAt)
+	return r.createSource(source.Name, source.Description, source.URL, source.ImgURL, source.LastItemUpdatedAt)
 }
 
 func (r *RSSService) getSourceByURL(url string) (*rss.Source, error) {

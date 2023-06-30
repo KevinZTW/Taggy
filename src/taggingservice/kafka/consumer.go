@@ -54,13 +54,13 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 	for {
 		select {
 		case message := <-claim.Messages():
-			feed := taggy.RSSItem{}
-			err := proto.Unmarshal(message.Value, &feed)
+			item := taggy.RSSItem{}
+			err := proto.Unmarshal(message.Value, &item)
 			if err != nil {
 				return err
 			}
 
-			log.Printf("Message claimed: feedId = %s, timestamp = %v, topic = %s", feed.Id, message.Timestamp, message.Topic)
+			log.Printf("Message claimed: itemId = %s, timestamp = %v, topic = %s", item.Id, message.Timestamp, message.Topic)
 			session.MarkMessage(message, "")
 
 		case <-session.Context().Done():

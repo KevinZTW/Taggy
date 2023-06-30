@@ -1,6 +1,6 @@
 
 import {useState, useEffect } from 'react';
-import FeedCard from '../../components/FeedCard';
+import ItemCard from '../../components/ItemCard';
 import Button from '@mui/material/Button';
 
 export default function Timeline(){
@@ -19,8 +19,8 @@ export default function Timeline(){
     return (
         <>
         <div>My Timeline</div>
-        <FeedCard />
-        <FeedCard />
+        <ItemCard />
+        <ItemCard />
         </>   
     )
 }

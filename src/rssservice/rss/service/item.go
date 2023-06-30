@@ -18,41 +18,41 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (r *RSSService) ListSourceFeeds(sourceId string) ([]*rss.Feed, error) {
+func (r *RSSService) ListSourceItems(sourceId string) ([]*rss.Item, error) {
 	if source, err := r.repository.GetSourceById(sourceId); err != nil {
 		msg := fmt.Sprintf("[RSSService] can't find source with id %s", sourceId)
 		log.Errorf(msg)
 		return nil, errors.Join(err, errors.New(msg))
-	} else if feeds, err := r.repository.ListSourceFeeds(source); err != nil {
+	} else if items, err := r.repository.ListSourceItems(source); err != nil {
 		return nil, err
 	} else {
-		return feeds, nil
+		return items, nil
 	}
 }
 
-func (r *RSSService) GetFeedById(id string) (*rss.Feed, error) {
-	if feed, err := r.repository.GetFeedByID(id); err != nil {
+func (r *RSSService) GetItemById(id string) (*rss.Item, error) {
+	if item, err := r.repository.GetItemByID(id); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, ErrFeedNotFound
+			return nil, ErrItemNotFound
 		} else {
 			return nil, errors.Join(ErrRepository, err)
 		}
 	} else {
-		return feed, nil
+		return item, nil
 	}
 }
 
-func (r *RSSService) sendNewRSSItemEvent(ctx context.Context, feed *rss.Feed) {
-	pbFeed := &pb.RSSItem{
-		Id:          feed.ID,
-		SourceId:    feed.SourceId,
-		Title:       feed.Title,
-		Content:     feed.Content,
-		Description: feed.Description,
-		Url:         feed.URL,
-		PublishedAt: timestamppb.New(feed.PublishedAt),
+func (r *RSSService) sendNewRSSItemEvent(ctx context.Context, item *rss.Item) {
+	pbItem := &pb.RSSItem{
+		Id:          item.ID,
+		SourceId:    item.SourceId,
+		Title:       item.Title,
+		Content:     item.Content,
+		Description: item.Description,
+		Url:         item.URL,
+		PublishedAt: timestamppb.New(item.PublishedAt),
 	}
-	message, err := proto.Marshal(pbFeed)
+	message, err := proto.Marshal(pbItem)
 	if err != nil {
 		log.Errorf("Failed to marshal message to protobuf: %+v", err)
 		return

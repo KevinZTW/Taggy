@@ -44,11 +44,11 @@ export async function getUserSubscribedFeed(req, res) {
   const userUid = req.query.uid;
   let paging = 0;
   if (req.query.paging) paging = req.query.paging;
-  let feeds = await RSS.getUserSubscribedFeed(userUid, paging).catch((err) =>
+  let items = await RSS.getUserSubscribedFeed(userUid, paging).catch((err) =>
     console.log(err)
   );
   res.status(200).json({
-    feeds,
+    items,
   });
 }
 

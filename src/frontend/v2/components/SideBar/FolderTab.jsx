@@ -247,13 +247,13 @@ export default function FolderTab(props) {
                     : styles.folderIcon
                 }
               />
-              <div className={styles.keyTitle}>Timeline</div>
+              <div className={styles.keyTitle}>Home</div>
             </div>
           </Link>
-          <Link href={"/rss"}>
+          <Link href={"/rss/feeds"}>
             <div
               className={
-                props.focus === "channels"
+                props.focus === "feeds"
                   ? styles.keyTitleWrapper
                   : styles.titleWrapper
               }
@@ -261,18 +261,18 @@ export default function FolderTab(props) {
               <ExploreOutlinedIcon
                 fontSize="small"
                 className={
-                  props.focus === "channels"
+                  props.focus === "feeds"
                     ? styles.folderIcon_focus
                     : styles.folderIcon
                 }
               />
-              <div className={styles.keyTitle}>RSS Sources</div>
+              <div className={styles.keyTitle}>RSS Feeds</div>
             </div>
           </Link>
           <Link href={"/timeline"}>
             <div
               className={
-                props.focus === "myfeeds"
+                props.focus === "myitems"
                   ? styles.keyTitleWrapper
                   : styles.titleWrapper
               }
@@ -288,17 +288,17 @@ export default function FolderTab(props) {
               <div
                 className={styles.keyTitle}
                 onClick={() => {
-                  dispatch(SWITCHRSS("all"));
+                  
                 }}
               >
-                My Feeds
+                Timeline
               </div>
             </div>
           </Link>
-          <Link href={"/home/searchfeeds"}>
+          <Link href={"/home/searchitems"}>
             <div
               className={
-                props.focus === "searchfeeds"
+                props.focus === "searchitems"
                   ? styles.keyTitleWrapper
                   : styles.titleWrapper
               }
@@ -306,13 +306,13 @@ export default function FolderTab(props) {
               <SearchIcon
                 fontSize="small"
                 className={
-                  props.focus === "searchfeeds"
+                  props.focus === "searchitems"
                     ? styles.folderIcon_focus
                     : styles.folderIcon
                 }
               />
               <div className={styles.keyTitle} onClick={() => {}}>
-                Search Feeds
+                Search RSS Feed
               </div>
             </div>
           </Link>

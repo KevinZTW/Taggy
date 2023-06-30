@@ -22,9 +22,9 @@ const RSSGateway = () => ({
       client.getRssSource({sourceId: sourceId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
-  getRSSItem(feedId : string) {
+  getRSSItem(itemId : string) {
     return new Promise<GetRSSItemReply>((resolve, reject) =>
-      client.getRssItem({feedId: feedId}, (error, response) => (error ? reject(error) : resolve(response)))
+      client.getRssItem({itemId: itemId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
   listRSSSourceItems(sourceId: string){

@@ -1,16 +1,16 @@
 import { RSSItem } from "@/protos/taggy";
 import Highlighter from "react-highlight-words";
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./FeedCard.module.css";
+import styles from "./ItemCard.module.css";
 import placeholderImg from "@/public/imgs/place_holder_img.png";
 import Link from "next/link";
 
-export default function FeedCard({feed, highLight}:{feed:RSSItem}){
+export default function ItemCard({item, highLight}:{item:RSSItem}){
   // return (
   //   <>
-  //   <div>{feed.title}</div>
-  //   <div>{feed.description}</div>
-  //   <div>{feed.content}</div>
+  //   <div>{item.title}</div>
+  //   <div>{item.description}</div>
+  //   <div>{item.content}</div>
   //   </>
   // )
 
@@ -19,13 +19,13 @@ export default function FeedCard({feed, highLight}:{feed:RSSItem}){
 
   useEffect(() => {
     var elem = document.createElement("div");
-    elem.innerHTML = feed.content;
+    elem.innerHTML = item.content;
     const imgSrc = elem.querySelector("img");
     if (imgSrc) {
       backgroundSrc.current = imgSrc.src;
-    } else if (feed.media) {
+    } else if (item.media) {
       backgroundSrc.current =
-        feed.media[0]["media:thumbnail"][0]["$"]["url"];
+        item.media[0]["media:thumbnail"][0]["$"]["url"];
     }
     const image = new Image();
     image.src = backgroundSrc.current;
@@ -34,13 +34,13 @@ export default function FeedCard({feed, highLight}:{feed:RSSItem}){
     };
   }, []);
 
-  const passDay = (Date.now() - feed.pubDate) / (1000 * 60 * 60 * 24);
+  const passDay = (Date.now() - item.pubDate) / (1000 * 60 * 60 * 24);
 
   const showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
 
   return (
-    <Link href={`/feed/${feed.id}`}>
+    <Link href={`/rss/items/${item.id}`}>
       <div className={styles.container} >
         <div className={styles.card}>
           <div className={styles.imgWrapper}>
@@ -63,24 +63,24 @@ export default function FeedCard({feed, highLight}:{feed:RSSItem}){
             <div className={styles.title}>
               {highLight ? (
                 <Highlighter
-                  textToHighlight={feed.title}
+                  textToHighlight={item.title}
                   searchWords={[highLight]}
                 />
               ) : (
-                feed.title
+                item.title
               )}
             </div>
             <div className={styles.creator}>
-              {feed.RSS} / {showDay}
+              {item.RSS} / {showDay}
             </div>
             <div className={styles.content}>
               {highLight ? (
                 <Highlighter
-                  textToHighlight={feed.contentSnippet}
+                  textToHighlight={item.contentSnippet}
                   searchWords={[highLight]}
                 />
               ) : (
-                feed.description
+                item.description
               )}
             </div>
           </div>

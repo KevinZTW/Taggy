@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	NewRSSItemTopic = "new-rss-feed"
+	NewRSSItemTopic = "new-rss-item"
 	ProtocolVersion = sarama.V3_0_0_0
 )
 

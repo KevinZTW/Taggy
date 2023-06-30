@@ -10,15 +10,15 @@ import (
 
 type FeedModel struct {
 	gorm.Model
-	rss.Feed
+	rss.Item
 }
 
 func (r *FeedModel) TableName() string {
-	return "rss_feeds"
+	return "rss_items"
 }
 
-func (r *FeedModel) ToFeed() *rss.Feed {
-	return &r.Feed
+func (r *FeedModel) ToFeed() *rss.Item {
+	return &r.Item
 }
 
 type RSSRepository struct {
@@ -33,25 +33,25 @@ func NewRSSRepository() *RSSRepository {
 		fmt.Println(err)
 	}
 	db.AutoMigrate(&FeedModel{})
-	feeds := []FeedModel{}
-	db.Find(&feeds)
+	items := []FeedModel{}
+	db.Find(&items)
 
 	return &RSSRepository{db: db}
 }
 
-func (r *RSSRepository) ListSourceFeeds(source *rss.Source) ([]*rss.Feed, error) {
+func (r *RSSRepository) ListSourceItems(source *rss.Source) ([]*rss.Item, error) {
 	panic("implement me")
 }
 
-func (r *RSSRepository) CreateFeed(feed rss.Feed) error {
-	r.db.Create(&FeedModel{Feed: feed})
+func (r *RSSRepository) CreateFeed(feed rss.Item) error {
+	r.db.Create(&FeedModel{Item: feed})
 	return nil
 }
 
-func (r *RSSRepository) GetFeedByGUID(guid string) (*rss.Feed, error) {
+func (r *RSSRepository) GetFeedByGUID(guid string) (*rss.Item, error) {
 	panic("implement me")
 }
 
-func (r *RSSRepository) GetFeedsBySourceId(sourceId int) ([]*rss.Feed, error) {
+func (r *RSSRepository) GetItemsBySourceId(sourceId int) ([]*rss.Item, error) {
 	panic("implement me")
 }

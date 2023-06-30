@@ -9,18 +9,17 @@ import (
 )
 
 // Repository Data access interface
-// TODO: should I separate source repo and feed repo?
 type Repository interface {
 	CreateSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*Source, error)
 	ListSources() ([]*Source, error)
 	GetSourceByURL(url string) (*Source, error)
 	GetSourceById(id string) (*Source, error)
-	UpdateSourceLastFeedSyncedAt(source *Source, lastFeedSyncedAt time.Time) error
+	UpdateSourceLastItemSyncedAt(source *Source, syncedAt time.Time) error
 
-	CreateFeedFromEntity(feed *Feed) (*Feed, error)
-	ListSourceFeeds(source *Source) ([]*Feed, error)
-	GetFeedByID(id string) (*Feed, error)
-	GetFeedsBySourceId(sourceId int) ([]*Feed, error)
+	CreateItemFromEntity(item *Item) (*Item, error)
+	ListSourceItems(source *Source) ([]*Item, error)
+	GetItemByID(id string) (*Item, error)
+	GetItemsBySourceID(sourceID int) ([]*Item, error)
 }
 
 type Source struct {
@@ -29,47 +28,47 @@ type Source struct {
 	Description       string    `bson:"description" json:"description"`
 	URL               string    `bson:"url" json:"url"`
 	ImgURL            string    `bson:"img_url" json:"img_url"`
-	LastFeedUpdatedAt time.Time `bson:"last_feed_updated_at" json:"last_feed_updated_at"`
-	LastFeedSyncedAt  time.Time `bson:"last_feed_synced_at" json:"last_feed_synced_at"`
+	LastItemUpdatedAt time.Time `bson:"last_item_updated_at" json:"last_item_updated_at"`
+	LastItemSyncedAt  time.Time `bson:"last_item_synced_at" json:"last_item_synced_at"`
 }
 
 func (s *Source) UpdateFromOrigin(repository Repository) error {
 
-	feeds, err := s.GetOriginFeeds()
+	items, err := s.GetOriginFeedItems()
 	if err != nil {
 		return err
 	}
-	lastUpdatedAt := feeds[0].PublishedAt
+	lastSyncedAt := items[0].PublishedAt
 
-	for _, feed := range feeds {
-		if feed.PublishedAt.Before(s.LastFeedSyncedAt) || feed.PublishedAt.Equal(s.LastFeedSyncedAt) {
-			log.Infof("Skip feed: %s %s", feed.Title, feed.PublishedAt)
+	for _, item := range items {
+		if item.PublishedAt.Before(s.LastItemSyncedAt) || item.PublishedAt.Equal(s.LastItemSyncedAt) {
+			log.Infof("Skip item: %s %s", item.Title, item.PublishedAt)
 			continue
 		}
 
-		if feed.PublishedAt.After(lastUpdatedAt) {
-			lastUpdatedAt = feed.PublishedAt
+		if item.PublishedAt.After(lastSyncedAt) {
+			lastSyncedAt = item.PublishedAt
 		}
 
-		if feed, err := repository.CreateFeedFromEntity(feed); err != nil {
-			log.Errorf("Failed to create feed: %v", err)
+		if item, err := repository.CreateItemFromEntity(item); err != nil {
+			log.Errorf("Failed to create item: %v", err)
 		} else {
-			log.Infof("Created feed: %s %s", feed.Title, feed.PublishedAt)
+			log.Infof("Created item: %s %s", item.Title, item.PublishedAt)
 		}
 	}
 
-	s.UpdateLastFeedSyncedAt(repository, lastUpdatedAt)
+	s.UpdateLastItemSyncedAt(repository, lastSyncedAt)
 	return nil
 }
 
-func (s *Source) GetOriginFeeds() ([]*Feed, error) {
+func (s *Source) GetOriginFeedItems() ([]*Item, error) {
 	fp := gofeed.NewParser()
-	feeds := []*Feed{}
+	items := []*Item{}
 	if feed, err := fp.ParseURL(s.URL); err != nil {
 		return nil, err
 	} else {
 		for _, item := range feed.Items {
-			feeds = append(feeds, &Feed{
+			items = append(items, &Item{
 				SourceId:    s.ID,
 				Title:       item.Title,
 				Content:     item.Content,
@@ -80,30 +79,26 @@ func (s *Source) GetOriginFeeds() ([]*Feed, error) {
 			})
 		}
 	}
-	return feeds, nil
+	return items, nil
 }
 
 // CURD methods
 
-func (s *Source) UpdateLastFeedSyncedAt(repository Repository, lastFeedSyncedAt time.Time) error {
-	return repository.UpdateSourceLastFeedSyncedAt(s, lastFeedSyncedAt)
+func (s *Source) UpdateLastItemSyncedAt(repository Repository, syncedAt time.Time) error {
+	return repository.UpdateSourceLastItemSyncedAt(s, syncedAt)
 }
 
-func (s *Source) GetAllFeeds(repository Repository) {
-	feeds, _ := repository.ListSourceFeeds(s)
-	fmt.Println(feeds)
+func (s *Source) ListAllItems(repository Repository) {
+	items, _ := repository.ListSourceItems(s)
+	fmt.Println(items)
 }
 
-func (s *Source) CreateFeed(repository Repository, feed *Feed) {
-	feed.SourceId = s.ID
-	repository.CreateFeedFromEntity(feed)
+func (s *Source) CreateItem(repository Repository, item *Item) {
+	item.SourceId = s.ID
+	repository.CreateItemFromEntity(item)
 }
 
-func (s *Source) SyncLatestFeeds(repository Repository) {
-
-}
-
-type Feed struct {
+type Item struct {
 	ID             string    `bson:"id" json:"id"`
 	SourceId       string    `bson:"source_id" json:"source_id"`
 	Title          string    `bson:"title" json:"title"`
