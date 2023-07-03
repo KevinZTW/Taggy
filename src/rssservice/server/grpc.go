@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.opentelemetry.io/otel/trace"
 	"net"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
@@ -193,7 +194,7 @@ func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequ
 			wg.Add(1)
 			go func(source *rss.Source) {
 				defer wg.Done()
-				if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
+				if err := r.RSSService.UpdateSourceFromOrigin(source.ID, ctx); err != nil {
 					log.Errorf("failed to update source: %q", err)
 				}
 			}(source)
@@ -205,6 +206,8 @@ func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequ
 
 func (r *grpcRSSService) ForceFetchOriginItems(ctx context.Context, in *empty.Empty) (*empty.Empty, error) {
 	reply := &empty.Empty{}
+	span := trace.SpanFromContext(ctx)
+
 	if sources, err := r.RSSService.ListSources(); err != nil {
 		msg := "Failed to get RSS Sources" + err.Error()
 		log.Errorf(msg)
@@ -216,12 +219,14 @@ func (r *grpcRSSService) ForceFetchOriginItems(ctx context.Context, in *empty.Em
 			wg.Add(1)
 			go func(source *rss.Source) {
 				defer wg.Done()
-				if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
+				if err := r.RSSService.ForceUpdateFromOrigin(source.ID, ctx); err != nil {
 					msg := fmt.Sprint("Failed to update source: %q", err)
 					log.Errorf(msg)
 				}
 			}(source)
 		}
+		wg.Wait()
+		span.AddEvent("RSS Feed all updated")
 		return reply, err
 	}
 }

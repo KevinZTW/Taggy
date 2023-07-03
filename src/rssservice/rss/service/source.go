@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"rssservice/domain/rss"
 	"rssservice/log"
-	telemetry "rssservice/telementry"
+	"rssservice/telementry"
 	"time"
 
 	"github.com/mmcdole/gofeed"
@@ -14,20 +14,24 @@ import (
 )
 
 // ForceUpdateFromOrigin This is to support local dev only, which would fetch origin item and create it without checking the existence
-func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
+func (r *RSSService) ForceUpdateFromOrigin(feedId string, ctx context.Context) error {
 	var source *rss.Source
 	var err error
-	_, span := telemetry.NewTracer().Start(context.TODO(), "UpdateSourceFromOrigin")
+	_, span := telementry.NewTracer().Start(ctx, "ForceUpdateSourceFromOrigin")
 	defer span.End()
-	if source, err = r.repository.GetSourceById(sourceId); err != nil {
+
+	if source, err = r.repository.GetSourceById(feedId); err != nil {
 		return err
 	}
+	span.SetAttributes(
+		attribute.String("app.feed.id", feedId),
+		attribute.String("app.feed.name", source.Name),
+	)
 	items, err := source.GetOriginFeedItems()
 
 	if err != nil {
 		return err
 	}
-
 	lastUpdatedAt := items[0].PublishedAt
 	itemCount := 0
 	for _, item := range items {
@@ -47,23 +51,30 @@ func (r *RSSService) ForceUpdateFromOrigin(sourceId string) error {
 		log.Errorf(err.Error())
 	}
 	// POC tracing
-	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, sourceId)
+	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, feedId)
 	span.AddEvent(msg)
 	span.SetAttributes(
-		attribute.Int("app.rss.items.count", itemCount),
+		attribute.Int("app.feed.items.count", itemCount),
 	)
 
 	return nil
 }
 
-func (r *RSSService) UpdateSourceFromOrigin(sourceId string) error {
+func (r *RSSService) UpdateSourceFromOrigin(sourceId string, ctx context.Context) error {
 	var source *rss.Source
 	var err error
-	_, span := telemetry.NewTracer().Start(context.TODO(), "UpdateSourceFromOrigin")
+	_, span := telementry.NewTracer().Start(ctx, "UpdateSourceFromOrigin")
 	defer span.End()
+
 	if source, err = r.repository.GetSourceById(sourceId); err != nil {
+		span.RecordError(err)
 		return err
 	}
+
+	span.SetAttributes(
+		attribute.String("app.feed.id", sourceId),
+		attribute.String("app.feed.name", source.Name),
+	)
 	items, err := source.GetOriginFeedItems()
 
 	if err != nil {
