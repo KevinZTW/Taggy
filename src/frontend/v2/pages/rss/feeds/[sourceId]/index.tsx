@@ -2,11 +2,11 @@
 import {useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router'
 
-import { RSSSource } from '@/protos/taggy';
+import { RSSFeed } from '@/protos/taggy';
 
-import SourcePage from '@/components/SourcePage';
+import FeedPage from '@/components/FeedPage';
 import ItemCard from '@/components/ItemCard';
-import SourceCard from '@/components/SourceCard/SourceCard';
+import FeedCard from '@/components/FeedCard/FeedCard';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
@@ -19,15 +19,15 @@ const Wrapper = styled.div`
     padding: 20px;
     flex-direction: column;`
 
-export default function RSSSourcePage(){
-    const [source, setSource] = useState<RSSSource>()
+export default function RSSFeedPage(){
+    const [source, setFeed] = useState<RSSFeed>()
     
     const sourceId : string = useRouter().query.sourceId as string;
     
     useEffect(()=>{
         if (!sourceId) return;
-        ApiGateway.getRSSSource(sourceId).then(data => {
-            setSource(data)
+        ApiGateway.getRSSFeed(sourceId).then(data => {
+            setFeed(data)
         })
     }, [sourceId])
     
@@ -36,7 +36,7 @@ export default function RSSSourcePage(){
     return (
         <Wrapper>
     
-        <SourcePage source={source}></SourcePage>
+        <FeedPage source={source}></FeedPage>
 
 
         

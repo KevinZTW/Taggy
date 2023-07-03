@@ -12,11 +12,11 @@ func init() {
 	godotenv.Load("../../.env")
 }
 
-func TestUpdateSourceFromOrigin(t *testing.T) {
+func TestUpdateFeedFromOrigin(t *testing.T) {
 
 	repo := repository.NewMongo()
 	service := NewRSSService(repo)
-	t.Run("TODO: UpdateSourceFromOrigin", func(t *testing.T) {
-		service.UpdateSourceFromOrigin("92ae0555-7f60-4821-8fe9-e30b6a5b1797")
+	t.Run("TODO: UpdateFeedFromOrigin", func(t *testing.T) {
+		service.UpdateFeedFromOrigin("92ae0555-7f60-4821-8fe9-e30b6a5b1797")
 	})
 }

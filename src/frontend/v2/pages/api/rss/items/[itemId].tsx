@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { CreateRSSSourceRequest, RSSItem, RSSSource } from '@/protos/taggy';
+import { CreateRSSFeedRequest, RSSItem, RSSFeed } from '@/protos/taggy';
 import RSSGateway from '@/gateways/rpc/RSS.gateway';
 
-type TResponse = RSSSource[];
+type TResponse = RSSFeed[];
 
 const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResponse<any>) => {
   switch (method) {
@@ -16,9 +16,9 @@ const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResp
     }
 
     // case 'POST': {
-    //     const { url } = body as CreateRSSSourceRequest;
-    //     const rssSource = await RSSGateway.addRSSSource(url);
-    //     return res.status(200).json(rssSource);
+    //     const { url } = body as CreateRSSFeedRequest;
+    //     const RSSFeed = await RSSGateway.addRSSFeed(url);
+    //     return res.status(200).json(rssFeed);
     // }
 
     default: {

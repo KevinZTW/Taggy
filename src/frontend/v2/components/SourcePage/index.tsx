@@ -1,1 +1,1 @@
-export { default } from './SourcePage'
+export { default } from './FeedPage'

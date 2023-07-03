@@ -209,18 +209,18 @@ export default function RSSTab(props) {
 
       let moveId;
       let moveItem;
-      let newSourceRSSIds;
+      let newFeedRSSIds;
       let newDestinationRSSIds;
       newRSSFolders.forEach((folder) => {
         if (folder.id === source.droppableId) {
           moveId = folder.RSSIds[source.index];
           moveItem = folder.RSS[source.index];
-          newSourceRSSIds = [...folder.RSSIds];
-          newSourceRSSIds.splice(source.index, 1);
+          newFeedRSSIds = [...folder.RSSIds];
+          newFeedRSSIds.splice(source.index, 1);
           folder.RSS.splice(source.index, 1);
-          folder.RSSIds = newSourceRSSIds;
+          folder.RSSIds = newFeedRSSIds;
           db.collection("RSSFolders").doc(source.droppableId).update({
-            RSS: newSourceRSSIds,
+            RSS: newFeedRSSIds,
           });
         }
       });

@@ -9,7 +9,7 @@ import addRSSImg from '@/public/imgs/add_RSS_feed.png';
 
 import ApiGateway from "@/gateways/Api.gateway";
 
-export default function RSSSearch({setRSSSource}) {
+export default function RSSSearch({setRSSFeed}) {
   const [reqUrl, setReqUrl] = useState("https://medium.com/better-programming");
   const [loading, setLoading] = useState(false);
 
@@ -46,9 +46,9 @@ export default function RSSSearch({setRSSSource}) {
     }
     
 
-    ApiGateway.addRSSSource(url).then((source) => {
+    ApiGateway.addRSSFeed(url).then((source) => {
       setLoading(false);
-      setRSSSource(source);
+      setRSSFeed(source);
     }).catch((err) => {
       setLoading(false);
       notify_fail();

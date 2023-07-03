@@ -1,6 +1,6 @@
-import { RSSSource, RSSItem } from "@/protos/taggy";
+import { RSSFeed, RSSItem } from "@/protos/taggy";
 
-export interface IRSSSource extends RSSSource {
+export interface IRSSFeed extends RSSFeed {
 
 }
 

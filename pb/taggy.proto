@@ -13,17 +13,17 @@ message Tag {
 }
 
 service RSSService {
-  rpc CreateRSSSource(CreateRSSSourceRequest) returns (CreateRSSSourceReply){}
-  rpc GetRSSSource(GetRSSSourceRequest) returns (GetRSSSourceReply){}
-  rpc ListRSSSources(ListRSSSourcesRequest) returns (ListRSSSourcesReply){}
+  rpc CreateRSSFeed(CreateRSSFeedRequest) returns (CreateRSSFeedReply){}
+  rpc GetRSSFeed(GetRSSFeedRequest) returns (GetRSSFeedReply){}
+  rpc ListRSSFeeds(ListRSSFeedsRequest) returns (ListRSSFeedsReply){}
   rpc GetRSSItem(GetRSSItemRequest) returns (GetRSSItemReply){}
-  rpc ListRSSSourceItems (ListRSSSourceItemsRequest) returns (ListRSSSourceItemsReply) {}
+  rpc ListRSSFeedItems (ListRSSFeedItemsRequest) returns (ListRSSFeedItemsReply) {}
   rpc FetchAllRSS (FetchAllRSSRequest) returns (FetchAllRSSReply){}
 
   // To support local test only
   rpc ForceFetchOriginItems(google.protobuf.Empty) returns (google.protobuf.Empty){}
 }
-message RSSSource {
+message RSSFeed {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -34,7 +34,7 @@ message RSSSource {
 
 message RSSItem {
   string id = 1;
-  string source_id = 2;
+  string feed_id = 2;
   string title = 3;
   string content = 4;
   string description = 5;
@@ -42,27 +42,27 @@ message RSSItem {
   google.protobuf.Timestamp published_at = 7;
 }
 
-message CreateRSSSourceRequest {
+message CreateRSSFeedRequest {
   string url = 1;
 }
 
-message CreateRSSSourceReply {
-  RSSSource source = 1;
+message CreateRSSFeedReply {
+  RSSFeed feed = 1;
 }
 
-message GetRSSSourceRequest {
-  string sourceId = 1;
+message GetRSSFeedRequest {
+  string feedId = 1;
 }
 
-message GetRSSSourceReply {
-  RSSSource source = 1; 
+message GetRSSFeedReply {
+  RSSFeed feed = 1;
 }
 
-message ListRSSSourcesRequest {
+message ListRSSFeedsRequest {
 }
 
-message ListRSSSourcesReply {
-  repeated RSSSource rss_sources = 1;
+message ListRSSFeedsReply {
+  repeated RSSFeed feeds = 1;
 }
 
 message GetRSSItemRequest {
@@ -73,11 +73,11 @@ message GetRSSItemReply {
   RSSItem item = 1;
 }
 
-message ListRSSSourceItemsRequest {
-  string sourceId = 1;
+message ListRSSFeedItemsRequest {
+  string feedId = 1;
 }
 
-message ListRSSSourceItemsReply {
+message ListRSSFeedItemsReply {
   repeated RSSItem items = 1;
 }
 
@@ -94,7 +94,7 @@ service TaggingService {
 }
 
 message GetRSSItemTagsRequest {
-  string id = 1;
+  string itemId = 1;
 }
 
 message GetRSSItemTagsReply {

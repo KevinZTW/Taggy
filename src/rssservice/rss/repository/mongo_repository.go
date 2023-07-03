@@ -15,25 +15,25 @@ import (
 )
 
 type MongoRepository struct {
-	sourceCollection *mongo.Collection
-	itemCollection   *mongo.Collection
+	feedCollection *mongo.Collection
+	itemCollection *mongo.Collection
 }
 
 const (
-	sourceCollection = "RSSSourceCollection"
-	itemCollection   = "RSSItemCollection"
+	feedCollection = "RSSFeedCollection"
+	itemCollection = "RSSItemCollection"
 )
 
 func NewMongo() *MongoRepository {
 	db := mongodb.New()
 	return &MongoRepository{
-		sourceCollection: db.Collection(sourceCollection),
-		itemCollection:   db.Collection(itemCollection),
+		feedCollection: db.Collection(feedCollection),
+		itemCollection: db.Collection(itemCollection),
 	}
 }
 
-func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Source, error) {
-	source := rss.Source{
+func (m *MongoRepository) CreateFeed(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Feed, error) {
+	feed := rss.Feed{
 		ID:                uuid.New().String(),
 		Name:              name,
 		Description:       description,
@@ -42,57 +42,57 @@ func (m *MongoRepository) CreateSource(name, description, url, imgUrl string, la
 		ImgURL:            imgUrl,
 	}
 
-	_, err := m.sourceCollection.InsertOne(nil, source)
+	_, err := m.feedCollection.InsertOne(nil, feed)
 	if err != nil {
 		return nil, err
 	}
 
-	return &source, nil
+	return &feed, nil
 }
 
-func (m *MongoRepository) GetSourceById(id string) (*rss.Source, error) {
-	var source rss.Source
-	if err := m.sourceCollection.FindOne(nil, bson.D{{"id", id}}).Decode(&source); err != nil {
+func (m *MongoRepository) GetFeedById(id string) (*rss.Feed, error) {
+	var feed rss.Feed
+	if err := m.feedCollection.FindOne(nil, bson.D{{"id", id}}).Decode(&feed); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil, errors.Join(fmt.Errorf("[repo] RSS Source with id %s not found", id), err)
+			return nil, errors.Join(fmt.Errorf("[repo] RSS Feed with id %s not found", id), err)
 		}
 		return nil, err
 	} else {
-		return &source, nil
+		return &feed, nil
 	}
 }
 
-func (m *MongoRepository) GetSourceByURL(url string) (*rss.Source, error) {
-	var source rss.Source
-	if err := m.sourceCollection.FindOne(nil, bson.D{{"url", url}}).Decode(&source); err != nil {
+func (m *MongoRepository) GetFeedByURL(url string) (*rss.Feed, error) {
+	var feed rss.Feed
+	if err := m.feedCollection.FindOne(nil, bson.D{{"url", url}}).Decode(&feed); err != nil {
 		return nil, err
 	} else {
-		return &source, nil
+		return &feed, nil
 	}
 }
 
-func (m *MongoRepository) ListSources() ([]*rss.Source, error) {
-	var sources []*rss.Source
-	if cur, err := m.sourceCollection.Find(nil, bson.D{}); err != nil {
+func (m *MongoRepository) ListFeeds() ([]*rss.Feed, error) {
+	var feeds []*rss.Feed
+	if cur, err := m.feedCollection.Find(nil, bson.D{}); err != nil {
 		return nil, err
-	} else if err = cur.All(nil, &sources); err != nil {
+	} else if err = cur.All(nil, &feeds); err != nil {
 		return nil, err
 	} else {
-		return sources, nil
+		return feeds, nil
 	}
 }
 
-func (m *MongoRepository) UpdateSourceLastItemSyncedAt(source *rss.Source, syncedAt time.Time) error {
-	if _, err := m.sourceCollection.UpdateOne(nil, bson.D{{"id", source.ID}}, bson.D{{"$set", bson.D{{"last_item_synced_at", syncedAt}}}}); err != nil {
+func (m *MongoRepository) UpdateFeedLastItemSyncedAt(feed *rss.Feed, syncedAt time.Time) error {
+	if _, err := m.feedCollection.UpdateOne(nil, bson.D{{"id", feed.ID}}, bson.D{{"$set", bson.D{{"last_item_synced_at", syncedAt}}}}); err != nil {
 		return err
 	} else {
 		return nil
 	}
 }
 
-func (m *MongoRepository) ListSourceItems(source *rss.Source) ([]*rss.Item, error) {
+func (m *MongoRepository) ListFeedItems(feed *rss.Feed) ([]*rss.Item, error) {
 	items := []*rss.Item{}
-	if cur, err := m.itemCollection.Find(nil, bson.D{{"source_id", source.ID}}); err != nil {
+	if cur, err := m.itemCollection.Find(nil, bson.D{{"feed_id", feed.ID}}); err != nil {
 		return nil, err
 	} else if err = cur.All(nil, &items); err != nil {
 		return nil, err
@@ -120,6 +120,6 @@ func (m *MongoRepository) GetItemByID(id string) (*rss.Item, error) {
 	}
 }
 
-func (m *MongoRepository) GetItemsBySourceID(sourceId int) ([]*rss.Item, error) {
+func (m *MongoRepository) GetItemsByFeedID(feedId int) ([]*rss.Item, error) {
 	panic("implement me")
 }

@@ -55,26 +55,26 @@ func newgrpcTaggingService() *grpcTaggingService {
 
 func (r *grpcTaggingService) GetRSSItemTags(ctx context.Context, in *pb.GetRSSItemTagsRequest) (*pb.GetRSSItemTagsReply, error) {
 	reply := &pb.GetRSSItemTagsReply{}
-	itemId := in.GetId()
+	itemId := in.GetItemId()
 	log.Infof("Receive request to get tags for item %s", itemId)
 	reply.Tags = append(reply.Tags, &pb.Tag{Id: "0", Name: "backend"})
 
 	return reply, nil
 
-	//if sources, err := r.RSSService.ListSources(); err != nil {
+	//if feeds, err := r.RSSService.ListFeeds(); err != nil {
 	//	reply.Message = err.Error()
 	//	return reply, err
 	//} else {
 	//
 	//	wg := sync.WaitGroup{}
-	//	for _, source := range sources {
+	//	for _, feed := range feeds {
 	//		wg.Add(1)
-	//		go func(source *rss.Source) {
+	//		go func(feed *rss.Feed) {
 	//			defer wg.Done()
-	//			if err := r.RSSService.UpdateSourceFromOrigin(source.ID); err != nil {
-	//				log.Errorf("failed to update source: %q", err)
+	//			if err := r.RSSService.UpdateFeedFromOrigin(feed.ID); err != nil {
+	//				log.Errorf("failed to update feed: %q", err)
 	//			}
-	//		}(source)
+	//		}(feed)
 	//	}
 	//	reply.Message = "success"
 	//	return reply, err

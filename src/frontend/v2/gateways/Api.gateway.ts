@@ -1,4 +1,4 @@
-import {RSSSource, RSSItem} from '../protos/taggy';
+import {RSSFeed, RSSItem} from '../protos/taggy';
 import request from '../utils/Request';
 
 
@@ -6,22 +6,22 @@ const basePath = '/api';
 
 
 const ApiGateway = () => ({
-    listRSSSources(){
-        return request<RSSSource[]>({
+    listRSSFeeds(){
+        return request<RSSFeed[]>({
             url: `${basePath}/rss/feeds`,
         })
     },
-    addRSSSource(url: string){
-        return request<RSSSource>({
+    addRSSFeed(url: string){
+        return request<RSSFeed>({
             url: `${basePath}/rss/feeds`,
             method: 'POST',
             body: {url: url },
         })
     },
-    getRSSSource(sourceId: string){
-        return request<RSSSource>({
+    getRSSFeed(feedId: string){
+        return request<RSSFeed>({
             url: `${basePath}/rss/feeds`,
-            queryParams: {sourceId: sourceId},
+            queryParams: {feedId: feedId},
         })
     },
     getRSSItem(itemId: string){
@@ -29,10 +29,10 @@ const ApiGateway = () => ({
             url: `${basePath}/rss/items/${itemId}`,
         })
     },
-    listRSSSourceItems(sourceId: string){
+    listRSSFeedItems(feedId: string){
         return request<RSSItem[]>({
             url: `${basePath}/rss/items`,
-            queryParams: {sourceId: sourceId},
+            queryParams: {feedId: feedId},
         })
     }
 });

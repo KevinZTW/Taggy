@@ -5,17 +5,17 @@ import ArrowBack from "@mui/icons-material/ArrowBack";
 
 import ItemCard from "@/components/ItemCard";
 
-import styles from "./SourcePage.module.css";
+import styles from "./FeedPage.module.css";
 import ItemPage from "@/components/ItemPage";
 
-import { RSSItem, RSSSource } from '@/protos/taggy';
+import { RSSItem, RSSFeed } from '@/protos/taggy';
 
 import ApiGateway from '@/gateways/Api.gateway';
 // [Warning!] This part directly migrate from the old code, need to be refactored
 // in v1 this was called RSSChannel
 
 
-export default function SourcePage({ source } : {source: RSSSource}) {
+export default function FeedPage({ source } : {source: RSSFeed}) {
   const [isFollowed, setIsFollowed] = useState(false);
   const [allItems, setAllItems] = useState<Array<RSSItem>>();
 
@@ -32,12 +32,12 @@ export default function SourcePage({ source } : {source: RSSSource}) {
   useEffect(() => {
     if (!sourceId) return;
     console.log(sourceId)
-    ApiGateway.listRSSSourceItems(sourceId).then(data => {setAllItems(data)})
+    ApiGateway.listRSSFeedItems(sourceId).then(data => {setAllItems(data)})
   }, [sourceId])
 
   const user = { uid: "123" }
     //   TODO
-  const userSubSourceList = []
+  const userSubFeedList = []
 
 
   function renderAllItems(items : RSSItem[]) {
@@ -109,15 +109,15 @@ export default function SourcePage({ source } : {source: RSSSource}) {
     };
   }, [lastVisible]);
 
-  // TODO: handle userSubSourceList
+  // TODO: handle userSubFeedList
 
   // useEffect(() => {
-  //   if (userSubSourceList) {
-  //     if (userSubSourceList.includes(props.channelId)) {
+  //   if (userSubFeedList) {
+  //     if (userSubFeedList.includes(props.channelId)) {
   //       setIsFollowed(true);
   //     }
   //   }
-  // }, [userSubSourceList]);
+  // }, [userSubFeedList]);
   
 
   const itemPage = renderItemPage(itemItem);

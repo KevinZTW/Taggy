@@ -71,12 +71,12 @@ On top of the feed page, the tech related keyword would be listed if any. Relate
 
 #### RSS Search
 
-User could enter RSS source link, medium profile page link or youtube channel link, and get the search outcome with full content
+User could enter RSS feed link, medium profile page link or youtube channel link, and get the search outcome with full content
 ![addRSS](https://user-images.githubusercontent.com/38662781/104092909-138be380-52c2-11eb-8f87-824c97ceeddd.gif)
 
 #### RSS Subscription
 
-User could subscribe RSS sources which recommended on the website or shown on the search outcome and get daily updated feeds
+User could subscribe RSS feeds which recommended on the website or shown on the search outcome and get daily updated feeds
 ![subscribeRSS](https://user-images.githubusercontent.com/38662781/104113804-35c04880-5338-11eb-83a3-7350b8d85f87.gif)
 
 #### Feed Search

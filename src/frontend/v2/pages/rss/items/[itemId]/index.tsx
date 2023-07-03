@@ -2,11 +2,11 @@
 import {useState, useRef, useEffect } from 'react';
 import { Router, useRouter } from 'next/router'
 
-import { RSSItem, RSSSource } from '@/protos/taggy';
+import { RSSItem, RSSFeed } from '@/protos/taggy';
 
-import SourcePage from '@/components/SourcePage';
+import FeedPage from '@/components/FeedPage';
 import ItemCard from '../../../components/ItemCard';
-import SourceCard from '@/components/SourceCard/SourceCard';
+import FeedCard from '@/components/FeedCard/FeedCard';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';

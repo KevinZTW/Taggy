@@ -1,11 +1,11 @@
 
 import {useState, useRef, useEffect } from 'react';
 import ItemCard from '../../../components/ItemCard';
-import SourceCard from '@/components/SourceCard/SourceCard';
+import FeedCard from '@/components/FeedCard/FeedCard';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
-import { RSSSource } from '@/protos/taggy';
+import { RSSFeed } from '@/protos/taggy';
 import TextField from '@mui/material/TextField';
 import ApiGateway from '@/gateways/Api.gateway';
 
@@ -14,21 +14,21 @@ const Wrapper = styled.div`
     display: flex;
     padding: 20px;
     flex-direction: column;`
-const SourceCardWrapper = styled.div`
+const FeedCardWrapper = styled.div`
     display: flex;
     gap: 10px;
     flex-direction: column;
 `
 
-function addRSSSource(url: string){
-    ApiGateway.addRSSSource(url)
+function addRSSFeed(url: string){
+    ApiGateway.addRSSFeed(url)
 }
 
 export default function RSS(){
-    const [sources, setSources] = useState(Array<RSSSource>)
+    const [sources, setFeeds] = useState(Array<RSSFeed>)
     useEffect(() => {
-        ApiGateway.listRSSSources().then(data => {
-                setSources(data)
+        ApiGateway.listRSSFeeds().then(data => {
+                setFeeds(data)
             })
     }, [])
 
@@ -36,13 +36,13 @@ export default function RSS(){
     return (
         <>
         
-        <Typography variant="h4" >RSS Sources</Typography>
+        <Typography variant="h4" >RSS Feeds</Typography>
     
-        <SourceCardWrapper>
+        <FeedCardWrapper>
         {sources.map((source) => {
-            return (<Link href={`/rss/feeds/${source.id}`}><SourceCard source={source}/></Link>)
+            return (<Link href={`/rss/feeds/${source.id}`}><FeedCard source={source}/></Link>)
         })}
-        </SourceCardWrapper> 
+        </FeedCardWrapper>
         </>
     )
 }

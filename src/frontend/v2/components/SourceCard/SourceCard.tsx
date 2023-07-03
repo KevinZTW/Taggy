@@ -7,15 +7,15 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { RSSSource } from '@/protos/taggy';
+import { RSSFeed } from '@/protos/taggy';
 
 
 
 interface IProps {
-    source: RSSSource
+    source: RSSFeed
 }
 
-export default function SourceCard({source}: IProps) {
+export default function FeedCard({source}: IProps) {
     return (
         <>
         <Card sx={{ maxWidth: 345 }}>

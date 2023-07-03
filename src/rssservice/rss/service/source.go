@@ -15,19 +15,19 @@ import (
 
 // ForceUpdateFromOrigin This is to support local dev only, which would fetch origin item and create it without checking the existence
 func (r *RSSService) ForceUpdateFromOrigin(feedId string, ctx context.Context) error {
-	var source *rss.Source
+	var feed *rss.Feed
 	var err error
-	_, span := telementry.NewTracer().Start(ctx, "ForceUpdateSourceFromOrigin")
+	_, span := telementry.NewTracer().Start(ctx, "ForceUpdateFeedFromOrigin")
 	defer span.End()
 
-	if source, err = r.repository.GetSourceById(feedId); err != nil {
+	if feed, err = r.repository.GetFeedById(feedId); err != nil {
 		return err
 	}
 	span.SetAttributes(
 		attribute.String("app.feed.id", feedId),
-		attribute.String("app.feed.name", source.Name),
+		attribute.String("app.feed.name", feed.Name),
 	)
-	items, err := source.GetOriginFeedItems()
+	items, err := feed.GetOriginFeedItems()
 
 	if err != nil {
 		return err
@@ -47,11 +47,11 @@ func (r *RSSService) ForceUpdateFromOrigin(feedId string, ctx context.Context) e
 		}
 	}
 
-	if err := r.repository.UpdateSourceLastItemSyncedAt(source, lastUpdatedAt); err != nil {
+	if err := r.repository.UpdateFeedLastItemSyncedAt(feed, lastUpdatedAt); err != nil {
 		log.Errorf(err.Error())
 	}
 	// POC tracing
-	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, feedId)
+	msg := fmt.Sprintf("Updated %d items for feed %s", itemCount, feedId)
 	span.AddEvent(msg)
 	span.SetAttributes(
 		attribute.Int("app.feed.items.count", itemCount),
@@ -60,22 +60,22 @@ func (r *RSSService) ForceUpdateFromOrigin(feedId string, ctx context.Context) e
 	return nil
 }
 
-func (r *RSSService) UpdateSourceFromOrigin(sourceId string, ctx context.Context) error {
-	var source *rss.Source
+func (r *RSSService) UpdateFeedFromOrigin(feedId string, ctx context.Context) error {
+	var feed *rss.Feed
 	var err error
-	_, span := telementry.NewTracer().Start(ctx, "UpdateSourceFromOrigin")
+	_, span := telementry.NewTracer().Start(ctx, "UpdateFeedFromOrigin")
 	defer span.End()
 
-	if source, err = r.repository.GetSourceById(sourceId); err != nil {
+	if feed, err = r.repository.GetFeedById(feedId); err != nil {
 		span.RecordError(err)
 		return err
 	}
 
 	span.SetAttributes(
-		attribute.String("app.feed.id", sourceId),
-		attribute.String("app.feed.name", source.Name),
+		attribute.String("app.feed.id", feedId),
+		attribute.String("app.feed.name", feed.Name),
 	)
-	items, err := source.GetOriginFeedItems()
+	items, err := feed.GetOriginFeedItems()
 
 	if err != nil {
 		return err
@@ -84,7 +84,7 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string, ctx context.Context
 	lastUpdatedAt := items[0].PublishedAt
 	itemCount := 0
 	for _, item := range items {
-		if item.PublishedAt.Before(source.LastItemSyncedAt) || item.PublishedAt.Equal(source.LastItemSyncedAt) {
+		if item.PublishedAt.Before(feed.LastItemSyncedAt) || item.PublishedAt.Equal(feed.LastItemSyncedAt) {
 			log.Infof("Skip item: %s %s", item.Title, item.PublishedAt)
 			continue
 		}
@@ -101,11 +101,11 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string, ctx context.Context
 		}
 	}
 
-	if err := r.repository.UpdateSourceLastItemSyncedAt(source, lastUpdatedAt); err != nil {
+	if err := r.repository.UpdateFeedLastItemSyncedAt(feed, lastUpdatedAt); err != nil {
 		log.Errorf(err.Error())
 	}
 	// POC tracing
-	msg := fmt.Sprintf("Updated %d items for source %s", itemCount, sourceId)
+	msg := fmt.Sprintf("Updated %d items for feed %s", itemCount, feedId)
 	span.AddEvent(msg)
 	span.SetAttributes(
 		attribute.Int("app.rss.items.count", itemCount),
@@ -114,34 +114,34 @@ func (r *RSSService) UpdateSourceFromOrigin(sourceId string, ctx context.Context
 	return nil
 }
 
-func (r *RSSService) CreateSource(url string) (*rss.Source, error) {
-	if source, err := r.parseURL(url); err != nil {
-		return nil, errors.Join(ErrSourceNotFound, err)
-	} else if existedSource, _ := r.getSourceByURL(source.URL); existedSource != nil {
-		return existedSource, nil
-	} else if source, err := r.createSourceFromEntity(source); err != nil {
+func (r *RSSService) CreateFeed(url string) (*rss.Feed, error) {
+	if feed, err := r.parseURL(url); err != nil {
+		return nil, errors.Join(ErrFeedNotFound, err)
+	} else if existedFeed, _ := r.getFeedByURL(feed.URL); existedFeed != nil {
+		return existedFeed, nil
+	} else if feed, err := r.createFeedFromEntity(feed); err != nil {
 		return nil, errors.Join(ErrRepository, err)
 	} else {
-		return source, nil
+		return feed, nil
 	}
 }
 
-func (r *RSSService) GetSourceById(id string) (*rss.Source, error) {
-	return r.repository.GetSourceById(id)
+func (r *RSSService) GetFeedById(id string) (*rss.Feed, error) {
+	return r.repository.GetFeedById(id)
 }
 
-func (r *RSSService) ListSources() ([]*rss.Source, error) {
-	return r.repository.ListSources()
+func (r *RSSService) ListFeeds() ([]*rss.Feed, error) {
+	return r.repository.ListFeeds()
 }
 
-func (r *RSSService) parseURL(url string) (*rss.Source, error) {
-	s := &rss.Source{}
+func (r *RSSService) parseURL(url string) (*rss.Feed, error) {
+	s := &rss.Feed{}
 	fp := gofeed.NewParser()
 
 	if feed, err := fp.ParseURL(url); err != nil {
 		return nil, err
 	} else {
-		// TODO: store more info to the RSS Source
+		// TODO: store more info to the RSS Feed
 
 		imgURL := ""
 		if feed.Image != nil {
@@ -157,14 +157,14 @@ func (r *RSSService) parseURL(url string) (*rss.Source, error) {
 	}
 }
 
-func (r *RSSService) createSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Source, error) {
-	return r.repository.CreateSource(name, description, url, imgUrl, lastUpdatedAt)
+func (r *RSSService) createFeed(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*rss.Feed, error) {
+	return r.repository.CreateFeed(name, description, url, imgUrl, lastUpdatedAt)
 }
 
-func (r *RSSService) createSourceFromEntity(source *rss.Source) (*rss.Source, error) {
-	return r.createSource(source.Name, source.Description, source.URL, source.ImgURL, source.LastItemUpdatedAt)
+func (r *RSSService) createFeedFromEntity(feed *rss.Feed) (*rss.Feed, error) {
+	return r.createFeed(feed.Name, feed.Description, feed.URL, feed.ImgURL, feed.LastItemUpdatedAt)
 }
 
-func (r *RSSService) getSourceByURL(url string) (*rss.Source, error) {
-	return r.repository.GetSourceByURL(url)
+func (r *RSSService) getFeedByURL(url string) (*rss.Feed, error) {
+	return r.repository.GetFeedByURL(url)
 }

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import RSSSearch from "@/components/RSSSearch/index";
-import { RSSSource } from "@/protos/taggy";
-import SourcePage from '@/components/SourcePage/SourcePage';
+import { RSSFeed } from "@/protos/taggy";
+import FeedPage from '@/components/FeedPage/FeedPage';
 import styles from "./index.module.css";
 
 export default function Search(props : React.PropsWithChildren<any>) {
   
-  const [RSSSource, setRSSSource] = useState<RSSSource>(); 
+  const [RSSFeed, setRSSFeed] = useState<RSSFeed>();
   
   
   const user = {
@@ -21,18 +21,18 @@ export default function Search(props : React.PropsWithChildren<any>) {
         We support RSS link only
         {/* TODO: Support "Youtube channel/Medium profile page link "*/}
       </div>
-      <RSSSearch setRSSSource={setRSSSource}/>
+      <RSSSearch setRSSFeed={setRSSFeed}/>
 
-      {RSSSource ? (
+      {RSSFeed ? (
         <div className={styles.popup}>
           <div
             className={styles.blur}
             onClick={() => {
-              setRSSSource(undefined);
+              setRSSFeed(undefined);
             }}
           ></div>
           <div className={styles.channelPopUpboard}>
-          <SourcePage source={RSSSource}></SourcePage>
+          <FeedPage source={RSSFeed}></FeedPage>
           </div>
         </div>
       ) : (

@@ -4,14 +4,14 @@ import ItemCard from '../../components/ItemCard';
 import Button from '@mui/material/Button';
 
 export default function Timeline(){
-    const [sources, setSources] = useState([])
+    const [sources, setFeeds] = useState([])
 
 
     useEffect(() => {
         fetch('/api/rss')
             .then(res => res.json())
             .then(data => {
-                setSources(data)
+                setFeeds(data)
             })
     }, [])
 

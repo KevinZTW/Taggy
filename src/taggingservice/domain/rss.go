@@ -10,19 +10,19 @@ import (
 
 // Repository Data access interface
 type Repository interface {
-	CreateSource(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*Source, error)
-	ListSources() ([]*Source, error)
-	GetSourceByURL(url string) (*Source, error)
-	GetSourceById(id string) (*Source, error)
-	UpdateSourceLastItemSyncedAt(source *Source, syncedAt time.Time) error
+	CreateFeed(name, description, url, imgUrl string, lastUpdatedAt time.Time) (*Feed, error)
+	ListFeeds() ([]*Feed, error)
+	GetFeedByURL(url string) (*Feed, error)
+	GetFeedById(id string) (*Feed, error)
+	UpdateFeedLastItemSyncedAt(source *Feed, syncedAt time.Time) error
 
 	CreateItemFromEntity(item *Item) (*Item, error)
-	ListSourceItems(source *Source) ([]*Item, error)
+	ListFeedItems(source *Feed) ([]*Item, error)
 	GetItemByID(id string) (*Item, error)
-	GetItemsBySourceID(sourceID int) ([]*Item, error)
+	GetItemsByFeedID(sourceID int) ([]*Item, error)
 }
 
-type Source struct {
+type Feed struct {
 	ID                string    `bson:"id" json:"id"`
 	Name              string    `bson:"name" json:"name"`
 	Description       string    `bson:"description" json:"description"`
@@ -32,7 +32,7 @@ type Source struct {
 	LastItemSyncedAt  time.Time `bson:"last_item_synced_at" json:"last_item_synced_at"`
 }
 
-func (s *Source) UpdateFromOrigin(repository Repository) error {
+func (s *Feed) UpdateFromOrigin(repository Repository) error {
 
 	items, err := s.GetOriginFeedItems()
 	if err != nil {
@@ -61,7 +61,7 @@ func (s *Source) UpdateFromOrigin(repository Repository) error {
 	return nil
 }
 
-func (s *Source) GetOriginFeedItems() ([]*Item, error) {
+func (s *Feed) GetOriginFeedItems() ([]*Item, error) {
 	fp := gofeed.NewParser()
 	items := []*Item{}
 	if feed, err := fp.ParseURL(s.URL); err != nil {
@@ -69,7 +69,7 @@ func (s *Source) GetOriginFeedItems() ([]*Item, error) {
 	} else {
 		for _, item := range feed.Items {
 			items = append(items, &Item{
-				SourceId:    s.ID,
+				FeedId:      s.ID,
 				Title:       item.Title,
 				Content:     item.Content,
 				Description: item.Description,
@@ -84,23 +84,23 @@ func (s *Source) GetOriginFeedItems() ([]*Item, error) {
 
 // CURD methods
 
-func (s *Source) UpdateLastItemSyncedAt(repository Repository, syncedAt time.Time) error {
-	return repository.UpdateSourceLastItemSyncedAt(s, syncedAt)
+func (s *Feed) UpdateLastItemSyncedAt(repository Repository, syncedAt time.Time) error {
+	return repository.UpdateFeedLastItemSyncedAt(s, syncedAt)
 }
 
-func (s *Source) ListAllItems(repository Repository) {
-	items, _ := repository.ListSourceItems(s)
+func (s *Feed) ListAllItems(repository Repository) {
+	items, _ := repository.ListFeedItems(s)
 	fmt.Println(items)
 }
 
-func (s *Source) CreateItem(repository Repository, item *Item) {
-	item.SourceId = s.ID
+func (s *Feed) CreateItem(repository Repository, item *Item) {
+	item.FeedId = s.ID
 	repository.CreateItemFromEntity(item)
 }
 
 type Item struct {
 	ID             string    `bson:"id" json:"id"`
-	SourceId       string    `bson:"source_id" json:"source_id"`
+	FeedId         string    `bson:"source_id" json:"source_id"`
 	Title          string    `bson:"title" json:"title"`
 	Content        string    `bson:"content" json:"content"`
 	Description    string    `bson:"description" json:"description"`

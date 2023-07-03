@@ -68,43 +68,43 @@ func newgrpcRSSService() *grpcRSSService {
 	}
 }
 
-func (r *grpcRSSService) CreateRSSSource(ctx context.Context, in *pb.CreateRSSSourceRequest) (*pb.CreateRSSSourceReply, error) {
-	if source, err := r.RSSService.CreateSource(in.GetUrl()); err != nil {
-		msg := fmt.Sprintf("failed to add source for url:%s err: %q", in.GetUrl(), err)
+func (r *grpcRSSService) CreateRSSFeed(ctx context.Context, in *pb.CreateRSSFeedRequest) (*pb.CreateRSSFeedReply, error) {
+	if feed, err := r.RSSService.CreateFeed(in.GetUrl()); err != nil {
+		msg := fmt.Sprintf("failed to add feed for url:%s err: %q", in.GetUrl(), err)
 		log.Errorf(msg)
-		if errors.Is(service.ErrSourceNotFound, err) {
+		if errors.Is(service.ErrFeedNotFound, err) {
 			return nil, status.Errorf(codes.NotFound, msg)
 		} else {
 			return nil, status.Errorf(codes.Internal, msg)
 		}
 
 	} else {
-		reply := &pb.CreateRSSSourceReply{}
-		reply.Source = &pb.RSSSource{
-			Id:            source.ID,
-			Name:          source.Name,
-			Description:   source.Description,
-			Url:           source.URL,
-			ImgUrl:        source.ImgURL,
-			LastUpdatedAt: timestamppb.New(source.LastItemUpdatedAt),
+		reply := &pb.CreateRSSFeedReply{}
+		reply.Feed = &pb.RSSFeed{
+			Id:            feed.ID,
+			Name:          feed.Name,
+			Description:   feed.Description,
+			Url:           feed.URL,
+			ImgUrl:        feed.ImgURL,
+			LastUpdatedAt: timestamppb.New(feed.LastItemUpdatedAt),
 		}
 		return reply, nil
 	}
 }
 
-func (r *grpcRSSService) GetRSSSource(ctx context.Context, in *pb.GetRSSSourceRequest) (*pb.GetRSSSourceReply, error) {
-	if source, err := r.RSSService.GetSourceById(in.GetSourceId()); err != nil {
-		log.Errorf("failed to get source: %q", err)
+func (r *grpcRSSService) GetRSSFeed(ctx context.Context, in *pb.GetRSSFeedRequest) (*pb.GetRSSFeedReply, error) {
+	if feed, err := r.RSSService.GetFeedById(in.GetFeedId()); err != nil {
+		log.Errorf("failed to get feed: %q", err)
 		return nil, err
 	} else {
-		reply := &pb.GetRSSSourceReply{}
-		reply.Source = &pb.RSSSource{
-			Id:            source.ID,
-			Name:          source.Name,
-			Description:   source.Description,
-			Url:           source.URL,
-			ImgUrl:        source.ImgURL,
-			LastUpdatedAt: timestamppb.New(source.LastItemUpdatedAt),
+		reply := &pb.GetRSSFeedReply{}
+		reply.Feed = &pb.RSSFeed{
+			Id:            feed.ID,
+			Name:          feed.Name,
+			Description:   feed.Description,
+			Url:           feed.URL,
+			ImgUrl:        feed.ImgURL,
+			LastUpdatedAt: timestamppb.New(feed.LastItemUpdatedAt),
 		}
 		return reply, nil
 	}
@@ -114,7 +114,7 @@ func (r *grpcRSSService) GetRSSItem(ctx context.Context, in *pb.GetRSSItemReques
 	if item, err := r.RSSService.GetItemById(in.GetItemId()); err != nil {
 		msg := fmt.Sprintf("GetRSSItem failed with id: %s, err: %s", in.GetItemId(), err.Error())
 		log.Errorf(msg)
-		if errors.Is(service.ErrSourceNotFound, err) {
+		if errors.Is(service.ErrFeedNotFound, err) {
 			return nil, status.Errorf(codes.NotFound, msg)
 		} else {
 			return nil, status.Errorf(codes.Internal, msg)
@@ -125,7 +125,7 @@ func (r *grpcRSSService) GetRSSItem(ctx context.Context, in *pb.GetRSSItemReques
 		reply := &pb.GetRSSItemReply{}
 		it := &pb.RSSItem{
 			Id:          item.ID,
-			SourceId:    item.SourceId,
+			FeedId:      item.FeedId,
 			Title:       item.Title,
 			Content:     item.Content,
 			Description: item.Description,
@@ -138,36 +138,36 @@ func (r *grpcRSSService) GetRSSItem(ctx context.Context, in *pb.GetRSSItemReques
 
 }
 
-func (r *grpcRSSService) ListRSSSources(ctx context.Context, in *pb.ListRSSSourcesRequest) (*pb.ListRSSSourcesReply, error) {
-	reply := &pb.ListRSSSourcesReply{}
-	if sources, err := r.RSSService.ListSources(); err != nil {
-		log.Errorf("failed to list rss sources: %q", err)
+func (r *grpcRSSService) ListRSSFeeds(ctx context.Context, in *pb.ListRSSFeedsRequest) (*pb.ListRSSFeedsReply, error) {
+	reply := &pb.ListRSSFeedsReply{}
+	if feeds, err := r.RSSService.ListFeeds(); err != nil {
+		log.Errorf("failed to list rss feeds: %q", err)
 		return nil, err
 	} else {
-		reply.RssSources = make([]*pb.RSSSource, len(sources))
-		for i, source := range sources {
-			reply.RssSources[i] = &pb.RSSSource{
-				Id:            source.ID,
-				ImgUrl:        source.ImgURL,
-				Url:           source.URL,
-				Name:          source.Name,
-				Description:   source.Description,
-				LastUpdatedAt: timestamppb.New(source.LastItemUpdatedAt),
+		reply.Feeds = make([]*pb.RSSFeed, len(feeds))
+		for i, feed := range feeds {
+			reply.Feeds[i] = &pb.RSSFeed{
+				Id:            feed.ID,
+				ImgUrl:        feed.ImgURL,
+				Url:           feed.URL,
+				Name:          feed.Name,
+				Description:   feed.Description,
+				LastUpdatedAt: timestamppb.New(feed.LastItemUpdatedAt),
 			}
 		}
 		return reply, nil
 	}
 }
 
-func (r *grpcRSSService) ListRSSSourceItems(ctx context.Context, in *pb.ListRSSSourceItemsRequest) (*pb.ListRSSSourceItemsReply, error) {
-	reply := &pb.ListRSSSourceItemsReply{}
-	if items, err := r.RSSService.ListSourceItems(in.GetSourceId()); err != nil {
+func (r *grpcRSSService) ListRSSFeedItems(ctx context.Context, in *pb.ListRSSFeedItemsRequest) (*pb.ListRSSFeedItemsReply, error) {
+	reply := &pb.ListRSSFeedItemsReply{}
+	if items, err := r.RSSService.ListFeedItems(in.GetFeedId()); err != nil {
 		return reply, err
 	} else {
 		for _, item := range items {
 			f := &pb.RSSItem{
 				Id:          item.ID,
-				SourceId:    item.SourceId,
+				FeedId:      item.FeedId,
 				Title:       item.Title,
 				Content:     item.Content,
 				Description: item.Description,
@@ -180,24 +180,24 @@ func (r *grpcRSSService) ListRSSSourceItems(ctx context.Context, in *pb.ListRSSS
 	}
 }
 
-// TODO: refactor to a better naming, it's mechanism is to crawl origin RSS Source and create related entity in db
+// TODO: refactor to a better naming, it's mechanism is to crawl origin RSS Feed and create related entity in db
 
 func (r *grpcRSSService) FetchAllRSS(ctx context.Context, in *pb.FetchAllRSSRequest) (*pb.FetchAllRSSReply, error) {
 	reply := &pb.FetchAllRSSReply{}
-	if sources, err := r.RSSService.ListSources(); err != nil {
+	if feeds, err := r.RSSService.ListFeeds(); err != nil {
 		reply.Message = err.Error()
 		return reply, err
 	} else {
 
 		wg := sync.WaitGroup{}
-		for _, source := range sources {
+		for _, feed := range feeds {
 			wg.Add(1)
-			go func(source *rss.Source) {
+			go func(feed *rss.Feed) {
 				defer wg.Done()
-				if err := r.RSSService.UpdateSourceFromOrigin(source.ID, ctx); err != nil {
-					log.Errorf("failed to update source: %q", err)
+				if err := r.RSSService.UpdateFeedFromOrigin(feed.ID, ctx); err != nil {
+					log.Errorf("failed to update feed: %q", err)
 				}
-			}(source)
+			}(feed)
 		}
 		reply.Message = "success"
 		return reply, err
@@ -208,22 +208,22 @@ func (r *grpcRSSService) ForceFetchOriginItems(ctx context.Context, in *empty.Em
 	reply := &empty.Empty{}
 	span := trace.SpanFromContext(ctx)
 
-	if sources, err := r.RSSService.ListSources(); err != nil {
-		msg := "Failed to get RSS Sources" + err.Error()
+	if feeds, err := r.RSSService.ListFeeds(); err != nil {
+		msg := "Failed to get RSS Feeds" + err.Error()
 		log.Errorf(msg)
 		return reply, status.Error(codes.Internal, msg)
 	} else {
 
 		wg := sync.WaitGroup{}
-		for _, source := range sources {
+		for _, feed := range feeds {
 			wg.Add(1)
-			go func(source *rss.Source) {
+			go func(feed *rss.Feed) {
 				defer wg.Done()
-				if err := r.RSSService.ForceUpdateFromOrigin(source.ID, ctx); err != nil {
-					msg := fmt.Sprint("Failed to update source: %q", err)
+				if err := r.RSSService.ForceUpdateFromOrigin(feed.ID, ctx); err != nil {
+					msg := fmt.Sprint("Failed to update feed: %q", err)
 					log.Errorf(msg)
 				}
-			}(source)
+			}(feed)
 		}
 		wg.Wait()
 		span.AddEvent("RSS Feed all updated")

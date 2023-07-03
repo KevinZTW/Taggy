@@ -22,7 +22,7 @@ export interface Tag {
   name: string;
 }
 
-export interface RSSSource {
+export interface RSSFeed {
   id: string;
   name: string;
   description: string;
@@ -33,7 +33,7 @@ export interface RSSSource {
 
 export interface RSSItem {
   id: string;
-  sourceId: string;
+  feedId: string;
   title: string;
   content: string;
   description: string;
@@ -41,27 +41,27 @@ export interface RSSItem {
   publishedAt: Date | undefined;
 }
 
-export interface CreateRSSSourceRequest {
+export interface CreateRSSFeedRequest {
   url: string;
 }
 
-export interface CreateRSSSourceReply {
-  source: RSSSource | undefined;
+export interface CreateRSSFeedReply {
+  feed: RSSFeed | undefined;
 }
 
-export interface GetRSSSourceRequest {
-  sourceId: string;
+export interface GetRSSFeedRequest {
+  feedId: string;
 }
 
-export interface GetRSSSourceReply {
-  source: RSSSource | undefined;
+export interface GetRSSFeedReply {
+  feed: RSSFeed | undefined;
 }
 
-export interface ListRSSSourcesRequest {
+export interface ListRSSFeedsRequest {
 }
 
-export interface ListRSSSourcesReply {
-  rssSources: RSSSource[];
+export interface ListRSSFeedsReply {
+  feeds: RSSFeed[];
 }
 
 export interface GetRSSItemRequest {
@@ -72,11 +72,11 @@ export interface GetRSSItemReply {
   item: RSSItem | undefined;
 }
 
-export interface ListRSSSourceItemsRequest {
-  sourceId: string;
+export interface ListRSSFeedItemsRequest {
+  feedId: string;
 }
 
-export interface ListRSSSourceItemsReply {
+export interface ListRSSFeedItemsReply {
   items: RSSItem[];
 }
 
@@ -88,7 +88,7 @@ export interface FetchAllRSSReply {
 }
 
 export interface GetRSSItemTagsRequest {
-  id: string;
+  itemId: string;
 }
 
 export interface GetRSSItemTagsReply {
@@ -163,12 +163,12 @@ export const Tag = {
   },
 };
 
-function createBaseRSSSource(): RSSSource {
+function createBaseRSSFeed(): RSSFeed {
   return { id: "", name: "", description: "", url: "", imgUrl: "", lastUpdatedAt: undefined };
 }
 
-export const RSSSource = {
-  encode(message: RSSSource, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const RSSFeed = {
+  encode(message: RSSFeed, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -190,10 +190,10 @@ export const RSSSource = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): RSSSource {
+  decode(input: _m0.Reader | Uint8Array, length?: number): RSSFeed {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRSSSource();
+    const message = createBaseRSSFeed();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -248,7 +248,7 @@ export const RSSSource = {
     return message;
   },
 
-  fromJSON(object: any): RSSSource {
+  fromJSON(object: any): RSSFeed {
     return {
       id: isSet(object.id) ? String(object.id) : "",
       name: isSet(object.name) ? String(object.name) : "",
@@ -259,7 +259,7 @@ export const RSSSource = {
     };
   },
 
-  toJSON(message: RSSSource): unknown {
+  toJSON(message: RSSFeed): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.name !== undefined && (obj.name = message.name);
@@ -270,12 +270,12 @@ export const RSSSource = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<RSSSource>, I>>(base?: I): RSSSource {
-    return RSSSource.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<RSSFeed>, I>>(base?: I): RSSFeed {
+    return RSSFeed.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<RSSSource>, I>>(object: I): RSSSource {
-    const message = createBaseRSSSource();
+  fromPartial<I extends Exact<DeepPartial<RSSFeed>, I>>(object: I): RSSFeed {
+    const message = createBaseRSSFeed();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
     message.description = object.description ?? "";
@@ -287,7 +287,7 @@ export const RSSSource = {
 };
 
 function createBaseRSSItem(): RSSItem {
-  return { id: "", sourceId: "", title: "", content: "", description: "", url: "", publishedAt: undefined };
+  return { id: "", feedId: "", title: "", content: "", description: "", url: "", publishedAt: undefined };
 }
 
 export const RSSItem = {
@@ -295,8 +295,8 @@ export const RSSItem = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.sourceId !== "") {
-      writer.uint32(18).string(message.sourceId);
+    if (message.feedId !== "") {
+      writer.uint32(18).string(message.feedId);
     }
     if (message.title !== "") {
       writer.uint32(26).string(message.title);
@@ -335,7 +335,7 @@ export const RSSItem = {
             break;
           }
 
-          message.sourceId = reader.string();
+          message.feedId = reader.string();
           continue;
         case 3:
           if (tag !== 26) {
@@ -384,7 +384,7 @@ export const RSSItem = {
   fromJSON(object: any): RSSItem {
     return {
       id: isSet(object.id) ? String(object.id) : "",
-      sourceId: isSet(object.sourceId) ? String(object.sourceId) : "",
+      feedId: isSet(object.feedId) ? String(object.feedId) : "",
       title: isSet(object.title) ? String(object.title) : "",
       content: isSet(object.content) ? String(object.content) : "",
       description: isSet(object.description) ? String(object.description) : "",
@@ -396,7 +396,7 @@ export const RSSItem = {
   toJSON(message: RSSItem): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.sourceId !== undefined && (obj.sourceId = message.sourceId);
+    message.feedId !== undefined && (obj.feedId = message.feedId);
     message.title !== undefined && (obj.title = message.title);
     message.content !== undefined && (obj.content = message.content);
     message.description !== undefined && (obj.description = message.description);
@@ -412,7 +412,7 @@ export const RSSItem = {
   fromPartial<I extends Exact<DeepPartial<RSSItem>, I>>(object: I): RSSItem {
     const message = createBaseRSSItem();
     message.id = object.id ?? "";
-    message.sourceId = object.sourceId ?? "";
+    message.feedId = object.feedId ?? "";
     message.title = object.title ?? "";
     message.content = object.content ?? "";
     message.description = object.description ?? "";
@@ -422,22 +422,22 @@ export const RSSItem = {
   },
 };
 
-function createBaseCreateRSSSourceRequest(): CreateRSSSourceRequest {
+function createBaseCreateRSSFeedRequest(): CreateRSSFeedRequest {
   return { url: "" };
 }
 
-export const CreateRSSSourceRequest = {
-  encode(message: CreateRSSSourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const CreateRSSFeedRequest = {
+  encode(message: CreateRSSFeedRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.url !== "") {
       writer.uint32(10).string(message.url);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRSSSourceRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRSSFeedRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateRSSSourceRequest();
+    const message = createBaseCreateRSSFeedRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -457,43 +457,43 @@ export const CreateRSSSourceRequest = {
     return message;
   },
 
-  fromJSON(object: any): CreateRSSSourceRequest {
+  fromJSON(object: any): CreateRSSFeedRequest {
     return { url: isSet(object.url) ? String(object.url) : "" };
   },
 
-  toJSON(message: CreateRSSSourceRequest): unknown {
+  toJSON(message: CreateRSSFeedRequest): unknown {
     const obj: any = {};
     message.url !== undefined && (obj.url = message.url);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateRSSSourceRequest>, I>>(base?: I): CreateRSSSourceRequest {
-    return CreateRSSSourceRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<CreateRSSFeedRequest>, I>>(base?: I): CreateRSSFeedRequest {
+    return CreateRSSFeedRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreateRSSSourceRequest>, I>>(object: I): CreateRSSSourceRequest {
-    const message = createBaseCreateRSSSourceRequest();
+  fromPartial<I extends Exact<DeepPartial<CreateRSSFeedRequest>, I>>(object: I): CreateRSSFeedRequest {
+    const message = createBaseCreateRSSFeedRequest();
     message.url = object.url ?? "";
     return message;
   },
 };
 
-function createBaseCreateRSSSourceReply(): CreateRSSSourceReply {
-  return { source: undefined };
+function createBaseCreateRSSFeedReply(): CreateRSSFeedReply {
+  return { feed: undefined };
 }
 
-export const CreateRSSSourceReply = {
-  encode(message: CreateRSSSourceReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.source !== undefined) {
-      RSSSource.encode(message.source, writer.uint32(10).fork()).ldelim();
+export const CreateRSSFeedReply = {
+  encode(message: CreateRSSFeedReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feed !== undefined) {
+      RSSFeed.encode(message.feed, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRSSSourceReply {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRSSFeedReply {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateRSSSourceReply();
+    const message = createBaseCreateRSSFeedReply();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -502,7 +502,7 @@ export const CreateRSSSourceReply = {
             break;
           }
 
-          message.source = RSSSource.decode(reader, reader.uint32());
+          message.feed = RSSFeed.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -513,45 +513,43 @@ export const CreateRSSSourceReply = {
     return message;
   },
 
-  fromJSON(object: any): CreateRSSSourceReply {
-    return { source: isSet(object.source) ? RSSSource.fromJSON(object.source) : undefined };
+  fromJSON(object: any): CreateRSSFeedReply {
+    return { feed: isSet(object.feed) ? RSSFeed.fromJSON(object.feed) : undefined };
   },
 
-  toJSON(message: CreateRSSSourceReply): unknown {
+  toJSON(message: CreateRSSFeedReply): unknown {
     const obj: any = {};
-    message.source !== undefined && (obj.source = message.source ? RSSSource.toJSON(message.source) : undefined);
+    message.feed !== undefined && (obj.feed = message.feed ? RSSFeed.toJSON(message.feed) : undefined);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateRSSSourceReply>, I>>(base?: I): CreateRSSSourceReply {
-    return CreateRSSSourceReply.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<CreateRSSFeedReply>, I>>(base?: I): CreateRSSFeedReply {
+    return CreateRSSFeedReply.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreateRSSSourceReply>, I>>(object: I): CreateRSSSourceReply {
-    const message = createBaseCreateRSSSourceReply();
-    message.source = (object.source !== undefined && object.source !== null)
-      ? RSSSource.fromPartial(object.source)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<CreateRSSFeedReply>, I>>(object: I): CreateRSSFeedReply {
+    const message = createBaseCreateRSSFeedReply();
+    message.feed = (object.feed !== undefined && object.feed !== null) ? RSSFeed.fromPartial(object.feed) : undefined;
     return message;
   },
 };
 
-function createBaseGetRSSSourceRequest(): GetRSSSourceRequest {
-  return { sourceId: "" };
+function createBaseGetRSSFeedRequest(): GetRSSFeedRequest {
+  return { feedId: "" };
 }
 
-export const GetRSSSourceRequest = {
-  encode(message: GetRSSSourceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sourceId !== "") {
-      writer.uint32(10).string(message.sourceId);
+export const GetRSSFeedRequest = {
+  encode(message: GetRSSFeedRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feedId !== "") {
+      writer.uint32(10).string(message.feedId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSSourceRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSFeedRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetRSSSourceRequest();
+    const message = createBaseGetRSSFeedRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -560,7 +558,7 @@ export const GetRSSSourceRequest = {
             break;
           }
 
-          message.sourceId = reader.string();
+          message.feedId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -571,43 +569,43 @@ export const GetRSSSourceRequest = {
     return message;
   },
 
-  fromJSON(object: any): GetRSSSourceRequest {
-    return { sourceId: isSet(object.sourceId) ? String(object.sourceId) : "" };
+  fromJSON(object: any): GetRSSFeedRequest {
+    return { feedId: isSet(object.feedId) ? String(object.feedId) : "" };
   },
 
-  toJSON(message: GetRSSSourceRequest): unknown {
+  toJSON(message: GetRSSFeedRequest): unknown {
     const obj: any = {};
-    message.sourceId !== undefined && (obj.sourceId = message.sourceId);
+    message.feedId !== undefined && (obj.feedId = message.feedId);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetRSSSourceRequest>, I>>(base?: I): GetRSSSourceRequest {
-    return GetRSSSourceRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetRSSFeedRequest>, I>>(base?: I): GetRSSFeedRequest {
+    return GetRSSFeedRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GetRSSSourceRequest>, I>>(object: I): GetRSSSourceRequest {
-    const message = createBaseGetRSSSourceRequest();
-    message.sourceId = object.sourceId ?? "";
+  fromPartial<I extends Exact<DeepPartial<GetRSSFeedRequest>, I>>(object: I): GetRSSFeedRequest {
+    const message = createBaseGetRSSFeedRequest();
+    message.feedId = object.feedId ?? "";
     return message;
   },
 };
 
-function createBaseGetRSSSourceReply(): GetRSSSourceReply {
-  return { source: undefined };
+function createBaseGetRSSFeedReply(): GetRSSFeedReply {
+  return { feed: undefined };
 }
 
-export const GetRSSSourceReply = {
-  encode(message: GetRSSSourceReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.source !== undefined) {
-      RSSSource.encode(message.source, writer.uint32(10).fork()).ldelim();
+export const GetRSSFeedReply = {
+  encode(message: GetRSSFeedReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feed !== undefined) {
+      RSSFeed.encode(message.feed, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSSourceReply {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRSSFeedReply {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetRSSSourceReply();
+    const message = createBaseGetRSSFeedReply();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -616,7 +614,7 @@ export const GetRSSSourceReply = {
             break;
           }
 
-          message.source = RSSSource.decode(reader, reader.uint32());
+          message.feed = RSSFeed.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -627,42 +625,40 @@ export const GetRSSSourceReply = {
     return message;
   },
 
-  fromJSON(object: any): GetRSSSourceReply {
-    return { source: isSet(object.source) ? RSSSource.fromJSON(object.source) : undefined };
+  fromJSON(object: any): GetRSSFeedReply {
+    return { feed: isSet(object.feed) ? RSSFeed.fromJSON(object.feed) : undefined };
   },
 
-  toJSON(message: GetRSSSourceReply): unknown {
+  toJSON(message: GetRSSFeedReply): unknown {
     const obj: any = {};
-    message.source !== undefined && (obj.source = message.source ? RSSSource.toJSON(message.source) : undefined);
+    message.feed !== undefined && (obj.feed = message.feed ? RSSFeed.toJSON(message.feed) : undefined);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetRSSSourceReply>, I>>(base?: I): GetRSSSourceReply {
-    return GetRSSSourceReply.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<GetRSSFeedReply>, I>>(base?: I): GetRSSFeedReply {
+    return GetRSSFeedReply.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<GetRSSSourceReply>, I>>(object: I): GetRSSSourceReply {
-    const message = createBaseGetRSSSourceReply();
-    message.source = (object.source !== undefined && object.source !== null)
-      ? RSSSource.fromPartial(object.source)
-      : undefined;
+  fromPartial<I extends Exact<DeepPartial<GetRSSFeedReply>, I>>(object: I): GetRSSFeedReply {
+    const message = createBaseGetRSSFeedReply();
+    message.feed = (object.feed !== undefined && object.feed !== null) ? RSSFeed.fromPartial(object.feed) : undefined;
     return message;
   },
 };
 
-function createBaseListRSSSourcesRequest(): ListRSSSourcesRequest {
+function createBaseListRSSFeedsRequest(): ListRSSFeedsRequest {
   return {};
 }
 
-export const ListRSSSourcesRequest = {
-  encode(_: ListRSSSourcesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ListRSSFeedsRequest = {
+  encode(_: ListRSSFeedsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSSourcesRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSFeedsRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListRSSSourcesRequest();
+    const message = createBaseListRSSFeedsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -675,41 +671,41 @@ export const ListRSSSourcesRequest = {
     return message;
   },
 
-  fromJSON(_: any): ListRSSSourcesRequest {
+  fromJSON(_: any): ListRSSFeedsRequest {
     return {};
   },
 
-  toJSON(_: ListRSSSourcesRequest): unknown {
+  toJSON(_: ListRSSFeedsRequest): unknown {
     const obj: any = {};
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListRSSSourcesRequest>, I>>(base?: I): ListRSSSourcesRequest {
-    return ListRSSSourcesRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<ListRSSFeedsRequest>, I>>(base?: I): ListRSSFeedsRequest {
+    return ListRSSFeedsRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListRSSSourcesRequest>, I>>(_: I): ListRSSSourcesRequest {
-    const message = createBaseListRSSSourcesRequest();
+  fromPartial<I extends Exact<DeepPartial<ListRSSFeedsRequest>, I>>(_: I): ListRSSFeedsRequest {
+    const message = createBaseListRSSFeedsRequest();
     return message;
   },
 };
 
-function createBaseListRSSSourcesReply(): ListRSSSourcesReply {
-  return { rssSources: [] };
+function createBaseListRSSFeedsReply(): ListRSSFeedsReply {
+  return { feeds: [] };
 }
 
-export const ListRSSSourcesReply = {
-  encode(message: ListRSSSourcesReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.rssSources) {
-      RSSSource.encode(v!, writer.uint32(10).fork()).ldelim();
+export const ListRSSFeedsReply = {
+  encode(message: ListRSSFeedsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.feeds) {
+      RSSFeed.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSSourcesReply {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSFeedsReply {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListRSSSourcesReply();
+    const message = createBaseListRSSFeedsReply();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -718,7 +714,7 @@ export const ListRSSSourcesReply = {
             break;
           }
 
-          message.rssSources.push(RSSSource.decode(reader, reader.uint32()));
+          message.feeds.push(RSSFeed.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -729,29 +725,27 @@ export const ListRSSSourcesReply = {
     return message;
   },
 
-  fromJSON(object: any): ListRSSSourcesReply {
-    return {
-      rssSources: Array.isArray(object?.rssSources) ? object.rssSources.map((e: any) => RSSSource.fromJSON(e)) : [],
-    };
+  fromJSON(object: any): ListRSSFeedsReply {
+    return { feeds: Array.isArray(object?.feeds) ? object.feeds.map((e: any) => RSSFeed.fromJSON(e)) : [] };
   },
 
-  toJSON(message: ListRSSSourcesReply): unknown {
+  toJSON(message: ListRSSFeedsReply): unknown {
     const obj: any = {};
-    if (message.rssSources) {
-      obj.rssSources = message.rssSources.map((e) => e ? RSSSource.toJSON(e) : undefined);
+    if (message.feeds) {
+      obj.feeds = message.feeds.map((e) => e ? RSSFeed.toJSON(e) : undefined);
     } else {
-      obj.rssSources = [];
+      obj.feeds = [];
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListRSSSourcesReply>, I>>(base?: I): ListRSSSourcesReply {
-    return ListRSSSourcesReply.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<ListRSSFeedsReply>, I>>(base?: I): ListRSSFeedsReply {
+    return ListRSSFeedsReply.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListRSSSourcesReply>, I>>(object: I): ListRSSSourcesReply {
-    const message = createBaseListRSSSourcesReply();
-    message.rssSources = object.rssSources?.map((e) => RSSSource.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<ListRSSFeedsReply>, I>>(object: I): ListRSSFeedsReply {
+    const message = createBaseListRSSFeedsReply();
+    message.feeds = object.feeds?.map((e) => RSSFeed.fromPartial(e)) || [];
     return message;
   },
 };
@@ -868,22 +862,22 @@ export const GetRSSItemReply = {
   },
 };
 
-function createBaseListRSSSourceItemsRequest(): ListRSSSourceItemsRequest {
-  return { sourceId: "" };
+function createBaseListRSSFeedItemsRequest(): ListRSSFeedItemsRequest {
+  return { feedId: "" };
 }
 
-export const ListRSSSourceItemsRequest = {
-  encode(message: ListRSSSourceItemsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sourceId !== "") {
-      writer.uint32(10).string(message.sourceId);
+export const ListRSSFeedItemsRequest = {
+  encode(message: ListRSSFeedItemsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.feedId !== "") {
+      writer.uint32(10).string(message.feedId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSSourceItemsRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSFeedItemsRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListRSSSourceItemsRequest();
+    const message = createBaseListRSSFeedItemsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -892,7 +886,7 @@ export const ListRSSSourceItemsRequest = {
             break;
           }
 
-          message.sourceId = reader.string();
+          message.feedId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -903,43 +897,43 @@ export const ListRSSSourceItemsRequest = {
     return message;
   },
 
-  fromJSON(object: any): ListRSSSourceItemsRequest {
-    return { sourceId: isSet(object.sourceId) ? String(object.sourceId) : "" };
+  fromJSON(object: any): ListRSSFeedItemsRequest {
+    return { feedId: isSet(object.feedId) ? String(object.feedId) : "" };
   },
 
-  toJSON(message: ListRSSSourceItemsRequest): unknown {
+  toJSON(message: ListRSSFeedItemsRequest): unknown {
     const obj: any = {};
-    message.sourceId !== undefined && (obj.sourceId = message.sourceId);
+    message.feedId !== undefined && (obj.feedId = message.feedId);
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListRSSSourceItemsRequest>, I>>(base?: I): ListRSSSourceItemsRequest {
-    return ListRSSSourceItemsRequest.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<ListRSSFeedItemsRequest>, I>>(base?: I): ListRSSFeedItemsRequest {
+    return ListRSSFeedItemsRequest.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListRSSSourceItemsRequest>, I>>(object: I): ListRSSSourceItemsRequest {
-    const message = createBaseListRSSSourceItemsRequest();
-    message.sourceId = object.sourceId ?? "";
+  fromPartial<I extends Exact<DeepPartial<ListRSSFeedItemsRequest>, I>>(object: I): ListRSSFeedItemsRequest {
+    const message = createBaseListRSSFeedItemsRequest();
+    message.feedId = object.feedId ?? "";
     return message;
   },
 };
 
-function createBaseListRSSSourceItemsReply(): ListRSSSourceItemsReply {
+function createBaseListRSSFeedItemsReply(): ListRSSFeedItemsReply {
   return { items: [] };
 }
 
-export const ListRSSSourceItemsReply = {
-  encode(message: ListRSSSourceItemsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ListRSSFeedItemsReply = {
+  encode(message: ListRSSFeedItemsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.items) {
       RSSItem.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSSourceItemsReply {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSFeedItemsReply {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListRSSSourceItemsReply();
+    const message = createBaseListRSSFeedItemsReply();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -959,11 +953,11 @@ export const ListRSSSourceItemsReply = {
     return message;
   },
 
-  fromJSON(object: any): ListRSSSourceItemsReply {
+  fromJSON(object: any): ListRSSFeedItemsReply {
     return { items: Array.isArray(object?.items) ? object.items.map((e: any) => RSSItem.fromJSON(e)) : [] };
   },
 
-  toJSON(message: ListRSSSourceItemsReply): unknown {
+  toJSON(message: ListRSSFeedItemsReply): unknown {
     const obj: any = {};
     if (message.items) {
       obj.items = message.items.map((e) => e ? RSSItem.toJSON(e) : undefined);
@@ -973,12 +967,12 @@ export const ListRSSSourceItemsReply = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<ListRSSSourceItemsReply>, I>>(base?: I): ListRSSSourceItemsReply {
-    return ListRSSSourceItemsReply.fromPartial(base ?? {});
+  create<I extends Exact<DeepPartial<ListRSSFeedItemsReply>, I>>(base?: I): ListRSSFeedItemsReply {
+    return ListRSSFeedItemsReply.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListRSSSourceItemsReply>, I>>(object: I): ListRSSSourceItemsReply {
-    const message = createBaseListRSSSourceItemsReply();
+  fromPartial<I extends Exact<DeepPartial<ListRSSFeedItemsReply>, I>>(object: I): ListRSSFeedItemsReply {
+    const message = createBaseListRSSFeedItemsReply();
     message.items = object.items?.map((e) => RSSItem.fromPartial(e)) || [];
     return message;
   },
@@ -1085,13 +1079,13 @@ export const FetchAllRSSReply = {
 };
 
 function createBaseGetRSSItemTagsRequest(): GetRSSItemTagsRequest {
-  return { id: "" };
+  return { itemId: "" };
 }
 
 export const GetRSSItemTagsRequest = {
   encode(message: GetRSSItemTagsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.itemId !== "") {
+      writer.uint32(10).string(message.itemId);
     }
     return writer;
   },
@@ -1108,7 +1102,7 @@ export const GetRSSItemTagsRequest = {
             break;
           }
 
-          message.id = reader.string();
+          message.itemId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1120,12 +1114,12 @@ export const GetRSSItemTagsRequest = {
   },
 
   fromJSON(object: any): GetRSSItemTagsRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { itemId: isSet(object.itemId) ? String(object.itemId) : "" };
   },
 
   toJSON(message: GetRSSItemTagsRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
     return obj;
   },
 
@@ -1135,7 +1129,7 @@ export const GetRSSItemTagsRequest = {
 
   fromPartial<I extends Exact<DeepPartial<GetRSSItemTagsRequest>, I>>(object: I): GetRSSItemTagsRequest {
     const message = createBaseGetRSSItemTagsRequest();
-    message.id = object.id ?? "";
+    message.itemId = object.itemId ?? "";
     return message;
   },
 };
@@ -1202,32 +1196,32 @@ export const GetRSSItemTagsReply = {
 
 export type RSSServiceService = typeof RSSServiceService;
 export const RSSServiceService = {
-  createRssSource: {
-    path: "/taggy.RSSService/CreateRSSSource",
+  createRssFeed: {
+    path: "/taggy.RSSService/CreateRSSFeed",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: CreateRSSSourceRequest) => Buffer.from(CreateRSSSourceRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => CreateRSSSourceRequest.decode(value),
-    responseSerialize: (value: CreateRSSSourceReply) => Buffer.from(CreateRSSSourceReply.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => CreateRSSSourceReply.decode(value),
+    requestSerialize: (value: CreateRSSFeedRequest) => Buffer.from(CreateRSSFeedRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => CreateRSSFeedRequest.decode(value),
+    responseSerialize: (value: CreateRSSFeedReply) => Buffer.from(CreateRSSFeedReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => CreateRSSFeedReply.decode(value),
   },
-  getRssSource: {
-    path: "/taggy.RSSService/GetRSSSource",
+  getRssFeed: {
+    path: "/taggy.RSSService/GetRSSFeed",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: GetRSSSourceRequest) => Buffer.from(GetRSSSourceRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => GetRSSSourceRequest.decode(value),
-    responseSerialize: (value: GetRSSSourceReply) => Buffer.from(GetRSSSourceReply.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => GetRSSSourceReply.decode(value),
+    requestSerialize: (value: GetRSSFeedRequest) => Buffer.from(GetRSSFeedRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetRSSFeedRequest.decode(value),
+    responseSerialize: (value: GetRSSFeedReply) => Buffer.from(GetRSSFeedReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetRSSFeedReply.decode(value),
   },
-  listRssSources: {
-    path: "/taggy.RSSService/ListRSSSources",
+  listRssFeeds: {
+    path: "/taggy.RSSService/ListRSSFeeds",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: ListRSSSourcesRequest) => Buffer.from(ListRSSSourcesRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => ListRSSSourcesRequest.decode(value),
-    responseSerialize: (value: ListRSSSourcesReply) => Buffer.from(ListRSSSourcesReply.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => ListRSSSourcesReply.decode(value),
+    requestSerialize: (value: ListRSSFeedsRequest) => Buffer.from(ListRSSFeedsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListRSSFeedsRequest.decode(value),
+    responseSerialize: (value: ListRSSFeedsReply) => Buffer.from(ListRSSFeedsReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListRSSFeedsReply.decode(value),
   },
   getRssItem: {
     path: "/taggy.RSSService/GetRSSItem",
@@ -1238,15 +1232,14 @@ export const RSSServiceService = {
     responseSerialize: (value: GetRSSItemReply) => Buffer.from(GetRSSItemReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => GetRSSItemReply.decode(value),
   },
-  listRssSourceItems: {
-    path: "/taggy.RSSService/ListRSSSourceItems",
+  listRssFeedItems: {
+    path: "/taggy.RSSService/ListRSSFeedItems",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: ListRSSSourceItemsRequest) =>
-      Buffer.from(ListRSSSourceItemsRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => ListRSSSourceItemsRequest.decode(value),
-    responseSerialize: (value: ListRSSSourceItemsReply) => Buffer.from(ListRSSSourceItemsReply.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => ListRSSSourceItemsReply.decode(value),
+    requestSerialize: (value: ListRSSFeedItemsRequest) => Buffer.from(ListRSSFeedItemsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListRSSFeedItemsRequest.decode(value),
+    responseSerialize: (value: ListRSSFeedItemsReply) => Buffer.from(ListRSSFeedItemsReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListRSSFeedItemsReply.decode(value),
   },
   fetchAllRss: {
     path: "/taggy.RSSService/FetchAllRSS",
@@ -1270,61 +1263,61 @@ export const RSSServiceService = {
 } as const;
 
 export interface RSSServiceServer extends UntypedServiceImplementation {
-  createRssSource: handleUnaryCall<CreateRSSSourceRequest, CreateRSSSourceReply>;
-  getRssSource: handleUnaryCall<GetRSSSourceRequest, GetRSSSourceReply>;
-  listRssSources: handleUnaryCall<ListRSSSourcesRequest, ListRSSSourcesReply>;
+  createRssFeed: handleUnaryCall<CreateRSSFeedRequest, CreateRSSFeedReply>;
+  getRssFeed: handleUnaryCall<GetRSSFeedRequest, GetRSSFeedReply>;
+  listRssFeeds: handleUnaryCall<ListRSSFeedsRequest, ListRSSFeedsReply>;
   getRssItem: handleUnaryCall<GetRSSItemRequest, GetRSSItemReply>;
-  listRssSourceItems: handleUnaryCall<ListRSSSourceItemsRequest, ListRSSSourceItemsReply>;
+  listRssFeedItems: handleUnaryCall<ListRSSFeedItemsRequest, ListRSSFeedItemsReply>;
   fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
   /** To support local test only */
   forceFetchOriginItems: handleUnaryCall<Empty, Empty>;
 }
 
 export interface RSSServiceClient extends Client {
-  createRssSource(
-    request: CreateRSSSourceRequest,
-    callback: (error: ServiceError | null, response: CreateRSSSourceReply) => void,
+  createRssFeed(
+    request: CreateRSSFeedRequest,
+    callback: (error: ServiceError | null, response: CreateRSSFeedReply) => void,
   ): ClientUnaryCall;
-  createRssSource(
-    request: CreateRSSSourceRequest,
+  createRssFeed(
+    request: CreateRSSFeedRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: CreateRSSSourceReply) => void,
+    callback: (error: ServiceError | null, response: CreateRSSFeedReply) => void,
   ): ClientUnaryCall;
-  createRssSource(
-    request: CreateRSSSourceRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: CreateRSSSourceReply) => void,
-  ): ClientUnaryCall;
-  getRssSource(
-    request: GetRSSSourceRequest,
-    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
-  ): ClientUnaryCall;
-  getRssSource(
-    request: GetRSSSourceRequest,
-    metadata: Metadata,
-    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
-  ): ClientUnaryCall;
-  getRssSource(
-    request: GetRSSSourceRequest,
+  createRssFeed(
+    request: CreateRSSFeedRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: GetRSSSourceReply) => void,
+    callback: (error: ServiceError | null, response: CreateRSSFeedReply) => void,
   ): ClientUnaryCall;
-  listRssSources(
-    request: ListRSSSourcesRequest,
-    callback: (error: ServiceError | null, response: ListRSSSourcesReply) => void,
+  getRssFeed(
+    request: GetRSSFeedRequest,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
   ): ClientUnaryCall;
-  listRssSources(
-    request: ListRSSSourcesRequest,
+  getRssFeed(
+    request: GetRSSFeedRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: ListRSSSourcesReply) => void,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
   ): ClientUnaryCall;
-  listRssSources(
-    request: ListRSSSourcesRequest,
+  getRssFeed(
+    request: GetRSSFeedRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: ListRSSSourcesReply) => void,
+    callback: (error: ServiceError | null, response: GetRSSFeedReply) => void,
+  ): ClientUnaryCall;
+  listRssFeeds(
+    request: ListRSSFeedsRequest,
+    callback: (error: ServiceError | null, response: ListRSSFeedsReply) => void,
+  ): ClientUnaryCall;
+  listRssFeeds(
+    request: ListRSSFeedsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListRSSFeedsReply) => void,
+  ): ClientUnaryCall;
+  listRssFeeds(
+    request: ListRSSFeedsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListRSSFeedsReply) => void,
   ): ClientUnaryCall;
   getRssItem(
     request: GetRSSItemRequest,
@@ -1341,20 +1334,20 @@ export interface RSSServiceClient extends Client {
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: GetRSSItemReply) => void,
   ): ClientUnaryCall;
-  listRssSourceItems(
-    request: ListRSSSourceItemsRequest,
-    callback: (error: ServiceError | null, response: ListRSSSourceItemsReply) => void,
+  listRssFeedItems(
+    request: ListRSSFeedItemsRequest,
+    callback: (error: ServiceError | null, response: ListRSSFeedItemsReply) => void,
   ): ClientUnaryCall;
-  listRssSourceItems(
-    request: ListRSSSourceItemsRequest,
+  listRssFeedItems(
+    request: ListRSSFeedItemsRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: ListRSSSourceItemsReply) => void,
+    callback: (error: ServiceError | null, response: ListRSSFeedItemsReply) => void,
   ): ClientUnaryCall;
-  listRssSourceItems(
-    request: ListRSSSourceItemsRequest,
+  listRssFeedItems(
+    request: ListRSSFeedItemsRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: ListRSSSourceItemsReply) => void,
+    callback: (error: ServiceError | null, response: ListRSSFeedItemsReply) => void,
   ): ClientUnaryCall;
   fetchAllRss(
     request: FetchAllRSSRequest,

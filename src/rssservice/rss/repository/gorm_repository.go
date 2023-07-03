@@ -39,7 +39,7 @@ func NewRSSRepository() *RSSRepository {
 	return &RSSRepository{db: db}
 }
 
-func (r *RSSRepository) ListSourceItems(source *rss.Source) ([]*rss.Item, error) {
+func (r *RSSRepository) ListFeedItems(source *rss.Feed) ([]*rss.Item, error) {
 	panic("implement me")
 }
 
@@ -52,6 +52,6 @@ func (r *RSSRepository) GetFeedByGUID(guid string) (*rss.Item, error) {
 	panic("implement me")
 }
 
-func (r *RSSRepository) GetItemsBySourceId(sourceId int) ([]*rss.Item, error) {
+func (r *RSSRepository) GetItemsByFeedId(sourceId int) ([]*rss.Item, error) {
 	panic("implement me")
 }
