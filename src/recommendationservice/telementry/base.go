@@ -2,8 +2,8 @@ package telementry
 
 import (
 	"context"
+	"recommendationservice/log"
 	"sync"
-	"taggingservice/log"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -24,7 +24,7 @@ var initResourcesOnce sync.Once
 
 func Init() {
 	tp = initTracerProvider()
-	tracer = tp.Tracer("taggingservice")
+	tracer = tp.Tracer("recommendationservice")
 }
 
 func Shutdown() {

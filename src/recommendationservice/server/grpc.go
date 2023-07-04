@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"net"
-	pb "taggingservice/genproto/taggy"
-	"taggingservice/log"
-	"taggingservice/tag/service"
-	"taggingservice/util"
+	pb "recommendationservice/genproto/taggy"
+	"recommendationservice/log"
+	"recommendationservice/tag/service"
+	"recommendationservice/util"
 
 	"google.golang.org/grpc"
 )
@@ -20,10 +20,10 @@ func NewGRPCServer() *GRPCServer {
 }
 
 func (g *GRPCServer) Run() error {
-	taggingService := newgrpcTaggingService()
+	taggingService := newgrpcRecommendationService()
 	var port string
 	var err error
-	util.MustMapEnv(&port, "TAGGING_SERVICE_PORT")
+	util.MustMapEnv(&port, "RECOMMENDATION_SERVICE_PORT")
 
 	log.Infof("port: %s", port)
 
@@ -33,27 +33,27 @@ func (g *GRPCServer) Run() error {
 	}
 	var opts []grpc.ServerOption
 	var srv = grpc.NewServer(opts...)
-	pb.RegisterTaggingServiceServer(srv, taggingService)
+	pb.RegisterRecommendationServiceServer(srv, taggingService)
 
 	log.Infof("starting to listen on tcp: %q", lis.Addr().String())
 	return srv.Serve(lis)
 
 }
 
-type grpcTaggingService struct {
-	TaggingService *service.TaggingService
-	pb.UnimplementedTaggingServiceServer
+type grpcRecommendationService struct {
+	RecommendationService *service.RecommendationService
+	pb.UnimplementedRecommendationServiceServer
 }
 
-func newgrpcTaggingService() *grpcTaggingService {
+func newgrpcRecommendationService() *grpcRecommendationService {
 	// repo := repository.NewMongo()
-	return &grpcTaggingService{
+	return &grpcRecommendationService{
 		// RSSService: service.NewRSSService(repo),
 	}
 
 }
 
-func (r *grpcTaggingService) GetRSSItemTags(ctx context.Context, in *pb.GetRSSItemTagsRequest) (*pb.GetRSSItemTagsReply, error) {
+func (r *grpcRecommendationService) GetRSSItemTags(ctx context.Context, in *pb.GetRSSItemTagsRequest) (*pb.GetRSSItemTagsReply, error) {
 	reply := &pb.GetRSSItemTagsReply{}
 	itemId := in.GetItemId()
 	log.Infof("Receive request to get tags for item %s", itemId)

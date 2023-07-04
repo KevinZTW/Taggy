@@ -48,26 +48,26 @@ services:
       kafka:
         condition: service_healthy
 
-  taggingservice:
-    image: ${IMAGE_NAME}:${IMAGE_VERSION}-taggingservice
-    container_name: tagging-service
+  recommendationservice:
+    image: ${IMAGE_NAME}:${IMAGE_VERSION}-recommendationservice
+    container_name: recommendation-service
     build:
       context: ./
-      dockerfile: ./src/taggingservice/Dockerfile
+      dockerfile: ./src/recommendationservice/Dockerfile
       cache_from:
-        - ${IMAGE_NAME}:${IMAGE_VERSION}-taggingservice
+        - ${IMAGE_NAME}:${IMAGE_VERSION}-recommendationservice
     deploy:
       resources:
         limits:
           memory: 20M
     ports:
-      - ${TAGGING_SERVICE_PORT}:${TAGGING_SERVICE_PORT}
+      - ${RECOMMENDATION_SERVICE_PORT}:${RECOMMENDATION_SERVICE_PORT}
     restart: unless-stopped
     environment:
-      - TAGGING_SERVICE_PORT
-      - TAGGING_SERVICE_MONGODB_PORT
-      - TAGGING_SERVICE_MONGODB_ADDR
-      - TAGGING_SERVICE_MONGODB_NAME
+      - RECOMMENDATION_SERVICE_PORT
+      - RECOMMENDATION_SERVICE_MONGODB_PORT
+      - RECOMMENDATION_SERVICE_MONGODB_ADDR
+      - RECOMMENDATION_SERVICE_MONGODB_NAME
       - KAFKA_SERVICE_ADDR
       - OTEL_EXPORTER_OTLP_ENDPOINT
       - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE

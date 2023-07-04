@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"recommendationservice/kafka"
+	"recommendationservice/log"
+	"recommendationservice/server"
+	"recommendationservice/telementry"
+	"recommendationservice/util"
 	"strings"
 	"syscall"
-	"taggingservice/kafka"
-	"taggingservice/log"
-	"taggingservice/server"
-	"taggingservice/telementry"
-	"taggingservice/util"
 
 	_ "github.com/joho/godotenv/autoload"
 )

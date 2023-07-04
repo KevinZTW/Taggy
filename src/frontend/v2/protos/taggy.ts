@@ -1387,10 +1387,10 @@ export const RSSServiceClient = makeGenericClientConstructor(RSSServiceService, 
   service: typeof RSSServiceService;
 };
 
-export type TaggingServiceService = typeof TaggingServiceService;
-export const TaggingServiceService = {
+export type RecommendationServiceService = typeof RecommendationServiceService;
+export const RecommendationServiceService = {
   getRssItemTags: {
-    path: "/taggy.TaggingService/GetRSSItemTags",
+    path: "/taggy.RecommendationService/GetRSSItemTags",
     requestStream: false,
     responseStream: false,
     requestSerialize: (value: GetRSSItemTagsRequest) => Buffer.from(GetRSSItemTagsRequest.encode(value).finish()),
@@ -1400,11 +1400,11 @@ export const TaggingServiceService = {
   },
 } as const;
 
-export interface TaggingServiceServer extends UntypedServiceImplementation {
+export interface RecommendationServiceServer extends UntypedServiceImplementation {
   getRssItemTags: handleUnaryCall<GetRSSItemTagsRequest, GetRSSItemTagsReply>;
 }
 
-export interface TaggingServiceClient extends Client {
+export interface RecommendationServiceClient extends Client {
   getRssItemTags(
     request: GetRSSItemTagsRequest,
     callback: (error: ServiceError | null, response: GetRSSItemTagsReply) => void,
@@ -1422,12 +1422,12 @@ export interface TaggingServiceClient extends Client {
   ): ClientUnaryCall;
 }
 
-export const TaggingServiceClient = makeGenericClientConstructor(
-  TaggingServiceService,
-  "taggy.TaggingService",
+export const RecommendationServiceClient = makeGenericClientConstructor(
+  RecommendationServiceService,
+  "taggy.RecommendationService",
 ) as unknown as {
-  new (address: string, credentials: ChannelCredentials, options?: Partial<ClientOptions>): TaggingServiceClient;
-  service: typeof TaggingServiceService;
+  new (address: string, credentials: ChannelCredentials, options?: Partial<ClientOptions>): RecommendationServiceClient;
+  service: typeof RecommendationServiceService;
 };
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

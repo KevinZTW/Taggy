@@ -33,5 +33,5 @@ gen_proto_ts() {
 }
 
 gen_proto_go rssservice
-gen_proto_go taggingservice
+gen_proto_go recommendationservice
 gen_proto_ts frontend/v2

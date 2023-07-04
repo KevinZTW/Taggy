@@ -6,5 +6,6 @@ type Tag struct {
 }
 
 type TagRepository interface {
-	CreateTag(name string) (Tag, error)
+	CreateTag(name string) (*Tag, error)
+	ListTags() ([]*Tag, error)
 }

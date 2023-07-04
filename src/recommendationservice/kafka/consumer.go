@@ -3,7 +3,7 @@ package kafka
 import (
 	"context"
 	"log"
-	"taggingservice/genproto/taggy"
+	"recommendationservice/genproto/taggy"
 
 	"github.com/Shopify/sarama"
 	"github.com/sirupsen/logrus"
@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	GroupID = "taggingservice"
+	GroupID = "recommendationservice"
 )
 
 func StartConsumerGroup(ctx context.Context, brokers []string, log *logrus.Logger) error {

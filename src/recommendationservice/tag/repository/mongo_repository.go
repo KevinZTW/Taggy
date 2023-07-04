@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"taggingservice/domain"
-	"taggingservice/mongodb"
+	"recommendationservice/domain"
+	"recommendationservice/mongodb"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,7 +23,7 @@ func NewMongo() *MongoRepository {
 	}
 }
 
-func (m *MongoRepository) CreateTag(name string) (domain.Tag, error) {
+func (m *MongoRepository) CreateTag(name string) (*domain.Tag, error) {
 	tag := domain.Tag{
 		ID:   uuid.New().String(),
 		Name: name,
@@ -31,5 +31,5 @@ func (m *MongoRepository) CreateTag(name string) (domain.Tag, error) {
 	if _, err := m.tagCollection.InsertOne(nil, tag); err != nil {
 		return nil, err
 	}
-	return tag, nil
+	return &tag, nil
 }

@@ -89,7 +89,7 @@ message FetchAllRSSReply {
 }
 
 
-service TaggingService {
+service RecommendationService {
   rpc GetRSSItemTags (GetRSSItemTagsRequest) returns (GetRSSItemTagsReply) {}
 }
 
