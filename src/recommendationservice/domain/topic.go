@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 type Topic struct {
 	ID          string `bson:"id"`
 	Name        string `bson:"name"`
@@ -8,6 +10,8 @@ type Topic struct {
 }
 
 type TopicRepository interface {
-	CreateTopic(name, description string) (*Topic, error)
-	ListTopics() ([]*Topic, error)
+	CreateTopic(name, description string, ctx context.Context) (*Topic, error)
+	ListTopics(ctx context.Context) ([]*Topic, error)
+	GetTopicByID(ID string, ctx context.Context) (*Topic, error)
+	UpdateTopicTags(topic *Topic, ctx context.Context) (*Topic, error)
 }

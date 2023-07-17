@@ -37,6 +37,16 @@ func (m *MongoRepository) CreateTopic(name, description string, ctx context.Cont
 	return &topic, nil
 }
 
+func (m *MongoRepository) GetTopicByID(ID string, ctx context.Context) (*domain.Topic, error) {
+	topic := &domain.Topic{}
+
+	if err := m.topicCollection.FindOne(ctx, bson.D{{"id", ID}}).Decode(topic); err != nil {
+		return nil, err
+	} else {
+		return topic, nil
+	}
+}
+
 func (m *MongoRepository) ListTopics(ctx context.Context) ([]*domain.Topic, error) {
 	var topics []*domain.Topic
 	if cur, err := m.topicCollection.Find(ctx, bson.D{}); err != nil {
@@ -46,4 +56,21 @@ func (m *MongoRepository) ListTopics(ctx context.Context) ([]*domain.Topic, erro
 	} else {
 		return topics, nil
 	}
+}
+
+func (m *MongoRepository) UpdateTopicTags(topic *domain.Topic, ctx context.Context) (*domain.Topic, error) {
+	filter := bson.D{{"id", topic.ID}}
+	update := bson.M{
+		"$set": bson.M{
+			"tags": topic.Tags,
+		},
+	}
+	if res, err := m.topicCollection.UpdateOne(ctx, filter, update); err != nil {
+		return nil, err
+	} else if res.MatchedCount != 1 {
+		return nil, ErrTopicEntityAmount
+	} else {
+		return m.GetTopicByID(topic.ID, ctx)
+	}
+
 }

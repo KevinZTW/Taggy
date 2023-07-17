@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"recommendationservice/domain"
 	"recommendationservice/kafka"
 	"recommendationservice/util"
@@ -10,15 +11,15 @@ import (
 	"github.com/Shopify/sarama"
 )
 
-type RecommendationService struct {
+type TagService struct {
 	repository          domain.TagRepository
 	kafkaBrokerSvcAddr  string
 	KafkaProducerClient sarama.AsyncProducer
 }
 
-func NewRecommendationService(repository domain.TagRepository) *RecommendationService {
+func NewTagService(repository domain.TagRepository) *TagService {
 	var err error
-	service := &RecommendationService{
+	service := &TagService{
 		repository: repository,
 	}
 	util.MustMapEnv(&service.kafkaBrokerSvcAddr, "KAFKA_SERVICE_ADDR")
@@ -29,4 +30,8 @@ func NewRecommendationService(repository domain.TagRepository) *RecommendationSe
 		log.Fatal(err)
 	}
 	return service
+}
+
+func (t *TagService) GetTagByID(ID string, ctx context.Context) (*domain.Tag, error) {
+	return t.repository.GetTagByID(ID, ctx)
 }

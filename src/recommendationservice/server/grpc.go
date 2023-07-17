@@ -41,7 +41,7 @@ func (g *GRPCServer) Run() error {
 }
 
 type grpcRecommendationService struct {
-	RecommendationService *service.RecommendationService
+	RecommendationService *service.TagService
 	pb.UnimplementedRecommendationServiceServer
 }
 
