@@ -35,3 +35,7 @@ func NewTagService(repository domain.TagRepository) *TagService {
 func (t *TagService) GetTagByID(ID string, ctx context.Context) (*domain.Tag, error) {
 	return t.repository.GetTagByID(ID, ctx)
 }
+
+func (t *TagService) CreateTag(name string, ctx context.Context) (*domain.Tag, error) {
+	return t.repository.CreateTag(name, ctx)
+}

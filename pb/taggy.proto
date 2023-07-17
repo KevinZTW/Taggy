@@ -99,8 +99,12 @@ message FetchAllRSSReply {
 service RecommendationService {
   rpc GetRSSItemTags (GetRSSItemTagsRequest) returns (GetRSSItemTagsReply) {}
   rpc CreateTopic(CreateTopicRequest) returns (CreateTopicReply){}
-  rpc AddTagToTopic(AddTagToTopicRequest) returns (AddTagToTopicReply){}
   rpc ListTopics (ListTopicsRequest) returns (ListTopicsReply){}
+  rpc AddTagToTopic(AddTagToTopicRequest) returns (AddTagToTopicReply){}
+
+  rpc CreateTag(CreateTagRequest) returns (CreateTagReply){}
+  rpc GetTagByID(GetTagByIDRequest) returns (GetTagByIDReply){}
+  rpc ListTags(ListTagsRequest) returns (ListTagsReply){}
 }
 
 message GetRSSItemTagsRequest {
@@ -113,6 +117,7 @@ message GetRSSItemTagsReply {
 
 message CreateTopicRequest {
   string name = 1;
+  string description = 2;
 }
 
 message CreateTopicReply {
@@ -133,4 +138,25 @@ message ListTopicsRequest {
 
 message ListTopicsReply {
   repeated Topic topics = 1;
+}
+
+message CreateTagRequest {
+  string name = 1;
+}
+message CreateTagReply {
+  Tag tag = 1;
+}
+
+message GetTagByIDRequest {
+  string id = 1;
+}
+
+message GetTagByIDReply {
+  Tag tag = 1;
+}
+
+message ListTagsRequest {}
+
+message ListTagsReply {
+  repeated Tag tags = 1;
 }

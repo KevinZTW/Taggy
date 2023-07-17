@@ -4,6 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"recommendationservice/domain"
+	"recommendationservice/log"
 	"recommendationservice/mongodb"
 
 	"github.com/google/uuid"
@@ -25,7 +26,9 @@ func NewMongo() *MongoRepository {
 	}
 }
 
-func (m *MongoRepository) CreateTag(name string) (*domain.Tag, error) {
+func (m *MongoRepository) CreateTag(name string, ctx context.Context) (*domain.Tag, error) {
+	log.Infof("Create Tag")
+
 	tag := domain.Tag{
 		ID:   uuid.New().String(),
 		Name: name,
@@ -33,6 +36,7 @@ func (m *MongoRepository) CreateTag(name string) (*domain.Tag, error) {
 	if _, err := m.tagCollection.InsertOne(nil, tag); err != nil {
 		return nil, err
 	}
+	log.Infof("Finish")
 	return &tag, nil
 }
 

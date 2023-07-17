@@ -8,8 +8,8 @@ type Tag struct {
 }
 
 type TagRepository interface {
-	CreateTag(name string) (*Tag, error)
-	ListTags() ([]*Tag, error)
+	CreateTag(name string, ctx context.Context) (*Tag, error)
+	ListTags(ctx context.Context) ([]*Tag, error)
 	GetTagByID(ID string, ctx context.Context) (*Tag, error)
-	GetTagByName(name string) (*Tag, error)
+	GetTagByName(name string, ctx context.Context) (*Tag, error)
 }

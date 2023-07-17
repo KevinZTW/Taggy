@@ -3,10 +3,16 @@ package server
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"net"
 	pb "recommendationservice/genproto/taggy"
 	"recommendationservice/log"
-	"recommendationservice/tag/service"
+	tagservice "recommendationservice/tag/service"
+	topicservice "recommendationservice/topic/service"
+
+	tagrepository "recommendationservice/tag/repository"
+	topicrepository "recommendationservice/topic/repository"
 	"recommendationservice/util"
 
 	"google.golang.org/grpc"
@@ -41,16 +47,19 @@ func (g *GRPCServer) Run() error {
 }
 
 type grpcRecommendationService struct {
-	RecommendationService *service.TagService
+	TagService   *tagservice.TagService
+	TopicService *topicservice.TopicService
 	pb.UnimplementedRecommendationServiceServer
 }
 
 func newgrpcRecommendationService() *grpcRecommendationService {
-	// repo := repository.NewMongo()
-	return &grpcRecommendationService{
-		// RSSService: service.NewRSSService(repo),
-	}
+	tagSrv := tagservice.NewTagService(tagrepository.NewMongo())
+	topicSrc := topicservice.NewTopicService(topicrepository.NewMongo(), tagSrv)
 
+	return &grpcRecommendationService{
+		TagService:   tagSrv,
+		TopicService: topicSrc,
+	}
 }
 
 func (r *grpcRecommendationService) GetRSSItemTags(ctx context.Context, in *pb.GetRSSItemTagsRequest) (*pb.GetRSSItemTagsReply, error) {
@@ -79,4 +88,52 @@ func (r *grpcRecommendationService) GetRSSItemTags(ctx context.Context, in *pb.G
 	//	reply.Message = "success"
 	//	return reply, err
 	//}
+}
+
+func (r *grpcRecommendationService) CreateTag(ctx context.Context, in *pb.CreateTagRequest) (*pb.CreateTagReply, error) {
+	if tag, err := r.TagService.CreateTag(in.GetName(), ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		res := &pb.CreateTagReply{
+			Tag: &pb.Tag{
+				Id:   tag.ID,
+				Name: tag.Name,
+			},
+		}
+		return res, nil
+	}
+}
+
+func (r *grpcRecommendationService) GetTagByID(ctx context.Context, in *pb.GetTagByIDRequest) (*pb.GetTagByIDReply, error) {
+	if tag, err := r.TagService.GetTagByID(in.GetId(), ctx); err != nil {
+		return nil, status.Errorf(codes.NotFound, err.Error())
+	} else {
+		res := &pb.GetTagByIDReply{
+			Tag: &pb.Tag{
+				Id:   tag.ID,
+				Name: tag.Name,
+			},
+		}
+		return res, nil
+	}
+}
+
+func (r *grpcRecommendationService) ListTags(ctx context.Context, in *pb.ListTagsRequest) (*pb.ListTagsReply, error) {
+	//TODO :implement
+	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+}
+
+func (r *grpcRecommendationService) CreateTopic(ctx context.Context, in *pb.CreateTopicRequest) (*pb.CreateTopicReply, error) {
+	//TODO :implement
+	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+}
+
+func (r *grpcRecommendationService) AddTagToTopic(ctx context.Context, in *pb.AddTagToTopicRequest) (*pb.AddTagToTopicReply, error) {
+	//TODO :implement
+	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+}
+
+func (r *grpcRecommendationService) ListTopics(ctx context.Context, in *pb.ListTopicsRequest) (*pb.ListTopicsReply, error) {
+	//TODO :implement
+	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
 }

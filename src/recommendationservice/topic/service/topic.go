@@ -10,10 +10,10 @@ import (
 
 type TopicService struct {
 	repository domain.TopicRepository
-	tagService tagservice.TagService
+	tagService *tagservice.TagService
 }
 
-func NewTopicService(repository domain.TopicRepository, tagService tagservice.TagService) *TopicService {
+func NewTopicService(repository domain.TopicRepository, tagService *tagservice.TagService) *TopicService {
 	var err error
 	service := &TopicService{
 		repository: repository,

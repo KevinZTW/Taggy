@@ -22,6 +22,13 @@ export interface Tag {
   name: string;
 }
 
+export interface Topic {
+  id: string;
+  name: string;
+  description: string;
+  tags: Tag[];
+}
+
 export interface RSSFeed {
   id: string;
   name: string;
@@ -95,6 +102,54 @@ export interface GetRSSItemTagsReply {
   tags: Tag[];
 }
 
+export interface CreateTopicRequest {
+  name: string;
+  description: string;
+}
+
+export interface CreateTopicReply {
+  message: string;
+}
+
+export interface AddTagToTopicRequest {
+  topicId: string;
+  tagName: string;
+}
+
+export interface AddTagToTopicReply {
+  message: string;
+}
+
+export interface ListTopicsRequest {
+}
+
+export interface ListTopicsReply {
+  topics: Topic[];
+}
+
+export interface CreateTagRequest {
+  name: string;
+}
+
+export interface CreateTagReply {
+  tag: Tag | undefined;
+}
+
+export interface GetTagByIDRequest {
+  id: string;
+}
+
+export interface GetTagByIDReply {
+  tag: Tag | undefined;
+}
+
+export interface ListTagsRequest {
+}
+
+export interface ListTagsReply {
+  tags: Tag[];
+}
+
 function createBaseTag(): Tag {
   return { id: "", name: "" };
 }
@@ -159,6 +214,107 @@ export const Tag = {
     const message = createBaseTag();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseTopic(): Topic {
+  return { id: "", name: "", description: "", tags: [] };
+}
+
+export const Topic = {
+  encode(message: Topic, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    for (const v of message.tags) {
+      Tag.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Topic {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTopic();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.tags.push(Tag.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Topic {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      tags: Array.isArray(object?.tags) ? object.tags.map((e: any) => Tag.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: Topic): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined && (obj.description = message.description);
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => e ? Tag.toJSON(e) : undefined);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Topic>, I>>(base?: I): Topic {
+    return Topic.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Topic>, I>>(object: I): Topic {
+    const message = createBaseTopic();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1194,6 +1350,692 @@ export const GetRSSItemTagsReply = {
   },
 };
 
+function createBaseCreateTopicRequest(): CreateTopicRequest {
+  return { name: "", description: "" };
+}
+
+export const CreateTopicRequest = {
+  encode(message: CreateTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateTopicRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateTopicRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateTopicRequest {
+    return {
+      name: isSet(object.name) ? String(object.name) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+    };
+  },
+
+  toJSON(message: CreateTopicRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined && (obj.description = message.description);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTopicRequest>, I>>(base?: I): CreateTopicRequest {
+    return CreateTopicRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateTopicRequest>, I>>(object: I): CreateTopicRequest {
+    const message = createBaseCreateTopicRequest();
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateTopicReply(): CreateTopicReply {
+  return { message: "" };
+}
+
+export const CreateTopicReply = {
+  encode(message: CreateTopicReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateTopicReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateTopicReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateTopicReply {
+    return { message: isSet(object.message) ? String(object.message) : "" };
+  },
+
+  toJSON(message: CreateTopicReply): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTopicReply>, I>>(base?: I): CreateTopicReply {
+    return CreateTopicReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateTopicReply>, I>>(object: I): CreateTopicReply {
+    const message = createBaseCreateTopicReply();
+    message.message = object.message ?? "";
+    return message;
+  },
+};
+
+function createBaseAddTagToTopicRequest(): AddTagToTopicRequest {
+  return { topicId: "", tagName: "" };
+}
+
+export const AddTagToTopicRequest = {
+  encode(message: AddTagToTopicRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.topicId !== "") {
+      writer.uint32(10).string(message.topicId);
+    }
+    if (message.tagName !== "") {
+      writer.uint32(18).string(message.tagName);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AddTagToTopicRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddTagToTopicRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.topicId = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.tagName = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddTagToTopicRequest {
+    return {
+      topicId: isSet(object.topicId) ? String(object.topicId) : "",
+      tagName: isSet(object.tagName) ? String(object.tagName) : "",
+    };
+  },
+
+  toJSON(message: AddTagToTopicRequest): unknown {
+    const obj: any = {};
+    message.topicId !== undefined && (obj.topicId = message.topicId);
+    message.tagName !== undefined && (obj.tagName = message.tagName);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddTagToTopicRequest>, I>>(base?: I): AddTagToTopicRequest {
+    return AddTagToTopicRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddTagToTopicRequest>, I>>(object: I): AddTagToTopicRequest {
+    const message = createBaseAddTagToTopicRequest();
+    message.topicId = object.topicId ?? "";
+    message.tagName = object.tagName ?? "";
+    return message;
+  },
+};
+
+function createBaseAddTagToTopicReply(): AddTagToTopicReply {
+  return { message: "" };
+}
+
+export const AddTagToTopicReply = {
+  encode(message: AddTagToTopicReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== "") {
+      writer.uint32(10).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AddTagToTopicReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddTagToTopicReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddTagToTopicReply {
+    return { message: isSet(object.message) ? String(object.message) : "" };
+  },
+
+  toJSON(message: AddTagToTopicReply): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AddTagToTopicReply>, I>>(base?: I): AddTagToTopicReply {
+    return AddTagToTopicReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AddTagToTopicReply>, I>>(object: I): AddTagToTopicReply {
+    const message = createBaseAddTagToTopicReply();
+    message.message = object.message ?? "";
+    return message;
+  },
+};
+
+function createBaseListTopicsRequest(): ListTopicsRequest {
+  return {};
+}
+
+export const ListTopicsRequest = {
+  encode(_: ListTopicsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListTopicsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTopicsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ListTopicsRequest {
+    return {};
+  },
+
+  toJSON(_: ListTopicsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTopicsRequest>, I>>(base?: I): ListTopicsRequest {
+    return ListTopicsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListTopicsRequest>, I>>(_: I): ListTopicsRequest {
+    const message = createBaseListTopicsRequest();
+    return message;
+  },
+};
+
+function createBaseListTopicsReply(): ListTopicsReply {
+  return { topics: [] };
+}
+
+export const ListTopicsReply = {
+  encode(message: ListTopicsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.topics) {
+      Topic.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListTopicsReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTopicsReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.topics.push(Topic.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListTopicsReply {
+    return { topics: Array.isArray(object?.topics) ? object.topics.map((e: any) => Topic.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListTopicsReply): unknown {
+    const obj: any = {};
+    if (message.topics) {
+      obj.topics = message.topics.map((e) => e ? Topic.toJSON(e) : undefined);
+    } else {
+      obj.topics = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTopicsReply>, I>>(base?: I): ListTopicsReply {
+    return ListTopicsReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListTopicsReply>, I>>(object: I): ListTopicsReply {
+    const message = createBaseListTopicsReply();
+    message.topics = object.topics?.map((e) => Topic.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCreateTagRequest(): CreateTagRequest {
+  return { name: "" };
+}
+
+export const CreateTagRequest = {
+  encode(message: CreateTagRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateTagRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateTagRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateTagRequest {
+    return { name: isSet(object.name) ? String(object.name) : "" };
+  },
+
+  toJSON(message: CreateTagRequest): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTagRequest>, I>>(base?: I): CreateTagRequest {
+    return CreateTagRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateTagRequest>, I>>(object: I): CreateTagRequest {
+    const message = createBaseCreateTagRequest();
+    message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateTagReply(): CreateTagReply {
+  return { tag: undefined };
+}
+
+export const CreateTagReply = {
+  encode(message: CreateTagReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tag !== undefined) {
+      Tag.encode(message.tag, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateTagReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateTagReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tag = Tag.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateTagReply {
+    return { tag: isSet(object.tag) ? Tag.fromJSON(object.tag) : undefined };
+  },
+
+  toJSON(message: CreateTagReply): unknown {
+    const obj: any = {};
+    message.tag !== undefined && (obj.tag = message.tag ? Tag.toJSON(message.tag) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTagReply>, I>>(base?: I): CreateTagReply {
+    return CreateTagReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateTagReply>, I>>(object: I): CreateTagReply {
+    const message = createBaseCreateTagReply();
+    message.tag = (object.tag !== undefined && object.tag !== null) ? Tag.fromPartial(object.tag) : undefined;
+    return message;
+  },
+};
+
+function createBaseGetTagByIDRequest(): GetTagByIDRequest {
+  return { id: "" };
+}
+
+export const GetTagByIDRequest = {
+  encode(message: GetTagByIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTagByIDRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTagByIDRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTagByIDRequest {
+    return { id: isSet(object.id) ? String(object.id) : "" };
+  },
+
+  toJSON(message: GetTagByIDRequest): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTagByIDRequest>, I>>(base?: I): GetTagByIDRequest {
+    return GetTagByIDRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTagByIDRequest>, I>>(object: I): GetTagByIDRequest {
+    const message = createBaseGetTagByIDRequest();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseGetTagByIDReply(): GetTagByIDReply {
+  return { tag: undefined };
+}
+
+export const GetTagByIDReply = {
+  encode(message: GetTagByIDReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tag !== undefined) {
+      Tag.encode(message.tag, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetTagByIDReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTagByIDReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tag = Tag.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTagByIDReply {
+    return { tag: isSet(object.tag) ? Tag.fromJSON(object.tag) : undefined };
+  },
+
+  toJSON(message: GetTagByIDReply): unknown {
+    const obj: any = {};
+    message.tag !== undefined && (obj.tag = message.tag ? Tag.toJSON(message.tag) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTagByIDReply>, I>>(base?: I): GetTagByIDReply {
+    return GetTagByIDReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetTagByIDReply>, I>>(object: I): GetTagByIDReply {
+    const message = createBaseGetTagByIDReply();
+    message.tag = (object.tag !== undefined && object.tag !== null) ? Tag.fromPartial(object.tag) : undefined;
+    return message;
+  },
+};
+
+function createBaseListTagsRequest(): ListTagsRequest {
+  return {};
+}
+
+export const ListTagsRequest = {
+  encode(_: ListTagsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListTagsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTagsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ListTagsRequest {
+    return {};
+  },
+
+  toJSON(_: ListTagsRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTagsRequest>, I>>(base?: I): ListTagsRequest {
+    return ListTagsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListTagsRequest>, I>>(_: I): ListTagsRequest {
+    const message = createBaseListTagsRequest();
+    return message;
+  },
+};
+
+function createBaseListTagsReply(): ListTagsReply {
+  return { tags: [] };
+}
+
+export const ListTagsReply = {
+  encode(message: ListTagsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.tags) {
+      Tag.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListTagsReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListTagsReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.tags.push(Tag.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListTagsReply {
+    return { tags: Array.isArray(object?.tags) ? object.tags.map((e: any) => Tag.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListTagsReply): unknown {
+    const obj: any = {};
+    if (message.tags) {
+      obj.tags = message.tags.map((e) => e ? Tag.toJSON(e) : undefined);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTagsReply>, I>>(base?: I): ListTagsReply {
+    return ListTagsReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListTagsReply>, I>>(object: I): ListTagsReply {
+    const message = createBaseListTagsReply();
+    message.tags = object.tags?.map((e) => Tag.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 export type RSSServiceService = typeof RSSServiceService;
 export const RSSServiceService = {
   createRssFeed: {
@@ -1398,10 +2240,70 @@ export const RecommendationServiceService = {
     responseSerialize: (value: GetRSSItemTagsReply) => Buffer.from(GetRSSItemTagsReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => GetRSSItemTagsReply.decode(value),
   },
+  createTopic: {
+    path: "/taggy.RecommendationService/CreateTopic",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: CreateTopicRequest) => Buffer.from(CreateTopicRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => CreateTopicRequest.decode(value),
+    responseSerialize: (value: CreateTopicReply) => Buffer.from(CreateTopicReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => CreateTopicReply.decode(value),
+  },
+  listTopics: {
+    path: "/taggy.RecommendationService/ListTopics",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListTopicsRequest) => Buffer.from(ListTopicsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListTopicsRequest.decode(value),
+    responseSerialize: (value: ListTopicsReply) => Buffer.from(ListTopicsReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListTopicsReply.decode(value),
+  },
+  addTagToTopic: {
+    path: "/taggy.RecommendationService/AddTagToTopic",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: AddTagToTopicRequest) => Buffer.from(AddTagToTopicRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => AddTagToTopicRequest.decode(value),
+    responseSerialize: (value: AddTagToTopicReply) => Buffer.from(AddTagToTopicReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => AddTagToTopicReply.decode(value),
+  },
+  createTag: {
+    path: "/taggy.RecommendationService/CreateTag",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: CreateTagRequest) => Buffer.from(CreateTagRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => CreateTagRequest.decode(value),
+    responseSerialize: (value: CreateTagReply) => Buffer.from(CreateTagReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => CreateTagReply.decode(value),
+  },
+  getTagById: {
+    path: "/taggy.RecommendationService/GetTagByID",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetTagByIDRequest) => Buffer.from(GetTagByIDRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetTagByIDRequest.decode(value),
+    responseSerialize: (value: GetTagByIDReply) => Buffer.from(GetTagByIDReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetTagByIDReply.decode(value),
+  },
+  listTags: {
+    path: "/taggy.RecommendationService/ListTags",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListTagsRequest) => Buffer.from(ListTagsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListTagsRequest.decode(value),
+    responseSerialize: (value: ListTagsReply) => Buffer.from(ListTagsReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListTagsReply.decode(value),
+  },
 } as const;
 
 export interface RecommendationServiceServer extends UntypedServiceImplementation {
   getRssItemTags: handleUnaryCall<GetRSSItemTagsRequest, GetRSSItemTagsReply>;
+  createTopic: handleUnaryCall<CreateTopicRequest, CreateTopicReply>;
+  listTopics: handleUnaryCall<ListTopicsRequest, ListTopicsReply>;
+  addTagToTopic: handleUnaryCall<AddTagToTopicRequest, AddTagToTopicReply>;
+  createTag: handleUnaryCall<CreateTagRequest, CreateTagReply>;
+  getTagById: handleUnaryCall<GetTagByIDRequest, GetTagByIDReply>;
+  listTags: handleUnaryCall<ListTagsRequest, ListTagsReply>;
 }
 
 export interface RecommendationServiceClient extends Client {
@@ -1419,6 +2321,96 @@ export interface RecommendationServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: GetRSSItemTagsReply) => void,
+  ): ClientUnaryCall;
+  createTopic(
+    request: CreateTopicRequest,
+    callback: (error: ServiceError | null, response: CreateTopicReply) => void,
+  ): ClientUnaryCall;
+  createTopic(
+    request: CreateTopicRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: CreateTopicReply) => void,
+  ): ClientUnaryCall;
+  createTopic(
+    request: CreateTopicRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: CreateTopicReply) => void,
+  ): ClientUnaryCall;
+  listTopics(
+    request: ListTopicsRequest,
+    callback: (error: ServiceError | null, response: ListTopicsReply) => void,
+  ): ClientUnaryCall;
+  listTopics(
+    request: ListTopicsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListTopicsReply) => void,
+  ): ClientUnaryCall;
+  listTopics(
+    request: ListTopicsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListTopicsReply) => void,
+  ): ClientUnaryCall;
+  addTagToTopic(
+    request: AddTagToTopicRequest,
+    callback: (error: ServiceError | null, response: AddTagToTopicReply) => void,
+  ): ClientUnaryCall;
+  addTagToTopic(
+    request: AddTagToTopicRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: AddTagToTopicReply) => void,
+  ): ClientUnaryCall;
+  addTagToTopic(
+    request: AddTagToTopicRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: AddTagToTopicReply) => void,
+  ): ClientUnaryCall;
+  createTag(
+    request: CreateTagRequest,
+    callback: (error: ServiceError | null, response: CreateTagReply) => void,
+  ): ClientUnaryCall;
+  createTag(
+    request: CreateTagRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: CreateTagReply) => void,
+  ): ClientUnaryCall;
+  createTag(
+    request: CreateTagRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: CreateTagReply) => void,
+  ): ClientUnaryCall;
+  getTagById(
+    request: GetTagByIDRequest,
+    callback: (error: ServiceError | null, response: GetTagByIDReply) => void,
+  ): ClientUnaryCall;
+  getTagById(
+    request: GetTagByIDRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetTagByIDReply) => void,
+  ): ClientUnaryCall;
+  getTagById(
+    request: GetTagByIDRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetTagByIDReply) => void,
+  ): ClientUnaryCall;
+  listTags(
+    request: ListTagsRequest,
+    callback: (error: ServiceError | null, response: ListTagsReply) => void,
+  ): ClientUnaryCall;
+  listTags(
+    request: ListTagsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListTagsReply) => void,
+  ): ClientUnaryCall;
+  listTags(
+    request: ListTagsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListTagsReply) => void,
   ): ClientUnaryCall;
 }
 
