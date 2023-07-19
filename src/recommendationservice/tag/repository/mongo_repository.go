@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/bson"
 	"recommendationservice/domain"
-	"recommendationservice/log"
 	"recommendationservice/mongodb"
+
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -26,17 +26,15 @@ func NewMongo() *MongoRepository {
 	}
 }
 
-func (m *MongoRepository) CreateTag(name string, ctx context.Context) (*domain.Tag, error) {
-	log.Infof("Create Tag")
-
+func (m *MongoRepository) CreateTag(name, normalizedName string, ctx context.Context) (*domain.Tag, error) {
 	tag := domain.Tag{
-		ID:   uuid.New().String(),
-		Name: name,
+		ID:             uuid.New().String(),
+		Name:           name,
+		NormalizedName: normalizedName,
 	}
 	if _, err := m.tagCollection.InsertOne(nil, tag); err != nil {
 		return nil, err
 	}
-	log.Infof("Finish")
 	return &tag, nil
 }
 
@@ -63,10 +61,10 @@ func (m *MongoRepository) ListTags(ctx context.Context) ([]*domain.Tag, error) {
 	}
 }
 
-func (m *MongoRepository) GetTagByName(name string, ctx context.Context) (*domain.Tag, error) {
+func (m *MongoRepository) GetTagByNormalizedName(name string, ctx context.Context) (*domain.Tag, error) {
 	tag := &domain.Tag{}
 
-	cur := m.tagCollection.FindOne(ctx, bson.D{{"name", name}})
+	cur := m.tagCollection.FindOne(ctx, bson.D{{"normalized_name", name}})
 
 	if err := cur.Decode(tag); err != nil {
 		return nil, err

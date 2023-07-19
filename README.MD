@@ -2,17 +2,9 @@
 
 A RSS reader and web clipper helping users to explore and manage software articles on the internet
 
-🚧 This project is now under refactoring, several features might be down during the process 🚧
+🚧 This project is now under refactoring and the service is down 🚧
 - [Home Page](https://knowledge-base-tw.web.app/signin) (Limited feature)
 - [Chrome Extension](https://chrome.google.com/webstore/detail/taggy/djgfbkpjhnmnafpmngdfiaoidmfoolcj?hl=zh-TW) (Service down)
-
-## Test User
-
-Some function might be influenced from time to time since refactoring is on going
-
-- Email: user@gmail.com
-- Password: 123123
-- For extension usage, please refresh webpage after installing the extension
 
 ## Technologies :
 
@@ -33,7 +25,6 @@ Some function might be influenced from time to time since refactoring is on goin
 - HTML / CSS Modules / JavaScript (ES6)
 
 ## Development
-- copy the env
 - install protoc and go plugins, reference from grpc [quick start](https://grpc.io/docs/languages/go/quickstart/)
 ```shell
 $ apt install -y protobuf-compiler

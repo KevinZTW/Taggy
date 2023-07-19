@@ -2,11 +2,14 @@ package service
 
 import (
 	"context"
+	"errors"
 	"recommendationservice/domain"
 	"recommendationservice/kafka"
-	"recommendationservice/util"
-
 	"recommendationservice/log"
+	"recommendationservice/util"
+	"strings"
+
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/Shopify/sarama"
 )
@@ -33,9 +36,33 @@ func NewTagService(repository domain.TagRepository) *TagService {
 }
 
 func (t *TagService) GetTagByID(ID string, ctx context.Context) (*domain.Tag, error) {
-	return t.repository.GetTagByID(ID, ctx)
+	if tag, err := t.repository.GetTagByID(ID, ctx); err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, ErrTagNotFound
+		}
+		return nil, err
+	} else {
+		return tag, nil
+	}
+}
+
+// ListTags
+func (t *TagService) ListTags(ctx context.Context) ([]*domain.Tag, error) {
+	return t.repository.ListTags(ctx)
 }
 
 func (t *TagService) CreateTag(name string, ctx context.Context) (*domain.Tag, error) {
-	return t.repository.CreateTag(name, ctx)
+
+	normalizedName := normalizeName(name)
+	if tag, _ := t.repository.GetTagByNormalizedName(normalizedName, ctx); tag != nil {
+		return nil, ErrTagAlreadyExists
+	}
+
+	return t.repository.CreateTag(name, normalizedName, ctx)
+}
+
+func normalizeName(name string) string {
+	name = strings.TrimSpace(strings.ToLower(name))
+	name = strings.Join(strings.Fields(name), " ")
+	return name
 }

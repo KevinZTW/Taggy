@@ -108,16 +108,16 @@ export interface CreateTopicRequest {
 }
 
 export interface CreateTopicReply {
-  message: string;
+  topic: Topic | undefined;
 }
 
 export interface AddTagToTopicRequest {
   topicId: string;
-  tagName: string;
+  tagId: string;
 }
 
 export interface AddTagToTopicReply {
-  message: string;
+  topic: Topic | undefined;
 }
 
 export interface ListTopicsRequest {
@@ -1422,13 +1422,13 @@ export const CreateTopicRequest = {
 };
 
 function createBaseCreateTopicReply(): CreateTopicReply {
-  return { message: "" };
+  return { topic: undefined };
 }
 
 export const CreateTopicReply = {
   encode(message: CreateTopicReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.message !== "") {
-      writer.uint32(10).string(message.message);
+    if (message.topic !== undefined) {
+      Topic.encode(message.topic, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1445,7 +1445,7 @@ export const CreateTopicReply = {
             break;
           }
 
-          message.message = reader.string();
+          message.topic = Topic.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1457,12 +1457,12 @@ export const CreateTopicReply = {
   },
 
   fromJSON(object: any): CreateTopicReply {
-    return { message: isSet(object.message) ? String(object.message) : "" };
+    return { topic: isSet(object.topic) ? Topic.fromJSON(object.topic) : undefined };
   },
 
   toJSON(message: CreateTopicReply): unknown {
     const obj: any = {};
-    message.message !== undefined && (obj.message = message.message);
+    message.topic !== undefined && (obj.topic = message.topic ? Topic.toJSON(message.topic) : undefined);
     return obj;
   },
 
@@ -1472,13 +1472,13 @@ export const CreateTopicReply = {
 
   fromPartial<I extends Exact<DeepPartial<CreateTopicReply>, I>>(object: I): CreateTopicReply {
     const message = createBaseCreateTopicReply();
-    message.message = object.message ?? "";
+    message.topic = (object.topic !== undefined && object.topic !== null) ? Topic.fromPartial(object.topic) : undefined;
     return message;
   },
 };
 
 function createBaseAddTagToTopicRequest(): AddTagToTopicRequest {
-  return { topicId: "", tagName: "" };
+  return { topicId: "", tagId: "" };
 }
 
 export const AddTagToTopicRequest = {
@@ -1486,8 +1486,8 @@ export const AddTagToTopicRequest = {
     if (message.topicId !== "") {
       writer.uint32(10).string(message.topicId);
     }
-    if (message.tagName !== "") {
-      writer.uint32(18).string(message.tagName);
+    if (message.tagId !== "") {
+      writer.uint32(18).string(message.tagId);
     }
     return writer;
   },
@@ -1511,7 +1511,7 @@ export const AddTagToTopicRequest = {
             break;
           }
 
-          message.tagName = reader.string();
+          message.tagId = reader.string();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1525,14 +1525,14 @@ export const AddTagToTopicRequest = {
   fromJSON(object: any): AddTagToTopicRequest {
     return {
       topicId: isSet(object.topicId) ? String(object.topicId) : "",
-      tagName: isSet(object.tagName) ? String(object.tagName) : "",
+      tagId: isSet(object.tagId) ? String(object.tagId) : "",
     };
   },
 
   toJSON(message: AddTagToTopicRequest): unknown {
     const obj: any = {};
     message.topicId !== undefined && (obj.topicId = message.topicId);
-    message.tagName !== undefined && (obj.tagName = message.tagName);
+    message.tagId !== undefined && (obj.tagId = message.tagId);
     return obj;
   },
 
@@ -1543,19 +1543,19 @@ export const AddTagToTopicRequest = {
   fromPartial<I extends Exact<DeepPartial<AddTagToTopicRequest>, I>>(object: I): AddTagToTopicRequest {
     const message = createBaseAddTagToTopicRequest();
     message.topicId = object.topicId ?? "";
-    message.tagName = object.tagName ?? "";
+    message.tagId = object.tagId ?? "";
     return message;
   },
 };
 
 function createBaseAddTagToTopicReply(): AddTagToTopicReply {
-  return { message: "" };
+  return { topic: undefined };
 }
 
 export const AddTagToTopicReply = {
   encode(message: AddTagToTopicReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.message !== "") {
-      writer.uint32(10).string(message.message);
+    if (message.topic !== undefined) {
+      Topic.encode(message.topic, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1572,7 +1572,7 @@ export const AddTagToTopicReply = {
             break;
           }
 
-          message.message = reader.string();
+          message.topic = Topic.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -1584,12 +1584,12 @@ export const AddTagToTopicReply = {
   },
 
   fromJSON(object: any): AddTagToTopicReply {
-    return { message: isSet(object.message) ? String(object.message) : "" };
+    return { topic: isSet(object.topic) ? Topic.fromJSON(object.topic) : undefined };
   },
 
   toJSON(message: AddTagToTopicReply): unknown {
     const obj: any = {};
-    message.message !== undefined && (obj.message = message.message);
+    message.topic !== undefined && (obj.topic = message.topic ? Topic.toJSON(message.topic) : undefined);
     return obj;
   },
 
@@ -1599,7 +1599,7 @@ export const AddTagToTopicReply = {
 
   fromPartial<I extends Exact<DeepPartial<AddTagToTopicReply>, I>>(object: I): AddTagToTopicReply {
     const message = createBaseAddTagToTopicReply();
-    message.message = object.message ?? "";
+    message.topic = (object.topic !== undefined && object.topic !== null) ? Topic.fromPartial(object.topic) : undefined;
     return message;
   },
 };

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 	"recommendationservice/domain"
 	"recommendationservice/log"
 	tagservice "recommendationservice/tag/service"
@@ -39,10 +38,9 @@ func (t *TopicService) ListTopics(ctx context.Context) ([]*domain.Topic, error) 
 
 func (t *TopicService) AddTagToTopic(tagID string, topicID string, ctx context.Context) (*domain.Topic, error) {
 	if tag, err := t.tagService.GetTagByID(tagID, ctx); err != nil {
-		// TODO: create a error variable for this
-		return nil, errors.New("tag not found")
-	} else if topic, err := t.GetTopicByID(topicID, ctx); err != nil {
 		return nil, err
+	} else if topic, err := t.GetTopicByID(topicID, ctx); err != nil {
+		return nil, ErrTopicNotFound
 	} else {
 		for _, tag := range topic.Tags {
 			if tag.ID == tagID {

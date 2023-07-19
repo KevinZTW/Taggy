@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/bson"
 	"recommendationservice/domain"
 	"recommendationservice/mongodb"
+
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -43,6 +44,7 @@ func (m *MongoRepository) GetTopicByID(ID string, ctx context.Context) (*domain.
 	if err := m.topicCollection.FindOne(ctx, bson.D{{"id", ID}}).Decode(topic); err != nil {
 		return nil, err
 	} else {
+
 		return topic, nil
 	}
 }

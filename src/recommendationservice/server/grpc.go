@@ -2,14 +2,16 @@ package server
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"net"
 	pb "recommendationservice/genproto/taggy"
 	"recommendationservice/log"
 	tagservice "recommendationservice/tag/service"
 	topicservice "recommendationservice/topic/service"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	tagrepository "recommendationservice/tag/repository"
 	topicrepository "recommendationservice/topic/repository"
@@ -90,6 +92,7 @@ func (r *grpcRecommendationService) GetRSSItemTags(ctx context.Context, in *pb.G
 	//}
 }
 
+// TODO: admin level authorization check
 func (r *grpcRecommendationService) CreateTag(ctx context.Context, in *pb.CreateTagRequest) (*pb.CreateTagReply, error) {
 	if tag, err := r.TagService.CreateTag(in.GetName(), ctx); err != nil {
 		return nil, status.Errorf(codes.Internal, err.Error())
@@ -119,21 +122,83 @@ func (r *grpcRecommendationService) GetTagByID(ctx context.Context, in *pb.GetTa
 }
 
 func (r *grpcRecommendationService) ListTags(ctx context.Context, in *pb.ListTagsRequest) (*pb.ListTagsReply, error) {
-	//TODO :implement
-	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+	if tags, err := r.TagService.ListTags(ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		res := &pb.ListTagsReply{}
+		for _, tag := range tags {
+			res.Tags = append(res.Tags, &pb.Tag{
+				Id:   tag.ID,
+				Name: tag.Name,
+			})
+		}
+		return res, nil
+	}
 }
 
+// TODO: admin level authorization check
 func (r *grpcRecommendationService) CreateTopic(ctx context.Context, in *pb.CreateTopicRequest) (*pb.CreateTopicReply, error) {
-	//TODO :implement
-	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+	if topic, err := r.TopicService.CreateTopic(in.GetName(), in.GetDescription(), ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		res := &pb.CreateTopicReply{
+			Topic: &pb.Topic{
+				Id:          topic.ID,
+				Name:        topic.Name,
+				Description: topic.Description,
+			},
+		}
+		return res, nil
+	}
 }
 
+// TODO: admin level authorization check
 func (r *grpcRecommendationService) AddTagToTopic(ctx context.Context, in *pb.AddTagToTopicRequest) (*pb.AddTagToTopicReply, error) {
-	//TODO :implement
-	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+	if topic, err := r.TopicService.AddTagToTopic(in.GetTagId(), in.GetTopicId(), ctx); err != nil {
+
+		if errors.Is(err, tagservice.ErrTagNotFound) || errors.Is(err, topicservice.ErrTopicNotFound) {
+			return nil, status.Errorf(codes.NotFound, err.Error())
+		}
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		res := &pb.AddTagToTopicReply{
+			Topic: &pb.Topic{
+				Id:          topic.ID,
+				Name:        topic.Name,
+				Description: topic.Description,
+			},
+		}
+		for _, tag := range topic.Tags {
+			res.Topic.Tags = append(res.Topic.Tags, &pb.Tag{
+				Id:   tag.ID,
+				Name: tag.Name,
+			})
+		}
+		return res, nil
+	}
 }
 
 func (r *grpcRecommendationService) ListTopics(ctx context.Context, in *pb.ListTopicsRequest) (*pb.ListTopicsReply, error) {
-	//TODO :implement
-	return nil, status.Errorf(codes.Unimplemented, "to be implemented")
+	if topics, err := r.TopicService.ListTopics(ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		res := &pb.ListTopicsReply{}
+		for _, topic := range topics {
+			pt := &pb.Topic{
+				Id:          topic.ID,
+				Name:        topic.Name,
+				Description: topic.Description,
+			}
+
+			for _, tag := range topic.Tags {
+				pt.Tags = append(pt.Tags, &pb.Tag{
+					Id:   tag.ID,
+					Name: tag.Name,
+				})
+			}
+
+			res.Topics = append(res.Topics, pt)
+		}
+		return res, nil
+	}
 }

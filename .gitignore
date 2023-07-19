@@ -5,7 +5,7 @@ volumes
 
 *.firebase
 *.cache
-*.env
+.env
 *.idea
 *.json
 
