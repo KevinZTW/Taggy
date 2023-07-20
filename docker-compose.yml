@@ -26,7 +26,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 20M
+          memory: 200M
     ports:
       - ${RSS_SERVICE_PORT}:${RSS_SERVICE_PORT}
     restart: unless-stopped
@@ -59,7 +59,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 20M
+          memory: 200M
     ports:
       - ${RECOMMENDATION_SERVICE_PORT}:${RECOMMENDATION_SERVICE_PORT}
     restart: unless-stopped

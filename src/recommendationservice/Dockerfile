@@ -15,9 +15,12 @@ RUN go build -o /go/bin/recommendationservice/ ./
 
 
 FROM alpine
+# Add the c++ runtime libraries for jieba package
+RUN apk upgrade --no-cache && apk add libgcc libstdc++
 
 WORKDIR /usr/src/app/
 
+COPY --from=builder /go/pkg/mod/github.com/yanyiwu/gojieba@v1.3.0/dict/ /go/pkg/mod/github.com/yanyiwu/gojieba@v1.3.0/dict/
 COPY --from=builder /go/bin/recommendationservice/ ./
 
 EXPOSE ${RECOMMENDATION_SERVICE_PORT}
