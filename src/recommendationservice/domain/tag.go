@@ -14,3 +14,6 @@ type TagRepository interface {
 	GetTagByID(ID string, ctx context.Context) (*Tag, error)
 	GetTagByNormalizedName(name string, ctx context.Context) (*Tag, error)
 }
+
+//TODO: Design system to handle Tag Alias and Tag Synonym
+// e.g. "K8S" -> "Kubernetes" "Backend", "Backend Engineer" -> "後端" , "後端工程師"

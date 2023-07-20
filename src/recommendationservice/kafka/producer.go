@@ -6,11 +6,6 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama"
 )
 
-var (
-	NewRSSItemTopic = "new-rss-item"
-	ProtocolVersion = sarama.V3_0_0_0
-)
-
 func CreateKafkaProducer(brokers []string, log *logrus.Logger) (sarama.AsyncProducer, error) {
 	saramaConfig := sarama.NewConfig()
 	saramaConfig.Version = ProtocolVersion

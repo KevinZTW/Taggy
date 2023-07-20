@@ -55,7 +55,7 @@ func (t *TagService) CreateTag(name string, ctx context.Context) (*domain.Tag, e
 
 	normalizedName := normalizeName(name)
 	if tag, _ := t.repository.GetTagByNormalizedName(normalizedName, ctx); tag != nil {
-		return nil, ErrTagAlreadyExists
+		return tag, ErrTagAlreadyExists
 	}
 
 	return t.repository.CreateTag(name, normalizedName, ctx)

@@ -51,7 +51,7 @@ func (t *TopicService) AddTagToTopic(tagID string, topicID string, ctx context.C
 		if topic, err := t.repository.UpdateTopicTags(topic, ctx); err != nil {
 			return nil, err
 		} else {
-			return topic, err
+			return topic, nil
 		}
 	}
 
