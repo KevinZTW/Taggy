@@ -2,6 +2,7 @@ package analysis
 
 import (
 	"context"
+	"log"
 	"recommendationservice/domain"
 	tagrepository "recommendationservice/tag/repository"
 	tagservice "recommendationservice/tag/service"
@@ -43,7 +44,7 @@ func (a *Analyzer) Close() {
 func (a *Analyzer) AnalyzeTags(text string) []*domain.Tag {
 	tagNum := 20
 	keywords := a.jieba.ExtractWithWeight(text, tagNum)
-
+	log.Printf("keywords: %v", keywords)
 	res := []*domain.Tag{}
 	for _, keyword := range keywords {
 		if tag, ok := a.tagMap[keyword.Word]; ok {

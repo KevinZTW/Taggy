@@ -2,6 +2,7 @@ package analysis
 
 import (
 	"context"
+	"fmt"
 	"recommendationservice/genproto/taggy"
 	"recommendationservice/kafka"
 	"recommendationservice/log"
@@ -40,9 +41,13 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 				return err
 			}
 
-			log.Infof("Message claimed: itemId = %s, %s timestamp = %v, topic = %s", item.Id, item.Title, message.Timestamp, message.Topic)
+			//log.Infof("Message claimed: itemId = %s, %s timestamp = %v, topic = %s", item.Id, item.Title, message.Timestamp, message.Topic)
+			//log.Infof("%s", item.Description)
+			log.Infof("%s", item.Title)
+			log.Infof("%s", item.Content)
 			log.Infof("%s", item.Description)
-			tags := g.analyzer.AnalyzeTags(item.Description)
+			text := fmt.Sprintf("%s %s %s", item.Title, item.Content, item.Description)
+			tags := g.analyzer.AnalyzeTags(text)
 			for _, tag := range tags {
 				log.Infof("Tag: %s", tag.Name)
 				if _, err := g.analyzer.tagService.CreateRSSItemTag(item.Id, tag.ID, context.Background()); err != nil {

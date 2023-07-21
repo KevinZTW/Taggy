@@ -9,6 +9,13 @@ import (
 	topicservice "recommendationservice/topic/service"
 )
 
+var (
+	TopicCareerKeyWords = []string{
+		"職涯",
+		"知識網",
+	}
+)
+
 type AdminTool struct {
 	TagService   *tagservice.TagService
 	TopicService *topicservice.TopicService
@@ -37,9 +44,14 @@ func (a *AdminTool) AddTagsToBackendTopic() {
 		"後端",
 		"後端工程師",
 		"系統監測",
+		"分散式",
 		"作業系統",
 		"分散式系統",
-		"分散式",
+		"大型系統",
+		"架構",
+		"架構師",
+		"微服務",
+		"設計",
 		"一至性",
 		"網路",
 		"網路安全",
@@ -48,6 +60,7 @@ func (a *AdminTool) AddTagsToBackendTopic() {
 		"快取",
 		"資料庫",
 		"資料庫設計",
+		"API",
 		"K8S",
 		"Kubernetes",
 		"Kafka",
