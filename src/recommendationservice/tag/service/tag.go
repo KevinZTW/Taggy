@@ -46,7 +46,6 @@ func (t *TagService) GetTagByID(ID string, ctx context.Context) (*domain.Tag, er
 	}
 }
 
-// ListTags
 func (t *TagService) ListTags(ctx context.Context) ([]*domain.Tag, error) {
 	return t.repository.ListTags(ctx)
 }
