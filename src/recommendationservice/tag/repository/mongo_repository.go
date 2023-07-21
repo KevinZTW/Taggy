@@ -2,13 +2,14 @@ package repository
 
 import (
 	"context"
+	"log"
 	"recommendationservice/domain"
 	"recommendationservice/mongodb"
 
-	"go.mongodb.org/mongo-driver/bson"
-
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongoRepository struct {
@@ -23,10 +24,31 @@ const (
 
 func NewMongo() *MongoRepository {
 	db := mongodb.New()
-	return &MongoRepository{
+	repo := &MongoRepository{
 		tagCollection:        db.Collection(tagCollection),
 		rssItemTagCollection: db.Collection(rssItemTagCollection),
 	}
+
+	repo.setupIndex()
+	return repo
+}
+
+func (m *MongoRepository) setupIndex() {
+	// TODO: examine if this is the best way to create index
+	indexModel := mongo.IndexModel{
+		Keys: bson.D{
+			{"rss_item_id", 1},
+			{"tag_id", 1},
+		},
+		Options: options.Index().SetUnique(true),
+	}
+
+	if name, err := m.rssItemTagCollection.Indexes().CreateOne(context.TODO(), indexModel); err != nil {
+		log.Fatalf("create rssItemTagCollection index rss_item_id, tag_id failed err: %s", err.Error())
+	} else {
+		log.Printf("create rssItemTagCollection index rss_item_id, tag_id success name: %s", name)
+	}
+
 }
 
 func (m *MongoRepository) CreateTag(name, normalizedName string, ctx context.Context) (*domain.Tag, error) {
@@ -88,7 +110,7 @@ func (m *MongoRepository) CreateRSSItemTag(rssItemID, tagID string, ctx context.
 		return &itemTag, nil
 	}
 }
-func (m *MongoRepository) GetRSSItemIDsByTagID(tagID string, ctx context.Context) ([]*domain.RSSItem, error) {
+func (m *MongoRepository) GetRSSItemIDsByTagID(tagID string, ctx context.Context) ([]string, error) {
 	var rssItemIDs []string
 	var rssItemTags []*domain.RSSItemTag
 

@@ -1,6 +1,9 @@
 package service
 
-import "context"
+import (
+	"context"
+	"recommendationservice/domain"
+)
 
 func (t *TagService) CreateRSSItemTag(rssItemID, tagID string, ctx context.Context) (*domain.RSSItemTag, error) {
 	return t.repository.CreateRSSItemTag(rssItemID, tagID, ctx)

@@ -45,6 +45,9 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 			tags := g.analyzer.AnalyzeTags(item.Description)
 			for _, tag := range tags {
 				log.Infof("Tag: %s", tag.Name)
+				if _, err := g.analyzer.tagService.CreateRSSItemTag(item.Id, tag.ID, context.Background()); err != nil {
+					log.Errorf("CreateRSSItemTag failed err: %s", err.Error())
+				}
 			}
 			session.MarkMessage(message, "")
 
@@ -55,7 +58,6 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 }
 
 func (a *Analyzer) StartConsumerGroup(ctx context.Context) {
-	// -- kafak POC --
 	var brokers string
 	util.MustMapEnv(&brokers, "KAFKA_SERVICE_ADDR")
 

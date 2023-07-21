@@ -10,8 +10,9 @@ import (
 )
 
 type Analyzer struct {
-	jieba  *gojieba.Jieba
-	tagMap map[string]*domain.Tag
+	jieba      *gojieba.Jieba
+	tagMap     map[string]*domain.Tag
+	tagService *tagservice.TagService
 }
 
 func NewAnalyzer() (*Analyzer, error) {
@@ -21,8 +22,9 @@ func NewAnalyzer() (*Analyzer, error) {
 		return nil, err
 	} else {
 		analyzer := &Analyzer{
-			jieba:  gojieba.NewJieba(),
-			tagMap: make(map[string]*domain.Tag),
+			jieba:      gojieba.NewJieba(),
+			tagMap:     make(map[string]*domain.Tag),
+			tagService: tagSrv,
 		}
 
 		for _, tag := range tags {
