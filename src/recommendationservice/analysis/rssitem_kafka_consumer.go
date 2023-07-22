@@ -22,7 +22,7 @@ type groupHandler struct {
 
 func (g *groupHandler) Setup(session sarama.ConsumerGroupSession) error {
 	log.Infof("Setup\n")
-	log.Infof("%s", session.Claims())
+	log.Infof("%+v", session.Claims())
 
 	return nil
 }
@@ -41,12 +41,9 @@ func (g *groupHandler) ConsumeClaim(session sarama.ConsumerGroupSession, claim s
 				return err
 			}
 
-			//log.Infof("Message claimed: itemId = %s, %s timestamp = %v, topic = %s", item.Id, item.Title, message.Timestamp, message.Topic)
-			//log.Infof("%s", item.Description)
-			log.Infof("%s", item.Title)
-			log.Infof("%s", item.Content)
-			log.Infof("%s", item.Description)
-			text := fmt.Sprintf("%s %s %s", item.Title, item.Content, item.Description)
+			text := fmt.Sprintf("%s %s %s", item.Title, item.PlainTextContent, item.Description)
+			log.Infof("text: %s", text)
+
 			tags := g.analyzer.AnalyzeTags(text)
 			for _, tag := range tags {
 				log.Infof("Tag: %s", tag.Name)

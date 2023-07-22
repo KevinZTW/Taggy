@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"recommendationservice/analysis"
+	"recommendationservice/server"
 	"recommendationservice/telementry"
 	"syscall"
 
@@ -15,16 +17,16 @@ import (
 func main() {
 	fmt.Println("Tagging Service v0.0 !")
 
-	//admin := admintool.New()
-	//admin.AddTagsToBackendTopic()
+	// admin := admintool.New()
+	// admin.AddTagsToBackendTopic()
 
 	ch := make(chan os.Signal, 1)
 	telementry.Init()
-	// serv := server.NewGRPCServer()
-	// go func() {
-	// 	err := serv.Run()
-	// 	log.Fatal(err)
-	// }()
+	serv := server.NewGRPCServer()
+	go func() {
+		err := serv.Run()
+		log.Fatal(err)
+	}()
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer cancel()
 	// ---------------

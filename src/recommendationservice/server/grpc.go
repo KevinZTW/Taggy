@@ -68,28 +68,19 @@ func (r *grpcRecommendationService) GetRSSItemTags(ctx context.Context, in *pb.G
 	reply := &pb.GetRSSItemTagsReply{}
 	itemId := in.GetItemId()
 	log.Infof("Receive request to get tags for item %s", itemId)
-	reply.Tags = append(reply.Tags, &pb.Tag{Id: "0", Name: "backend"})
+
+	if tags, err := r.TagService.GetTagsByRSSItemID(itemId, ctx); err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	} else {
+		for _, tag := range tags {
+			reply.Tags = append(reply.Tags, &pb.Tag{
+				Id:   tag.ID,
+				Name: tag.Name,
+			})
+		}
+	}
 
 	return reply, nil
-
-	//if feeds, err := r.RSSService.ListFeeds(); err != nil {
-	//	reply.Message = err.Error()
-	//	return reply, err
-	//} else {
-	//
-	//	wg := sync.WaitGroup{}
-	//	for _, feed := range feeds {
-	//		wg.Add(1)
-	//		go func(feed *rss.Feed) {
-	//			defer wg.Done()
-	//			if err := r.RSSService.UpdateFeedFromOrigin(feed.ID); err != nil {
-	//				log.Errorf("failed to update feed: %q", err)
-	//			}
-	//		}(feed)
-	//	}
-	//	reply.Message = "success"
-	//	return reply, err
-	//}
 }
 
 // TODO: admin level authorization check

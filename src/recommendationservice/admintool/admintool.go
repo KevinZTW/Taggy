@@ -40,6 +40,9 @@ func (a *AdminTool) AddTagsToBackendTopic() {
 
 	log.Infof("topic: %+v", topic)
 
+	//TODO: Break these tags to different topics
+	//TODO: I need a better way to manage and add these tags...
+
 	keywords := []string{
 		"後端",
 		"後端工程師",
@@ -68,7 +71,121 @@ func (a *AdminTool) AddTagsToBackendTopic() {
 		"Prometheus",
 		"Redis",
 		"Mongo",
-		"Postgre",
+		"Postgres",
+		"MySQL",
+		"pg",
+		"Pod",
+		"cdn",
+		//Language
+		"Golang",
+		"Go",
+		"python",
+		"Java",
+		"C#",
+		"C++",
+		"PHP",
+		"Ruby",
+		"Scala",
+		"Rust",
+		"Kotlin",
+
+		//operating system
+		"linux",
+		"thread",
+		"process",
+		"process scheduling",
+		"process synchronization",
+		"process management",
+		"虛擬化",
+		"虛擬機",
+		"virtualization",
+		"virtual machine",
+		"container",
+		"容器",
+		"containerization",
+
+		//Cloud
+		"replication",
+		"cloud",
+		"aws",
+		"azure",
+		"google cloud",
+
+		//software pattern
+		"物件",
+		"物件導向",
+		"OOP",
+		"程式設計",
+		"設計模式",
+		"Design Patterns",
+		"Patterns",
+		"Singleton",
+		"Factory",
+		"Abstract Factory",
+		"Builder",
+		"Prototype",
+		"Adapter",
+		"Bridge",
+		"Composite",
+		"Decorator",
+		"Facade",
+		"Flyweight",
+		"Proxy",
+		"Chain of Responsibility",
+		"Command",
+		"Interpreter",
+		"Iterator",
+		"Mediator",
+		"Memento",
+		"Observer",
+		"State",
+		"Strategy",
+		"Template Method",
+		"Model-View-Controller",
+		"MVC",
+		"Single Responsibility",
+		"Open/Closed",
+		"Liskov Substitution",
+		"Interface Segregation",
+		"Dependency Inversion",
+		"Dependency Injection",
+		//software engineering
+		"Refactoring",
+		// CICD
+		"CI",
+		"CD",
+		"DevOps",
+		"GitHub",
+		"GitLab",
+		"Jenkins",
+		"Travis",
+		"CircleCI",
+
+		//API
+		"RESTful",
+
+		// testing
+		"測試",
+		"單元測試",
+		"整合測試",
+		"自動化測試",
+		"測試工程師",
+		"測試架構",
+		"測試框架",
+		"驗證",
+		//others
+		"UUID",
+		"Token",
+		"JWT",
+		"OAuth",
+		"JSON",
+		"ACID",
+		"CAP",
+		"資料一致性",
+		"Eventual Consistency",
+		"Two-Phase Commit",
+		"Consistency",
+		"Consensus",
 	}
 
 	for _, keyword := range keywords {

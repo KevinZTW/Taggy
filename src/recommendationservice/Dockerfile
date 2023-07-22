@@ -19,7 +19,7 @@ FROM alpine
 RUN apk upgrade --no-cache && apk add libgcc libstdc++
 
 WORKDIR /usr/src/app/
-
+COPY ./src/recommendationservice/analysis ./analysis
 COPY --from=builder /go/pkg/mod/github.com/yanyiwu/gojieba@v1.3.0/dict/ /go/pkg/mod/github.com/yanyiwu/gojieba@v1.3.0/dict/
 COPY --from=builder /go/bin/recommendationservice/ ./
 

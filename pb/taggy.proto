@@ -44,9 +44,10 @@ message RSSItem {
   string feed_id = 2;
   string title = 3;
   string content = 4;
-  string description = 5;
-  string url = 6;
-  google.protobuf.Timestamp published_at = 7;
+  string plain_text_content = 5;
+  string description = 6;
+  string url = 7;
+  google.protobuf.Timestamp published_at = 8;
 }
 
 message CreateRSSFeedRequest {

@@ -4,7 +4,7 @@ import ItemCard from '../../components/ItemCard';
 import Button from '@mui/material/Button';
 
 export default function Timeline(){
-    const [sources, setFeeds] = useState([])
+    const [feeds, setFeeds] = useState([])
 
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export default function Timeline(){
             })
     }, [])
 
-    console.log(sources)
+    console.log(feeds)
     return (
         <>
         <div>My Timeline</div>

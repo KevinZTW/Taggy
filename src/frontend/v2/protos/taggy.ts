@@ -43,6 +43,7 @@ export interface RSSItem {
   feedId: string;
   title: string;
   content: string;
+  plainTextContent: string;
   description: string;
   url: string;
   publishedAt: Date | undefined;
@@ -443,7 +444,16 @@ export const RSSFeed = {
 };
 
 function createBaseRSSItem(): RSSItem {
-  return { id: "", feedId: "", title: "", content: "", description: "", url: "", publishedAt: undefined };
+  return {
+    id: "",
+    feedId: "",
+    title: "",
+    content: "",
+    plainTextContent: "",
+    description: "",
+    url: "",
+    publishedAt: undefined,
+  };
 }
 
 export const RSSItem = {
@@ -460,14 +470,17 @@ export const RSSItem = {
     if (message.content !== "") {
       writer.uint32(34).string(message.content);
     }
+    if (message.plainTextContent !== "") {
+      writer.uint32(42).string(message.plainTextContent);
+    }
     if (message.description !== "") {
-      writer.uint32(42).string(message.description);
+      writer.uint32(50).string(message.description);
     }
     if (message.url !== "") {
-      writer.uint32(50).string(message.url);
+      writer.uint32(58).string(message.url);
     }
     if (message.publishedAt !== undefined) {
-      Timestamp.encode(toTimestamp(message.publishedAt), writer.uint32(58).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.publishedAt), writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -512,17 +525,24 @@ export const RSSItem = {
             break;
           }
 
-          message.description = reader.string();
+          message.plainTextContent = reader.string();
           continue;
         case 6:
           if (tag !== 50) {
             break;
           }
 
-          message.url = reader.string();
+          message.description = reader.string();
           continue;
         case 7:
           if (tag !== 58) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
             break;
           }
 
@@ -543,6 +563,7 @@ export const RSSItem = {
       feedId: isSet(object.feedId) ? String(object.feedId) : "",
       title: isSet(object.title) ? String(object.title) : "",
       content: isSet(object.content) ? String(object.content) : "",
+      plainTextContent: isSet(object.plainTextContent) ? String(object.plainTextContent) : "",
       description: isSet(object.description) ? String(object.description) : "",
       url: isSet(object.url) ? String(object.url) : "",
       publishedAt: isSet(object.publishedAt) ? fromJsonTimestamp(object.publishedAt) : undefined,
@@ -555,6 +576,7 @@ export const RSSItem = {
     message.feedId !== undefined && (obj.feedId = message.feedId);
     message.title !== undefined && (obj.title = message.title);
     message.content !== undefined && (obj.content = message.content);
+    message.plainTextContent !== undefined && (obj.plainTextContent = message.plainTextContent);
     message.description !== undefined && (obj.description = message.description);
     message.url !== undefined && (obj.url = message.url);
     message.publishedAt !== undefined && (obj.publishedAt = message.publishedAt.toISOString());
@@ -571,6 +593,7 @@ export const RSSItem = {
     message.feedId = object.feedId ?? "";
     message.title = object.title ?? "";
     message.content = object.content ?? "";
+    message.plainTextContent = object.plainTextContent ?? "";
     message.description = object.description ?? "";
     message.url = object.url ?? "";
     message.publishedAt = object.publishedAt ?? undefined;

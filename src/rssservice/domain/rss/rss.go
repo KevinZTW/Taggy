@@ -6,6 +6,7 @@ import (
 
 	"github.com/mmcdole/gofeed"
 	log "github.com/sirupsen/logrus"
+	"jaytaylor.com/html2text"
 )
 
 // Repository Data access interface
@@ -68,14 +69,21 @@ func (s *Feed) GetOriginFeedItems() ([]*Item, error) {
 		return nil, err
 	} else {
 		for _, item := range feed.Items {
+
+			text, err := html2text.FromString(item.Content, html2text.Options{PrettyTables: true})
+			if err != nil {
+				log.Error(err)
+			}
+
 			items = append(items, &Item{
-				FeedId:      s.ID,
-				Title:       item.Title,
-				Content:     item.Content,
-				Description: item.Description,
-				GUID:        item.GUID,
-				PublishedAt: *item.PublishedParsed,
-				URL:         item.Link,
+				FeedId:           s.ID,
+				Title:            item.Title,
+				Content:          item.Content,
+				PlainTextContent: text,
+				Description:      item.Description,
+				GUID:             item.GUID,
+				PublishedAt:      *item.PublishedParsed,
+				URL:              item.Link,
 			})
 		}
 	}
@@ -99,13 +107,14 @@ func (s *Feed) CreateItem(repository Repository, item *Item) {
 }
 
 type Item struct {
-	ID             string    `bson:"id" json:"id"`
-	FeedId         string    `bson:"feed_id" json:"feed_id"`
-	Title          string    `bson:"title" json:"title"`
-	Content        string    `bson:"content" json:"content"`
-	Description    string    `bson:"description" json:"description"`
-	ContentSnippet string    `bson:"content_snippet" json:"content_snippet"`
-	GUID           string    `bson:"guid" json:"guid"`
-	URL            string    `bson:"url" json:"url"`
-	PublishedAt    time.Time `bson:"published_at" json:"published_at"`
+	ID               string    `bson:"id" json:"id"`
+	FeedId           string    `bson:"feed_id" json:"feed_id"`
+	Title            string    `bson:"title" json:"title"`
+	Content          string    `bson:"content" json:"content"`
+	PlainTextContent string    `bson:"plain_text_content" json:"plain_text_content"`
+	Description      string    `bson:"description" json:"description"`
+	ContentSnippet   string    `bson:"content_snippet" json:"content_snippet"`
+	GUID             string    `bson:"guid" json:"guid"`
+	URL              string    `bson:"url" json:"url"`
+	PublishedAt      time.Time `bson:"published_at" json:"published_at"`
 }

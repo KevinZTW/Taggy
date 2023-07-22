@@ -44,13 +44,14 @@ func (r *RSSService) GetItemById(id string) (*rss.Item, error) {
 
 func (r *RSSService) sendNewRSSItemEvent(ctx context.Context, item *rss.Item) {
 	pbItem := &pb.RSSItem{
-		Id:          item.ID,
-		FeedId:      item.FeedId,
-		Title:       item.Title,
-		Content:     item.Content,
-		Description: item.Description,
-		Url:         item.URL,
-		PublishedAt: timestamppb.New(item.PublishedAt),
+		Id:               item.ID,
+		FeedId:           item.FeedId,
+		Title:            item.Title,
+		Content:          item.Content,
+		PlainTextContent: item.PlainTextContent,
+		Description:      item.Description,
+		Url:              item.URL,
+		PublishedAt:      timestamppb.New(item.PublishedAt),
 	}
 	message, err := proto.Marshal(pbItem)
 	if err != nil {

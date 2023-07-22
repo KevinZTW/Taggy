@@ -52,7 +52,7 @@ func (t *TagService) ListTags(ctx context.Context) ([]*domain.Tag, error) {
 
 func (t *TagService) CreateTag(name string, ctx context.Context) (*domain.Tag, error) {
 
-	normalizedName := normalizeName(name)
+	normalizedName := NormalizeName(name)
 	if tag, _ := t.repository.GetTagByNormalizedName(normalizedName, ctx); tag != nil {
 		return tag, ErrTagAlreadyExists
 	}
@@ -60,7 +60,7 @@ func (t *TagService) CreateTag(name string, ctx context.Context) (*domain.Tag, e
 	return t.repository.CreateTag(name, normalizedName, ctx)
 }
 
-func normalizeName(name string) string {
+func NormalizeName(name string) string {
 	name = strings.TrimSpace(strings.ToLower(name))
 	name = strings.Join(strings.Fields(name), " ")
 	return name

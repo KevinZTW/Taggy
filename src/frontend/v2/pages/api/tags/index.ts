@@ -8,6 +8,8 @@ const handler = async ({ method, body, query }: NextApiRequest, res) => {
     case 'GET': {
       const itemId : string = query.itemId as string;
       if (itemId) {
+
+        console.log("#listItemTags itemId: ", itemId);
         const { tags = [] } = await TaggingGateway.listItemTags(itemId);
         return res.status(200).json(tags);
       }

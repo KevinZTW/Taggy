@@ -10,7 +10,7 @@ const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResp
     case 'GET': {
       
       const { itemId = '' } = query;
-      console.log("itemId:", itemId);
+      console.log("#getRSSItem itemId:", itemId);
       const { item = {} } = await RSSGateway.getRSSItem(itemId as string);
       return res.status(200).json(item);
     }

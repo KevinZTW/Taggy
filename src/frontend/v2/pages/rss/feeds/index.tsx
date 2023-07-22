@@ -1,7 +1,7 @@
 
 import {useState, useRef, useEffect } from 'react';
 import ItemCard from '../../../components/ItemCard';
-import FeedCard from '@/components/FeedCard/FeedCard';
+import FeedCard from '@/components/FeedCard/index';
 import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
