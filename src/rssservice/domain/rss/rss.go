@@ -18,6 +18,7 @@ type Repository interface {
 	UpdateFeedLastItemSyncedAt(feed *Feed, syncedAt time.Time) error
 
 	CreateItemFromEntity(item *Item) (*Item, error)
+	ListItems(page, limit int64) ([]*Item, error)
 	ListFeedItems(feed *Feed) ([]*Item, error)
 	GetItemByID(id string) (*Item, error)
 	GetItemsByFeedID(feedID int) ([]*Item, error)

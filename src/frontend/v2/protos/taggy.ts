@@ -11,6 +11,7 @@ import {
   ServiceError,
   UntypedServiceImplementation,
 } from "@grpc/grpc-js";
+import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
 import { Timestamp } from "./google/protobuf/timestamp";
@@ -78,6 +79,15 @@ export interface GetRSSItemRequest {
 
 export interface GetRSSItemReply {
   item: RSSItem | undefined;
+}
+
+export interface ListRSSItemsRequest {
+  page: number;
+  limit: number;
+}
+
+export interface ListRSSItemsReply {
+  items: RSSItem[];
 }
 
 export interface ListRSSFeedItemsRequest {
@@ -1037,6 +1047,137 @@ export const GetRSSItemReply = {
   fromPartial<I extends Exact<DeepPartial<GetRSSItemReply>, I>>(object: I): GetRSSItemReply {
     const message = createBaseGetRSSItemReply();
     message.item = (object.item !== undefined && object.item !== null) ? RSSItem.fromPartial(object.item) : undefined;
+    return message;
+  },
+};
+
+function createBaseListRSSItemsRequest(): ListRSSItemsRequest {
+  return { page: 0, limit: 0 };
+}
+
+export const ListRSSItemsRequest = {
+  encode(message: ListRSSItemsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.page !== 0) {
+      writer.uint32(8).int64(message.page);
+    }
+    if (message.limit !== 0) {
+      writer.uint32(16).int64(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSItemsRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRSSItemsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.page = longToNumber(reader.int64() as Long);
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.limit = longToNumber(reader.int64() as Long);
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRSSItemsRequest {
+    return {
+      page: isSet(object.page) ? Number(object.page) : 0,
+      limit: isSet(object.limit) ? Number(object.limit) : 0,
+    };
+  },
+
+  toJSON(message: ListRSSItemsRequest): unknown {
+    const obj: any = {};
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    message.limit !== undefined && (obj.limit = Math.round(message.limit));
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListRSSItemsRequest>, I>>(base?: I): ListRSSItemsRequest {
+    return ListRSSItemsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRSSItemsRequest>, I>>(object: I): ListRSSItemsRequest {
+    const message = createBaseListRSSItemsRequest();
+    message.page = object.page ?? 0;
+    message.limit = object.limit ?? 0;
+    return message;
+  },
+};
+
+function createBaseListRSSItemsReply(): ListRSSItemsReply {
+  return { items: [] };
+}
+
+export const ListRSSItemsReply = {
+  encode(message: ListRSSItemsReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.items) {
+      RSSItem.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRSSItemsReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRSSItemsReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.items.push(RSSItem.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRSSItemsReply {
+    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => RSSItem.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListRSSItemsReply): unknown {
+    const obj: any = {};
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? RSSItem.toJSON(e) : undefined);
+    } else {
+      obj.items = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListRSSItemsReply>, I>>(base?: I): ListRSSItemsReply {
+    return ListRSSItemsReply.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRSSItemsReply>, I>>(object: I): ListRSSItemsReply {
+    const message = createBaseListRSSItemsReply();
+    message.items = object.items?.map((e) => RSSItem.fromPartial(e)) || [];
     return message;
   },
 };
@@ -2097,6 +2238,15 @@ export const RSSServiceService = {
     responseSerialize: (value: GetRSSItemReply) => Buffer.from(GetRSSItemReply.encode(value).finish()),
     responseDeserialize: (value: Buffer) => GetRSSItemReply.decode(value),
   },
+  listRssItems: {
+    path: "/taggy.RSSService/ListRSSItems",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: ListRSSItemsRequest) => Buffer.from(ListRSSItemsRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => ListRSSItemsRequest.decode(value),
+    responseSerialize: (value: ListRSSItemsReply) => Buffer.from(ListRSSItemsReply.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => ListRSSItemsReply.decode(value),
+  },
   listRssFeedItems: {
     path: "/taggy.RSSService/ListRSSFeedItems",
     requestStream: false,
@@ -2132,6 +2282,7 @@ export interface RSSServiceServer extends UntypedServiceImplementation {
   getRssFeed: handleUnaryCall<GetRSSFeedRequest, GetRSSFeedReply>;
   listRssFeeds: handleUnaryCall<ListRSSFeedsRequest, ListRSSFeedsReply>;
   getRssItem: handleUnaryCall<GetRSSItemRequest, GetRSSItemReply>;
+  listRssItems: handleUnaryCall<ListRSSItemsRequest, ListRSSItemsReply>;
   listRssFeedItems: handleUnaryCall<ListRSSFeedItemsRequest, ListRSSFeedItemsReply>;
   fetchAllRss: handleUnaryCall<FetchAllRSSRequest, FetchAllRSSReply>;
   /** To support local test only */
@@ -2198,6 +2349,21 @@ export interface RSSServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: GetRSSItemReply) => void,
+  ): ClientUnaryCall;
+  listRssItems(
+    request: ListRSSItemsRequest,
+    callback: (error: ServiceError | null, response: ListRSSItemsReply) => void,
+  ): ClientUnaryCall;
+  listRssItems(
+    request: ListRSSItemsRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ListRSSItemsReply) => void,
+  ): ClientUnaryCall;
+  listRssItems(
+    request: ListRSSItemsRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ListRSSItemsReply) => void,
   ): ClientUnaryCall;
   listRssFeedItems(
     request: ListRSSFeedItemsRequest,
@@ -2445,6 +2611,25 @@ export const RecommendationServiceClient = makeGenericClientConstructor(
   service: typeof RecommendationServiceService;
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -2476,6 +2661,18 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

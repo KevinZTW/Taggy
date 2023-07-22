@@ -18,6 +18,14 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+func (r *RSSService) ListItems(page, limit int64) ([]*rss.Item, error) {
+	if items, err := r.repository.ListItems(page, limit); err != nil {
+		return nil, err
+	} else {
+		return items, nil
+	}
+}
+
 func (r *RSSService) ListFeedItems(feedId string) ([]*rss.Item, error) {
 	if feed, err := r.repository.GetFeedById(feedId); err != nil {
 		msg := fmt.Sprintf("[RSSService] can't find feed with id %s", feedId)

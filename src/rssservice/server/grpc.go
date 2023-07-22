@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"go.opentelemetry.io/otel/trace"
 	"net"
 	"rssservice/domain/rss"
 	pb "rssservice/genproto/taggy"
@@ -14,6 +13,8 @@ import (
 	"rssservice/telementry"
 	"rssservice/util"
 	"sync"
+
+	"go.opentelemetry.io/otel/trace"
 
 	"github.com/golang/protobuf/ptypes/empty"
 
@@ -136,6 +137,27 @@ func (r *grpcRSSService) GetRSSItem(ctx context.Context, in *pb.GetRSSItemReques
 		return reply, nil
 	}
 
+}
+
+func (r *grpcRSSService) ListRSSItems(ctx context.Context, in *pb.ListRSSItemsRequest) (*pb.ListRSSItemsReply, error) {
+	reply := &pb.ListRSSItemsReply{}
+	if items, err := r.RSSService.ListItems(in.GetPage(), in.GetLimit()); err != nil {
+		return reply, err
+	} else {
+		for _, item := range items {
+			f := &pb.RSSItem{
+				Id:          item.ID,
+				FeedId:      item.FeedId,
+				Title:       item.Title,
+				Content:     item.Content,
+				Description: item.Description,
+				Url:         item.URL,
+				PublishedAt: timestamppb.New(item.PublishedAt),
+			}
+			reply.Items = append(reply.Items, f)
+		}
+		return reply, nil
+	}
 }
 
 func (r *grpcRSSService) ListRSSFeeds(ctx context.Context, in *pb.ListRSSFeedsRequest) (*pb.ListRSSFeedsReply, error) {

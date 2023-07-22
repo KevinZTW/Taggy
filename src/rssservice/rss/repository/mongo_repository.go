@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type MongoRepository struct {
@@ -87,6 +88,21 @@ func (m *MongoRepository) UpdateFeedLastItemSyncedAt(feed *rss.Feed, syncedAt ti
 		return err
 	} else {
 		return nil
+	}
+}
+
+func (m *MongoRepository) ListItems(page, limit int64) ([]*rss.Item, error) {
+	opts := options.Find().SetSort(bson.D{{"published_at", -1}}).SetSkip(page * limit).SetLimit(limit)
+
+	if cur, err := m.itemCollection.Find(nil, bson.D{}, opts); err != nil {
+		return nil, err
+	} else {
+		items := []*rss.Item{}
+		if err = cur.All(nil, &items); err != nil {
+			return nil, err
+		} else {
+			return items, nil
+		}
 	}
 }
 
