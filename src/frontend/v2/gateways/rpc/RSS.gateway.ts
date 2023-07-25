@@ -27,6 +27,11 @@ const RSSGateway = () => ({
       client.getRssItem({itemId: itemId}, (error, response) => (error ? reject(error) : resolve(response)))
     );
   },
+  listRSSItems(page : number, limit: number) {
+    return new Promise<ListRSSFeedItemsReply>((resolve, reject) =>
+      client.listRssItems({page: page, limit: limit}, (error, response) => (error ? reject(error) : resolve(response)))
+    );
+  },
   listRSSFeedItems(feedId: string){
     return new Promise<ListRSSFeedItemsReply>((resolve, reject) =>
       client.listRssFeedItems({feedId: feedId}, (error, response) => (error ? reject(error) : resolve(response)))

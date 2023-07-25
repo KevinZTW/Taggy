@@ -29,6 +29,12 @@ const ApiGateway = () => ({
             url: `${basePath}/rss/items/${itemId}`,
         })
     },
+    listRSSItems(page: number, limit: number){
+        return request<RSSItem[]>({
+            url: `${basePath}/rss/items`,
+            queryParams: {page: page, limit: limit},
+        })
+    },
     listRSSFeedItems(feedId: string){
         return request<RSSItem[]>({
             url: `${basePath}/rss/items`,
