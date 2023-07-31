@@ -13,7 +13,7 @@ networks:
 
 services:
   # ******************
-  # Core Demo Services
+  # Core Services
   # ******************
   rssservice:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-rssservice
@@ -113,7 +113,31 @@ services:
   # ******************
   # Dependent Services
   # ******************
-  # mongodb used by rssservice
+  
+  # postgres used by accountservice
+  account-postgres:
+    image: postgres:15
+    container_name: postgres
+    user: postgres
+    deploy:
+      resources:
+        limits:
+          memory: 120M
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_DB=account-service
+      - POSTGRES_PASSWORD=password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ffs -U ffs"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports: 
+      - 5433:5432 # for local dev
+    logging: *logging
+
+  # mongodb used by rssservice and recommendationservice
   rss-mongodb:
     image: mongo:4.4
     restart: unless-stopped
