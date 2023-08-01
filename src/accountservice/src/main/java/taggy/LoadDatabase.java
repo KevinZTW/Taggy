@@ -6,8 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 import taggy.account.entity.*;
-import taggy.account.*;
+import taggy.account.adapter.*;
 
 
 
@@ -20,7 +21,7 @@ class LoadDatabase {
   CommandLineRunner initDatabase(AccountRepository repository) {
 
     return args -> {
-      log.info("Preloading " + repository.save(new Account("Kevin Zhang")));
+      log.info("Preloading " + repository.save(new Account("Kevin Zhang", "kai821104@gmail.com", "123456", "ADMIN")));
     };
   }
 }
