@@ -31,22 +31,21 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+import taggy.account.service.CustomUserDetailsService;
+
 @EnableWebSecurity
 @Configuration
 public class DefaultSecurityConfig {
     
     private static final Logger log = LoggerFactory.getLogger(DefaultSecurityConfig.class);
     private static final PasswordEncoder pwEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
     @Bean
-    @ConditionalOnMissingBean(UserDetailsService.class)
-    InMemoryUserDetailsManager inMemoryUserDetailsManager() { 
-
-        UserDetails u = User.withUsername("user").password(pwEncoder.encode("user")).roles("USER").build();
-        UserDetails admin = User.withUsername("admin").password(pwEncoder.encode("admin")).roles("ADMIN").build();
-
-        log.info("admin pass: >> " + admin.getPassword());
-        return new InMemoryUserDetailsManager(u, admin);
+    CustomUserDetailsService customUserDetailsService() {
+        return new CustomUserDetailsService();
     }
+
 
     @Bean
     @ConditionalOnMissingBean(AuthenticationEventPublisher.class)
@@ -54,24 +53,17 @@ public class DefaultSecurityConfig {
         return new DefaultAuthenticationEventPublisher(delegate);
     }
 
-    // private PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authz) -> authz //authorize 
+            .authorizeHttpRequests((authz) -> authz
             .requestMatchers("/foo").hasRole("ADMIN")
             .requestMatchers("/accounts").permitAll()
             .anyRequest().authenticated())
-            .httpBasic(withDefaults()) // authenticate
-            .formLogin(Customizer.withDefaults()) ;
+            .httpBasic(withDefaults()) 
+            .formLogin(Customizer.withDefaults())
+            .csrf((csrf) -> csrf.disable());
+        
         return http.build();
     }
-
-
-    // @Bean
-    // public WebSecurityCustomizer webSecurityCustomizer() {
-    //     return (web) -> web.ignoring().requestMatchers("/accounts/**");
-    // }
-
 }
