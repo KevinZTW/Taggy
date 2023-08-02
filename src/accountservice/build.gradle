@@ -28,6 +28,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.1.2'
 
+	implementation 'io.jsonwebtoken:jjwt-api:0.10.7',
+			'io.jsonwebtoken:jjwt-impl:0.10.7',            
+            'io.jsonwebtoken:jjwt-jackson:0.10.7'
 
 
 	compileOnly "org.springframework.boot:spring-boot-devtools"

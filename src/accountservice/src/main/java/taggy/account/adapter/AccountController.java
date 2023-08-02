@@ -29,6 +29,12 @@ public class AccountController {
 		return "foo";
 	}
 
+	@GetMapping("/bar")
+	public String bar() {
+		return "bar";
+	}
+
+
 	@GetMapping("/accounts/{id}")
 	public Account getAccount( @PathVariable(value = "id") String id, @RequestParam(value = "name", defaultValue = "World")String name) {
 		Account account = accountRepository.findById(id);
@@ -42,7 +48,6 @@ public class AccountController {
 	public List<Account> listAccounts() {
 		return accountRepository.findAll();
 	}
-
 
 	@PostMapping("/accounts")
 	public Account createAccount(@RequestBody Map<String, String> body) {
