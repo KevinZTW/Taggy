@@ -1,11 +1,11 @@
 package taggy.account.adapter;
 
-import taggy.account.adapter.*;
 import taggy.account.entity.*;
 import taggy.account.service.*;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +24,7 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 
-	@GetMapping("/foo")
+	@GetMapping("/admin/foo")
 	public String foo() {
 		return "foo";
 	}
@@ -61,5 +61,6 @@ public class AccountController {
 
 		return accountService.createUserAccount(name, email, password);
 	}
+
 
 }

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import taggy.account.adapter.AccountRepository;
 import taggy.account.entity.Account;
+import taggy.rss.entity.RSSFeed;
+
+import java.util.List;
 
 
 @Service
@@ -23,7 +26,26 @@ public class AccountService {
     }
 
     public Account findByEmail(String email) {
+
         return accountRepository.findByEmail(email);
     }
-    
+
+    public List<RSSFeed> subscribeRSSFeed(String feedId, Account account) {
+        //TODO: verify feed exists
+
+        List<RSSFeed> feeds = account.getRssFeeds();
+        if (feeds.contains(new RSSFeed(feedId))) {
+            return feeds;
+        }else {
+            account.getRssFeeds().add(new RSSFeed(feedId));
+            accountRepository.save(account);
+            return account.getRssFeeds();
+        }
+    }
+
+    public List<RSSFeed> unsubscribeRSSFeed(String feedId, Account account) {
+        account.getRssFeeds().removeIf(feed -> feed.getId().equals(feedId));
+        accountRepository.save(account);
+        return account.getRssFeeds();
+    }
 }

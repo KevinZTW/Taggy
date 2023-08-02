@@ -21,7 +21,7 @@ class LoadDatabase {
   CommandLineRunner initDatabase(AccountRepository repository) {
 
     return args -> {
-      log.info("Preloading " + repository.save(new Account("Kevin Zhang", "kai821104@gmail.com", "123456", "ADMIN")));
+      log.info("Preloading " + repository.save(new Account("admin", "admin@gmail.com", "{noop}admin", "ADMIN")));
     };
   }
 }

@@ -1,19 +1,13 @@
 package taggy.account.entity;
 
-import java.util.Objects;
-
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-
 import lombok.Data;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import taggy.rss.entity.RSSFeed;
+
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
@@ -22,6 +16,12 @@ import lombok.NoArgsConstructor;
 public class Account{     
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_USER = "USER";
+
+    @OneToMany
+    @JoinTable(name = "accounts_rss_feeds",
+        joinColumns = @JoinColumn(name = "account_id"),
+        inverseJoinColumns = @JoinColumn(name = "rss_feed_id"))
+    private List<RSSFeed> rssFeeds;
 
     @Id 
     @Column(name = "id")
