@@ -1,16 +1,11 @@
 package taggy.auth.vo;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class AccountClaim {
-
-    public AccountClaim(String id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
     private String id;
     private String name;
     private String email;

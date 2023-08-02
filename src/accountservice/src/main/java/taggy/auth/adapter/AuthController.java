@@ -12,24 +12,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.core.Authentication;
+
 import taggy.auth.service.JWTService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @RestController
 public class AuthController {
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AccountService accountService;
 
     @GetMapping("/token")
-    public String login(String email, String password) {
-        Account account = accountService.findByEmail(email);
+    public String login(Authentication authentication) {
+        Account account = accountService.findByEmail(authentication.getName());
+        
         if (account == null) {
             throw new IllegalArgumentException("account not found");
         }
-        if (!account.getPassword().equals(password)) {
-            throw new IllegalArgumentException("password not match");
-        }
+        
         return JWTService.createToken(account.getName(), account.getEmail(), account.getId());
     }
 }

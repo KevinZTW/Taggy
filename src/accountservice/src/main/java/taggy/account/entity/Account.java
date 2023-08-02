@@ -12,10 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "accounts")
 @Data
+@NoArgsConstructor
 public class Account{     
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_USER = "USER";
@@ -38,7 +41,6 @@ public class Account{
     @Column(name = "role")
     private String role;
 
-    public Account() {}
     public Account(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;

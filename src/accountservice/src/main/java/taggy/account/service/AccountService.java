@@ -22,7 +22,6 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    //findByEmail
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
