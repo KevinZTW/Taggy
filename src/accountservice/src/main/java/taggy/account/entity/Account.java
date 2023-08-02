@@ -2,7 +2,6 @@ package taggy.account.entity;
 
 import java.util.Objects;
 
-import javax.annotation.processing.Generated;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Entity;
