@@ -21,5 +21,10 @@ public class AccountService {
         Account account = new Account(name, email, pwEncoder.encode(password), Account.ROLE_USER);
         return accountRepository.save(account);
     }
+
+    //findByEmail
+    public Account findByEmail(String email) {
+        return accountRepository.findByEmail(email);
+    }
     
 }
