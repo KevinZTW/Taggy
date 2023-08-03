@@ -1,0 +1,139 @@
+.wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem;
+}
+
+.headWrapper {
+  padding: 0rem 0rem;
+  display: flex;
+  align-items: center;
+}
+.homeWrapper {
+  width: 10rem;
+  display: flex;
+  flex-direction: row;
+}
+.logoTitle {
+  padding-left: 0.6rem;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 2rem;
+  line-height: 3rem;
+  color: white;
+  font-weight: 600;
+  margin-right: auto;
+}
+.logoWrapper {
+  display: flex;
+  width: 3rem;
+}
+.logoWrapper img {
+  width: 3rem;
+  height: 3rem;
+}
+.logInWrapper {
+  margin-left: auto;
+}
+.logInBtn {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.SignUpBtn {
+  padding-left: 1rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+}
+.blockWrapper {
+  padding-top: 5rem;
+  display: flex;
+  justify-content: center;
+}
+.block {
+  margin: 20px;
+  padding-top: 50px;
+  padding-bottom: 100px;
+  border-radius: 6px;
+  background: #3c3c3c;
+  width: 50%;
+}
+.title {
+  color: #fcfcfc;
+  font-size: 40px;
+}
+.form {
+  align-items: center;
+  color: white;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputbox {
+  width: 300px;
+
+  padding: 2px 3px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border-radius: 6px;
+  font-size: 20px;
+  color: #8e8e8e;
+}
+.inputbox > input {
+  margin: 4px 0;
+  background: #4f4f4f;
+  border: none;
+  padding: 5px 0;
+  color: #adadad;
+  font-size: 15px;
+  padding-left: 10px;
+}
+
+.inputbox > input:-internal-autofill-selected {
+  border: none;
+  color: #adadad;
+  font-size: 15px;
+  padding-left: 10px;
+}
+.form > button {
+  width: 300px;
+  height: 30px;
+  cursor: pointer;
+  background: #4f4f4f;
+  color: white;
+  font-weight: 400;
+  border: none;
+  border-radius: 5px;
+}
+.login {
+  color: white !important;
+  text-decoration: none;
+}
+
+.demoBtn {
+  width: 300px;
+  padding: 8px;
+  cursor: pointer;
+  line-height: 14px;
+  font-size: 14px;
+  background: #2074ec;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+@media (max-width: 632px) {
+  .wrapper {
+    padding: 1rem;
+  }
+  .block {
+    width: 100%;
+    margin: 0;
+  }
+}

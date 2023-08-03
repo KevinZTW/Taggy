@@ -2,6 +2,7 @@ import styles from './NavigationTab.module.css';
 import Tooltip from '@mui/material/Tooltip';
 import logo from '@/public/imgs/taggy_logo_3x.png';
 
+import { auth } from "@/utils/Friebase";
 import Link from 'next/link'
 
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -108,7 +109,7 @@ export default function NavigationTab(props) {
                   fontSize="small"
                   style={{ color: "#747474" }}
                   onClick={() => {
-                    alert("implement me!!")
+                    auth.signOut();
                   }}
                 />
               </div>

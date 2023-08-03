@@ -15,9 +15,10 @@ import TextField from '@mui/material/TextField';
 import ApiGateway from '@/gateways/Api.gateway';
 
 const Wrapper = styled.div`
-    display: flex;
+    /* display: flex;
     padding: 20px;
-    flex-direction: column;`
+    flex-direction: column; */
+    `
 
 export default function RSSFeedPage(){
     const [source, setFeed] = useState<RSSFeed>()

@@ -1,6 +1,10 @@
 import App, { AppProps } from 'next/app';
+import { useEffect } from 'react';
+import { auth } from '@/utils/Friebase';
+import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import styled from '@emotion/styled';
 import CssBaseline from '@mui/material/CssBaseline';
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,16 +17,43 @@ const darkTheme = createTheme({
     },
   });
 
+const BodyWrapper = styled.div`   
+  display: flex;
+`
+
+
+const noAuthPaths = ["/account/signin", "/account/signup"]
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+    
+
+    let showSideBar = true;
+    
+    if (noAuthPaths.includes(router.asPath)){
+      showSideBar = false;
+    }
+
+    useEffect(() => {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log("user", user);
+        } else {
+          //redirect to login
+          console.log("no user");
+          router.push("/account/signin");
+        }
+      });
+    }, []);
+
     return (<>
         <ThemeProvider theme={darkTheme}>
         <Head>
             <title>Taggy v2</title>
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
-
-          <SideBar/>
+        <BodyWrapper>
+        { showSideBar &&<SideBar/>}
         {/* <CssBaseline /> */}
         <Component {...pageProps} />
         <ToastContainer
@@ -37,6 +68,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           pauseOnHover
           theme="dark"
         />
+        </BodyWrapper>
         </ThemeProvider>
         </>
     )
