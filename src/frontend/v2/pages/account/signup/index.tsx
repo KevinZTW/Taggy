@@ -71,7 +71,7 @@ export default function Signup() {
     createUserWithEmailAndPassword(auth, email, password)
     .then((credential) => {
       console.log(credential);
-      router.push("/");
+      router.push("/rss/latest");
 
     })
     .catch((e) => {

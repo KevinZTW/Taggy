@@ -12,8 +12,16 @@ import ApiGateway from '@/gateways/Api.gateway';
 import Link from 'next/link'
 const Wrapper = styled.div`
     display: flex;
-    padding: 20px;
+    padding-top: 40px;
+    padding-left: 40px;
     flex-direction: column;`
+
+const SubTitle = styled.div`
+    font-weight: 700;
+    padding-top: 16px;
+    font-size: 20px;
+    color:rgba(255, 255, 255, 0.7);
+`
 
 const FeedCardWrapper = styled.div`
     display: flex;
@@ -38,8 +46,8 @@ export default function RSS(){
     return (
         <Wrapper>
         
-        <Typography variant="h4" >RSS Feeds</Typography>
-    
+        <h1>RSS Feeds</h1>
+        <SubTitle> Browse our current Feeds or add your love one!</SubTitle>
         <FeedCardWrapper>
         {sources.map((source) => {
             return (<Link href={`/rss/feeds/${source.id}`}><FeedCard source={source}/></Link>)

@@ -105,11 +105,12 @@ export default function ItemPage({ item, goBack }) {
           </div>
           <div className={styles.title}>{item?.title}</div>
           <div className={styles.chipsWrapper}>{tagChips}</div>
-
+          
+          <a href={item.url}>Visit origin content here!</a>
           <div
             dangerouslySetInnerHTML={{
               __html:
-                 item.content || item["content:encoded"],
+                 item.content || item["content:encoded"] || "oops, we don't have content snippet for this item",
             }}
             className={styles.content}
           ></div>

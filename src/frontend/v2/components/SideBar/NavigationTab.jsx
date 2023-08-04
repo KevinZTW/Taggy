@@ -21,14 +21,14 @@ export default function NavigationTab(props) {
     <div className={styles.functionTabWrapper}>
       <div className={styles.functionTab}>
         <div className={styles.logoWrapper}>
-          <Link href={"/"}>
+          <Link href={"/rss/latest"}>
             <Tooltip title="home" placement="right" arrow>
               <img src={logo.src} alt="" width="40px" />
             </Tooltip>
           </Link>
         </div>
         <div className={styles.iconWrapper}>
-          <Link href={"/"}>
+          <Link href={"/rss/latest"}>
             <Tooltip title="home" placement="right" arrow>
               <div className={styles.icon}>
                 <HomeOutlinedIcon
@@ -42,7 +42,7 @@ export default function NavigationTab(props) {
               </div>
             </Tooltip>
           </Link>
-          <Link href={"/"}>
+          {/* <Link href={"/"}>
             <Tooltip title="board" placement="right" arrow>
               <div className={styles.icon}>
                 <BookmarkBorderIcon
@@ -74,7 +74,7 @@ export default function NavigationTab(props) {
                 />
               </div>
             </Tooltip>
-          </Link>
+          </Link> */}
           {/* <Link href={"/group"}>
             <Tooltip title="group" placement="right" arrow>
               <div className={styles.icon}>
@@ -90,7 +90,7 @@ export default function NavigationTab(props) {
               </div>
             </Tooltip>
           </Link> */}
-          <Link href="/">
+          {/* <Link href="/">
             <div className={styles.icon}>
               <SettingsIcon
                 className={styles.Icon}
@@ -99,8 +99,8 @@ export default function NavigationTab(props) {
                 style={{ color: "#747474" }}
               />
             </div>
-          </Link>
-          <Link href={"/"}>
+          </Link> */}
+          <div>
             <Tooltip title="log out" placement="right" arrow>
               <div className={styles.icon}>
                 <ExitToAppIcon
@@ -114,7 +114,7 @@ export default function NavigationTab(props) {
                 />
               </div>
             </Tooltip>
-          </Link>
+          </div>
         </div>
       </div>
     </div>
