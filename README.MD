@@ -4,8 +4,8 @@ A RSS reader and web clipper helping users to explore and manage software articl
 
 🚧 This project is currently undergoing refactoring, so few services are temporarily unavailable 🚧
 
-- [V2 Website](https://kevinztw.online/account/signin) (Limited feature 🥲)
-- [V1 Website](https://knowledge-base-tw.web.app/signin) (Limited feature 🥲)
+- [V2 Website](https://kevinztw.online/account/signin) (Limited feature)
+- [V1 Website](https://knowledge-base-tw.web.app/signin) (Limited feature)
 - [Chrome Extension](https://chrome.google.com/webstore/detail/taggy/djgfbkpjhnmnafpmngdfiaoidmfoolcj?hl=zh-TW) (Service down)
 
 > The ongoing refactoring is in progress to implement the below design
