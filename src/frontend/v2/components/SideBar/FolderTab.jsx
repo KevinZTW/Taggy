@@ -231,7 +231,7 @@ export default function FolderTab(props) {
             </div>
           </Link>
   
-          <Link href={"/"}>
+          <Link href={"/rss/latest"}>
             <div
               className={
                 props.focus === "home"
@@ -247,7 +247,7 @@ export default function FolderTab(props) {
                     : styles.folderIcon
                 }
               />
-              <div className={styles.keyTitle}>Home</div>
+              <div className={styles.keyTitle}>Latest</div>
             </div>
           </Link>
           <Link href={"/rss/feeds"}>

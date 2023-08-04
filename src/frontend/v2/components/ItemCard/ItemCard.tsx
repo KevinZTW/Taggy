@@ -6,13 +6,7 @@ import placeholderImg from "@/public/imgs/place_holder_img.png";
 import Link from "next/link";
 
 export default function ItemCard({item, highLight}:{item:RSSItem}){
-  // return (
-  //   <>
-  //   <div>{item.title}</div>
-  //   <div>{item.description}</div>
-  //   <div>{item.content}</div>
-  //   </>
-  // )
+
 
   const [image, setImage] = useState(false);
   const backgroundSrc = useRef();
@@ -34,10 +28,14 @@ export default function ItemCard({item, highLight}:{item:RSSItem}){
     };
   }, []);
 
-  const passDay = (Date.now() - item.pubDate) / (1000 * 60 * 60 * 24);
+    console.log(item)
+  const passDay = (Date.now() - Date.parse(item.publishedAt)) / (1000 * 60 * 60 * 24);
 
   const showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
+
+
+  let description = item.description;
 
   return (
     <Link href={`/rss/items/${item.id}`}>
@@ -71,7 +69,8 @@ export default function ItemCard({item, highLight}:{item:RSSItem}){
               )}
             </div>
             <div className={styles.creator}>
-              {item.RSS} / {showDay}
+              {/* TODO: Add the RSS Feed name */}
+               {showDay}
             </div>
             <div className={styles.content}>
               {highLight ? (
