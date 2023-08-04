@@ -9,7 +9,7 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { RSSFeed } from '@/protos/taggy';
 
-
+import placeholderImg from "@/public/imgs/place_holder_img.png";
 
 interface IProps {
     source: RSSFeed
@@ -18,7 +18,7 @@ interface IProps {
 export default function FeedCard({source}: IProps) {
     return (
         <>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 600, display: 'flex' }}>
         {/* <CardHeader
             // action={
             //   <IconButton aria-label="settings">
@@ -30,27 +30,27 @@ export default function FeedCard({source}: IProps) {
         /> */}
         <CardMedia
             component="img"
-            height="120"
-            image={`${source.imgUrl}`}
-            // alt="Paella dish"
+            sx={{ width: 160, }}
+            height="160"
+            image={`${source.imgUrl}` == "" ? placeholderImg.src : `${source.imgUrl}`}
         />
         <CardContent>
             <Typography variant="h5" component="div">
             {source.name}
             </Typography>
-            <div>id: {source.id}</div>
+            {/* <div>id: {source.id}</div>
             <div>url: {source.url}</div>
-            <div>last update: {source.lastUpdatedAt?.toString()}</div>
+            <div>last update: {source.lastUpdatedAt?.toString()}</div> */}
             <Typography variant="body2" color="text.secondary">
                 {source.description}
             </Typography>
         </CardContent>
-        <CardActions disableSpacing>
+        {/* <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
             <FavoriteIcon />
             </IconButton>
             
-        </CardActions>
+        </CardActions> */}
         </Card>
         </>
     )

@@ -56,7 +56,7 @@ export default function FeedPage({ source } : {source: RSSFeed}) {
       }
       return (
         <div className={styles.board}>
-          <Link href="/home/channels" className={styles.arrowBack}>
+          <Link href="/rss/feeds" className={styles.arrowBack}>
             <ArrowBack style={{ color: "#FFFCEC" }} />
           </Link>
           <h1 className={styles.title}>{channelTitle} </h1>

@@ -14,8 +14,10 @@ const Wrapper = styled.div`
     display: flex;
     padding: 20px;
     flex-direction: column;`
+
 const FeedCardWrapper = styled.div`
     display: flex;
+    padding: 20px 0px;
     gap: 10px;
     flex-direction: column;
 `
@@ -34,7 +36,7 @@ export default function RSS(){
 
     
     return (
-        <>
+        <Wrapper>
         
         <Typography variant="h4" >RSS Feeds</Typography>
     
@@ -43,6 +45,6 @@ export default function RSS(){
             return (<Link href={`/rss/feeds/${source.id}`}><FeedCard source={source}/></Link>)
         })}
         </FeedCardWrapper>
-        </>
+        </Wrapper>
     )
 }
