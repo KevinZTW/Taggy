@@ -106,7 +106,7 @@ export default function ItemPage({ item, goBack }) {
           <div className={styles.title}>{item?.title}</div>
           <div className={styles.chipsWrapper}>{tagChips}</div>
           
-          <a href={item.url}>Visit origin content here!</a>
+          <div>  <a href={item.url}>Visit origin content here!</a></div>
           <div
             dangerouslySetInnerHTML={{
               __html:
