@@ -3,7 +3,7 @@ import FolderTab from './FolderTab';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`   
-    min-width: 340px;
+    min-width: 313px;
     height: 100px;
 `
 

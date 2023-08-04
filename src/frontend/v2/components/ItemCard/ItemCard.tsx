@@ -5,6 +5,8 @@ import styles from "./ItemCard.module.css";
 import placeholderImg from "@/public/imgs/place_holder_img.png";
 import Link from "next/link";
 
+import { convertHtmlToPlainText } from "@/utils/ContentProcess";
+
 export default function ItemCard({item, highLight}:{item:RSSItem}){
 
 
@@ -28,14 +30,14 @@ export default function ItemCard({item, highLight}:{item:RSSItem}){
     };
   }, []);
 
-    console.log(item)
   const passDay = (Date.now() - Date.parse(item.publishedAt)) / (1000 * 60 * 60 * 24);
 
   const showDay =
     passDay < 1 ? Math.floor(passDay * 24) + "h" : Math.floor(passDay) + "d";
 
 
-  let description = item.description;
+  let description = item.description ? convertHtmlToPlainText(item.description) : convertHtmlToPlainText(item.content);
+  description = description.slice(0, 400)
 
   return (
     <Link href={`/rss/items/${item.id}`}>
@@ -79,7 +81,7 @@ export default function ItemCard({item, highLight}:{item:RSSItem}){
                   searchWords={[highLight]}
                 />
               ) : (
-                item.description
+                description
               )}
             </div>
           </div>
