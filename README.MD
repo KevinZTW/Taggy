@@ -10,18 +10,18 @@ A RSS reader and web clipper helping users to explore and manage software articl
 
 > The ongoing refactoring is in progress to implement the below design
 
-![Taggy Architecture](https://github.com/KevinZTW/Taggy/assets/38662781/82bab7dd-d0de-4441-9799-39c0083b3e4c)
-
+![Taggy v2 Architecture](https://github.com/KevinZTW/Taggy/assets/38662781/83597b6b-ea68-4c02-acbc-e5a560f02a1c)
 
 ## Technologies :
 
 ### Back-End
 
-- Language: Golang, Node.js
+- Language: Golang, Java, Node.js
 - Communication: RESTful API, grpc
-- Software Architecture: Micro Services, Event Driven, DDD
+- Framework: Spring Boot
 - Storage & MQ: Kafka, Redis, MongoDB, MySQL, CloudFirestore
 - Monitoring: Grafana, Zipkin, Prometheus, OpenTelemetry
+- Software Architecture: Micro Services, Event Driven, DDD
 - CICD: Docker
 - Cloud Service: EC2, RDS
 
