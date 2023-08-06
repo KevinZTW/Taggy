@@ -58,9 +58,10 @@ public class DefaultSecurityConfig {
         http
             .authorizeHttpRequests((authz) -> authz
             .requestMatchers("/foo").hasRole("ADMIN")
+            .requestMatchers("/token").permitAll()
             .requestMatchers("/accounts").permitAll()
             .anyRequest().authenticated())
-            .httpBasic(withDefaults()) 
+            .httpBasic(withDefaults())
             .formLogin(Customizer.withDefaults())
             .csrf((csrf) -> csrf.disable());
         

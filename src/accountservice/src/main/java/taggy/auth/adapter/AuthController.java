@@ -30,12 +30,20 @@ public class AuthController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/token")
-    public String login(Authentication authentication) {
-        Account account = accountService.findByEmail(authentication.getName());
+    @PostMapping("/token")
+    public String login(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String password = body.get("password");
+
+        Account account = accountService.findByEmail(email);
         
+
         if (account == null) {
             throw new IllegalArgumentException("account not found");
+        }
+
+        if (!accountService.checkPassword(account, password)) {
+            throw new IllegalArgumentException("password not match");
         }
         
         return JWTService.createToken(account.getName(), account.getEmail(), account.getId());
