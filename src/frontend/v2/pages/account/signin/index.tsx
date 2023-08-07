@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import logo from "@/public/imgs/taggy_logo_1x.png";
 
+import Cookie from "@/utils/Cookie";
 
 import styles from "./index.module.css";
 import  Link  from "next/link";
 import { useRouter } from "next/router";
-
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { auth } from "@/utils/Friebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import firebase from "firebase/app";
+import { AccountService } from "@/services/AccountService";
 
 
 export default function Signup() {
@@ -30,18 +27,19 @@ export default function Signup() {
 
 
   let router = useRouter();
+  let accountService = AccountService();
 
   function firebaseSignIn(email: string, password: string) {
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log(userCredential);
-      router.push("/rss/latest");    
-  
-    })
-    .catch((error) => {
+    accountService.getToken(email, password).then((token) => {
+      console.log(token);
+      // router.push("/rss/latest");
+    }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
+    
+
+
   }
 
     
@@ -126,7 +124,6 @@ export default function Signup() {
               Play with our demo accout
             </div>
             <button>Login</button>
-            {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} /> */}
           </form>
         </div>
       </div>

@@ -22,13 +22,20 @@ const request = async <T>({
     method,
     body: body ? JSON.stringify(body) : undefined,
     headers,
+  }).catch((err) => {
+    throw new Error(err);
   });
 
   const responseText = await response.text();
-  const payload = JSON.parse(responseText);
-  if (!response.ok) throw new Error(response.statusText + " " + payload.error.details);
+  if (!response.ok) throw new Error(response.statusText + " " + responseText);
   
-  if (!!responseText) return payload;
+
+  try {
+    const payload = JSON.parse(responseText);
+    if (!!responseText) return payload;
+  } catch (err) {
+    return responseText as T;
+  }
 
   return undefined as unknown as T;
 };

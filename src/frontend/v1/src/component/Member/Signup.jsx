@@ -3,7 +3,6 @@ import logo from "../../imgs/taggy_logo_1x.png";
 import "../../css/App.css";
 import styles from "../../css/SignUp.module.css";
 import { Link } from "react-router-dom";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { auth } from "../../firebase.js";
 import firebase from "firebase/app";
 import { useHistory } from "react-router-dom";

@@ -2,30 +2,14 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import logo from "@/public/imgs/taggy_logo_1x.png";
 
+import { AccountService } from "@/services/AccountService";
 
 import styles from "./index.module.css";
 import  Link  from "next/link";
 import { useRouter } from "next/router";
-import { AuthErrorCodes } from "firebase/auth";
-// import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import { auth } from "@/utils/Friebase";
-import { onAuthStateChanged, createUserWithEmailAndPassword } from "firebase/auth";
-import firebase from "firebase/app";
 
 
-export default function Signup() {
-  // const uiConfig = {
-  //   callbacks: {
-  //     signInSuccess: async function (authResult, redirectUrl) {
-        
-  //     },
-  //   },
-
-  //   signInFlow: "popup",
-
-  //   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-  // };
-
+export default function signup() {
   const notify_fail = (code : String) => {
     let message = "";
     switch (code) {
@@ -59,19 +43,20 @@ export default function Signup() {
 
 
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState("user");
+  const [email, setEmail] = useState("user@gmail.com");
+  const [password, setPassword] = useState("123123");
 
 
   let router = useRouter();
 
-  function firebaseSignUp(email: string, password: string) {
-    
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((credential) => {
-      console.log(credential);
-      router.push("/rss/latest");
+  function signup(name:string, email: string, password: string) {
+
+    let accountService = AccountService();
+    accountService.signup(name, email, password)
+    .then((account) => {
+      console.log(account);
+      // router.push("/rss/latest");
 
     })
     .catch((e) => {
@@ -105,10 +90,10 @@ export default function Signup() {
             className={styles.form}
             onSubmit={(e) => {
               e.preventDefault();
-              firebaseSignUp(email, password);
+              signup(name, email, password);
             }}
           >
-            {/* <div className={styles.inputbox}>
+            <div className={styles.inputbox}>
               <label htmlFor="username">User Name</label>
               <input
                 type="text"
@@ -118,7 +103,7 @@ export default function Signup() {
                   setName(e.currentTarget.value);
                 }}
               />
-            </div> */}
+            </div>
             <div className={styles.inputbox}>
               <label htmlFor="email">Email</label>
               <input
@@ -143,7 +128,6 @@ export default function Signup() {
             </div>
             <button>Sign Up</button>
           </form>
-          {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} /> */}
           <div className={styles.login}>
             <span>Already have an account? </span>
             <Link href={"/account/signin"}>Login</Link>

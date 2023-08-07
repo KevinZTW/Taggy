@@ -1,6 +1,5 @@
 import App, { AppProps } from 'next/app';
 import { useEffect } from 'react';
-import { auth } from '@/utils/Friebase';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -35,15 +34,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
 
     useEffect(() => {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          console.log("user", user);
-        } else {
-          //redirect to login
-          console.log("no user");
-          router.push("/account/signin");
-        }
-      });
+      // TODO: check if user is logged in
+      // auth.onAuthStateChanged((user) => {
+      //   if (user) {
+      //     console.log("user", user);
+      //   } else {
+      //     //redirect to login
+      //     console.log("no user");
+      //     router.push("/account/signin");
+      //   }
+      // });
     }, []);
 
     return (<>

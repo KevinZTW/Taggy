@@ -1,10 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { CreateRSSFeedRequest, RSSItem, RSSFeed } from '../../../../protos/taggy';
 import RSSGateway from '../../../../gateways/rpc/RSS.gateway';
+import cookie from "cookie";
 
 type TResponse = RSSFeed[];
 
-const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResponse<any>) => {
+const handler = async ({ method, body, query, cookies}: NextApiRequest, res: NextApiResponse<any>) => {
+  let token = cookies?.token || "";
+
   switch (method) {
     case 'GET': {
       const feedId : string = query.feedId as string;
