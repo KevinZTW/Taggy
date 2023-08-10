@@ -18,13 +18,17 @@ import java.util.Map;
 @RestController
 public class RSSController {
 
-    //log
     private static final Logger log = LoggerFactory.getLogger(RSSController.class);
 
-    @Autowired
-    AccountService accountService;
-    @Autowired
-    RSSFeedRepository rssFeedRepository;
+
+    public RSSController(AccountService accountService, RSSFeedRepository rssFeedRepository){
+        this.accountService = accountService;
+        this.rssFeedRepository = rssFeedRepository;
+
+    }
+
+    private final AccountService accountService;
+    private final RSSFeedRepository rssFeedRepository;
 
     @GetMapping("/rss")
     public String rss() {
