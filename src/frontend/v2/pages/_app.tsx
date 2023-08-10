@@ -1,5 +1,6 @@
 import App, { AppProps } from 'next/app';
 import { useEffect } from 'react';
+import cookie from 'cookie';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -28,23 +29,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     
 
     let showSideBar = true;
-    
+    let noAuthPage = false;
     if (noAuthPaths.includes(router.asPath)){
       showSideBar = false;
+      noAuthPage = true;
     }
-
-    useEffect(() => {
-      // TODO: check if user is logged in
-      // auth.onAuthStateChanged((user) => {
-      //   if (user) {
-      //     console.log("user", user);
-      //   } else {
-      //     //redirect to login
-      //     console.log("no user");
-      //     router.push("/account/signin");
-      //   }
-      // });
-    }, []);
+    if (typeof document !== 'undefined' && !noAuthPage){
+      let cookies = cookie.parse(document.cookie);
+      let token_exists = cookies.token_exists;
+  
+      if (!token_exists){
+        router.push("/account/signin");
+      }
+    }
+    
 
     return (<>
         <ThemeProvider theme={darkTheme}>

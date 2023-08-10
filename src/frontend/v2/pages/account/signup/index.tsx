@@ -40,9 +40,6 @@ export default function signup() {
     );
   }
   
-
-
-
   const [name, setName] = useState("user");
   const [email, setEmail] = useState("user@gmail.com");
   const [password, setPassword] = useState("123123");
@@ -54,11 +51,12 @@ export default function signup() {
 
     let accountService = AccountService();
     accountService.signup(name, email, password)
-    .then((account) => {
-      console.log(account);
-      // router.push("/rss/latest");
-
+    .then(() => {
+      accountService.getToken(email, password)
+    }).then(() => {
+      router.push("/rss/latest");
     })
+    
     .catch((e) => {
       console.log(e.message);
       notify_fail(e.code);

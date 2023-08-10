@@ -19,15 +19,23 @@ const handler = async ({ method, body, query }: NextApiRequest, res: NextApiResp
             method: 'POST',
             body: {name: name, email: email, password: password},
         })
+
         res.setHeader('Set-Cookie', cookie.serialize('token', token, {
           httpOnly: true,
           sameSite: 'strict',
           path: "/",
         }));
+
+        res.setHeader('Set-Cookie', cookie.serialize('token_exists', "true", {
+          httpOnly: false,
+          path: "/",
+        }));
+
         return res.status(200).json(token);
       }catch(err) {
+        // TODO: better error handling
         console.log(err);
-        return res.status(404).json({error: err});
+        return res.status(401).json({error: "email or password is wrong"});
       }   
     }
 

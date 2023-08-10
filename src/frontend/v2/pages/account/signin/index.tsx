@@ -32,10 +32,12 @@ export default function Signup() {
   function firebaseSignIn(email: string, password: string) {
     accountService.getToken(email, password).then((token) => {
       console.log(token);
-      // router.push("/rss/latest");
+      // router.push("/rss/latest")
+      router.push("/rss/latest");;
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      notify_fail();
     });
     
 
